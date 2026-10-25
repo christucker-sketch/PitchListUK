@@ -12,6 +12,9 @@ cd "$(dirname "$0")"
 id hubsync >/dev/null && id myc >/dev/null || { echo "STOP: users hubsync and myc must already exist"; exit 1; }
 [[ -d /var/lib/hubsync/repo/.git && -x /home/myc/bin/myc-run ]] || { echo "STOP: hubsync clone or myc billing guard missing"; exit 1; }
 for c in git jq flock iconv dd timeout runuser; do command -v $c >/dev/null || { echo "STOP: $c missing"; exit 1; }; done
+echo "== before"
+echo "  hubsync.timer: $(systemctl is-active hubsync.timer); existing commands: $(ls /usr/local/bin/myc-gate /usr/local/bin/myc-agent /usr/local/bin/myc-stageb 2>/dev/null | tr '\n' ' ' || true)"
+echo "  group mycspool: $(getent group mycspool || echo absent); spool: $(ls -ld /var/lib/mycspool 2>/dev/null || echo absent)"
 echo "== group and spool"
 getent group mycspool >/dev/null || groupadd --system mycspool
 usermod -aG mycspool hubsync; usermod -aG mycspool myc

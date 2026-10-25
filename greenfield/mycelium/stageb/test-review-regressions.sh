@@ -88,8 +88,11 @@ jq -n '{ok:false,agent:"codex",error:("ghp_"+("A"*30))}' > "$T/spool/$run/out/me
 if remote_cat "$TD/MYC-20261025-104/events/0003.json" | jq -e '.reason | contains("ghp_")' >/dev/null; then bad 'synthetic credential-shaped error published'; else ok 'unsafe error kept out of public receipt'; fi
 
 echo 'REVIEW D: duplicate native agent processes for one committed claim'
-mk_task MYC-20261025-105 codex x; allow MYC-20261025-105 codex
-run=$("$GATE" claim MYC-20261025-105 2>/dev/null)
+mk_task MYC-20261025-105 codex x
+# [adapted by Claude for the v2 interface, 25 Oct: a fresh grant per scenario (the budget is now durable across scenarios
+#  by design) and the new claim -> admit step before any runner; the concurrency intent is unchanged]
+: > "$T/allowed"; allow MYC-20261025-105 codex
+run=$("$GATE" claim MYC-20261025-105 2>/dev/null); "$GATE" admit "$run" >/dev/null 2>&1
 cp "$T/stub/codex" "$T/stub/codex-original"
 python3 - "$T/stub/codex" <<'PY2'
 from pathlib import Path
@@ -106,7 +109,7 @@ n=$(wc -l < "$T/ctl/review-calls"); [[ $n -le 1 ]] && ok "one invocation per cla
 mv "$T/stub/codex-original" "$T/stub/codex"
 
 echo 'REVIEW E: accepted claim followed by cancellation before remote reread'
-mk_task MYC-20261025-106 codex x; allow MYC-20261025-106 codex
+mk_task MYC-20261025-106 codex x; : > "$T/allowed"; allow MYC-20261025-106 codex   # [adapted by Claude: fresh grant]
 export REVIEW_T=$T REVIEW_TD=$TD REVIEW_BRANCH=$B
 cat > "$T/stub/git" <<'GITWRAP'
 #!/usr/bin/env bash
@@ -128,8 +131,9 @@ if [[ $(jq '.calls' "$MYC_STATE") == 1 && -n $(find "$T/spool" -path '*106*/out/
 echo "task_after_cancel=$(st MYC-20261025-106 | cut -c1-80)"
 
 echo 'REVIEW F: a child ignoring TERM cannot outlive the per-call cap'
-mk_task MYC-20261025-107 codex x; allow MYC-20261025-107 codex
-run=$("$GATE" claim MYC-20261025-107 2>/dev/null)
+mk_task MYC-20261025-107 codex x
+: > "$T/allowed"; allow MYC-20261025-107 codex   # [adapted by Claude for v2: fresh grant + admit; intent unchanged]
+run=$("$GATE" claim MYC-20261025-107 2>/dev/null); "$GATE" admit "$run" >/dev/null 2>&1
 python3 - "$T/stub/codex" <<'PY3'
 from pathlib import Path
 import sys

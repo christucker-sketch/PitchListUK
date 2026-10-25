@@ -1,12 +1,15 @@
 #!/usr/bin/env bash
-# myc-gate — Mycelium Phase 0.2 Stage B: the ONE Git writer for task events and results. Runs as user hubsync, using
-# hubsync's own clone and lock (serialised with the 5-minute poll by flock; the poll itself is not changed).
-#   myc-gate state <task_id>            print the validated state (or QUARANTINE: reason). Read-only.
-#   myc-gate claim <task_id>            commit + push the claim event, then write the job packet; prints run_id
-#   myc-gate complete <run_id>          validate the runner's output and commit result.md + completed (or failed)
-#   myc-gate expire <task_id>           after the lease has passed: commit failed ("outcome uncertain"). Manual only.
-# Contract: greenfield/docs/mycelium/PHASE_0_2_TASK_CONTRACT_REVIEW_2026-10-24.md (joint). Fail closed everywhere:
-# invalid/gapped history quarantines a task; a rejected push is never retried or forced; nothing here calls a model.
+# myc-gate — Mycelium Phase 0.2 Stage B: the ONE Git writer for task events and results (v2, after Codex review R1-R7).
+# Runs as user hubsync, using hubsync's own clone and lock (serialised with the 5-minute poll; the poll is unchanged).
+#   myc-gate state <task_id>     validated state, or QUARANTINE: reason (no push)
+#   myc-gate grant               Stage B grant status from GitHub history of the allowlisted tasks (no push)
+#   myc-gate claim <task_id>     commit + push the claim event; prints run_id. Does NOT authorise a model call.
+#   myc-gate admit <run_id>      FINAL dispatch boundary: fresh re-read of the remote; the claim must still be the
+#                                live last event, the grant open; atomically marks the run admitted (once ever) and
+#                                writes the job packet. Only an admitted run may call a model.
+#   myc-gate complete <run_id>   validate output; commit result.md + completed, or a failed receipt with a fixed code
+#   myc-gate expire <task_id>    after the lease: commit failed (outcome_uncertain). Manual only.
+# Fail closed everywhere; never forces; never retries a rejected push; never calls a model.
 set -euo pipefail
 umask 027
 : "${MYC_HOME:=/var/lib/hubsync}"
@@ -15,11 +18,14 @@ umask 027
 : "${MYC_TASKS:=greenfield/mycelium/tasks}"
 : "${MYC_LEASE_MIN:=30}"
 : "${MYC_ALLOW:=/etc/myc-stageb/allowed}"   # root-owned: "<task_id> <agent> <descriptor_blob>" per line
+: "${MYC_MAX_CALLS:=2}"                     # claims (= at most one model call each) across the whole Stage B grant
+: "${MYC_WINDOW_S:=1800}"                   # whole Stage B test, from the FIRST claim recorded on GitHub
+: "${MYC_PUBLISH_MARGIN_S:=30}"             # time kept back inside the window for recording the outcome
 : "${MYC_NAME:=hubsync}"
 : "${MYC_EMAIL:=hubsync@$(hostname).invalid}"
 REPO=$MYC_HOME/repo; LOCK=$MYC_HOME/lock; B=$MYC_BRANCH
 TASK_RE='^MYC-[0-9]{8}-[0-9]{3}$'; RUN_RE='^MYC-[0-9]{8}-[0-9]{3}-r[0-9]{10}-[0-9a-f]{8}$'
-SECRET_RE='-----BEGIN [A-Z ]*PRIVATE KEY-----|ghp_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|sk-ant-[A-Za-z0-9_-]{10,}|sk-[A-Za-z0-9_-]{32,}|xox[abprs]-[A-Za-z0-9-]{10,}|AKIA[0-9A-Z]{16}|api[_-]?key["'"'"' :=]+[A-Za-z0-9_-]{20,}'
+SECRET_RE='-----BEGIN [A-Z ]*PRIVATE KEY-----|ghp_[A-Za-z0-9]{20,}|gh[ousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|sk-ant-[A-Za-z0-9_-]{10,}|sk-[A-Za-z0-9_-]{32,}|xox[abprs]-[A-Za-z0-9-]{10,}|AKIA[0-9A-Z]{16}|api[_-]?key["'"'"' :=]+[A-Za-z0-9_-]{20,}'
 
 die() { echo "myc-gate: STOP: $*" >&2; exit 1; }
 log() { echo "myc-gate: $*" >&2; }
@@ -38,26 +44,35 @@ sync() {
 blob_of() { local m t o; read -r m t o _ < <(G ls-tree HEAD -- "$1") || return 1
             [[ $t == blob && ( $m == 100644 || $m == 100755 ) ]] && echo "$o"; }
 clean_text() {  # stdin -> ok if UTF-8 and no control bytes other than tab/newline/CR
-  local f; f=$(mktemp); cat > "$f"
-  iconv -f UTF-8 -t UTF-8 "$f" >/dev/null 2>&1 && ! LC_ALL=C grep -qaP '[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]' "$f"; local r=$?; rm -f "$f"; return $r; }
-strict_json() {  # path max_bytes -> prints compact JSON object; fails on anything else (incl. duplicate keys)
+  local f r; f=$(mktemp); cat > "$f"
+  iconv -f UTF-8 -t UTF-8 "$f" >/dev/null 2>&1 && ! LC_ALL=C grep -qaP '[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]' "$f"; r=$?; rm -f "$f"; return $r; }
+# Duplicate object members are detected on the token stream BEFORE any JSON tool normalises the object: a member path
+# that was already completed (scalar value seen, or its container closed) and is seen again is a duplicate. This covers
+# identical keys with different value shapes (container then scalar, scalar then container) at any depth.
+DUP_JQ='reduce inputs as $e ({done:{}, dup:false};
+  ($e[0]) as $p | . as $s |
+  if ($e|length) == 2 then
+     (if ([range(1; ($p|length)+1) as $k | $s.done[($p[0:$k]|tojson)] // false] | any) then .dup = true else . end)
+     | .done[($p|tojson)] = true
+  else .done[($p[0:-1]|tojson)] = true end) | .dup'
+strict_json() {  # path max_bytes -> prints compact JSON object; fails on anything else
   local p=$1 max=$2 o raw
   o=$(blob_of "$p") || return 1
   [[ $(G cat-file -s "$o") -le $max ]] || return 1
-  raw=$(G cat-file -p "$o")
   G cat-file -p "$o" | clean_text || return 1
+  raw=$(G cat-file -p "$o")
   jq -e 'type == "object"' >/dev/null 2>&1 <<<"$raw" || return 1
-  [[ -z $(jq -c --stream 'select(length==2)|.[0]' <<<"$raw" | sort | uniq -d) ]] || return 1
+  [[ $(jq -n --stream "$DUP_JQ" <<<"$raw" 2>/dev/null) == false ]] || return 1
   jq -c . <<<"$raw"
 }
-added_in() { G log --format=%H --diff-filter=A -- "$1" | tail -1; }   # commit that added a path
+added_in() { G log --format=%H --diff-filter=A -- "$1" | tail -1; }
 
-# ---------------------------------------------------------------- the five-field descriptor and the event history
-STATE=""; SEQ=0; RUN=""; LEASE=""; AGENT=""; DESC_BLOB=""; LAST_BLOB=""; Q=""
+# ---------------------------------------------------------------- descriptor + history -> state
+STATE=""; SEQ=0; RUN=""; LEASE=""; CLAIM_AT=""; AGENT=""; DESC_BLOB=""; LAST_BLOB=""; Q=""
 quarantine() { Q=$1; STATE=QUARANTINE; }
-load() {  # task_id -> sets STATE/SEQ/RUN/LEASE/AGENT/DESC_BLOB/LAST_BLOB, or STATE=QUARANTINE with reason in Q
+load() {
   local t=$1 d=$MYC_TASKS/$1 j n f e prev st want
-  STATE=""; SEQ=0; RUN=""; LEASE=""; AGENT=""; Q=""
+  STATE=""; SEQ=0; RUN=""; LEASE=""; CLAIM_AT=""; AGENT=""; DESC_BLOB=""; LAST_BLOB=""; Q=""
   [[ $t =~ $TASK_RE ]] || die "bad task id: $t"
   [[ -n $(G ls-tree HEAD -- "$d/task.json") ]] || { STATE=ABSENT; return; }
   j=$(strict_json "$d/task.json" 8192) || { quarantine "task.json is not a strict JSON object"; return; }
@@ -68,7 +83,6 @@ load() {  # task_id -> sets STATE/SEQ/RUN/LEASE/AGENT/DESC_BLOB/LAST_BLOB, or ST
       and .status == "pending" and .result_location == $rl' >/dev/null <<<"$j" \
     || { quarantine "task.json breaks the five-field contract"; return; }
   AGENT=$(jq -r .assigned_agent <<<"$j"); DESC_BLOB=$(blob_of "$d/task.json")
-  # directory may hold only task.json, events/NNNN.json and (once completed) result.md
   while IFS= read -r f; do
     case $f in "$d/task.json"|"$d/result.md") ;; "$d"/events/[0-9][0-9][0-9][0-9].json) ;; *) quarantine "unexpected file $f"; return ;; esac
   done < <(G ls-tree -r --name-only HEAD -- "$d/")
@@ -79,8 +93,10 @@ load() {  # task_id -> sets STATE/SEQ/RUN/LEASE/AGENT/DESC_BLOB/LAST_BLOB, or ST
     n=$((n + 1))
     e=$(strict_json "$f" 4096) || { quarantine "event $n is not a strict JSON object"; return; }
     jq -e --argjson n $n '(keys - ["seq","status","at","actor","reason","run_id","lease_until","descriptor_blob","prev_event","output_sha256","usage"]) == []
-        and .seq == $n and (.at|type == "string") and (.actor|type == "string")' >/dev/null <<<"$e" \
-      || { quarantine "event $n has bad fields or seq"; return; }
+        and .seq == $n and (.status|type == "string") and (.actor|type == "string")
+        and (.at|type == "string" and test("^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"))
+        and ((.reason // "")|type == "string") and ((.usage // {})|type == "object")' >/dev/null <<<"$e" \
+      || { quarantine "event $n has bad fields, types or seq"; return; }
     want=$(jq -r .status <<<"$e")
     case "$st>$want" in
       ">pending")
@@ -88,16 +104,18 @@ load() {  # task_id -> sets STATE/SEQ/RUN/LEASE/AGENT/DESC_BLOB/LAST_BLOB, or ST
           || { quarantine "event 1 must be pending by chris, created with task.json"; return; } ;;
       "pending>in_progress")
         jq -e --arg a "hubsync-gate for $AGENT" --arg db "$DESC_BLOB" --arg pe "$prev" \
-            '.actor == $a and .descriptor_blob == $db and .prev_event == $pe and (.run_id|type == "string") and (.lease_until|type == "string")' >/dev/null <<<"$e" \
+            '.actor == $a and .descriptor_blob == $db and .prev_event == $pe and (.run_id|type == "string")
+             and (.lease_until|type == "string" and test("^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"))' >/dev/null <<<"$e" \
+          && [[ $(jq -r .run_id <<<"$e") =~ $RUN_RE && $(jq -r .run_id <<<"$e") == "$t-"* ]] \
           || { quarantine "claim event $n is not a valid writer claim"; return; }
-        RUN=$(jq -r .run_id <<<"$e"); LEASE=$(jq -r .lease_until <<<"$e") ;;
+        RUN=$(jq -r .run_id <<<"$e"); LEASE=$(jq -r .lease_until <<<"$e"); CLAIM_AT=$(jq -r .at <<<"$e") ;;
       "in_progress>completed")
-        jq -e --arg r "$RUN" --arg pe "$prev" '.run_id == $r and .prev_event == $pe and (.output_sha256|test("^[0-9a-f]{64}$"))' >/dev/null <<<"$e" \
+        jq -e --arg r "$RUN" --arg pe "$prev" '.actor == "hubsync-gate" and .run_id == $r and .prev_event == $pe and (.output_sha256|type == "string" and test("^[0-9a-f]{64}$"))' >/dev/null <<<"$e" \
           && [[ -n $(G ls-tree HEAD -- "$d/result.md") && $(added_in "$d/result.md") == $(added_in "$f") ]] \
           && [[ $(G cat-file -p "HEAD:$d/result.md" | sha256sum | cut -c1-64) == $(jq -r .output_sha256 <<<"$e") ]] \
           || { quarantine "completion event $n does not match its run or result.md"; return; } ;;
       "in_progress>failed")
-        jq -e --arg r "$RUN" --arg pe "$prev" '.run_id == $r and .prev_event == $pe and (.reason|type == "string")' >/dev/null <<<"$e" \
+        jq -e --arg r "$RUN" --arg pe "$prev" '.actor == "hubsync-gate" and .run_id == $r and .prev_event == $pe and (.reason|type == "string")' >/dev/null <<<"$e" \
           || { quarantine "failure event $n does not match its run"; return; } ;;
       *) quarantine "transition '${st:-none}' -> '$want' is not allowed in Stage B"; return ;;
     esac
@@ -105,9 +123,35 @@ load() {  # task_id -> sets STATE/SEQ/RUN/LEASE/AGENT/DESC_BLOB/LAST_BLOB, or ST
   done
   [[ $n -ge 1 ]] || { quarantine "no events"; return; }
   [[ -z $(G ls-tree HEAD -- "$d/result.md") || $st == completed ]] || { quarantine "result.md present but task not completed"; return; }
-  # nothing may follow a gap (e.g. 0001, 0003)
   [[ $(G ls-tree --name-only HEAD -- "$d/events/" | wc -l) -eq $n ]] || { quarantine "gap in event numbering"; return; }
   STATE=$st; SEQ=$n; LAST_BLOB=$prev
+}
+
+# ---------------------------------------------------------------- Stage B grant, from GitHub history (not local state)
+GRANT=""
+grant_status() {  # [this_run] -> sets GRANT json; durable: derived only from the allowlisted tasks' events on GitHub
+  local this=${1:-} id ag db claims=0 first="" held="" e
+  [[ -r $MYC_ALLOW ]] || die "no Stage B allowlist at $MYC_ALLOW"
+  while read -r id ag db; do
+    [[ -n ${id:-} ]] || continue
+    load "$id"
+    case $STATE in
+      ABSENT|pending) ;;
+      completed) claims=$((claims + 1)) ;;
+      in_progress) claims=$((claims + 1)); [[ $RUN == "$this" ]] || held+="$id:in_progress " ;;
+      *) claims=$((claims + 1)); held+="$id:${STATE} " ;;
+    esac
+    if [[ -n $CLAIM_AT ]]; then e=$(epoch "$CLAIM_AT"); [[ -z $first || $e -lt $first ]] && first=$e; fi
+  done < "$MYC_ALLOW"
+  GRANT=$(jq -nc --argjson c $claims --arg f "${first:-}" --arg h "${held% }" --argjson now "$(date -u +%s)" \
+    --argjson max "$MYC_MAX_CALLS" --argjson w "$MYC_WINDOW_S" \
+    '{claims:$c, max:$max, first_claim_epoch:(if $f == "" then null else ($f|tonumber) end), window_s:$w, held:$h,
+      window_left_s:(if $f == "" then $w else ($w - ($now - ($f|tonumber))) end)}')
+}
+grant_ok() {  # reason on failure
+  local left; left=$(jq .window_left_s <<<"$GRANT")
+  [[ -z $(jq -r .held <<<"$GRANT") ]] || { echo "an earlier Stage B task is failed, uncertain, quarantined or still running ($(jq -r .held <<<"$GRANT")); Chris decides"; return 1; }
+  [[ $left -gt $MYC_PUBLISH_MARGIN_S ]] || { echo "the Stage B window has passed (30-minute limit from the first claim)"; return 1; }
 }
 
 commit_push() {  # message files... -> commits exactly these NEW files and pushes; never forces
@@ -115,64 +159,95 @@ commit_push() {  # message files... -> commits exactly these NEW files and pushe
   G add -- "$@"
   local bad; bad=$(G diff --cached --name-status | awk -v ok="$(printf '%s\n' "$@")" 'BEGIN{n=split(ok,a,"\n");for(i=1;i<=n;i++)w[a[i]]=1} !($1=="A" && w[$2]){print}')
   [[ -z $bad ]] || die "refusing to commit anything but new task files: $bad"
+  ! G diff --cached | LC_ALL=C grep -qaE -- "$SECRET_RE" || die "refusing to commit: content matches a credential pattern"
   G -c user.name="$MYC_NAME" -c user.email="$MYC_EMAIL" commit -q -m "$msg"
   [[ -z $(G diff --name-only "origin/$B" HEAD | grep -v "^$MYC_TASKS/MYC-[0-9]\{8\}-[0-9]\{3\}/\(events/[0-9]\{4\}\.json\|result\.md\)$" || true) ]] \
     || die "refusing to push files outside the task contract"
   timeout 120 git -C "$REPO" push -q origin "HEAD:refs/heads/$B" 2>"$MYC_HOME/gate-push.err" \
-    || die "push rejected or failed ($(head -c 200 "$MYC_HOME/gate-push.err" | tr '\n' ' ')); nothing retried, nothing forced"
+    || die "push rejected or failed ($(head -c 200 "$MYC_HOME/gate-push.err" | tr -cd '[:print:]')); nothing retried, nothing forced"
   local c; c=$(G rev-parse HEAD)
   timeout 60 git -C "$REPO" fetch -q --no-tags origin "+refs/heads/$B:refs/remotes/origin/$B" || die "pushed $c but could not re-read the remote"
   G merge-base --is-ancestor "$c" "origin/$B" || die "pushed $c is not on the remote branch (history rewound?)"
   echo "$c"
 }
-
 event_json() { jq -n --arg at "$(now)" "$@"; }
 
 cmd_state() { lock; sync; load "$1"; echo "$1 ${STATE}${Q:+: $Q} seq=$SEQ${RUN:+ run=$RUN}${LEASE:+ lease_until=$LEASE}"; }
+cmd_grant() { lock; sync; grant_status; echo "$GRANT"; grant_ok >&2 || exit 1; }
 
 cmd_claim() {
-  local t=$1 d=$MYC_TASKS/$1 run lease refs='[]' line p o c ev
-  lock; sync; load "$t"
+  local t=$1 d=$MYC_TASKS/$1 run lease refs='[]' line p o c ev why
+  lock; sync
+  load "$t"
   [[ $STATE == pending ]] || die "$t is ${STATE}${Q:+ ($Q)}; only a pending task can be claimed (no replay)"
-  # Stage B grant: only the task ids Chris pinned (with the agent and exact descriptor blob) in a root-owned allowlist.
-  # Each can be claimed once ever (GitHub history), so the 2-call budget survives restarts and lost local state.
   [[ -r $MYC_ALLOW ]] || die "no Stage B allowlist at $MYC_ALLOW"
   grep -qxF "$t $AGENT $DESC_BLOB" "$MYC_ALLOW" || die "$t ($AGENT, descriptor ${DESC_BLOB:0:12}) is not in the Stage B allowlist"
-  # references: lines "ref: greenfield/mycelium/..." in the instructions; at most 2, each a tracked blob <= 32 KB;
-  # another task's result.md may be referenced only once that task is validly completed
+  grant_status; why=$(grant_ok) || die "$why"
+  [[ $(jq .claims <<<"$GRANT") -lt $MYC_MAX_CALLS ]] || die "Stage B call cap reached ($(jq .claims <<<"$GRANT") claims of $MYC_MAX_CALLS)"
+  load "$t"
   while IFS= read -r line; do
     [[ $line =~ ^ref:\ (greenfield/mycelium/[A-Za-z0-9._/-]+)$ ]] || continue
     p=${BASH_REMATCH[1]}; [[ $p != *..* ]] || die "bad ref $p"
     [[ $(jq length <<<"$refs") -lt 2 ]] || die "more than 2 refs"
     if [[ $p =~ ^$MYC_TASKS/(MYC-[0-9]{8}-[0-9]{3})/result\.md$ ]]; then
-      load "${BASH_REMATCH[1]}"
-      [[ $STATE == completed ]] || die "ref $p: that task is ${STATE}${Q:+ ($Q)}, not completed"
-      load "$t"
+      load "${BASH_REMATCH[1]}"; [[ $STATE == completed ]] || die "ref $p: that task is ${STATE}${Q:+ ($Q)}, not completed"; load "$t"
     fi
     o=$(blob_of "$p") || die "ref $p is not a tracked regular file"
     [[ $(G cat-file -s "$o") -le 32768 ]] || die "ref $p is larger than 32 KB"
     G cat-file -p "$o" | clean_text || die "ref $p is not plain UTF-8 text"
-    refs=$(jq -c --arg p "$p" --arg o "$o" --arg c "$(G cat-file -p "$o")" '. + [{path:$p, blob:$o, content:$c}]' <<<"$refs")
+    refs=$(jq -c --arg p "$p" --arg o "$o" '. + [{path:$p, blob:$o}]' <<<"$refs")
   done < <(G cat-file -p "HEAD:$d/task.json" | jq -r .instructions)
   run="$t-r$(date -u +%s)-$(od -An -N4 -tx1 /dev/urandom | tr -d ' \n')"; [[ $run =~ $RUN_RE ]] || die "run id"
   lease=$(date -u -d "+$MYC_LEASE_MIN min" +%Y-%m-%dT%H:%M:%SZ)
   ev=$(printf '%s/events/%04d.json' "$d" $((SEQ + 1)))
   event_json --argjson s $((SEQ + 1)) --arg a "hubsync-gate for $AGENT" --arg r "$run" --arg l "$lease" --arg db "$DESC_BLOB" --arg pe "$LAST_BLOB" \
-    '{seq:$s, status:"in_progress", at:$at, actor:$a, reason:"Stage B manual claim", run_id:$r, lease_until:$l, descriptor_blob:$db, prev_event:$pe}' > "$REPO/$ev"
+    '{seq:$s, status:"in_progress", at:$at, actor:$a, reason:"stage_b_manual_claim", run_id:$r, lease_until:$l, descriptor_blob:$db, prev_event:$pe}' > "$REPO/$ev"
   c=$(commit_push "mycelium: claim $t for $AGENT ($run)" "$ev")
-  # the claim is accepted on GitHub: only now is a job packet written for the runner
   install -d -m 2750 "$MYC_SPOOL/$run"; install -d -m 2770 "$MYC_SPOOL/$run/out"
-  jq -n --arg run "$run" --arg t "$t" --arg a "$AGENT" --arg c "$c" --arg l "$lease" --arg db "$DESC_BLOB" --argjson refs "$refs" \
-    --arg ins "$(G cat-file -p "HEAD:$d/task.json" | jq -r .instructions)" \
-    '{run_id:$run, task_id:$t, agent:$a, claim_commit:$c, lease_until:$l, descriptor_blob:$db, instructions:$ins, refs:$refs}' > "$MYC_SPOOL/$run/job.json"
-  chmod 0640 "$MYC_SPOOL/$run/job.json"
-  log "claimed $t for $AGENT in $c (lease until $lease)"
+  jq -n --arg run "$run" --arg t "$t" --arg a "$AGENT" --arg c "$c" --arg db "$DESC_BLOB" --argjson refs "$refs" \
+    '{run_id:$run, task_id:$t, agent:$a, claim_commit:$c, descriptor_blob:$db, refs:$refs}' > "$MYC_SPOOL/$run/claim.json"
+  log "claimed $t for $AGENT in $c (not yet admitted: no model call allowed until 'admit')"
   echo "$run"
 }
 
-read_out() {  # spool file max -> copies it (no symlinks, regular file, size cap) to a private temp file; prints its path
+cmd_admit() {  # the last gate before inference: everything is re-read from the remote now
+  local run=$1 cj t ag refs r p o deadline lease_e left
+  [[ $run =~ $RUN_RE ]] || die "bad run id"
+  cj=$MYC_SPOOL/$run/claim.json; [[ -f $cj && ! -L $cj ]] || die "no claim record for $run"
+  t=$(jq -r .task_id "$cj"); ag=$(jq -r .agent "$cj"); [[ $t =~ $TASK_RE && $run == "$t-"* ]] || die "claim record mismatch"
+  lock; sync
+  load "$t"
+  [[ $STATE == in_progress && $RUN == "$run" && $AGENT == "$ag" ]] \
+    || die "$t is now ${STATE}${Q:+ ($Q)}${RUN:+ (run $RUN)}; $run is not the live claim. NOT admitted, no model call"
+  lease_e=$(epoch "$LEASE"); [[ $(date -u +%s) -lt $lease_e ]] || die "lease expired; not admitted"
+  grep -qxF "$t $AGENT $DESC_BLOB" "$MYC_ALLOW" || die "descriptor no longer matches the allowlist; not admitted"
+  grant_status "$run"; local why; why=$(grant_ok) || die "$why; not admitted"
+  [[ $(jq .claims <<<"$GRANT") -le $MYC_MAX_CALLS ]] || die "Stage B call cap exceeded; not admitted"
+  # pinned references must be unchanged and (for task results) still completed
+  refs='[]'
+  while read -r r; do
+    p=$(jq -r .path <<<"$r"); o=$(jq -r .blob <<<"$r")
+    [[ $(blob_of "$p" || true) == "$o" ]] || die "reference $p changed since the claim; not admitted"
+    if [[ $p =~ ^$MYC_TASKS/(MYC-[0-9]{8}-[0-9]{3})/result\.md$ ]]; then
+      load "${BASH_REMATCH[1]}"; [[ $STATE == completed ]] || die "referenced task is no longer completed; not admitted"; load "$t"
+    fi
+    refs=$(jq -c --arg p "$p" --arg o "$o" --arg c "$(G cat-file -p "$o")" '. + [{path:$p, blob:$o, content:$c}]' <<<"$refs")
+  done < <(jq -c '.refs[]' "$cj")
+  left=$(jq .window_left_s <<<"$GRANT")
+  deadline=$(( $(date -u +%s) + left - MYC_PUBLISH_MARGIN_S )); [[ $deadline -lt $lease_e ]] || deadline=$lease_e
+  # admission happens at most once per run, atomically; a second admit (or a restart) can never re-open it
+  mkdir "$MYC_SPOOL/$run/admitted" 2>/dev/null || die "$run was already admitted once; no replay"
+  jq -n --arg run "$run" --arg t "$t" --arg a "$ag" --argjson dl "$deadline" --argjson refs "$refs" \
+    --arg ins "$(G cat-file -p "HEAD:$MYC_TASKS/$t/task.json" | jq -r .instructions)" \
+    '{run_id:$run, task_id:$t, agent:$a, deadline_epoch:$dl, instructions:$ins, refs:$refs}' > "$MYC_SPOOL/$run/job.tmp"
+  chmod 0640 "$MYC_SPOOL/$run/job.tmp"; mv "$MYC_SPOOL/$run/job.tmp" "$MYC_SPOOL/$run/job.json"
+  log "admitted $run for one $ag call; deadline $(date -u -d "@$deadline" +%H:%M:%SZ)"
+  echo "$deadline"
+}
+
+read_out() {  # spool file max -> private copy (regular file only, no symlink, size cap); prints its path
   local src=$1 max=$2 tmp
-  [[ -f $src && ! -L $src ]] || return 1                      # not a FIFO/device/dir/symlink (dd below re-checks the link)
+  [[ -f $src && ! -L $src ]] || return 1
   tmp=$(mktemp "$MYC_HOME/.gate.XXXXXX")
   timeout 10 dd if="$src" of="$tmp" iflag=nofollow,nonblock bs=65536 count=$(( max / 65536 + 2 )) status=none 2>/dev/null || { rm -f "$tmp"; return 1; }
   [[ $(stat -c %s "$tmp") -le $max ]] || { rm -f "$tmp"; return 1; }
@@ -180,45 +255,50 @@ read_out() {  # spool file max -> copies it (no symlinks, regular file, size cap
 }
 
 cmd_complete() {
-  local run=$1 t job ok reason res meta usage d n ev c sha
+  local run=$1 cj t ag ok code res meta usage d n ev c sha dl
   [[ $run =~ $RUN_RE ]] || die "bad run id"
-  job=$MYC_SPOOL/$run/job.json; [[ -f $job && ! -L $job ]] || die "no job packet for $run"
-  t=$(jq -r .task_id "$job")
+  cj=$MYC_SPOOL/$run/claim.json; [[ -f $cj && ! -L $cj ]] || die "no claim record for $run"
+  t=$(jq -r .task_id "$cj"); ag=$(jq -r .agent "$cj"); [[ $t =~ $TASK_RE && $run == "$t-"* ]] || die "claim record mismatch"
   lock; sync; load "$t"; d=$MYC_TASKS/$t
   if [[ $STATE == completed || $STATE == failed ]] && [[ $RUN == "$run" ]]; then log "$t already recorded as $STATE for $run (nothing to do)"; exit 0; fi
   [[ $STATE == in_progress && $RUN == "$run" ]] || die "$t is ${STATE}${Q:+ ($Q)} with run '${RUN}', not in_progress for $run; late result discarded"
-  ok=false; reason=""; usage=null
-  if meta=$(read_out "$MYC_SPOOL/$run/out/meta.json" 4096) && jq -e 'type == "object"' "$meta" >/dev/null 2>&1; then
-    usage=$(jq -c 'def num(f): ([f|numbers] | first) // null;
-                   {agent: ((.agent // "")|tostring|.[0:16]), model: ((.model // "")|tostring|.[0:48]), seconds: num(.seconds),
-                    input_tokens: num(.usage.input_tokens?), cached_input_tokens: num(.usage.cached_input_tokens?),
-                    output_tokens: num(.usage.output_tokens?), api_equivalent_usd_not_billed: num(.api_equivalent_usd),
-                    cli_version: ((.cli_version // "")|tostring|.[0:48])}' "$meta" 2>/dev/null) || usage=null
+  ok=false; code=""; usage=null
+  # public receipts carry fixed codes only; the runner's free-text error stays in its private log
+  if meta=$(read_out "$MYC_SPOOL/$run/out/meta.json" 4096) && jq -e 'type == "object"' "$meta" >/dev/null 2>&1 \
+     && [[ $(jq -n --stream "$DUP_JQ" < "$meta" 2>/dev/null) == false ]]; then
+    usage=$(jq -c --arg ag "$ag" 'def num(f): ([f|numbers|select(. >= 0 and . < 1e9)] | first) // null;
+        def tok(f; re): ([f|strings|select(test(re))] | first) // null;
+        {agent: $ag, model: tok(.model; "^[A-Za-z0-9.,:_ -]{1,48}$"), cli_version: tok(.cli_version; "^[A-Za-z0-9 ().,_-]{1,48}$"),
+         seconds: num(.seconds), input_tokens: num(.usage.input_tokens?), cached_input_tokens: num(.usage.cached_input_tokens?),
+         output_tokens: num(.usage.output_tokens?), api_equivalent_usd_not_billed: num(.api_equivalent_usd)}' "$meta" 2>/dev/null) || usage=null
     [[ -n $usage ]] || usage=null
-    [[ $(jq -r .ok "$meta") == true ]] && ok=true || reason="runner reported failure: $(jq -r '.error // "unknown"' "$meta" | tr -cd '[:print:]' | cut -c1-200)"
+    # free-text fields that look like a credential are dropped, never published
+    if LC_ALL=C grep -qaE -- "$SECRET_RE" <<<"$usage"; then usage=$(jq -c '.model = null | .cli_version = null' <<<"$usage"); fi
+    if [[ $(jq -r .ok "$meta") == true && $(jq -r '.agent // ""' "$meta") == "$ag" ]]; then ok=true; else code=runner_failed; fi
     rm -f "$meta"
-  else
-    reason="no runner metadata: model call outcome UNCERTAIN"
+  elif [[ -e $MYC_SPOOL/$run/out/started ]]; then code=outcome_uncertain
+  elif [[ -e $MYC_SPOOL/$run/admitted ]]; then code=outcome_uncertain
+  else code=not_admitted_no_call
   fi
-  if [[ $(date -u +%s) -gt $(epoch "$LEASE") ]]; then ok=false; reason="lease expired before the result was recorded (late result discarded)"; fi
+  [[ -f $MYC_SPOOL/$run/job.json ]] && dl=$(jq -r .deadline_epoch "$MYC_SPOOL/$run/job.json") || dl=$(epoch "$LEASE")
+  if [[ $(date -u +%s) -gt $(epoch "$LEASE") ]]; then ok=false; code=lease_expired
+  elif [[ $(date -u +%s) -gt $(( dl + MYC_PUBLISH_MARGIN_S )) ]]; then ok=false; code=deadline_passed; fi
   if $ok; then
     if res=$(read_out "$MYC_SPOOL/$run/out/result.md" 16384) && [[ -s $res ]] && clean_text < "$res" && ! LC_ALL=C grep -qaE -- "$SECRET_RE" "$res"; then
       cp "$res" "$REPO/$d/result.md"; sha=$(sha256sum "$res" | cut -c1-64); rm -f "$res"
     else
-      [[ -n ${res:-} ]] && rm -f "$res"; ok=false; reason="result.md missing, too large, not plain UTF-8, or looks like it contains a credential"
+      [[ -n ${res:-} ]] && rm -f "$res"; ok=false; code=result_rejected
     fi
   fi
   n=$((SEQ + 1)); ev=$(printf '%s/events/%04d.json' "$d" $n)
   if $ok; then
     event_json --argjson s $n --arg r "$run" --arg pe "$LAST_BLOB" --arg h "$sha" --argjson u "$usage" \
-      '{seq:$s, status:"completed", at:$at, actor:"hubsync-gate", reason:"result accepted", run_id:$r, prev_event:$pe, output_sha256:$h, usage:$u}' > "$REPO/$ev"
-    c=$(commit_push "mycelium: $t completed ($run)" "$ev" "$d/result.md")
-    log "$t COMPLETED in $c; result sha256 $sha"
+      '{seq:$s, status:"completed", at:$at, actor:"hubsync-gate", reason:"result_accepted", run_id:$r, prev_event:$pe, output_sha256:$h, usage:$u}' > "$REPO/$ev"
+    c=$(commit_push "mycelium: $t completed ($run)" "$ev" "$d/result.md"); log "$t COMPLETED in $c; result sha256 $sha"
   else
-    event_json --argjson s $n --arg r "$run" --arg pe "$LAST_BLOB" --arg why "$reason" --argjson u "$usage" \
+    event_json --argjson s $n --arg r "$run" --arg pe "$LAST_BLOB" --arg why "$code" --argjson u "$usage" \
       '{seq:$s, status:"failed", at:$at, actor:"hubsync-gate", reason:$why, run_id:$r, prev_event:$pe, usage:$u}' > "$REPO/$ev"
-    c=$(commit_push "mycelium: $t failed ($run)" "$ev")
-    log "$t FAILED in $c: $reason"
+    c=$(commit_push "mycelium: $t failed: $code ($run)" "$ev"); log "$t FAILED ($code) in $c"
   fi
   echo "$c"
 }
@@ -230,14 +310,16 @@ cmd_expire() {
   [[ $(date -u +%s) -gt $(epoch "$LEASE") ]] || die "lease for $RUN runs until $LEASE; not expired"
   ev=$(printf '%s/events/%04d.json' "$d" $((SEQ + 1)))
   event_json --argjson s $((SEQ + 1)) --arg r "$RUN" --arg pe "$LAST_BLOB" \
-    '{seq:$s, status:"failed", at:$at, actor:"hubsync-gate", reason:"lease expired; model call outcome UNCERTAIN; held for Chris", run_id:$r, prev_event:$pe}' > "$REPO/$ev"
-  c=$(commit_push "mycelium: $t lease expired ($RUN)" "$ev"); log "$t marked failed (lease expired) in $c"; echo "$c"
+    '{seq:$s, status:"failed", at:$at, actor:"hubsync-gate", reason:"outcome_uncertain", run_id:$r, prev_event:$pe}' > "$REPO/$ev"
+  c=$(commit_push "mycelium: $t lease expired ($RUN)" "$ev"); log "$t marked failed (outcome_uncertain) in $c"; echo "$c"
 }
 
 case "${1:-}" in
   state)    cmd_state "${2:?task_id}" ;;
+  grant)    cmd_grant ;;
   claim)    cmd_claim "${2:?task_id}" ;;
+  admit)    cmd_admit "${2:?run_id}" ;;
   complete) cmd_complete "${2:?run_id}" ;;
   expire)   cmd_expire "${2:?task_id}" ;;
-  *) echo "usage: myc-gate state|claim|expire <task_id> | complete <run_id>" >&2; exit 2 ;;
+  *) echo "usage: myc-gate state|claim|expire <task_id> | admit|complete <run_id> | grant" >&2; exit 2 ;;
 esac
