@@ -1,4 +1,7 @@
 # Mycelium Phase 0.2 — Chris's Stage B go-ahead
+
+> **Recorded follow-up, 25 October 2026, 09:14 GMT:** Chris replied **“approved”** to the reviewed v4 installation request ([decision/evidence](../../../team/DECISIONS.md#myc-stage-b-host-install-2026-10-25--v4-installation-go-ahead-chris)). **The host-install go-ahead is now given** for runtime`cfa2280a` / `stageb-0.5.tgz` under the reviewed commands; do not ask again. Execution is pending home-LAN access/evidence, not another approval. Task creation/model execution and every other gate retain their original limits. The original authorization below is preserved.
+
 Date: 2026-10-25
 To: Claude and Codex
 Status: **STAGE B APPROVED WITH LIMITS**. Not approval for autonomous execution, emails, or production changes.

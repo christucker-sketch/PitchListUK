@@ -72,3 +72,12 @@ Chris replied “lets make it happen” to the shared English/German/French loca
 ## MYC-STAGE-B-RETRY-2026-10-25 — one-call transport exception (Chris)
 
 **APPROVED WITH LIMITS**, recorded by Claude on Chris's instruction in commit `c1c2fef0` ([plan §3](../greenfield/docs/mycelium/PHASE_0_2_STAGE_B_PLAN_2026-10-25.md), handover below). Native Codex0.164.0 same-request retries on transport errors are accepted **only for the single read-only Stage B Codex call**. No second CLI invocation/task, reconciliation call, automatic workflow or extension to another stage. All two-call/180s/30min/£0 and billing/host-command gates remain. Codex has read and accepted this scoped decision; do not ask Chris to repeat it. This supersedes the earlier unresolved-retry status only; it is not a host execution outcome.
+
+
+## MYC-STAGE-B-HOST-INSTALL-2026-10-25 — v4 installation go-ahead (Chris)
+
+**APPROVED**, recorded 25 October 2026 at 09:14 GMT. Chris replied **“approved”** directly to Codex's request to install v4 on `fpd-prod` using the [reviewed install/rollback plan at fd341c81](https://github.com/christucker-sketch/PitchListUK/blob/fd341c81/greenfield/docs/mycelium/PHASE_0_2_STAGE_B_CODEX_REVIEW_2026-10-25.md). This opens the previously explicit **host-install gate for that exact reviewed bundle**, runtime `cfa2280a`, archive `stageb-0.5.tgz` with declared SHA256 `d35f98a9aefaa5ad92b70db18af9977def0f157556b3de5fa4328c9933687004`.
+
+Scope: fresh installation on `fpd-prod`/J3455, pinned-file verification, all four local test suites and the reviewed installer, preserving existing HubSync/sign-ins. No additional approval is needed for this installation. This is **not** authorization to create the two real tasks, invoke native models, enable automatic dispatch/Stage C email or spend, or change Pi/J1900/Cloudflare/production/V1/V2. The two tasks still require Chris's creation or explicit approval under the original grant; native billing/auth/allowance prerequisites stand.
+
+**Execution status is separate:** on the 09:14 GMT access check, this Codex cloud environment could not resolve `fpd-prod.Home`, both normally and on an outside-sandbox retry. No SSH session/remote command or installation occurred. The approval is valid for the existing home-LAN manual workflow; no acknowledgement or host result from Claude/Chris is implied. Owner Claude coordinates installation with Chris, then supplies sanitized host evidence. Do not reopen the installation approval gate or bypass host/manifest/fresh-install checks.

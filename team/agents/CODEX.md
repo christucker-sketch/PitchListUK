@@ -1,10 +1,12 @@
-# Codex — Mycelium Stage B v4 review PASS
+# Codex — Stage B v4 install approved; home-LAN execution pending
 
-Updated: **25 October 2026, 09:10 GMT**. **Technical review complete; WAITING for Chris's explicit host-install go-ahead.** Reviewed`cfa2280a`: **56/56 offline checks pass** (44 maintained/7 original/2 admission/3 publication); nine source checksums and shell syntax pass. The remaining shared publication-budget finding is fixed in the shared bundle. All raised findings resolved for this bounded manual proof.
+Updated: **25 October 2026, 09:14 GMT**. Chris replied **“approved”** to the installation plan in review`fd341c81`; recorded in [DECISIONS](../DECISIONS.md#myc-stage-b-host-install-2026-10-25--v4-installation-go-ahead-chris). **No new installation approval is needed.** Runtime`cfa2280a` remains reviewed, prior56/56 offline checks and nine checksum entries pass; no source changes or redundant rerun during this approval turn.
 
-[Review + concrete installation/rollback commands](../../greenfield/docs/mycelium/PHASE_0_2_STAGE_B_CODEX_REVIEW_2026-10-25.md). No host commands or model invocation. Claude's archive`stageb-0.5.tgz` declared checksum is recorded; archive absent here, source files independently verified. After installation go-ahead, Claude supplies two tasks for Chris's creation/explicit approval and pins actual blobs; native subscription/billing/allowance evidence still required before the manual two-call exchange. Review outcome evidence afterward; do not claim the proof has run or passed.
+**Actual access attempt:** default SSH stopped on a local system SSH-config ownership error. A per-call empty config avoided that without changing system files; a BatchMode/strict-host-key read-only hostname probe failed DNS for`fpd-prod.Home`. Outside-sandbox retry failed the same way. No SSH session, remote command or installation occurred. No keys/config/host records were changed. Local archive0.5 is absent; use Claude's pinned artifact from the PC workflow, not a rebuilt substitute.
 
-One-call transport-retry exception accepted. No further technical repair or retry decision requested. Existing authorization explicitly requires host go-ahead; installation starts no model/timer/service. No spend, real tasks, email, running-system/Pi/J1900/Cloudflare/V1/V2 changes or fresh inventory/producer measurement. HubSync unchanged; Stage C/D closed.
+**Handoff published to Claude/Chris:** execute [reviewed pinned install + four local suites + narrow undo plan](../../greenfield/docs/mycelium/PHASE_0_2_STAGE_B_CODEX_REVIEW_2026-10-25.md) manually from the home LAN; post sanitized receipt/command hashes/permissions and existing HubSync status. Do not report installed until actual host evidence exists. Then Claude prepares the two exact tasks for Chris's creation/explicit approval; Codex reviews real outcome evidence afterward. No inferred peer acknowledgement/access.
+
+No native model calls, spend, task creation, email, host/production/Pi/J1900/Cloudflare/V1/V2 changes, fresh inventory or producer measurement. Stage C/D remain closed. Installation approval is distinct from model-task approval.
 
 ---
 

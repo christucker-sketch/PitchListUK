@@ -1,4 +1,6 @@
-# Stage B independent review — v4 passes; explicit host go-ahead pending
+# Stage B independent review — v4 passes; installation approved, host execution pending
+
+**Approval update, 25 October 2026, 09:14 GMT:** Chris replied **“approved”** to installation of this v4 plan ([record](../../../team/DECISIONS.md#myc-stage-b-host-install-2026-10-25--v4-installation-go-ahead-chris)). **No further installation approval is needed.** The Codex cloud cannot resolve the home-LAN hostname`fpd-prod.Home`, including on an outside-sandbox retry; no SSH command reached the host. Claude/Chris should use the existing manual PC/home-LAN workflow below and return sanitized installer evidence. Installation remains **unexecuted by Codex/unverified on host**. This update does not authorize the two real tasks/model calls or reopen other stages.
 
 **Codex, 25 October 2026, 09:10 GMT. Reviewed runtime `cfa2280a997421a5cd76eede10c2ba276fb6201e`. Technical review PASS for the bounded manual Stage B proof only. Nothing installed or invoked on the host.**
 
@@ -25,7 +27,7 @@ Chris's single-call same-request Codex transport-retry exception remains accepte
 
 ## Concrete installation approval scope
 
-The reviewed [v4 host plan](PHASE_0_2_STAGE_B_PLAN_2026-10-25.md#5-exact-host-commands-only-after-codexs-re-review-and-chriss-go-ahead-the-3-decision-is-made-a) is ready for **Chris's installation go-ahead**. This means a fresh manual install on **fpd-prod (J3455) only**, with the nine pinned files, three root-owned commands, the new spool/state/allowlist directories and `mycspool` group memberships. It starts no model, timer or service and leaves the existing five-minute HubSync script/unit/key unchanged. Existing managed state causes refusal, not replacement. On a partial-install failure, stop and inspect; do not improvise cleanup.
+The reviewed [v4 host plan](PHASE_0_2_STAGE_B_PLAN_2026-10-25.md#5-exact-host-commands-only-after-codexs-re-review-and-chriss-go-ahead-the-3-decision-is-made-a) has **Chris's installation go-ahead**; execution/evidence remain pending from the home network. This means a fresh manual install on **fpd-prod (J3455) only**, with the nine pinned files, three root-owned commands, the new spool/state/allowlist directories and `mycspool` group memberships. It starts no model, timer or service and leaves the existing five-minute HubSync script/unit/key unchanged. Existing managed state causes refusal, not replacement. On a partial-install failure, stop and inspect; do not improvise cleanup.
 
 Declared Claude archive: **`stageb-0.5.tgz`**, SHA256 **`d35f98a9aefaa5ad92b70db18af9977def0f157556b3de5fa4328c9933687004`**. The archive itself is absent from this Codex workspace: individual source files are independently verified, while archive identity must be verified on transfer. Do not substitute an older archive or bypass checksum checks.
 
@@ -62,7 +64,7 @@ That command requires the install receipt and refuses during a Stage B run. It r
 
 ## Remaining manual proof steps and gates
 
-1. Chris gives explicit go-ahead for the reviewed host installation. No host command has yet been run by Codex.
+1. **APPROVAL GIVEN:** Chris approved this installation after review `fd341c81`. Claude/Chris executes from the home-LAN workflow; this cloud cannot resolve the host. No remote command/install has been run by Codex.
 2. Claude prepares the two task files described verbatim in [plan §4](PHASE_0_2_STAGE_B_PLAN_2026-10-25.md#4-the-two-tasks-chris-creates-or-authorises-them-not-on-the-hub-yet). **Chris creates them or explicitly reviews/authorizes their creation.** No active task descriptors or allowlist hashes were fabricated by this review; the plan's placeholders must be replaced with the exact approved, pushed descriptor blobs before execution.
 3. With native billing/auth/allowance checks recorded, manually run the one Codex review and then the one Claude review of its GitHub result. Maximum two invocations total, 180s each, 30-minute grant, £0 incremental; on failure/uncertainty stop, do not advance. The scoped Codex transport exception is the only accepted retry exception.
 4. Publish the real task/event/result hashes, outcomes, call usage/timing, sanitized before/after allowance evidence and limitations. Failed/uncertain publication is a held outcome, not a passed proof. Do not retry/reconcile through another model invocation.

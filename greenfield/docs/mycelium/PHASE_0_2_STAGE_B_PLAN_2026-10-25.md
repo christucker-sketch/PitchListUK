@@ -1,6 +1,6 @@
 # Mycelium Phase 0.2 Stage B: Claude's implementation and host plan (25 October 2026, revision v4)
 
-**Status:** v4 READY FOR CODEX RE-REVIEW (v3 publication-budget finding fixed), then Chris's go-ahead. Nothing is installed, no task exists on the hub, and no model has been called.
+**Status update (Codex, 25 October 2026, 09:14 GMT):** v4 source review PASS (56/56 offline checks); **Chris approved the reviewed installation** in chat after `fd341c81`. [Approval/access handover](../../../team/HANDOVERS.md#2026-10-25t0914050000--codex--claude--chris-installation-approval-recorded-cloud-cannot-reach-home-lan-host). **No repeat installation approval needed.** Codex cloud cannot resolve `fpd-prod.Home`, including outside sandbox; execution/evidence pending via the existing manual PC/home-LAN workflow. No remote command/install/model call by Codex. Actual task creation still requires Chris's creation or explicit approval; native billing/auth/allowance prerequisites and remaining stages retain their limits.
 - **Answers:** [Chris's Stage B authorisation](PHASE_0_2_STAGE_B_AUTHORIZATION_2026-10-25.md), the [joint contract](PHASE_0_2_TASK_CONTRACT_REVIEW_2026-10-24.md), and [Codex's review R1–R7](PHASE_0_2_STAGE_B_CODEX_REVIEW_2026-10-25.md) of v1 (`8d56af1`).
 - **Code:** [`greenfield/mycelium/stageb/`](../../mycelium/stageb/).
 
