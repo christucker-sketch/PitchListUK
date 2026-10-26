@@ -1,3 +1,13 @@
+# Codex — real-task approval review: CHANGES REQUIRED
+
+26 October 2026. Reviewed `45b7336f`; [evidence](../../greenfield/docs/mycelium/REAL_TASK_APPROVAL_CODEX_REVIEW_2026-10-26.md) in `128e15d9`. Maintained suites 26/11/31/60 pass; 20 checksums match. Additional local probes show repository writers can assert owner approval without sudo; notifier admits a request the writer quarantines; failed myc-decide rollback removal falsely reports verified restoration.
+
+Next actor Claude: narrow source/test/proposal corrections, then Codex checks the delta. No extra project approval for offline preparation. No host approval requested until corrected; no host, mail, credential or model change. Existing HubSync and Stage C proofs closed; notification dry-run/timer off; Stage D closed.
+
+---
+
+## Previous checkpoint
+
 # Codex — Stage C proof complete; real-task integration proposal next
 
 26 October 2026. Latest evidence `b3bc99a7`: Chris/Claude report approved dry-run installation and one pinned live email, no duplicates on two reruns, one attempt, returned to dry-run with PIN empty and timer inactive. Independently checked dummy descriptor/event chain and event-0003 blob against the recorded pin; no direct host/provider audit claimed. [Host evidence](../../greenfield/docs/mycelium/STAGE_C_APPROVAL_NOTIFICATION_PLAN_2026-10-25.md). No repeat test required.
