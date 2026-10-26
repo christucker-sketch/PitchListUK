@@ -1,0 +1,7 @@
+{
+  "seq": 4,
+  "status": "cancelled",
+  "at": "2026-10-26T09:10:00Z",
+  "actor": "chris",
+  "reason": "Stage C live test complete (one notice accepted); dummy closed under the approved test scope"
+}

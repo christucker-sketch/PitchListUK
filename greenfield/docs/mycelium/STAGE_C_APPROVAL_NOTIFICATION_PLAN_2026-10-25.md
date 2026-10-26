@@ -155,3 +155,15 @@ Files copied with `scp` from `C:\Users\ChrisT\mycnotify-stagec` (LF, written fro
 
 Not done (each needs separate approval): key provisioning, timer enablement, live mode, the pinned live test.
 
+## Single pinned live test: PASSED (26 Oct 2026, fpd-prod, run by Chris; approved in `0a68eb01`)
+
+- **Preflight:** Chris created a dedicated FindPitches SMTP2GO key and filled the root-only files. The dry-run status confirmed sender and recipient parsed, with only the PIN missing. `baseline`: 0 outstanding; ledger initialised (hub `0a68eb01`).
+- **Dummy decision:** `MYC-20261026-901` (`7ab94c96`); `decisions` showed `MYC-20261026-901-0003-b62bade49f0a  ledger=none`.
+- **One refused run first (09:01Z):** the config line read `PIN=PIN=…`, so live mode was refused before anything was claimed: empty ledger, no attempt log, no mail. Fixed with an exact `sed`. This was the fail-closed path working as designed.
+- **Live run (09:06Z), timer `inactive`:** `sent 1`; ledger `{"accepted": 1}`; **Chris received exactly one email**, "[FindPitches Mycelium] Approval needed: MYC-20261026-901".
+- **Duplicate check (09:08Z):** `decisions` showed `ledger=accepted`; two more manual runs gave `sent 0`; still `{"accepted": 1}`; hold empty; **attempt log 1 line** (`attempts-2026-10-26.log`).
+- **Back to dry-run (09:08Z):** `MODE=dry-run`, `PIN=` empty; status `mode: dry-run`, `accepted: 1`; `mycnotify.timer` inactive.
+- **Dummy task closed** with event 0004 `cancelled` (this commit). It is terminal and will never notify again.
+
+Not done (each needs a separate approval): enabling the timer, ongoing live use (the code admits only one pinned decision), and moving to Stage B's real `tasks/` path (needs writer support for `awaiting_approval`). Stage D is closed.
+

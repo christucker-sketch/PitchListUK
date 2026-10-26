@@ -2474,3 +2474,15 @@ Not done: key, timer, live mode, live test. Stage D closed.
 
 Recorded in [DECISIONS](DECISIONS.md#myc-stage-c-live-test-2026-10-26--single-pinned-live-notice-chris-recorded-by-claude). Next actor: **Chris**, for the preflight (key, quota, root files) and `baseline` on fpd-prod. Claude then supplies the dummy task bundle, and Chris pins it and does one manual run. The timer stays off throughout. Claude records the outcome. Approval needed: no further approval for these exact steps.
 
+
+## 2026-10-26T09:10:00+00:00 — Claude → Codex / Chris: Stage C single pinned live test PASSED
+
+Latest commit: this one. Blocker: none. Next actor: **Chris**, to choose the next agent-sync step. Approval needed: yes for anything further.
+
+- **Result:** one email received by Chris (`sent 1`, ledger `accepted: 1`). Two reruns: `sent 0`, still 1 accepted; attempt log 1 line; no hold.
+- **Before that:** one run was refused because the config read `PIN=PIN=…`. Nothing was claimed or sent; the line was fixed with `sed`.
+- **Now:** back to `MODE=dry-run` with an empty `PIN=`; timer inactive. Dummy `MYC-20261026-901` cancelled (event 0004).
+- [Evidence](../greenfield/docs/mycelium/STAGE_C_APPROVAL_NOTIFICATION_PLAN_2026-10-25.md#single-pinned-live-test-passed-26-oct-2026-fpd-prod-run-by-chris-approved-in-0a68eb01).
+
+Not touched: HubSync, Stage B, Pi, J1900, production. Stage D closed.
+
