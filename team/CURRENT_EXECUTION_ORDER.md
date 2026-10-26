@@ -1,6 +1,6 @@
 # CURRENT EXECUTION ORDER — Agent sync
 
-Updated **25 October 2026, 18:48 GMT**. Authority: Chris's [owner reset directive](../greenfield/docs/mycelium/OWNER_DIRECTIVE_AGENT_RESET_2026-10-25.md), published in `1d7708f3`, and his standing permission for routine hub/source/test work. This is the single live queue; older briefs and historical task headers are reference material.
+Updated **26 October 2026**. Authority: Chris's [owner reset directive](../greenfield/docs/mycelium/OWNER_DIRECTIVE_AGENT_RESET_2026-10-25.md), published in `1d7708f3`, and his standing permission for routine hub/source/test work. This is the single live queue; older briefs and historical task headers are reference material.
 
 ## Active objective
 
@@ -8,19 +8,20 @@ Build reliable **agent synchronisation through the shared GitHub hub**: one curr
 
 The bounded manual Codex→GitHub→Claude exchange is already functionally verified. That is a completed proof, not the whole agent-sync system and not permission for an unattended loop. Chris reports unchanged before/after usage; record it as his observation, not a provider billing audit. No further Stage B CLI call is authorized.
 
-## One live queue — current status (25 Oct 2026, 18:48 GMT)
+## One live queue — 26 October 2026
 
-**HubSync rev 3 CLOSED/INSTALLED**, per Claude's recorded host evidence [commit 0a598421](https://github.com/christucker-sketch/PitchListUK/commit/0a598421745d). Codex rev 3 review PASS; Chris approved the exact check/install and ran it on `fpd-prod`. Poll success, backlog 0, timer active. Do not review, retest or reinstall without a new reason and approval.
+**HubSync rev 3 installed/closed. Stage C pinned notification proof complete**, per [host evidence](../greenfield/docs/mycelium/STAGE_C_APPROVAL_NOTIFICATION_PLAN_2026-10-25.md#single-pinned-live-test-passed-26-oct-2026-fpd-prod-run-by-chris-approved-in-0a68eb01) in `b3bc99a7`. Chris separately approved the live test in his Claude session (recorded in `0a68eb01`). Recorded outcome: one received email, two reruns with no send, one attempt log entry, empty hold; returned to dry-run, PIN empty, notification timer inactive. Dummy `MYC-20261026-901` cancelled. Codex checked the durable task/event evidence and recorded host report through GitHub; no direct host or provider audit is claimed. No repeat proof or email is needed.
 
 | State | Owner | Work | Exact next outcome |
 |---|---|---|---|
-| **ACTIVE — PLAN ONLY** | **Claude** | [Stage C approval notification](../greenfield/docs/mycelium/STAGE_C_APPROVAL_NOTIFICATION_HANDOFF_2026-10-25.md) | One concise FindPitches-only SMTP2GO approval-notice design, idempotency/dry-run, scoped credential/service boundaries and rollback. No live email or host changes. |
-| NEXT — one review | Codex | Stage C plan | Single PASS/FAIL on the plan and offline verification approach; report concrete blocker only. |
-| **COMPLETE / INSTALLED** | Claude / Codex / Chris | HubSync rev 3 migration/safety | Reviewed and installed 25 Oct; leave running. |
-| FUNCTIONAL PROOF COMPLETE | Codex / Claude | Stage B tasks 001/003 | One bounded manual exchange verified. No replay or additional model calls authorised. |
-| SOURCE REVIEW PASS, UNDEPLOYED | Claude / Codex | v5.1 terminal-input fix | Keep parked pending separately approved release. |
-| CLOSED | Both | Stage D autonomous AI dispatch | Not authorised. |
-| DEFERRED | Respective owners | UK producer growth, DHCP, Pi/J1900 changes, unrelated infra | Existing deployed services continue; no new work without Chris reprioritising. |
+| **ACTIVE — SOURCE/PLAN ONLY** | **Claude** | Connect real approval tasks to the existing notification path | One narrow proposed change to the existing task writer/validator and notifier contract so a real task can enter awaiting_approval and later record an explicit owner decision. Show permitted transitions, changed files, offline tests and exact later host commands. Preserve notification pinning/deduplication and require separate authority to resume any execution. No new framework, model call, deployment, credential change, timer enablement or live email. |
+| NEXT — bounded review | Codex | Review real-task integration proposal | Check task-state compatibility, explicit approval identity/provenance, retry/idempotency and no automatic execution. Publish one result and the concrete next owner decision. |
+| **COMPLETE — SAFE IDLE** | Claude / Codex / Chris | Stage C dry-run install + one pinned live notice | Source `f7b18376` reviewed 30/30 offline; installed; one live proof recorded. Leave MODE=dry-run, PIN empty, timer off. No ongoing live use authorized. |
+| **COMPLETE / INSTALLED** | Claude / Codex / Chris | HubSync rev 3 | Leave working watcher running. |
+| FUNCTIONAL PROOF COMPLETE | Codex / Claude | Stage B tasks 001/003 | No replay or additional model calls. |
+| SOURCE REVIEW PASS, UNDEPLOYED | Claude / Codex | v5.1 terminal-input fix | Parked pending separately approved release. |
+| CLOSED | Both | Stage D autonomous AI dispatch | Not authorized. |
+| DEFERRED | Respective owners | UK producer growth, Pi/J1900, DHCP and unrelated infrastructure | Existing deployed services continue; no new work in these lanes. |
 
 ## Working rules for this phase
 
@@ -33,4 +34,4 @@ The bounded manual Codex→GitHub→Claude exchange is already functionally veri
 - Preserve original task/source evidence and identity. V2/PitchList and existing approved FindPitches customer service remain protected. No production cutover/publication changes, infrastructure deletion, paid acquisition or protected-branch merge.
 - Latest93941d00 is already on GitHub. Do not repeat stale PC cleanup/push instructions for that commit. Windows local line-ending claims have not been verified by Codex.
 
-**Next deliverable:** one bounded Stage C plan from Claude and one Codex review, then stop for Chris's decision. No live send, new host service or automatic AI dispatch authorised. Commercial metrics below older dates are not a current acquisition assignment.
+**Next deliverable:** Claude's narrow real-task approval integration proposal and Codex's bounded review. Routine source/planning/offline work continues under the agent-sync scope; exact host/live-send changes and any execution remain separately gated. No additional email or model proof.
