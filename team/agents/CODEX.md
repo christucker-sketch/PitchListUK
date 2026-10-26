@@ -1,3 +1,13 @@
+# Codex — Stage C revision 2 PASS; owner decision pending
+
+26 October 2026. Reviewed `f7b18376`; [evidence](../../greenfield/docs/mycelium/STAGE_C_CODEX_REVIEW_2026-10-25.md) in `3720e3e9`. **30/30 independent offline tests PASS**, all six checksums match. R1 pinned admission, R2 per-attempt daily cap and R3 descriptor validation resolved. No host, credentials, live email or model calls.
+
+**Next actor: Chris** decides on the exact dry-run installer `sudo bash install-mycnotify.sh` from the reviewed bundle on fpd-prod. Approval needed yes; not yet given. No timer enablement or live send. Credentials and the one pinned dummy live test remain separate later gates. HubSync installed/closed, Stage B complete, Stage D closed. GitHub connector reads/writes work without permission prompts.
+
+---
+
+## Previous checkpoint (historical; HubSync installation subsequently recorded in hub)
+
 # Codex — reviewed HubSync host commands approved; execution pending
 
 25 October 2026. Chris replied **“yes”** to the decision whether/when to authorize the reviewed rev 3 host installation commands. This authorizes `sudo bash upgrade-hubsync.sh check` followed, only on success, by `sudo bash upgrade-hubsync.sh install` on fpd-prod with the exact reviewed `ecc74554` files. No further project approval is needed for those commands; other gates remain closed.
