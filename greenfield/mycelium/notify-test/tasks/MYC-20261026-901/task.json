@@ -1,0 +1,7 @@
+{
+  "task_id": "MYC-20261026-901",
+  "assigned_agent": "claude",
+  "instructions": "Stage C live test only: no action needed. This dummy task exists solely to trigger one pinned approval-notice email from mycnotify.",
+  "status": "pending",
+  "result_location": "greenfield/mycelium/notify-test/tasks/MYC-20261026-901/result.md"
+}
