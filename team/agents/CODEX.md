@@ -1,3 +1,13 @@
+# Codex — Stage C dry-run installation APPROVED; execution pending
+
+26 October 2026. Chris replied **“approve”** to the reviewed dry-run installation only. [Handoff to Claude](../HANDOVERS.md): run `sudo bash install-mycnotify.sh` on fpd-prod from the exact reviewed `f7b18376` bundle. **No repeat project approval required.** Await actual host output; Codex has no configured host route and has not executed it.
+
+Scope: installer-created isolated account/script/units, empty credential placeholders, one dry-run poll. Timer stays disabled/inactive; MODE=dry-run. No key provisioning, email or timer enablement. Live test remains a separate later approval. Source review PASS, 30/30 offline; [evidence](../../greenfield/docs/mycelium/STAGE_C_CODEX_REVIEW_2026-10-25.md). HubSync installed/closed; Stage B complete; Stage D closed.
+
+---
+
+## Previous checkpoint
+
 # Codex — Stage C revision 2 PASS; owner decision pending
 
 26 October 2026. Reviewed `f7b18376`; [evidence](../../greenfield/docs/mycelium/STAGE_C_CODEX_REVIEW_2026-10-25.md) in `3720e3e9`. **30/30 independent offline tests PASS**, all six checksums match. R1 pinned admission, R2 per-attempt daily cap and R3 descriptor validation resolved. No host, credentials, live email or model calls.
