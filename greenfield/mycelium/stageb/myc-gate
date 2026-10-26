@@ -9,10 +9,9 @@
 #                                writes the job packet. Only an admitted run may call a model.
 #   myc-gate complete <run_id>   validate output; commit result.md + completed, or a failed receipt with a fixed code
 #   myc-gate expire <task_id>    after the lease: commit failed (outcome_uncertain). Manual only.
-#   myc-gate decide <key> approve|reject [note]
-#                                record Chris's decision on a task that is awaiting_approval. Reachable only through
-#                                `sudo myc-decide` on fpd-prod (which sets MYC_DECIDED_VIA). Records the decision; it
-#                                never claims, admits, resumes or authorises any agent work.
+#   myc-gate decide <key>        publish Chris's decision on a task that is awaiting_approval, exactly as stated in
+#                                the root-owned owner record that `sudo myc-decide` wrote on fpd-prod (no record, no
+#                                decision). Records only; never claims, admits, resumes or authorises agent work.
 # Decision requests (26 Oct): a run whose runner leaves out/decision.md (and no result.md) ends in awaiting_approval
 # with that bounded summary, instead of completed. approved/rejected are resting states: an approved task is NOT
 # claimable (claim needs pending); resuming work needs a separately approved change.
@@ -33,7 +32,8 @@ PUSH_T=120; FETCH_T=60; PUB_END=""          # network bounds; PUB_END (absolute)
 : "${MYC_NAME:=hubsync}"
 : "${MYC_EMAIL:=hubsync@$(hostname).invalid}"
 REPO=$MYC_HOME/repo; LOCK=$MYC_HOME/lock; B=$MYC_BRANCH
-TASK_RE='^MYC-[0-9]{8}-[0-9]{3}$'; RUN_RE='^MYC-[0-9]{8}-[0-9]{3}-r[0-9]{10}-[0-9a-f]{8}$'
+: "${MYC_DECISIONS:=/var/lib/myc-decisions}"   # owner decision records (root-only writes; see myc-decide)
+FOLD_REV=HEAD FOLD_TASKS=$MYC_TASKS FOLD_DECISIONS=$MYC_DECISIONS FOLD_TEST=${MYC_TEST:-0}
 SECRET_RE='-----BEGIN [A-Z ]*PRIVATE KEY-----|ghp_[A-Za-z0-9]{20,}|gh[ousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|sk-ant-[A-Za-z0-9_-]{10,}|sk-[A-Za-z0-9_-]{32,}|xox[abprs]-[A-Za-z0-9-]{10,}|AKIA[0-9A-Z]{16}|api[_-]?key["'"'"' :=]+[A-Za-z0-9_-]{20,}'
 
 die() { echo "myc-gate: STOP: $*" >&2; exit 1; }
@@ -49,8 +49,11 @@ sync() {
   G checkout -q -B hubsync-work "origin/$B"; G reset -q --hard "origin/$B"; G clean -qfdx
 }
 
-# ---------------------------------------------------------------- strict readers (tracked regular blobs at HEAD only)
-blob_of() { local m t o; read -r m t o _ < <(G ls-tree HEAD -- "$1") || return 1
+# >>> myc-fold (shared task validator: this block is byte-identical in myc-gate and mycnotify; test-fold-parity.sh checks it)
+# Caller provides: G (git for its own clone), die, FOLD_REV (commit/ref to read), FOLD_TASKS (tasks root),
+# FOLD_DECISIONS (owner record dir). Reads tracked regular blobs at FOLD_REV only; never a work tree.
+TASK_RE='^MYC-[0-9]{8}-[0-9]{3}$'; RUN_RE='^MYC-[0-9]{8}-[0-9]{3}-r[0-9]{10}-[0-9a-f]{8}$'
+blob_of() { local m t o; read -r m t o _ < <(G ls-tree "$FOLD_REV" -- "$1") || return 1
             [[ $t == blob && ( $m == 100644 || $m == 100755 ) ]] && echo "$o"; }
 clean_text() {  # stdin -> ok if UTF-8 and no control bytes other than tab/newline/CR
   local f r; f=$(mktemp); cat > "$f"
@@ -74,16 +77,40 @@ strict_json() {  # path max_bytes -> prints compact JSON object; fails on anythi
   [[ $(jq -n --stream "$DUP_JQ" <<<"$raw" 2>/dev/null) == false ]] || return 1
   jq -c . <<<"$raw"
 }
-added_in() { G log --format=%H --diff-filter=A -- "$1" | tail -1; }
+added_in() { G log --format=%H --diff-filter=A "$FOLD_REV" -- "$1" | tail -1; }
 
 # ---------------------------------------------------------------- descriptor + history -> state
+# Owner decision records: written ONLY by `sudo myc-decide` (root) on fpd-prod, one per decision key, BEFORE the event
+# is published. Root-owned, not group/world writable, in a root-owned directory nobody else can write. Repository
+# writers (agents, or anyone pushing with Chris's GitHub access) cannot create them. FOLD_TEST relaxes only the
+# uid==0 checks, for the offline tests.
+FOLD_REASON="" FOLD_REC=""
+owner_record_get() {  # key -> sets FOLD_REC (compact JSON) or FOLD_REASON; call directly, not in $( ), to keep both
+  local k=$1 f=$FOLD_DECISIONS/$1.json st
+  FOLD_REASON="" FOLD_REC=""
+  [[ $k =~ ^MYC-[0-9]{8}-[0-9]{3}-[0-9]{4}-[0-9a-f]{12}$ ]] || { FOLD_REASON="bad key"; return 1; }
+  [[ -d $FOLD_DECISIONS && ! -L $FOLD_DECISIONS ]] || { FOLD_REASON="no owner record directory"; return 1; }
+  [[ -f $f && ! -L $f ]] || { FOLD_REASON="no owner record for $k"; return 1; }
+  for st in "$(stat -c '%u %a' "$FOLD_DECISIONS")" "$(stat -c '%u %a' "$f")"; do
+    [[ ${FOLD_TEST:-0} == 1 || ${st%% *} == 0 ]] || { FOLD_REASON="owner record not root-owned"; return 1; }
+    (( (8#${st##* } & 8#022) == 0 )) || { FOLD_REASON="owner record writable by others"; return 1; }
+  done
+  [[ $(stat -c %s "$f") -le 2048 ]] && jq -e 'type == "object"' "$f" >/dev/null 2>&1 || { FOLD_REASON="owner record is not a small JSON object"; return 1; }
+  FOLD_REC=$(jq -c . "$f")
+}
+owner_record_matches() {  # key event-json -> ok if the record exists, is trustworthy, and states exactly this decision
+  owner_record_get "$1" || return 1
+  jq -e --argjson r "$FOLD_REC" --arg k "$1" '$r.key == $k and $r.status == .status and $r.reason == .reason
+      and $r.decided_via == .decided_via and $r.prev_event == .prev_event and $r.descriptor_blob == .descriptor_blob' >/dev/null <<<"$2" \
+    || { FOLD_REASON="event differs from the owner record"; return 1; }
+}
 STATE=""; SEQ=0; RUN=""; LEASE=""; CLAIM_AT=""; AGENT=""; DESC_BLOB=""; LAST_BLOB=""; Q=""
 quarantine() { Q=$1; STATE=QUARANTINE; }
 load() {
-  local t=$1 d=$MYC_TASKS/$1 j n f e prev st want
+  local t=$1 d=$FOLD_TASKS/$1 j n f e prev st want aseq=0
   STATE=""; SEQ=0; RUN=""; LEASE=""; CLAIM_AT=""; AGENT=""; DESC_BLOB=""; LAST_BLOB=""; Q=""
   [[ $t =~ $TASK_RE ]] || die "bad task id: $t"
-  [[ -n $(G ls-tree HEAD -- "$d/task.json") ]] || { STATE=ABSENT; return; }
+  [[ -n $(G ls-tree "$FOLD_REV" -- "$d/task.json") ]] || { STATE=ABSENT; return; }
   j=$(strict_json "$d/task.json" 8192) || { quarantine "task.json is not a strict JSON object"; return; }
   jq -e --arg t "$t" --arg rl "$d/result.md" '
       keys == ["assigned_agent","instructions","result_location","status","task_id"]
@@ -94,11 +121,11 @@ load() {
   AGENT=$(jq -r .assigned_agent <<<"$j"); DESC_BLOB=$(blob_of "$d/task.json")
   while IFS= read -r f; do
     case $f in "$d/task.json"|"$d/result.md") ;; "$d"/events/[0-9][0-9][0-9][0-9].json) ;; *) quarantine "unexpected file $f"; return ;; esac
-  done < <(G ls-tree -r --name-only HEAD -- "$d/")
+  done < <(G ls-tree -r --name-only "$FOLD_REV" -- "$d/")
   n=0; prev=""; st=""
   while :; do
     f=$(printf '%s/events/%04d.json' "$d" $((n + 1)))
-    [[ -n $(G ls-tree HEAD -- "$f") ]] || break
+    [[ -n $(G ls-tree "$FOLD_REV" -- "$f") ]] || break
     n=$((n + 1))
     e=$(strict_json "$f" 4096) || { quarantine "event $n is not a strict JSON object"; return; }
     jq -e --argjson n $n '(keys - ["seq","status","at","actor","reason","run_id","lease_until","descriptor_blob","prev_event","output_sha256","usage","decided_via"]) == []
@@ -120,8 +147,8 @@ load() {
         RUN=$(jq -r .run_id <<<"$e"); LEASE=$(jq -r .lease_until <<<"$e"); CLAIM_AT=$(jq -r .at <<<"$e") ;;
       "in_progress>completed")
         jq -e --arg r "$RUN" --arg pe "$prev" '.actor == "hubsync-gate" and .run_id == $r and .prev_event == $pe and (.output_sha256|type == "string" and test("^[0-9a-f]{64}$"))' >/dev/null <<<"$e" \
-          && [[ -n $(G ls-tree HEAD -- "$d/result.md") && $(added_in "$d/result.md") == $(added_in "$f") ]] \
-          && [[ $(G cat-file -p "HEAD:$d/result.md" | sha256sum | cut -c1-64) == $(jq -r .output_sha256 <<<"$e") ]] \
+          && [[ -n $(G ls-tree "$FOLD_REV" -- "$d/result.md") && $(added_in "$d/result.md") == $(added_in "$f") ]] \
+          && [[ $(G cat-file -p "$FOLD_REV:$d/result.md" | sha256sum | cut -c1-64) == $(jq -r .output_sha256 <<<"$e") ]] \
           || { quarantine "completion event $n does not match its run or result.md"; return; } ;;
       "in_progress>failed")
         jq -e --arg r "$RUN" --arg pe "$prev" '.actor == "hubsync-gate" and .run_id == $r and .prev_event == $pe and (.reason|type == "string")' >/dev/null <<<"$e" \
@@ -129,21 +156,27 @@ load() {
       "in_progress>awaiting_approval")
         jq -e --arg r "$RUN" --arg pe "$prev" '.actor == "hubsync-gate" and .run_id == $r and .prev_event == $pe
             and (.reason|type == "string" and length > 0 and utf8bytelength <= 400 and (test("[\\n\\r\\t]")|not))' >/dev/null <<<"$e" \
-          || { quarantine "decision request event $n does not match its run or has a bad summary"; return; } ;;
+          || { quarantine "decision request event $n does not match its run or has a bad summary"; return; }
+        aseq=$n ;;
       "awaiting_approval>approved"|"awaiting_approval>rejected")
         jq -e --arg db "$DESC_BLOB" --arg pe "$prev" '.actor == "chris" and .prev_event == $pe and .descriptor_blob == $db
             and (.decided_via|type == "string" and test("^fpd-prod:sudo:[a-z_][a-z0-9_-]{0,31}$"))
             and (.reason|type == "string" and length > 0 and utf8bytelength <= 200 and (test("[\\n\\r\\t]")|not))' >/dev/null <<<"$e" \
-          || { quarantine "decision event $n is not a valid recorded decision by Chris"; return; } ;;
+          || { quarantine "decision event $n is not a valid recorded decision by Chris"; return; }
+        # the repository alone cannot prove who decided (agents can push): the event counts only if it matches the
+        # owner record that `sudo myc-decide` wrote as root on fpd-prod before publishing it
+        owner_record_matches "$t-$(printf %04d "$aseq")-${prev:0:12}" "$e" \
+          || { quarantine "decision event $n is not confirmed by an owner record on fpd-prod ($FOLD_REASON)"; return; } ;;
       *) quarantine "transition '${st:-none}' -> '$want' is not allowed in Stage B"; return ;;
     esac
     st=$want; prev=$(blob_of "$f")
   done
   [[ $n -ge 1 ]] || { quarantine "no events"; return; }
-  [[ -z $(G ls-tree HEAD -- "$d/result.md") || $st == completed ]] || { quarantine "result.md present but task not completed"; return; }
-  [[ $(G ls-tree --name-only HEAD -- "$d/events/" | wc -l) -eq $n ]] || { quarantine "gap in event numbering"; return; }
+  [[ -z $(G ls-tree "$FOLD_REV" -- "$d/result.md") || $st == completed ]] || { quarantine "result.md present but task not completed"; return; }
+  [[ $(G ls-tree --name-only "$FOLD_REV" -- "$d/events/" | wc -l) -eq $n ]] || { quarantine "gap in event numbering"; return; }
   STATE=$st; SEQ=$n; LAST_BLOB=$prev
 }
+# <<< myc-fold
 
 # ---------------------------------------------------------------- Stage B grant, from GitHub history (not local state)
 GRANT=""
@@ -212,6 +245,8 @@ cmd_state() {
   if [[ $STATE == awaiting_approval ]]; then
     echo "  decision key: $1-$(printf %04d "$SEQ")-${LAST_BLOB:0:12}"
     echo "  summary: $(G cat-file -p "$LAST_BLOB" | jq -r .reason)"
+    echo "  awaiting event: $LAST_BLOB"
+    echo "  descriptor: $DESC_BLOB"
   fi
 }
 cmd_grant() { lock; sync; grant_status; echo "$GRANT"; grant_ok >&2 || exit 1; }
@@ -384,24 +419,27 @@ cmd_expire() {
   c=$(commit_push "mycelium: $t lease expired ($RUN)" "$ev"); log "$t marked failed (outcome_uncertain) in $c"; echo "$c"
 }
 
-cmd_decide() {  # key approve|reject [note]; only via sudo myc-decide (MYC_DECIDED_VIA). Records, never executes.
-  local key=$1 act=$2 note=${3:-} t seq b12 st ev c
+cmd_decide() {  # key -> publishes exactly the decision in the root-owned owner record. Records, never executes.
+  local key=$1 t seq b12 rec ev c st
   [[ $key =~ ^(MYC-[0-9]{8}-[0-9]{3})-([0-9]{4})-([0-9a-f]{12})$ ]] || die "bad decision key: $key"
   t=${BASH_REMATCH[1]}; seq=$((10#${BASH_REMATCH[2]})); b12=${BASH_REMATCH[3]}
-  case $act in approve) st=approved ;; reject) st=rejected ;; *) die "action must be approve or reject" ;; esac
-  [[ ${MYC_DECIDED_VIA:-} =~ ^fpd-prod:sudo:[a-z_][a-z0-9_-]{0,31}$ ]] || die "decisions are recorded only through 'sudo myc-decide' on fpd-prod"
-  [[ -n $note ]] || note="$st by Chris"
-  [[ $(printf %s "$note" | wc -c) -le 200 && $note != *$'\n'* && $note != *$'\r'* && $note != *$'\t'* ]] || die "note must be one line, at most 200 bytes"
-  printf %s "$note" | clean_text || die "note must be plain UTF-8 text"
-  ! LC_ALL=C grep -qaE -- "$SECRET_RE" <<<"$note" || die "note looks like a credential; nothing recorded"
+  owner_record_get "$key" || die "no trustworthy owner record for $key ($FOLD_REASON): decisions are made only with 'sudo myc-decide' on fpd-prod"
+  rec=$FOLD_REC
+  jq -e '(.status == "approved" or .status == "rejected") and (.reason|type == "string" and length > 0 and utf8bytelength <= 200)
+      and (.decided_via|type == "string" and test("^fpd-prod:sudo:[a-z_][a-z0-9_-]{0,31}$"))' >/dev/null <<<"$rec" || die "owner record for $key is malformed"
+  ! LC_ALL=C grep -qaE -- "$SECRET_RE" <<<"$rec" || die "owner record looks like it contains a credential; nothing recorded"
   lock; sync; load "$t"
   [[ $STATE == awaiting_approval ]] || die "$t is ${STATE}${Q:+ ($Q)}; there is no outstanding decision to record"
   [[ $SEQ -eq $seq && ${LAST_BLOB:0:12} == "$b12" ]] \
     || die "$key is not the current decision for $t (current: $t-$(printf %04d "$SEQ")-${LAST_BLOB:0:12}); nothing recorded"
+  jq -e --arg pe "$LAST_BLOB" --arg db "$DESC_BLOB" '.prev_event == $pe and .descriptor_blob == $db' >/dev/null <<<"$rec" \
+    || die "owner record for $key is bound to a different event or descriptor; nothing recorded"
+  st=$(jq -r .status <<<"$rec")
   ev=$(printf '%s/events/%04d.json' "$MYC_TASKS/$t" $((SEQ + 1)))
-  event_json --argjson s $((SEQ + 1)) --arg st "$st" --arg r "$note" --arg pe "$LAST_BLOB" --arg db "$DESC_BLOB" --arg via "$MYC_DECIDED_VIA" \
-    '{seq:$s, status:$st, at:$at, actor:"chris", reason:$r, prev_event:$pe, descriptor_blob:$db, decided_via:$via}' > "$REPO/$ev"
+  event_json --argjson s $((SEQ + 1)) --argjson r "$rec" \
+    '{seq:$s, status:$r.status, at:$at, actor:"chris", reason:$r.reason, prev_event:$r.prev_event, descriptor_blob:$r.descriptor_blob, decided_via:$r.decided_via}' > "$REPO/$ev"
   c=$(commit_push "mycelium: $t $st by Chris (decision $key)" "$ev")
+  load "$t"; [[ $STATE == "$st" ]] || die "published $c but the validator reads $t as ${STATE}${Q:+ ($Q)}"
   log "$t $st in $c. This records the decision only; it does not start, resume or authorise any agent work."
   echo "$c"
 }
@@ -413,6 +451,6 @@ case "${1:-}" in
   admit)    cmd_admit "${2:?run_id}" ;;
   complete) cmd_complete "${2:?run_id}" ;;
   expire)   cmd_expire "${2:?task_id}" ;;
-  decide)   cmd_decide "${2:?decision_key}" "${3:?approve|reject}" "${4:-}" ;;
-  *) echo "usage: myc-gate state|claim|expire <task_id> | admit|complete <run_id> | grant | decide <key> approve|reject [note]" >&2; exit 2 ;;
+  decide)   cmd_decide "${2:?decision_key}" ;;
+  *) echo "usage: myc-gate state|claim|expire <task_id> | admit|complete <run_id> | grant | decide <key>" >&2; exit 2 ;;
 esac

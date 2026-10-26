@@ -2,26 +2,52 @@
 # myc-decide — record Chris's approve/reject on a Mycelium task that is awaiting approval (fpd-prod only).
 #   sudo myc-decide <decision_key> approve|reject ["one-line note"]
 # The key is the "Notice key" in the approval email, or the "decision key" line of `myc-gate state <task>`.
-# It shows the task's current state, asks you to type the task id to confirm, then records the decision on the hub
-# through the one writer (myc-gate, as hubsync). It does NOT start, resume or authorise any agent work.
-# Trust: a decision recorded this way proves someone with sudo on fpd-prod (normally Chris, via his SSH key and
-# password) ran this command in a terminal. It is not a cryptographic signature.
+# It shows the task's current state, asks you to type the task id to confirm, then (as root) writes the OWNER RECORD
+# /var/lib/myc-decisions/<key>.json and has the one writer (myc-gate, as hubsync) publish exactly that decision.
+# A decision event on GitHub counts only where it matches such a record: repository writers (agents, or anyone pushing
+# with Chris's GitHub access) cannot create root-owned files on fpd-prod. It does NOT start, resume or authorise any
+# agent work. Trust limit: anyone already root on fpd-prod could write a record; it is not a cryptographic signature.
 set -euo pipefail
+umask 022
 : "${MYC_AS_HUBSYNC:=runuser -u hubsync -- env -i HOME=/var/lib/hubsync LANG=C.UTF-8 PATH=/usr/local/bin:/usr/bin:/bin}"
 : "${MYC_GATE:=/usr/local/bin/myc-gate}"
+DIR=/var/lib/myc-decisions OWN=(-o root -g root)
 stop() { echo "myc-decide: STOP: $*" >&2; exit 1; }
-if [[ ${MYC_TEST:-0} != 1 ]]; then
+SECRET_RE='-----BEGIN [A-Z ]*PRIVATE KEY-----|ghp_[A-Za-z0-9]{20,}|gh[ousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|sk-ant-[A-Za-z0-9_-]{10,}|sk-[A-Za-z0-9_-]{32,}|xox[abprs]-[A-Za-z0-9-]{10,}|AKIA[0-9A-Z]{16}|api[_-]?key["'"'"' :=]+[A-Za-z0-9_-]{20,}'   # same patterns as myc-gate
+if [[ ${MYC_TEST:-0} == 1 ]]; then DIR=$MYC_DECISIONS OWN=()
+else
   [[ $EUID -eq 0 ]] || stop "run it as: sudo myc-decide <key> approve|reject"
   [[ $(hostname) == fpd-prod ]] || stop "fpd-prod only"
 fi
 [[ -n ${SUDO_USER:-} && $SUDO_USER != root && $SUDO_USER =~ ^[a-z_][a-z0-9_-]{0,31}$ ]] || stop "run it through sudo from your own account"
 [[ -t 0 ]] || stop "needs an interactive terminal; decisions are never scripted"
 [[ $# -ge 2 && $# -le 3 ]] || { echo "usage: sudo myc-decide <decision_key> approve|reject [\"one-line note\"]" >&2; exit 2; }
-key=$1 act=$2 note=${3:-}
+key=$1 act=$2
 [[ $key =~ ^(MYC-[0-9]{8}-[0-9]{3})-[0-9]{4}-[0-9a-f]{12}$ ]] || stop "bad decision key: $key"
 t=${BASH_REMATCH[1]}
-[[ $act == approve || $act == reject ]] || stop "action must be approve or reject"
-$MYC_AS_HUBSYNC "$MYC_GATE" state "$t" || stop "could not read $t"
+case $act in approve) st=approved ;; reject) st=rejected ;; *) stop "action must be approve or reject" ;; esac
+note=${3:-"$st by Chris"}
+[[ $(printf %s "$note" | wc -c) -le 200 && $note != *$'\n'* && $note != *$'\r'* && $note != *$'\t'* ]] || stop "note must be one line, at most 200 bytes"
+printf %s "$note" | iconv -f UTF-8 -t UTF-8 >/dev/null 2>&1 && ! printf %s "$note" | LC_ALL=C grep -qaP '[\x00-\x1f\x7f]' || stop "note must be plain text"
+! LC_ALL=C grep -qaE -- "$SECRET_RE" <<<"$note" || stop "note looks like a credential; nothing recorded"
+
+s=$($MYC_AS_HUBSYNC "$MYC_GATE" state "$t") || stop "could not read $t"
+printf '%s\n' "$s"
+[[ $(sed -n 's/^  decision key: //p' <<<"$s") == "$key" ]] || stop "$key is not the current outstanding decision for $t; nothing recorded"
+pe=$(sed -n 's/^  awaiting event: //p' <<<"$s"); db=$(sed -n 's/^  descriptor: //p' <<<"$s")
+[[ $pe =~ ^[0-9a-f]{40}$ && $db =~ ^[0-9a-f]{40}$ ]] || stop "could not read the decision's event and descriptor"
 read -r -p "Type $t to $act it (anything else cancels): " ans
 [[ $ans == "$t" ]] || stop "not confirmed; nothing recorded"
-$MYC_AS_HUBSYNC MYC_DECIDED_VIA="fpd-prod:sudo:$SUDO_USER" "$MYC_GATE" decide "$key" "$act" "$note"
+
+rec=$(jq -nc --arg k "$key" --arg s "$st" --arg r "$note" --arg v "fpd-prod:sudo:$SUDO_USER" --arg pe "$pe" --arg db "$db" --arg at "$(date -u +%FT%TZ)" \
+  '{key:$k, status:$s, reason:$r, decided_via:$v, prev_event:$pe, descriptor_blob:$db, recorded_at:$at}')
+install -d -m 0755 "${OWN[@]}" "$DIR"
+if [[ -e $DIR/$key.json ]]; then   # a retry after a failed publish may reuse an identical record; never change one
+  jq -e --argjson n "$rec" 'del(.recorded_at) == ($n | del(.recorded_at))' "$DIR/$key.json" >/dev/null 2>&1 \
+    || stop "a different decision was already recorded for $key; nothing changed"
+  echo "myc-decide: reusing the identical owner record already written for $key"
+else
+  tmp=$(mktemp "$DIR/.rec.XXXXXX"); printf '%s\n' "$rec" > "$tmp"; chmod 0644 "$tmp"; mv -n "$tmp" "$DIR/$key.json"
+  [[ ! -e $tmp ]] || { rm -f "$tmp"; stop "a record for $key appeared concurrently; nothing changed"; }
+fi
+$MYC_AS_HUBSYNC "$MYC_GATE" decide "$key"

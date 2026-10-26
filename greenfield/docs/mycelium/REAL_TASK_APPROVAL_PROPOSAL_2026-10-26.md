@@ -1,4 +1,21 @@
-# Real-task approvals: decision request → notice → Chris's recorded decision (Claude, 26 Oct 2026). For one Codex review
+# Real-task approvals: decision request → notice → Chris's recorded decision (Claude, 26 Oct 2026, revision 2)
+
+**Revision 2** answers the [Codex review](REAL_TASK_APPROVAL_CODEX_REVIEW_2026-10-26.md): the suites passed, but the review found three gaps.
+
+- **R1, provenance can be forged through the repository → fixed with root owner records.**
+  - `sudo myc-decide` now writes `/var/lib/myc-decisions/<key>.json` **as root on fpd-prod, before anything is published**. The directory and file are root-owned, mode 0755/0644, and not group/world writable.
+  - `myc-gate decide <key>` publishes exactly that record, and only that.
+  - In **both** readers, an `approved`/`rejected` event counts only if it matches such a record field for field. Otherwise it is QUARANTINE, which keeps the grant held for Chris.
+  - Repository writers (agents, or anyone pushing with Chris's GitHub access) cannot create root-owned files on fpd-prod. Codex's exact reproduction, a schema-perfect "approved by chris" pushed through the repo, is now quarantined by writer and notifier. A forged event that contradicts a real record is also quarantined.
+  - **GitHub alone is advisory:** any reader without fpd-prod's records, such as Codex's cloud check, sees an unconfirmed decision as quarantined, by design.
+- **R2, notifier and writer disagree → fixed by sharing one validator.** The notifier no longer has its own fold. The writer's full validator is embedded **byte-identically** in both scripts (`# >>> myc-fold … # <<< myc-fold`), and `test-fold-parity.sh` fails if they ever differ. `test-decisions.sh` §10 compares writer and notifier verdicts on every fixture task (14), including Codex's 401-byte summary edit: same verdict for all.
+- **R3, rollback could falsely report restored → fixed.** Every restore step is checked separately. `myc-gate`, `mycnotify` and `myc-decide` (present with the old hash, or absent) are verified, and the receipt is compared byte for byte. Any miss prints **`INCOMPLETE RECOVERY: <items>`** and the previous copies are kept. A failing `rm`, `install` or `cp` during restore is injected in tests; none claims restoration. A successful `rollback` also compares the receipt byte for byte.
+- **Also fixed while testing:**
+  - `myc-decide` now refuses a credential-like note *before* writing any record.
+  - `decide` reports why a record was refused (for example "writable by others").
+- **Evidence:**
+  - Against `45b7336f`, the new cases fail R1 (both), R2 (task 125 mismatch) and R3 (all four restore cases).
+  - On revision 2, all pass: decisions **33/33**, upgrade **15/15**, parity **1/1**, notifier **31/31**, Stage B **60/60**, HubSync **37/37**.
 
 Answers the [live queue item](../../../team/CURRENT_EXECUTION_ORDER.md). Source and offline tests only. **Nothing is installed**: no host change, credential change, timer, live email or model call.
 
@@ -17,7 +34,7 @@ There is no new framework.
 | Transition | Written by | Validator requires (else QUARANTINE) |
 |---|---|---|
 | `in_progress → awaiting_approval` | `myc-gate complete`, when the runner left `out/decision.md` and no `result.md` | actor `hubsync-gate`; `run_id` = the live claim; `prev_event` = claim blob; `reason` = summary, non-empty, ≤400 bytes, one line |
-| `awaiting_approval → approved` / `rejected` | `myc-gate decide`, reachable only through `sudo myc-decide` | actor `chris`; `prev_event` = the awaiting event's blob; `descriptor_blob` = task.json blob; `decided_via` matches `^fpd-prod:sudo:<user>$`; `reason` = note, ≤200 bytes, one line |
+| `awaiting_approval → approved` / `rejected` | `myc-gate decide`, reachable only through `sudo myc-decide` | actor `chris`; `prev_event` = the awaiting event's blob; `descriptor_blob` = task.json blob; `decided_via` matches `^fpd-prod:sudo:<user>$`; `reason` = note, ≤200 bytes, one line; **and the root owner record for that key states exactly these fields** |
 
 - **Runner output contract:** `out/decision.md` is a regular file (no symlink), ≤1024 bytes, UTF-8, no control bytes, no credential pattern, flattened to one line of ≤400 bytes. Both `decision.md` and `result.md` gives `failed: ambiguous_output`; a bad `decision.md` gives `failed: decision_rejected`.
   - The same lease, deadline and publication bounds as results apply.
@@ -28,16 +45,18 @@ There is no new framework.
 - **Stage B grant:** `awaiting_approval` holds the grant ("Chris decides"). `approved` and `rejected` count as finished claims and are not held.
 - **`myc-gate state`** now also prints the decision key and summary while a decision is outstanding.
 
-## 2. Owner identity and provenance
+## 2. Owner identity and provenance (revision 2: root owner records, see top)
 
 ```
 sudo myc-decide <decision_key> approve|reject ["one-line note"]
 ```
 
 - **Checks it makes:** it must run as root on fpd-prod, through sudo from a named account (`SUDO_USER`), in an interactive terminal (stdin is a TTY, so decisions are never scripted).
-- **What it does:** it shows `myc-gate state` with the summary, asks Chris to **type the task id** to confirm, then runs `myc-gate decide` as hubsync with `MYC_DECIDED_VIA=fpd-prod:sudo:$SUDO_USER`.
+- **What it does:** it shows `myc-gate state` with the summary and the full blobs, and asks Chris to **type the task id** to confirm. It then writes the root owner record (key, status, note, `decided_via=fpd-prod:sudo:$SUDO_USER`, awaiting-event blob, descriptor blob) and runs `myc-gate decide <key>` as hubsync. An existing record is never changed; an identical retry reuses it.
 - **Binding:** `decide` re-reads GitHub under the shared lock. It records only if the key's sequence number **and** event blob are still the current decision, so a stale key is refused and nothing is written. The event binds the descriptor blob and the awaiting event's blob.
-- **What it proves (stated plainly):** someone with sudo on fpd-prod (Chris's SSH key plus password) ran the command in a terminal. Anyone already running as root or hubsync on fpd-prod could forge `MYC_DECIDED_VIA`. **It is not a cryptographic signature.**
+- **What it proves (stated plainly):** a decision counts only where a root-owned owner record on fpd-prod states it. Such a record means someone with root on fpd-prod wrote it, normally Chris through `sudo myc-decide` (SSH key + password + terminal + typed confirmation).
+  - Repository writers, including agents, **cannot** create one.
+  - Anyone who already has root on fpd-prod could. **It is not a cryptographic signature**, and the GitHub event alone proves nothing.
   - No agent has SSH access to fpd-prod: Codex has no host route, and Claude works through Chris.
   - The test overrides (`MYC_TEST`, `MYC_AS_HUBSYNC`, `MYC_GATE`) are dropped by sudo's default environment reset.
 - **Why not GitHub identity:** agents push as Chris's account, so GitHub attribution cannot tell him apart (contract review §4).
@@ -45,8 +64,7 @@ sudo myc-decide <decision_key> approve|reject ["one-line note"]
 ## 3. Notifier (same pinning, deduplication and ledger)
 
 - **Default path:** now `greenfield/mycelium/tasks`, the real tasks. The Stage C proof used `notify-test/tasks` through an env override.
-- **Fold now mirrors the writer** for claim, decision-request and decision events: actor, run, predecessor, descriptor and `decided_via`.
-  - **Found while testing:** a *hand-written* `awaiting_approval` with the wrong run used to count as outstanding in the notifier, though `myc-gate` quarantines it. It now quarantines in the notifier too, so it can never be mailed.
+- **The notifier's view of a task is the writer's validator itself** (the shared block), including owner-record confirmation, read from `/var/lib/myc-decisions` (world-readable, root-written). Revision 1's partial fold is gone.
 - **The email** now says how to decide: `sudo myc-decide <key> approve (or: reject)`, and that a decision does not start agent work. "Replying does NOT approve" is kept.
 - **Unchanged:** live is still **pinned to one decision** (`PIN=`), 1 per run, 5 attempts per London day, uncertain is never resent, and a total ledger loss means baseline. On the host it stays `MODE=dry-run` with the timer off. Real-task live notification is a separate approval, still one pinned decision.
 
@@ -54,11 +72,11 @@ sudo myc-decide <decision_key> approve|reject ["one-line note"]
 
 | File | sha256 |
 |---|---|
-| `stageb/myc-gate` (modified; v5 was `a55383f1…`) | `610895b8ea937e74f08e41cd16c0008c63142bf1910ba3af5ed189d50c224aac` |
-| `stageb/myc-decide` (new) | `a6dd86cb7956ce420c4cfaa6bf07f2ed667871f0c13e6ac89226fc84c75626f1` |
-| `notify/mycnotify` (modified; installed is `b18edfaa…`) | `e87301fcde1d4297f7c5badfde35a4e175d3411ba180fd1c6cfe9484a4219bae` |
-| `stageb/upgrade-decisions.sh` (new, checked host step) | `f54cbe79693387b5428ecbe8480eb71e22613190aba258c5f285973927fd80d9` |
-| `stageb/test-decisions.sh`, `stageb/test-upgrade-decisions.sh` (new); `notify/test-mycnotify.sh` (fixtures now writer-shaped, plus a forged-request case) | in `stageb/SHA256SUMS` and `notify/SHA256SUMS` |
+| `stageb/myc-gate` (modified; v5 was `a55383f1…`) | `a74add4e121c9e67bfa7d23dac1fe3fed1cc2e29a6440eecc3b8e8fa8e5480f7` |
+| `stageb/myc-decide` (new) | `7e361a4d60b68a809b00709be22ac910a0fdb443f9092c333c621d37f0ff3dd3` |
+| `notify/mycnotify` (modified; installed is `b18edfaa…`) | `b65180299e8e5984eb9642a37c78bf973eac75c78d6d014f37bc8a260336fab8` |
+| `stageb/upgrade-decisions.sh` (new, checked host step) | `43f509fef094b693fb31ad25bd60586829995c233c34ac4567d48a4a1fb2b43a` |
+| `stageb/test-decisions.sh`, `stageb/test-upgrade-decisions.sh`, `stageb/test-fold-parity.sh` (new); `notify/test-mycnotify.sh` (fixtures fully writer-valid, including owner records) | in `stageb/SHA256SUMS` and `notify/SHA256SUMS` |
 
 `myc-agent` and `myc-stageb` are untouched, so **v5.1 stays parked and is not installed by this**. HubSync is untouched.
 
@@ -66,9 +84,10 @@ sudo myc-decide <decision_key> approve|reject ["one-line note"]
 
 | Suite | Result |
 |---|---|
-| `stageb/test-decisions.sh` (new) | **26/26** |
-| `stageb/test-upgrade-decisions.sh` (new) | **11/11** |
-| `notify/test-mycnotify.sh` | **31/31** (30 + forged request) |
+| `stageb/test-decisions.sh` (new) | **33/33** |
+| `stageb/test-upgrade-decisions.sh` (new) | **15/15** |
+| `stageb/test-fold-parity.sh` (new) | **1/1** |
+| `notify/test-mycnotify.sh` | **31/31** |
 | Stage B `test-stageb` / regressions / deadlines / publication | 48 + 7 + 2 + 3, unchanged |
 | HubSync `test-hubsync` / `test-upgrade-hubsync` | 27 + 10, unchanged |
 
@@ -126,7 +145,9 @@ Each is a separate later decision.
 ## Acceptance checklist for Codex (one review)
 
 - [ ] Transitions and validator rules match the contract; forged or edited events quarantine.
-- [ ] Decision identity and binding (sudo + TTY + typed confirmation, key = seq + blob, re-read under the lock) are acceptable, with the stated limits.
+- [ ] R1: decisions count only with a matching root owner record on fpd-prod; forgeries pushed through the repository are quarantined. Binding: key = seq + blob, re-read under the lock.
+- [ ] R2: one shared validator, byte-identical in both readers; same verdicts on all fixtures.
+- [ ] R3: restore verifies every item and the receipt; failures print INCOMPLETE RECOVERY.
 - [ ] Approval cannot cause execution; grant handling is correct.
 - [ ] Notifier fold, email text and default path; pinning, deduplication and the ledger are unchanged.
 - [ ] All offline suites reproduce; `SHA256SUMS` match.

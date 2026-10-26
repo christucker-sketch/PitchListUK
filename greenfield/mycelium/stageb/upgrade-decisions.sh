@@ -10,10 +10,10 @@
 set -euo pipefail
 umask 077
 GATE_OLD=a55383f1280c511af6b1b98b348c94ffe90f46921bf7ee3c0cef8228a47086ab      # installed Stage B v5 myc-gate
-GATE_NEW=610895b8ea937e74f08e41cd16c0008c63142bf1910ba3af5ed189d50c224aac
-DECIDE_NEW=a6dd86cb7956ce420c4cfaa6bf07f2ed667871f0c13e6ac89226fc84c75626f1
+GATE_NEW=a74add4e121c9e67bfa7d23dac1fe3fed1cc2e29a6440eecc3b8e8fa8e5480f7
+DECIDE_NEW=7e361a4d60b68a809b00709be22ac910a0fdb443f9092c333c621d37f0ff3dd3
 MN_OLD=b18edfaaaa8d0359ee2eeb9d084cd6f489f83c26b9c40cb8b7ffa1dc50d546fe        # installed Stage C mycnotify (f7b18376)
-MN_NEW=e87301fcde1d4297f7c5badfde35a4e175d3411ba180fd1c6cfe9484a4219bae
+MN_NEW=b65180299e8e5984eb9642a37c78bf973eac75c78d6d014f37bc8a260336fab8
 HUBSYNC_SHA=12a14b4ad8d14b4eb7de3e38e4ce1d00e839aa2354fb11ee6d22bf6e1f0e609d   # installed hubsync rev 3
 BIN=/usr/local/bin R=/var/lib/myc-stageb/install-receipt SLOCK=/var/lib/myc-stageb/lock HLOCK=/var/lib/hubsync/lock
 MLOCK=/var/lib/mycnotify/lock CONF=/etc/mycnotify/notify.conf UP=/var/lib/myc-stageb/upgrade-decisions
@@ -60,17 +60,28 @@ exec 8>>"$HLOCK"; flock -w "$WAIT" 8 || stop "hubsync/myc-gate shared lock busy"
 exec 9>>"$MLOCK"; flock -w "$WAIT" 9 || stop "a mycnotify run holds its lock"
 say "Stage B, shared writer and mycnotify locks held"
 
-restore() {  # put back exactly what was there before this run
-  install -m 755 "${OWN[@]}" "$PREV/myc-gate" "$BIN/myc-gate" && install -m 755 "${OWN[@]}" "$PREV/mycnotify" "$BIN/mycnotify" \
-    && cp -p "$PREV/install-receipt" "$R" || return 1
-  if [[ -f $PREV/myc-decide ]]; then install -m 755 "${OWN[@]}" "$PREV/myc-decide" "$BIN/myc-decide"; else rm -f "$BIN/myc-decide"; fi
-  [[ $(sha "$BIN/myc-gate") == $(sha "$PREV/myc-gate") && $(sha "$BIN/mycnotify") == $(sha "$PREV/mycnotify") ]]
+restore() {  # put back exactly what was there before this run; succeeds only if EVERY item is verified back
+  local bad=""
+  install -m 755 "${OWN[@]}" "$PREV/myc-gate" "$BIN/myc-gate" || bad+=" myc-gate(install)"
+  install -m 755 "${OWN[@]}" "$PREV/mycnotify" "$BIN/mycnotify" || bad+=" mycnotify(install)"
+  if [[ -f $PREV/myc-decide ]]; then install -m 755 "${OWN[@]}" "$PREV/myc-decide" "$BIN/myc-decide" || bad+=" myc-decide(install)"
+  else rm -f "$BIN/myc-decide" || bad+=" myc-decide(remove)"; fi
+  cp -p "$PREV/install-receipt" "$R" || bad+=" receipt(copy)"
+  [[ -f $BIN/myc-gate && $(sha "$BIN/myc-gate") == "$(sha "$PREV/myc-gate")" ]] || bad+=" myc-gate(verify)"
+  [[ -f $BIN/mycnotify && $(sha "$BIN/mycnotify") == "$(sha "$PREV/mycnotify")" ]] || bad+=" mycnotify(verify)"
+  if [[ -f $PREV/myc-decide ]]; then [[ -f $BIN/myc-decide && $(sha "$BIN/myc-decide") == "$(sha "$PREV/myc-decide")" ]] || bad+=" myc-decide(verify)"
+  else [[ ! -e $BIN/myc-decide ]] || bad+=" myc-decide(still present)"; fi
+  cmp -s "$PREV/install-receipt" "$R" || bad+=" receipt(verify)"
+  RESTORE_BAD=$bad; [[ -z $bad ]]
 }
-CHANGED=0
+CHANGED=0 RESTORE_BAD=""
 on_exit() {
   local rc=$?; [[ $rc != 0 ]] || return 0; trap - EXIT; set +e
   say "FAILED (rc $rc); evidence kept in $LOG"
-  if [[ $CHANGED == 1 ]]; then restore && say "previous files and receipt restored and verified" || say "WARNING: restore incomplete; copies in $PREV"; fi
+  if [[ $CHANGED == 1 ]]; then
+    if restore; then say "previous files and receipt restored and verified (myc-gate, mycnotify, myc-decide, receipt)"
+    else say "INCOMPLETE RECOVERY:${RESTORE_BAD}. Previous copies are kept in $PREV; restore those by hand before anything else"; fi
+  fi
   exit "$rc"
 }
 trap on_exit EXIT
@@ -95,6 +106,7 @@ else
   install -m 755 "${OWN[@]}" "$UP/myc-gate" "$BIN/myc-gate"; install -m 755 "${OWN[@]}" "$UP/mycnotify" "$BIN/mycnotify"; rm -f "$BIN/myc-decide"
   cp -p "$UP/install-receipt" "$R"
   want "$BIN/myc-gate" "$GATE_OLD"; want "$BIN/mycnotify" "$MN_OLD"; [[ ! -e $BIN/myc-decide ]] || stop "myc-decide still present"
+  cmp -s "$UP/install-receipt" "$R" || stop "receipt not restored byte-for-byte"
 fi
 say "files replaced and verified"
 flock -u 7; flock -u 8; flock -u 9

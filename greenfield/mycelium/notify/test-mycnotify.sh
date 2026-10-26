@@ -9,7 +9,8 @@ pass=0; failn=0
 ok()  { echo "  PASS $*"; pass=$((pass + 1)); }
 bad() { echo "  FAIL $*"; failn=$((failn + 1)); }
 B=findpitches-v3/greenfield TD=greenfield/mycelium/notify-test/tasks KEY=api-TESTKEY0123456789
-export MYCNOTIFY_TEST=1 MYCNOTIFY_HOME=$T/home MYCNOTIFY_REMOTE=$T/remote.git MYCNOTIFY_BRANCH=$B MYCNOTIFY_TASKS=$TD
+mkdir -p "$T/decisions"; chmod 0755 "$T/decisions"
+export MYCNOTIFY_TEST=1 MYCNOTIFY_HOME=$T/home MYCNOTIFY_REMOTE=$T/remote.git MYCNOTIFY_BRANCH=$B MYCNOTIFY_TASKS=$TD MYCNOTIFY_TEST_DECISIONS=$T/decisions
 export MYCNOTIFY_MAX_DAY=50 MYCNOTIFY_TEST_CURL=$T/curl MYCNOTIFY_TEST_CRED=$T/cred MYCNOTIFY_TEST_NOW=1793000000 FT=$T
 export GIT_AUTHOR_NAME=human GIT_AUTHOR_EMAIL=h@x GIT_COMMITTER_NAME=human GIT_COMMITTER_EMAIL=h@x
 
@@ -50,14 +51,18 @@ mk() {  # id agent  -> descriptor + event 1 (pending by chris)
     result_location:("greenfield/mycelium/notify-test/tasks/" + $id + "/result.md")}' > "$TD/$1/task.json"
   ev "$1" pending chris "created"
 }
-ev() {  # id status actor reason  -- claim / decision-request / decision events are written the way myc-gate writes them
-  local n pe x='{}'; n=$(( $(ls "$TD/$1/events" | wc -l) + 1 ))
-  pe=$([[ $n -gt 1 ]] && git hash-object "$TD/$1/events/$(printf %04d $((n - 1))).json" || true)
+ev() {  # id status actor reason  -- every event is written exactly as myc-gate / myc-decide write it
+  local n pe db x='{}' k; n=$(( $(ls "$TD/$1/events" | wc -l) + 1 ))
+  pe=$([[ $n -gt 1 ]] && git hash-object "$TD/$1/events/$(printf %04d $((n - 1))).json" || true); db=$(git hash-object "$TD/$1/task.json")
   case $2 in
-    in_progress) echo "$1-r$(date +%s)-$(printf %08x $RANDOM$n)" > "$TD/$1/.run"
-                 x=$(jq -nc --arg pe "$pe" --arg r "$(cat "$TD/$1/.run")" --arg a "hubsync-gate for $(jq -r .assigned_agent "$TD/$1/task.json")" '{actor:$a, prev_event:$pe, run_id:$r}') ;;
+    in_progress) echo "$1-r$(date +%s)-$(printf %08x $((RANDOM * 100 + n)))" > "$TD/$1/.run"
+                 x=$(jq -nc --arg pe "$pe" --arg db "$db" --arg r "$(cat "$TD/$1/.run")" --arg a "hubsync-gate for $(jq -r .assigned_agent "$TD/$1/task.json")" \
+                     '{actor:$a, prev_event:$pe, descriptor_blob:$db, run_id:$r, lease_until:"2026-10-25T20:00:00Z"}') ;;
     awaiting_approval) x=$(jq -nc --arg pe "$pe" --arg r "$(cat "$TD/$1/.run" 2>/dev/null)" '{actor:"hubsync-gate", prev_event:$pe, run_id:$r}') ;;
-    approved|rejected) x=$(jq -nc --arg pe "$pe" --arg db "$(git hash-object "$TD/$1/task.json")" '{actor:"chris", prev_event:$pe, descriptor_blob:$db, decided_via:"fpd-prod:sudo:ct_admin"}') ;;
+    approved|rejected) x=$(jq -nc --arg pe "$pe" --arg db "$db" '{actor:"chris", prev_event:$pe, descriptor_blob:$db, decided_via:"fpd-prod:sudo:ct_admin"}')
+                       k="$1-$(printf %04d $((n - 1)))-${pe:0:12}"   # the owner record myc-decide would have written as root
+                       jq -nc --arg k "$k" --arg s "$2" --arg r "$4" --arg pe "$pe" --arg db "$db" \
+                         '{key:$k, status:$s, reason:$r, decided_via:"fpd-prod:sudo:ct_admin", prev_event:$pe, descriptor_blob:$db, recorded_at:"x"}' > "$T/decisions/$k.json" ;;
   esac
   jq -n --argjson n "$n" --arg s "$2" --arg a "$3" --arg r "$4" --argjson x "$x" '{seq:$n, status:$s, at:"2026-10-25T19:00:00Z", actor:$a, reason:$r} + $x' \
     > "$TD/$1/events/$(printf %04d "$n").json"
@@ -127,42 +132,45 @@ push forged; conf live "$(keyof MYC-20261025-920)"; run >/dev/null
   && ok "hand-written decision request (wrong run): quarantined, no mail even when pinned" || { bad "forged request"; cat "$T/home/status.json"; }
 git rm -rq "$TD/MYC-20261025-91"* "$TD/MYC-20261025-920"; push cleanup
 
-echo "8. a new decision revision on the same task notifies once more (with its own pin)"
+echo "8. resuming after approval is not implemented: such a history is quarantined, never mailed"
 ev MYC-20261025-902 approved chris yes; ev MYC-20261025-902 in_progress g claim2; ev MYC-20261025-902 awaiting_approval g "Second decision"
 push rev2; live MYC-20261025-902; run >/dev/null; run >/dev/null
-[[ $(calls) == 2 ]] && grep -q 'Second decision' "$T/body_last" && ok "new awaiting event -> new key -> exactly one more notice" || { bad "revision"; cat "$T/out"; }
+[[ $(calls) == 1 ]] && jq -e '.quarantined | any(startswith("MYC-20261025-902"))' "$T/home/status.json" >/dev/null \
+  && ok "approved -> in_progress -> awaiting: quarantined (as by the writer), no second notice" || { bad "resume quarantine"; cat "$T/home/status.json"; }
+# the original 902 notice stays the only one; later call counts below are relative to this
+export MYCNOTIFY_TEST_NOW
 
 echo "9. no connection: bounded retry, then permanent"
 mode connfail; awaiting MYC-20261025-921; push t921; live MYC-20261025-921; run >/dev/null; c=$(calls)
-[[ $c == 3 && $(rec MYC-20261025-921) == retry ]] && ok "attempt 1 failed before sending -> retry" || bad "retry state ($c)"
-run >/dev/null; [[ $(calls) == 3 ]] && ok "no retry before the backoff" || bad "early retry"
+[[ $c == 2 && $(rec MYC-20261025-921) == retry ]] && ok "attempt 1 failed before sending -> retry" || bad "retry state ($c)"
+run >/dev/null; [[ $(calls) == 2 ]] && ok "no retry before the backoff" || bad "early retry"
 export MYCNOTIFY_TEST_NOW=$((MYCNOTIFY_TEST_NOW + 60)); run >/dev/null
 export MYCNOTIFY_TEST_NOW=$((MYCNOTIFY_TEST_NOW + 200)); run >/dev/null
 export MYCNOTIFY_TEST_NOW=$((MYCNOTIFY_TEST_NOW + 200)); run >/dev/null
-[[ $(calls) == 5 && $(rec MYC-20261025-921) == permanent ]] && ok "3 attempts total, then permanent; no more" || { bad "retry bound ($(calls), $(rec MYC-20261025-921))"; cat "$T/out"; }
+[[ $(calls) == 4 && $(rec MYC-20261025-921) == permanent ]] && ok "3 attempts total, then permanent; no more" || { bad "retry bound ($(calls), $(rec MYC-20261025-921))"; cat "$T/out"; }
 
 echo "10. timeout, 5xx and a lost response are uncertain: never resent"
 mode timeout; awaiting MYC-20261025-931; push t931; live MYC-20261025-931; run >/dev/null; c=$(calls); run >/dev/null; run >/dev/null
-[[ $c == 6 && $(calls) == 6 && $(rec MYC-20261025-931) == uncertain ]] && ok "timeout -> uncertain, no resend" || bad "timeout"
+[[ $c == 5 && $(calls) == 5 && $(rec MYC-20261025-931) == uncertain ]] && ok "timeout -> uncertain, no resend" || bad "timeout"
 mode 5xx; awaiting MYC-20261025-932; push t932; live MYC-20261025-932; run >/dev/null; run >/dev/null
-[[ $(calls) == 7 && $(rec MYC-20261025-932) == uncertain ]] && ok "HTTP 503 -> uncertain, no resend" || bad "5xx"
+[[ $(calls) == 6 && $(rec MYC-20261025-932) == uncertain ]] && ok "HTTP 503 -> uncertain, no resend" || bad "5xx"
 
 echo "11. HTTP 429 retries after Retry-After"
 mode 429; awaiting MYC-20261025-941; push t941; live MYC-20261025-941; run >/dev/null
 export MYCNOTIFY_TEST_NOW=$((MYCNOTIFY_TEST_NOW + 200)); run >/dev/null; c=$(calls)
 mode ok; export MYCNOTIFY_TEST_NOW=$((MYCNOTIFY_TEST_NOW + 200)); run >/dev/null
-[[ $c == 8 && $(calls) == 9 && $(rec MYC-20261025-941) == accepted ]] && ok "waited 300 s as asked, then accepted" || { bad "429 ($c/$(calls))"; cat "$T/out"; }
+[[ $c == 7 && $(calls) == 8 && $(rec MYC-20261025-941) == accepted ]] && ok "waited 300 s as asked, then accepted" || { bad "429 ($c/$(calls))"; cat "$T/out"; }
 
 echo "12. auth/config refusal (401) holds all sending until release"
 mode 401; awaiting MYC-20261025-951; push t951; live MYC-20261025-951; run >/dev/null
 mode ok; awaiting MYC-20261025-952; push t952; live MYC-20261025-952; run >/dev/null; c=$(calls)
-[[ $c == 10 && $(rec MYC-20261025-951) == permanent && $(st result) == held ]] && ok "held: nothing else sent" || { bad "hold ($c)"; cat "$T/out"; }
-"$MN" release >/dev/null 2>&1; run >/dev/null; [[ $(calls) == 11 && $(rec MYC-20261025-952) == accepted ]] && ok "after release, the pinned notice goes" || bad "release"
+[[ $c == 9 && $(rec MYC-20261025-951) == permanent && $(st result) == held ]] && ok "held: nothing else sent" || { bad "hold ($c)"; cat "$T/out"; }
+"$MN" release >/dev/null 2>&1; run >/dev/null; [[ $(calls) == 10 && $(rec MYC-20261025-952) == accepted ]] && ok "after release, the pinned notice goes" || bad "release"
 
 echo "13. interrupted claim (crash between claim and outcome) becomes uncertain"
 awaiting MYC-20261025-961; push t961; live MYC-20261025-961; k=$(keyof MYC-20261025-961)
 jq -nc --arg k "$k" '{key:$k, task_id:"MYC-20261025-961", state:"claimed", attempts:1, claim_day:"2000-01-01"}' > "$T/home/ledger/$k.json"
-run >/dev/null; [[ $(calls) == 11 && $(rec MYC-20261025-961) == uncertain ]] && ok "simulated interrupted claim: uncertain, not resent" || { bad "interrupted claim"; cat "$T/out"; }
+run >/dev/null; [[ $(calls) == 10 && $(rec MYC-20261025-961) == uncertain ]] && ok "simulated interrupted claim: uncertain, not resent" || { bad "interrupted claim"; cat "$T/out"; }
 
 echo "14. R2: the daily cap counts every HTTP attempt, retries included, per London day"
 day0=$(TZ=Europe/London date -d "@$MYCNOTIFY_TEST_NOW" +%F)
@@ -182,7 +190,7 @@ MYCNOTIFY_MAX_DAY=1 "$MN" poll >/dev/null 2>&1; [[ $(( $(calls) - c0 )) == 3 ]] 
 run >/dev/null; [[ $(( $(calls) - c0 )) == 4 && $(rec MYC-20261025-972) == accepted ]] && ok "below the cap it goes on the next run" || bad "after cap"
 
 echo "15. summary is sanitised and bounded"
-awaiting MYC-20261025-981 "$(printf 'line1\nline2\t\x1b[31mred\x07'; head -c 2000 /dev/zero | tr '\0' 'A')"; push t981; live MYC-20261025-981; run >/dev/null
+awaiting MYC-20261025-981 "$(printf 'line1 \x1b[31mred\x07 '; head -c 350 /dev/zero | tr '\0' 'A')"; push t981; live MYC-20261025-981; run >/dev/null
 s=$(jq -r .text_body "$T/body_last" | grep '^Summary: ' | cut -c10-)
 [[ $(rec MYC-20261025-981) == accepted && ${#s} -le 400 ]] && ! LC_ALL=C grep -q $'[\x01-\x08\x0b-\x1f\x7f]' <<<"$s" && ok "no control characters, ≤400 chars" || bad "summary (${#s})"
 

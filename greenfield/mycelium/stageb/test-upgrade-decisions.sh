@@ -67,4 +67,18 @@ reset; cp "$T/kit/myc-gate" "$T/good-gate"; cp "$T/bad-gate" "$T/kit/myc-gate"; 
 reset; touch "$T/f/poll_fail"; r=$(run install)
 [[ $r != 0 && $(sha "$T/bin/myc-gate") == "$T_GATE_OLD" && ! -e $T/bin/myc-decide ]] && grep -q 'restored and verified' "$T/out" && ok "notifier dry-run poll failed -> restored" || { bad "poll restore"; cat "$T/out"; }
 
+echo "6. R3: restoration failures are reported, never claimed as restored"
+mkdir -p "$T/fakebin"
+printf '#!/usr/bin/env bash\nif [[ -f %s/f/rm_fail && "${@: -1}" == "%s/bin/myc-decide" ]]; then exit 1; fi\nexec /bin/rm "$@"\n' "$T" "$T" > "$T/fakebin/rm"
+printf '#!/usr/bin/env bash\nif [[ -f %s/f/install_fail && "${@: -1}" == "%s/bin/mycnotify" && "${@: -2:1}" == */prev-*/mycnotify ]]; then exit 1; fi\nexec /usr/bin/install "$@"\n' "$T" "$T" > "$T/fakebin/install"
+printf '#!/usr/bin/env bash\nif [[ -f %s/f/cp_fail && "${@: -2:1}" == */prev-*/install-receipt ]]; then exit 1; fi\nexec /bin/cp "$@"\n' "$T" > "$T/fakebin/cp"
+chmod +x "$T/fakebin/"*
+for f in rm_fail install_fail cp_fail; do
+  reset; touch "$T/f/poll_fail" "$T/f/$f"; PATH="$T/fakebin:$PATH" bash "$U" install > "$T/out" 2>&1; r=$?
+  if [[ $r != 0 ]] && grep -q 'INCOMPLETE RECOVERY' "$T/out" && ! grep -q 'restored and verified' "$T/out"; then ok "$f during restore -> non-zero, INCOMPLETE RECOVERY, no false claim"
+  else bad "$f -> rc $r"; cat "$T/out"; fi
+done
+reset; touch "$T/f/poll_fail" "$T/f/rm_fail"; PATH="$T/fakebin:$PATH" bash "$U" install > "$T/out" 2>&1
+grep -q 'myc-decide(remove)' "$T/out" && grep -q 'myc-decide(still present)' "$T/out" && [[ -e $T/bin/myc-decide ]] && ok "names exactly what was not restored (myc-decide still present)" || { bad "detail"; cat "$T/out"; }
+
 echo; echo "upgrade-decisions tests: $pass passed, $failn failed"; [[ $failn == 0 ]]
