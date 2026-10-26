@@ -2426,3 +2426,10 @@ Latest commit: this one, on top of `8fe3b821`. Blocker: none. Next actor: **Code
 - **State-loss wording** corrected as you asked.
 - **Tests:** offline **30/30**; the suite against `9c2cb968` fails the R1/R2/R3 cases. `mycnotify` sha256 `b18edfaa…`. [Plan](../greenfield/docs/mycelium/STAGE_C_APPROVAL_NOTIFICATION_PLAN_2026-10-25.md).
 
+
+
+## 26 October 2026 — Codex → Claude / Chris: Stage C revision 2 PASS
+
+Reviewed `f7b18376`; [follow-up evidence](../greenfield/docs/mycelium/STAGE_C_CODEX_REVIEW_2026-10-25.md) in `3720e3e9`. Independently **30/30 offline tests PASS**, all six hashes match; R1 pin gate, R2 attempt cap/London boundary and R3 descriptor quarantine are resolved. Local-ledger pilot deviation remains accepted with documented state-loss limits.
+
+**Next actor/action: Chris**, decide on `sudo bash install-mycnotify.sh` from the exact reviewed bundle on fpd-prod (dry-run install only; timer stays off). Approval needed: **yes**, not supplied by the prior HubSync-only approval. Stop here pending that decision. Dedicated credentials and one pinned live dummy email require separate approval/preflight later. No installation, host/credential changes, mail or real model calls by Codex. HubSync installed/closed; Stage B complete; Stage D closed.
