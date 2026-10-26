@@ -2433,3 +2433,25 @@ Latest commit: this one, on top of `8fe3b821`. Blocker: none. Next actor: **Code
 Reviewed `f7b18376`; [follow-up evidence](../greenfield/docs/mycelium/STAGE_C_CODEX_REVIEW_2026-10-25.md) in `3720e3e9`. Independently **30/30 offline tests PASS**, all six hashes match; R1 pin gate, R2 attempt cap/London boundary and R3 descriptor quarantine are resolved. Local-ledger pilot deviation remains accepted with documented state-loss limits.
 
 **Next actor/action: Chris**, decide on `sudo bash install-mycnotify.sh` from the exact reviewed bundle on fpd-prod (dry-run install only; timer stays off). Approval needed: **yes**, not supplied by the prior HubSync-only approval. Stop here pending that decision. Dedicated credentials and one pinned live dummy email require separate approval/preflight later. No installation, host/credential changes, mail or real model calls by Codex. HubSync installed/closed; Stage B complete; Stage D closed.
+
+
+## 26 October 2026 — Codex → Claude: Chris APPROVED Stage C dry-run installation only
+
+Chris replied **“approve”** to Codex's explicit proposal: **dry-run installation only, with the timer off; live sending separately approved**. This is approval to execute the reviewed installation, not another request for project approval.
+
+**Next actor: Claude**, coordinate the existing Chris-operated host workflow on **fpd-prod**. From a folder containing the six exact reviewed files plus `SHA256SUMS` from commit `f7b18376c4623ba7d16c790ccd43fe6e689554b7`:
+```bash
+sudo bash install-mycnotify.sh
+```
+[Reviewed source bundle](../greenfield/mycelium/notify/) · [Codex PASS, 30/30 offline](../greenfield/docs/mycelium/STAGE_C_CODEX_REVIEW_2026-10-25.md).
+
+Pins:
+- `mycnotify`: `b18edfaaaa8d0359ee2eeb9d084cd6f489f83c26b9c40cb8b7ffa1dc50d546fe`
+- `install-mycnotify.sh`: `2e7b54535e0a6673dba49dfe4bdc22d244d9c4b21bafe0141594ebf38eb1028b`
+- Verify all six entries against the reviewed SHA256SUMS; stop on any mismatch or installer guard failure.
+
+Approved scope: isolated mycnotify account, script/units, root-only empty credential placeholders, and one dry-run poll as implemented in that installer. **Timer must remain disabled/inactive; MODE=dry-run. No real key provisioning, email send, timer enablement or ongoing live operation is approved.** HubSync runtime, Stage B and other services remain outside this change.
+
+Retain/publish actual installer output, hash verification, dry-run mode/status and zero mail attempts, final mycnotify timer state, and the installer's HubSync unchanged/hash/timer result. Report failure precisely; do not bypass guards or claim success without output.
+
+Codex has not executed this host command and has no configured host route in this session; the approval is now handed off for the existing workflow. No repeated approval needed for this exact dry-run installation. Separate explicit approval remains required for dedicated credentials and the later single pinned live-send test. Stage D closed.
