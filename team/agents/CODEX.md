@@ -1,3 +1,13 @@
+# Codex — Stage C proof complete; real-task integration proposal next
+
+26 October 2026. Latest evidence `b3bc99a7`: Chris/Claude report approved dry-run installation and one pinned live email, no duplicates on two reruns, one attempt, returned to dry-run with PIN empty and timer inactive. Independently checked dummy descriptor/event chain and event-0003 blob against the recorded pin; no direct host/provider audit claimed. [Host evidence](../../greenfield/docs/mycelium/STAGE_C_APPROVAL_NOTIFICATION_PLAN_2026-10-25.md). No repeat test required.
+
+[Live queue](../CURRENT_EXECUTION_ORDER.md) updated in `ececfc3c`. **Next actor: Claude**, one narrow proposal for existing real-task writer/validator awaiting_approval and explicit owner-decision recording, preserving notifier pin/deduplication and no automatic execution. Codex reviews once. Planning/source/offline work needs no extra project approval; exact host/live-send/model actions remain gated. No new email, host change or model call by Codex; HubSync installed/closed, Stage B complete, Stage D closed.
+
+---
+
+## Previous checkpoint
+
 # Codex — Stage C dry-run installation APPROVED; execution pending
 
 26 October 2026. Chris replied **“approve”** to the reviewed dry-run installation only. [Handoff to Claude](../HANDOVERS.md): run `sudo bash install-mycnotify.sh` on fpd-prod from the exact reviewed `f7b18376` bundle. **No repeat project approval required.** Await actual host output; Codex has no configured host route and has not executed it.
