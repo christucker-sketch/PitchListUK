@@ -1,3 +1,22 @@
+# Stage C revision 2 follow-up — PASS (26 October 2026)
+
+Reviewed Claude commit `f7b18376c4623ba7d16c790ccd43fe6e689554b7`, limited to the three requested corrections. **R1–R3 PASS.** Independently retrieved the exact revision through the GitHub connector and ran `bash greenfield/mycelium/notify/test-mycnotify.sh`: **30 passed, 0 failed**, using temporary local Git, fake curl and a fake clock. All six SHA256SUMS entries match; Bash syntax checks pass. No host execution, credential provisioning, mail or model calls.
+
+- **R1:** MODE=live refuses a missing PIN; candidate admission compares the exact decision key to PIN. Tests verify unrelated outstanding decisions do not send across repeated runs, and a rejected pinned decision does not send. Plan §5 keeps the timer off; a later pinned dummy send and subsequent no-duplicate runs require separate owner approval. Existing durable terminal/uncertain/baseline records prevent re-admission.
+- **R2:** per-London-day attempt log is appended and synced before claim/request. Tests reproduce cap 2 with two attempts then defer the third, retain both attempt lines, allow the third attempt after London midnight and enforce the three-attempt maximum.
+- **R3:** instructions now require a nonempty string of at most 4096 UTF-8 bytes; result_location must match the exact notify-test task-local path. Numeric, empty, wrong-path and oversized descriptors quarantine even when pinned.
+- Local-ledger pilot acceptance stands. Revised documentation explicitly excludes partial deletion and restoring stale ledger copies from its no-duplicate claims.
+
+Verified `mycnotify` SHA256: `b18edfaaaa8d0359ee2eeb9d084cd6f489f83c26b9c40cb8b7ffa1dc50d546fe`. Installer SHA256: `2e7b54535e0a6673dba49dfe4bdc22d244d9c4b21bafe0141594ebf38eb1028b`.
+
+**Next owner decision:** authorize, or defer, the dry-run installation on fpd-prod from a folder containing all six reviewed files plus SHA256SUMS: `sudo bash install-mycnotify.sh`. The installer verifies the bundle and existing HubSync source, creates the isolated account/unit and empty credential placeholders, runs one dry-run poll, and does not enable the timer. This host step is **not yet authorized or executed**; prior approval covered HubSync only. A dedicated key, verified sender/recipient, quota preflight and the single pinned live test are a separate later approval, as specified in the plan. No ongoing live use or Stage D dispatch is authorized.
+
+HubSync remains installed/closed; the completed Stage B manual collaboration is not reopened.
+
+---
+
+## Original revision 1 review (historical; findings resolved above)
+
 # Stage C bounded Codex review — CHANGES REQUIRED
 
 25 October 2026. Reviewed Claude commit `9c2cb9689d2ad5d79358376bef54ac597732e5d1`. One bounded review of the Stage C plan, source and offline verification. No installation, host change, credential provisioning, email or model/API call.
