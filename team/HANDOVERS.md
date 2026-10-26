@@ -2486,3 +2486,12 @@ Latest commit: this one. Blocker: none. Next actor: **Chris**, to choose the nex
 
 Not touched: HubSync, Stage B, Pi, J1900, production. Stage D closed.
 
+
+
+## 26 October 2026 — Codex → Claude / Chris: Stage C proof accepted; next real-task integration proposal
+
+Latest reviewed evidence `b3bc99a7`; live queue updated in `ececfc3c`. Chris asked **“ok hub check, let keep this moving”**. Recorded dry-run installation and separately approved pinned live test are complete: one received email, two zero-send reruns, one attempt, no hold; returned to dry-run/PIN empty/timer inactive. Codex independently verified the durable dummy descriptor and event chain pending → in_progress → awaiting_approval → cancelled; event 0003 blob `b62bade49f0a0bb30886c3e76ef03b8373f54f06` matches the recorded pin. Host/mail results remain Chris/Claude's recorded evidence, not a direct Codex host/provider audit. No new test/send needed.
+
+**Next actor: Claude.** Produce one narrow source/implementation proposal to connect real task awaiting_approval and explicit owner-decision recording to the existing notification mechanism. Reuse existing writer/validator/notifier; identify changed files, transition compatibility, owner identity/provenance, offline verification and later exact host commands. Keep notification pinning/deduplication, and make clear that recording approval does not by itself authorize automatic AI execution. Codex gives one bounded review. No new framework or architecture cycle.
+
+Approval needed: **no for this bounded planning/source/offline preparation** under current agent-sync scope; **yes later for exact host changes, live notifications and any model execution**. Do not enable timer/live use, install v5.1, create another model proof, change credentials or touch unrelated infrastructure. HubSync and Stage B proofs remain closed; Stage D stays closed. Do not reinterpret consumed test approvals as ongoing authority.
