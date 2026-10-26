@@ -9,7 +9,7 @@ pass=0; failn=0
 ok()  { echo "  PASS $*"; pass=$((pass + 1)); }
 bad() { echo "  FAIL $*"; failn=$((failn + 1)); }
 B=findpitches-v3/greenfield TD=greenfield/mycelium/notify-test/tasks KEY=api-TESTKEY0123456789
-export MYCNOTIFY_TEST=1 MYCNOTIFY_HOME=$T/home MYCNOTIFY_REMOTE=$T/remote.git MYCNOTIFY_BRANCH=$B
+export MYCNOTIFY_TEST=1 MYCNOTIFY_HOME=$T/home MYCNOTIFY_REMOTE=$T/remote.git MYCNOTIFY_BRANCH=$B MYCNOTIFY_TASKS=$TD
 export MYCNOTIFY_MAX_DAY=50 MYCNOTIFY_TEST_CURL=$T/curl MYCNOTIFY_TEST_CRED=$T/cred MYCNOTIFY_TEST_NOW=1793000000 FT=$T
 export GIT_AUTHOR_NAME=human GIT_AUTHOR_EMAIL=h@x GIT_COMMITTER_NAME=human GIT_COMMITTER_EMAIL=h@x
 
@@ -43,16 +43,23 @@ rec() { jq -r ".state" "$T/home/ledger/$1"*.json 2>/dev/null | head -1; }
 
 git init -q --bare "$T/remote.git"; git clone -q "$T/remote.git" "$T/human" 2>/dev/null
 cd "$T/human"; git checkout -q -b "$B"; echo hub > README.md; git add -A; git commit -qm init; git push -q origin "$B"
-push() { git add -A && git commit -qm "human: $1" && git push -q origin "$B"; }
+push() { git add -A -- . ':!*/.run' && git commit -qm "human: $1" && git push -q origin "$B"; }
 mk() {  # id agent  -> descriptor + event 1 (pending by chris)
   mkdir -p "$TD/$1/events"
   jq -n --arg id "$1" --arg a "${2:-claude}" '{task_id:$id, assigned_agent:$a, instructions:"test", status:"pending",
     result_location:("greenfield/mycelium/notify-test/tasks/" + $id + "/result.md")}' > "$TD/$1/task.json"
   ev "$1" pending chris "created"
 }
-ev() {  # id status actor reason
-  local n; n=$(( $(ls "$TD/$1/events" | wc -l) + 1 ))
-  jq -n --argjson n "$n" --arg s "$2" --arg a "$3" --arg r "$4" '{seq:$n, status:$s, at:"2026-10-25T19:00:00Z", actor:$a, reason:$r}' \
+ev() {  # id status actor reason  -- claim / decision-request / decision events are written the way myc-gate writes them
+  local n pe x='{}'; n=$(( $(ls "$TD/$1/events" | wc -l) + 1 ))
+  pe=$([[ $n -gt 1 ]] && git hash-object "$TD/$1/events/$(printf %04d $((n - 1))).json" || true)
+  case $2 in
+    in_progress) echo "$1-r$(date +%s)-$(printf %08x $RANDOM$n)" > "$TD/$1/.run"
+                 x=$(jq -nc --arg pe "$pe" --arg r "$(cat "$TD/$1/.run")" --arg a "hubsync-gate for $(jq -r .assigned_agent "$TD/$1/task.json")" '{actor:$a, prev_event:$pe, run_id:$r}') ;;
+    awaiting_approval) x=$(jq -nc --arg pe "$pe" --arg r "$(cat "$TD/$1/.run" 2>/dev/null)" '{actor:"hubsync-gate", prev_event:$pe, run_id:$r}') ;;
+    approved|rejected) x=$(jq -nc --arg pe "$pe" --arg db "$(git hash-object "$TD/$1/task.json")" '{actor:"chris", prev_event:$pe, descriptor_blob:$db, decided_via:"fpd-prod:sudo:ct_admin"}') ;;
+  esac
+  jq -n --argjson n "$n" --arg s "$2" --arg a "$3" --arg r "$4" --argjson x "$x" '{seq:$n, status:$s, at:"2026-10-25T19:00:00Z", actor:$a, reason:$r} + $x' \
     > "$TD/$1/events/$(printf %04d "$n").json"
 }
 awaiting() { mk "$1"; ev "$1" in_progress hubsync-gate claim; ev "$1" awaiting_approval hubsync-gate "${2-Approve publishing the test listing?}"; }
@@ -82,7 +89,7 @@ awaiting MYC-20261025-902; push t902; live MYC-20261025-902; r=$(run)
 b=$T/body_last
 [[ $r == 0 && $(calls) == 1 && $(rec MYC-20261025-902) == accepted ]] && jq -e '.to == ["chris@example.invalid"] and .sender == "notify@findpitches.com"
   and (.subject | contains("MYC-20261025-902")) and (.text_body | contains("does NOT approve")) and (.text_body | contains("/notify-test/tasks/MYC-20261025-902"))
-  and (.text_body | contains("Approve publishing the test listing?"))' "$b" >/dev/null && ok "one accepted notice: task id, summary, review link, 'reply is NOT approval'" || { bad "first notice"; cat "$T/out"; }
+  and (.text_body | contains("Approve publishing the test listing?")) and (.text_body | contains("sudo myc-decide MYC-20261025-902-0003-"))' "$b" >/dev/null && ok "one accepted notice: task id, summary, review link, 'reply is NOT approval'" || { bad "first notice"; cat "$T/out"; }
 ! grep -q "$KEY" "$T/argv" "$b" && grep -q "$KEY" "$T/stdin_last" && ok "API key only on curl stdin: never in argv or body" || bad "key exposure"
 
 echo "5. R1: one-notice gate: repeated manual runs send nothing else, even with other decisions outstanding"
@@ -114,7 +121,11 @@ for i in 911 912 913 914 915 916 917 918 919; do
   jq -e --arg id "MYC-20261025-$i" '.quarantined | any(startswith($id))' "$T/home/status.json" >/dev/null || allq="no ($i)"
 done
 [[ $(calls) == 1 && $allq == yes ]] && ok "bad JSON, illegal transition, extra field, gap, empty summary, numeric instructions/result_location, empty instructions, wrong result path, oversize instructions: quarantined, no mail, even when pinned" || { bad "quarantine ($allq, $(calls))"; cat "$T/home/status.json"; }
-git rm -rq "$TD/MYC-20261025-91"*; push cleanup
+awaiting MYC-20261025-920; jq '.run_id = "MYC-20261025-920-r1-deadbeef"' "$TD/MYC-20261025-920/events/0003.json" > x && mv x "$TD/MYC-20261025-920/events/0003.json"
+push forged; conf live "$(keyof MYC-20261025-920)"; run >/dev/null
+[[ $(calls) == 1 ]] && jq -e '.quarantined | any(startswith("MYC-20261025-920"))' "$T/home/status.json" >/dev/null \
+  && ok "hand-written decision request (wrong run): quarantined, no mail even when pinned" || { bad "forged request"; cat "$T/home/status.json"; }
+git rm -rq "$TD/MYC-20261025-91"* "$TD/MYC-20261025-920"; push cleanup
 
 echo "8. a new decision revision on the same task notifies once more (with its own pin)"
 ev MYC-20261025-902 approved chris yes; ev MYC-20261025-902 in_progress g claim2; ev MYC-20261025-902 awaiting_approval g "Second decision"

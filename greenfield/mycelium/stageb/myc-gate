@@ -9,6 +9,13 @@
 #                                writes the job packet. Only an admitted run may call a model.
 #   myc-gate complete <run_id>   validate output; commit result.md + completed, or a failed receipt with a fixed code
 #   myc-gate expire <task_id>    after the lease: commit failed (outcome_uncertain). Manual only.
+#   myc-gate decide <key> approve|reject [note]
+#                                record Chris's decision on a task that is awaiting_approval. Reachable only through
+#                                `sudo myc-decide` on fpd-prod (which sets MYC_DECIDED_VIA). Records the decision; it
+#                                never claims, admits, resumes or authorises any agent work.
+# Decision requests (26 Oct): a run whose runner leaves out/decision.md (and no result.md) ends in awaiting_approval
+# with that bounded summary, instead of completed. approved/rejected are resting states: an approved task is NOT
+# claimable (claim needs pending); resuming work needs a separately approved change.
 # Fail closed everywhere; never forces; never retries a rejected push; never calls a model.
 set -euo pipefail
 umask 027
@@ -94,7 +101,7 @@ load() {
     [[ -n $(G ls-tree HEAD -- "$f") ]] || break
     n=$((n + 1))
     e=$(strict_json "$f" 4096) || { quarantine "event $n is not a strict JSON object"; return; }
-    jq -e --argjson n $n '(keys - ["seq","status","at","actor","reason","run_id","lease_until","descriptor_blob","prev_event","output_sha256","usage"]) == []
+    jq -e --argjson n $n '(keys - ["seq","status","at","actor","reason","run_id","lease_until","descriptor_blob","prev_event","output_sha256","usage","decided_via"]) == []
         and .seq == $n and (.status|type == "string") and (.actor|type == "string")
         and (.at|type == "string" and test("^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"))
         and ((.reason // "")|type == "string") and ((.usage // {})|type == "object")' >/dev/null <<<"$e" \
@@ -119,6 +126,15 @@ load() {
       "in_progress>failed")
         jq -e --arg r "$RUN" --arg pe "$prev" '.actor == "hubsync-gate" and .run_id == $r and .prev_event == $pe and (.reason|type == "string")' >/dev/null <<<"$e" \
           || { quarantine "failure event $n does not match its run"; return; } ;;
+      "in_progress>awaiting_approval")
+        jq -e --arg r "$RUN" --arg pe "$prev" '.actor == "hubsync-gate" and .run_id == $r and .prev_event == $pe
+            and (.reason|type == "string" and length > 0 and utf8bytelength <= 400 and (test("[\\n\\r\\t]")|not))' >/dev/null <<<"$e" \
+          || { quarantine "decision request event $n does not match its run or has a bad summary"; return; } ;;
+      "awaiting_approval>approved"|"awaiting_approval>rejected")
+        jq -e --arg db "$DESC_BLOB" --arg pe "$prev" '.actor == "chris" and .prev_event == $pe and .descriptor_blob == $db
+            and (.decided_via|type == "string" and test("^fpd-prod:sudo:[a-z_][a-z0-9_-]{0,31}$"))
+            and (.reason|type == "string" and length > 0 and utf8bytelength <= 200 and (test("[\\n\\r\\t]")|not))' >/dev/null <<<"$e" \
+          || { quarantine "decision event $n is not a valid recorded decision by Chris"; return; } ;;
       *) quarantine "transition '${st:-none}' -> '$want' is not allowed in Stage B"; return ;;
     esac
     st=$want; prev=$(blob_of "$f")
@@ -139,7 +155,7 @@ grant_status() {  # [this_run] -> sets GRANT json; durable: derived only from th
     load "$id"
     case $STATE in
       ABSENT|pending) ;;
-      completed) claims=$((claims + 1)) ;;
+      completed|approved|rejected) claims=$((claims + 1)) ;;          # finished runs; a decision never re-opens a call
       in_progress) claims=$((claims + 1)); [[ $RUN == "$this" ]] || held+="$id:in_progress " ;;
       *) claims=$((claims + 1)); held+="$id:${STATE} " ;;
     esac
@@ -191,7 +207,13 @@ commit_push() {  # message files... -> commits exactly these NEW files and pushe
 }
 event_json() { jq -n --arg at "$(now)" "$@"; }
 
-cmd_state() { lock; sync; load "$1"; echo "$1 ${STATE}${Q:+: $Q} seq=$SEQ${RUN:+ run=$RUN}${LEASE:+ lease_until=$LEASE}"; }
+cmd_state() {
+  lock; sync; load "$1"; echo "$1 ${STATE}${Q:+: $Q} seq=$SEQ${RUN:+ run=$RUN}${LEASE:+ lease_until=$LEASE}"
+  if [[ $STATE == awaiting_approval ]]; then
+    echo "  decision key: $1-$(printf %04d "$SEQ")-${LAST_BLOB:0:12}"
+    echo "  summary: $(G cat-file -p "$LAST_BLOB" | jq -r .reason)"
+  fi
+}
 cmd_grant() { lock; sync; grant_status; echo "$GRANT"; grant_ok >&2 || exit 1; }
 
 cmd_claim() {
@@ -282,7 +304,8 @@ cmd_complete() {
   cj=$MYC_SPOOL/$run/claim.json; [[ -f $cj && ! -L $cj ]] || die "no claim record for $run"
   t=$(jq -r .task_id "$cj"); ag=$(jq -r .agent "$cj"); [[ $t =~ $TASK_RE && $run == "$t-"* ]] || die "claim record mismatch"
   lock; sync; load "$t"; d=$MYC_TASKS/$t
-  if [[ $STATE == completed || $STATE == failed ]] && [[ $RUN == "$run" ]]; then log "$t already recorded as $STATE for $run (nothing to do)"; exit 0; fi
+  if [[ $STATE == completed || $STATE == failed || $STATE == awaiting_approval || $STATE == approved || $STATE == rejected ]] && [[ $RUN == "$run" ]]; then
+    log "$t already recorded as $STATE for $run (nothing to do)"; exit 0; fi
   [[ $STATE == in_progress && $RUN == "$run" ]] || die "$t is ${STATE}${Q:+ ($Q)} with run '${RUN}', not in_progress for $run; late result discarded"
   ok=false; code=""; usage=null
   # public receipts carry fixed codes only; the runner's free-text error stays in its private log
@@ -309,7 +332,18 @@ cmd_complete() {
   left_s=$(( pub_end - $(date -u +%s) ))
   if [[ $(date -u +%s) -gt $(epoch "$LEASE") ]]; then ok=false; code=lease_expired
   elif [[ $left_s -lt 10 ]]; then ok=false; code=deadline_passed; fi
-  if $ok; then
+  local dec="" summary=""
+  if $ok && [[ -e $MYC_SPOOL/$run/out/decision.md || -L $MYC_SPOOL/$run/out/decision.md ]]; then
+    # the runner asks for Chris's decision instead of delivering a result: exactly one of the two, bounded, clean
+    if [[ -e $MYC_SPOOL/$run/out/result.md || -L $MYC_SPOOL/$run/out/result.md ]]; then ok=false; code=ambiguous_output
+    elif dec=$(read_out "$MYC_SPOOL/$run/out/decision.md" 1024) && [[ -s $dec ]] && clean_text < "$dec" && ! LC_ALL=C grep -qaE -- "$SECRET_RE" "$dec"; then
+      summary=$(tr '\r\n\t' '   ' < "$dec" | sed -e 's/  */ /g' -e 's/^ //' -e 's/ $//'); rm -f "$dec"
+      [[ -n $summary && $(printf %s "$summary" | wc -c) -le 400 ]] || { ok=false; code=decision_rejected; summary=""; }
+    else
+      [[ -n $dec ]] && rm -f "$dec"; ok=false; code=decision_rejected
+    fi
+  fi
+  if $ok && [[ -z $summary ]]; then
     if res=$(read_out "$MYC_SPOOL/$run/out/result.md" 16384) && [[ -s $res ]] && clean_text < "$res" && ! LC_ALL=C grep -qaE -- "$SECRET_RE" "$res"; then
       cp "$res" "$REPO/$d/result.md"; sha=$(sha256sum "$res" | cut -c1-64); rm -f "$res"
     else
@@ -322,7 +356,12 @@ cmd_complete() {
     # again before the confirming fetch, and checks it once more before reporting success (no automatic retry).
     (( pub_end - $(date -u +%s) >= 10 )) && PUB_END=$pub_end || { ok=false; code=deadline_passed; rm -f "$REPO/$d/result.md"; }
   fi
-  if $ok; then
+  if $ok && [[ -n $summary ]]; then
+    event_json --argjson s $n --arg r "$run" --arg pe "$LAST_BLOB" --arg why "$summary" --argjson u "$usage" \
+      '{seq:$s, status:"awaiting_approval", at:$at, actor:"hubsync-gate", reason:$why, run_id:$r, prev_event:$pe, usage:$u}' > "$REPO/$ev"
+    c=$(commit_push "mycelium: $t awaiting approval ($run)" "$ev")
+    log "$t AWAITING APPROVAL in $c; decision key $t-$(printf %04d "$n")-$(G rev-parse "HEAD:$ev" | cut -c1-12)"
+  elif $ok; then
     event_json --argjson s $n --arg r "$run" --arg pe "$LAST_BLOB" --arg h "$sha" --argjson u "$usage" \
       '{seq:$s, status:"completed", at:$at, actor:"hubsync-gate", reason:"result_accepted", run_id:$r, prev_event:$pe, output_sha256:$h, usage:$u}' > "$REPO/$ev"
     c=$(commit_push "mycelium: $t completed ($run)" "$ev" "$d/result.md"); log "$t COMPLETED in $c; result sha256 $sha"
@@ -345,6 +384,28 @@ cmd_expire() {
   c=$(commit_push "mycelium: $t lease expired ($RUN)" "$ev"); log "$t marked failed (outcome_uncertain) in $c"; echo "$c"
 }
 
+cmd_decide() {  # key approve|reject [note]; only via sudo myc-decide (MYC_DECIDED_VIA). Records, never executes.
+  local key=$1 act=$2 note=${3:-} t seq b12 st ev c
+  [[ $key =~ ^(MYC-[0-9]{8}-[0-9]{3})-([0-9]{4})-([0-9a-f]{12})$ ]] || die "bad decision key: $key"
+  t=${BASH_REMATCH[1]}; seq=$((10#${BASH_REMATCH[2]})); b12=${BASH_REMATCH[3]}
+  case $act in approve) st=approved ;; reject) st=rejected ;; *) die "action must be approve or reject" ;; esac
+  [[ ${MYC_DECIDED_VIA:-} =~ ^fpd-prod:sudo:[a-z_][a-z0-9_-]{0,31}$ ]] || die "decisions are recorded only through 'sudo myc-decide' on fpd-prod"
+  [[ -n $note ]] || note="$st by Chris"
+  [[ $(printf %s "$note" | wc -c) -le 200 && $note != *$'\n'* && $note != *$'\r'* && $note != *$'\t'* ]] || die "note must be one line, at most 200 bytes"
+  printf %s "$note" | clean_text || die "note must be plain UTF-8 text"
+  ! LC_ALL=C grep -qaE -- "$SECRET_RE" <<<"$note" || die "note looks like a credential; nothing recorded"
+  lock; sync; load "$t"
+  [[ $STATE == awaiting_approval ]] || die "$t is ${STATE}${Q:+ ($Q)}; there is no outstanding decision to record"
+  [[ $SEQ -eq $seq && ${LAST_BLOB:0:12} == "$b12" ]] \
+    || die "$key is not the current decision for $t (current: $t-$(printf %04d "$SEQ")-${LAST_BLOB:0:12}); nothing recorded"
+  ev=$(printf '%s/events/%04d.json' "$MYC_TASKS/$t" $((SEQ + 1)))
+  event_json --argjson s $((SEQ + 1)) --arg st "$st" --arg r "$note" --arg pe "$LAST_BLOB" --arg db "$DESC_BLOB" --arg via "$MYC_DECIDED_VIA" \
+    '{seq:$s, status:$st, at:$at, actor:"chris", reason:$r, prev_event:$pe, descriptor_blob:$db, decided_via:$via}' > "$REPO/$ev"
+  c=$(commit_push "mycelium: $t $st by Chris (decision $key)" "$ev")
+  log "$t $st in $c. This records the decision only; it does not start, resume or authorise any agent work."
+  echo "$c"
+}
+
 case "${1:-}" in
   state)    cmd_state "${2:?task_id}" ;;
   grant)    cmd_grant ;;
@@ -352,5 +413,6 @@ case "${1:-}" in
   admit)    cmd_admit "${2:?run_id}" ;;
   complete) cmd_complete "${2:?run_id}" ;;
   expire)   cmd_expire "${2:?task_id}" ;;
-  *) echo "usage: myc-gate state|claim|expire <task_id> | admit|complete <run_id> | grant" >&2; exit 2 ;;
+  decide)   cmd_decide "${2:?decision_key}" "${3:?approve|reject}" "${4:-}" ;;
+  *) echo "usage: myc-gate state|claim|expire <task_id> | admit|complete <run_id> | grant | decide <key> approve|reject [note]" >&2; exit 2 ;;
 esac

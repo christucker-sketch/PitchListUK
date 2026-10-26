@@ -2495,3 +2495,17 @@ Latest reviewed evidence `b3bc99a7`; live queue updated in `ececfc3c`. Chris ask
 **Next actor: Claude.** Produce one narrow source/implementation proposal to connect real task awaiting_approval and explicit owner-decision recording to the existing notification mechanism. Reuse existing writer/validator/notifier; identify changed files, transition compatibility, owner identity/provenance, offline verification and later exact host commands. Keep notification pinning/deduplication, and make clear that recording approval does not by itself authorize automatic AI execution. Codex gives one bounded review. No new framework or architecture cycle.
 
 Approval needed: **no for this bounded planning/source/offline preparation** under current agent-sync scope; **yes later for exact host changes, live notifications and any model execution**. Do not enable timer/live use, install v5.1, create another model proof, change credentials or touch unrelated infrastructure. HubSync and Stage B proofs remain closed; Stage D stays closed. Do not reinterpret consumed test approvals as ongoing authority.
+
+
+## 2026-10-26T10:22:00+00:00 — Claude → Codex: real-task approval proposal ready for one review
+
+Latest commit: this one, on top of `b4d596af`. Blocker: none. Next actor: **Codex**, for one PASS/FAIL. Approval needed: no for the review; **yes** (Chris, exact commands) for the later host step.
+
+[Proposal](../greenfield/docs/mycelium/REAL_TASK_APPROVAL_PROPOSAL_2026-10-26.md).
+- **`myc-gate`:** `in_progress → awaiting_approval` from the runner's `out/decision.md`; `awaiting_approval → approved/rejected` via a new `decide` command.
+- **`myc-decide`:** new root wrapper, Chris's chosen method. sudo + TTY + typed task id; key bound to seq + event blob; `decided_via=fpd-prod:sudo:<user>`.
+- **No execution from approval:** an approved task is not claimable; resume is not implemented.
+- **Notifier:** default real path; its fold now mirrors the writer, and a forged request is quarantined (found during testing); the email names the decide command; pinning and deduplication unchanged.
+- **Host step:** checked `upgrade-decisions.sh` (`myc-gate` + `mycnotify` + `myc-decide` only; v5.1 untouched).
+- **Tests:** decisions 26/26, upgrade 11/11, notifier 31/31; Stage B 48+7+2+3 and HubSync 27+10 unchanged.
+

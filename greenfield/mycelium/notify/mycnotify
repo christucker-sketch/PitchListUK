@@ -24,7 +24,7 @@ umask 077
 : "${MYCNOTIFY_HOME:=/var/lib/mycnotify}"
 : "${MYCNOTIFY_REMOTE:=https://github.com/christucker-sketch/PitchListUK.git}"
 : "${MYCNOTIFY_BRANCH:=findpitches-v3/greenfield}"
-: "${MYCNOTIFY_TASKS:=greenfield/mycelium/notify-test/tasks}"   # Stage C test path; NOT Stage B's tasks/
+: "${MYCNOTIFY_TASKS:=greenfield/mycelium/tasks}"   # the real task path (the Stage C proof used notify-test/tasks)
 : "${MYCNOTIFY_WEB:=https://github.com/christucker-sketch/PitchListUK/tree}"
 : "${MYCNOTIFY_MAX_DAY:=5}"        # HTTP attempts per London calendar day (retries included)
 : "${MYCNOTIFY_MAX_ATTEMPTS:=3}"   # per decision, definitely-not-accepted failures only
@@ -74,7 +74,7 @@ allowed() {
   esac
 }
 fold() {
-  local id=$1 d=$MYCNOTIFY_TASKS/$1 line meta mode type blob name n=0 st="" e want
+  local id=$1 d=$MYCNOTIFY_TASKS/$1 line meta mode type blob name n=0 st="" e want prev="" run=""
   F_STATE=QUARANTINE F_WHY="" F_DESC="" F_EV="" F_SEQ=0 F_AGENT="" F_REASON=""
   [[ $id =~ ^MYC-[0-9]{8}-[0-9]{3}$ ]] || { F_WHY="bad task id"; return 0; }
   line=$(G ls-tree "$REV" -- "$d/task.json")
@@ -100,7 +100,22 @@ fold() {
     want=$(jq -r .status <<<"$e")
     allowed "$st" "$want" || { F_WHY="transition '${st:-none}' -> '$want' not allowed"; return 0; }
     [[ $n -gt 1 || $(jq -r .actor <<<"$e") == chris ]] || { F_WHY="event 1 must be by chris"; return 0; }
-    st=$want; F_EV=$blob; F_REASON=$(jq -r .reason <<<"$e")
+    # the steps that lead to (or settle) a decision must be the writer's own, bound to their run and predecessor,
+    # exactly as myc-gate validates them; anything else could be a hand-written decision request
+    case "$st>$want" in
+      "pending>in_progress"|"approved>in_progress")
+        jq -e --arg a "hubsync-gate for $F_AGENT" --arg pe "$prev" '.actor == $a and .prev_event == $pe and (.run_id|type) == "string"' \
+          >/dev/null 2>&1 <<<"$e" || { F_WHY="claim event $n is not a writer claim"; return 0; }
+        run=$(jq -r .run_id <<<"$e") ;;
+      "in_progress>awaiting_approval")
+        jq -e --arg r "$run" --arg pe "$prev" '.actor == "hubsync-gate" and .run_id == $r and .prev_event == $pe' \
+          >/dev/null 2>&1 <<<"$e" || { F_WHY="decision request event $n does not match its run"; return 0; } ;;
+      "awaiting_approval>approved"|"awaiting_approval>rejected")
+        jq -e --arg pe "$prev" --arg db "$F_DESC" '.actor == "chris" and .prev_event == $pe and .descriptor_blob == $db
+            and (.decided_via|type) == "string" and (.decided_via|test("^fpd-prod:sudo:[a-z_][a-z0-9_-]{0,31}$"))' \
+          >/dev/null 2>&1 <<<"$e" || { F_WHY="decision event $n is not a recorded decision by Chris"; return 0; } ;;
+    esac
+    st=$want; F_EV=$blob; F_REASON=$(jq -r .reason <<<"$e"); prev=$blob
   done < <(G ls-tree "$REV" -- "$d/events/")
   [[ $n -ge 1 ]] || { F_WHY="no events"; return 0; }
   [[ $st != awaiting_approval || -n $F_REASON ]] || { F_WHY="awaiting_approval without a summary"; return 0; }
@@ -127,8 +142,9 @@ body_json() {  # key id seq agent reason
     --arg link "$link" --arg key "$1" '{sender: $from, to: [$to], subject: ("[FindPitches Mycelium] Approval needed: " + $id),
     text_body: ("A Mycelium task is waiting for your decision.\n\nTask: " + $id + " (assigned to " + $agent + ")\n"
       + "Decision event: " + $seq + "\nSummary: " + $sum + "\n\nReview it here: " + $link + "\n\n"
-      + "Replying to this email does NOT approve or reject anything. A decision only counts when it is recorded through "
-      + "the separately approved GitHub mechanism.\n\nNotice key: " + $key + "\n")}'
+      + "Replying to this email does NOT approve or reject anything. To decide, on fpd-prod run:\n\n"
+      + "  sudo myc-decide " + $key + " approve      (or: reject)\n\n"
+      + "Recording a decision does not start or resume any agent work.\n\nNotice key: " + $key + "\n")}'
 }
 send() {  # key id seq agent reason -> sets OUT (accepted|retry|permanent|permanent_hold|uncertain) DETAIL RETRY_AFTER
   local apikey body resp hdr err code rc
