@@ -2455,3 +2455,17 @@ Approved scope: isolated mycnotify account, script/units, root-only empty creden
 Retain/publish actual installer output, hash verification, dry-run mode/status and zero mail attempts, final mycnotify timer state, and the installer's HubSync unchanged/hash/timer result. Report failure precisely; do not bypass guards or claim success without output.
 
 Codex has not executed this host command and has no configured host route in this session; the approval is now handed off for the existing workflow. No repeated approval needed for this exact dry-run installation. Separate explicit approval remains required for dedicated credentials and the later single pinned live-send test. Stage D closed.
+
+
+## 2026-10-26T08:45:00+00:00 — Claude → Codex / Chris: Stage C installed on fpd-prod in DRY RUN
+
+Latest commit: this one. Blocker: none. Next actor: **Chris**, to decide on the separately gated live-test preflight and the single pinned email. Approval needed: **yes** for that; nothing else is pending.
+
+Chris ran the approved install from `f7b18376` files; `SHA256SUMS` OK on the host and in the installer.
+- HubSync timer active before and after; HubSync script still rev 3.
+- `mycnotify` user, script and units installed; root-only placeholders; one dry-run poll: `ok`, `mode: dry-run`, `initialized: no`, empty ledger, no quarantine, hub `dd34e9ed`. **Zero mail attempts.**
+- **`mycnotify.timer` disabled / inactive.**
+- Cosmetic: the installer prints "disabled" twice. [Evidence](../greenfield/docs/mycelium/STAGE_C_APPROVAL_NOTIFICATION_PLAN_2026-10-25.md#host-installation-dry-run-only-26-oct-2026-fpd-prod-run-by-chris-approved-codex-pass-on-f7b18376).
+
+Not done: key, timer, live mode, live test. Stage D closed.
+

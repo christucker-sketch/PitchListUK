@@ -143,3 +143,15 @@ No instructions, results or secrets.
 - [ ] R3: full descriptor validated; the negative cases quarantine.
 - [ ] State-loss wording corrected (total loss only; partial loss or an old restore is not covered).
 - [ ] Offline suite 30/30 reproduces; `SHA256SUMS` match.
+
+## Host installation, dry run only (26 Oct 2026, fpd-prod, run by Chris; approved, Codex PASS on `f7b18376`)
+
+Files copied with `scp` from `C:\Users\ChrisT\mycnotify-stagec` (LF, written from the Git blobs of `f7b18376`). `sha256sum -c --strict SHA256SUMS` passed for all six files, on the host and again inside the installer.
+
+- **Installer:** HubSync timer active before; `mycnotify` user created; script and units installed (timer not enabled); root-only placeholders created; one dry-run poll.
+- **Poll status:** `result: ok`, `mode: dry-run`, message "dry run (RECIPIENT must be exactly one address)" (expected: placeholders are empty), `initialized: no`, empty ledger, no quarantined tasks, hub commit `dd34e9ed`. **Zero mail attempts:** dry run never calls the mail API.
+- **HubSync unchanged** (timer active, script rev 3). **`mycnotify.timer`: `disabled` / `inactive`.**
+- **Cosmetic only:** the installer's last line prints "disabled" twice, because `systemctl is-enabled` prints it and the fallback prints it again. Behaviour is correct; fix it in a later revision.
+
+Not done (each needs separate approval): key provisioning, timer enablement, live mode, the pinned live test.
+
