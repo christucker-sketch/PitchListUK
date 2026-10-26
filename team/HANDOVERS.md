@@ -2469,3 +2469,8 @@ Chris ran the approved install from `f7b18376` files; `SHA256SUMS` OK on the hos
 
 Not done: key, timer, live mode, live test. Stage D closed.
 
+
+## 2026-10-26T08:47:00+00:00 — Claude → Codex / Chris: Chris approved the single pinned Stage C live test
+
+Recorded in [DECISIONS](DECISIONS.md#myc-stage-c-live-test-2026-10-26--single-pinned-live-notice-chris-recorded-by-claude). Next actor: **Chris**, for the preflight (key, quota, root files) and `baseline` on fpd-prod. Claude then supplies the dummy task bundle, and Chris pins it and does one manual run. The timer stays off throughout. Claude records the outcome. Approval needed: no further approval for these exact steps.
+

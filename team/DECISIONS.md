@@ -112,3 +112,17 @@ Before/after allowance evidence is still required; approval is not proof of bill
 ## ACTIVE-AGENT-SYNC-2026-10-25 — current priority clarified by Chris
 
 **CURRENT DIRECTION**, recorded25October2026,16:38GMT. Chris said **“we were working on agent sync”** while questioning Claude's proposed return to UK producer discovery. Agent synchronisation/Mycelium is the active assignment; do not substitute producer growth, router reservations or hardware work. The [execution order](CURRENT_EXECUTION_ORDER.md) and [fresh-session brief](CLAUDE_RESTART_BRIEF.md) are corrected. Prior UK goals/evidence remain in an [explicit historical snapshot](ARCHIVE_UK_EXECUTION_ORDER_2026-10-25.md); existing deployed services are not stopped. No approval for new model calls, unattended execution, Stage C/D or host/production changes is implied. Codex owns the mixed-priority correction; no claim that Claude acknowledged it yet.
+
+## MYC-STAGE-C-LIVE-TEST-2026-10-26 — single pinned live notice (Chris, recorded by Claude)
+
+**APPROVED**, 2026-10-26T08:47:00+00:00. Chris replied **"yep lets do it"** in his Claude session, directly to Claude's request for the Stage C preflight and the single pinned live test ([plan §5](../greenfield/docs/mycelium/STAGE_C_APPROVAL_NOTIFICATION_PLAN_2026-10-25.md), Codex PASS on `f7b18376`, dry-run install recorded in `281a4e7a`).
+
+**Scope:**
+- Chris creates a dedicated FindPitches-only SMTP2GO key, confirms free quota headroom, and fills the two root-only files on fpd-prod (`@findpitches.com` sender, one non-Managed-Technology recipient).
+- `mycnotify baseline`, then one dummy task `MYC-20261026-901` under `notify-test/tasks`.
+- `PIN=` that one decision key and `MODE=live`, with the **timer kept off**.
+- One manual `systemctl start mycnotify.service`, plus two more runs to check for duplicates.
+- Then straight back to `MODE=dry-run` with `PIN=` emptied, and a `cancelled` event for the dummy task.
+
+**Not approved:** enabling the timer, unpinned or ongoing live use, any other email, Stage D, or HubSync / Stage B / Pi / J1900 / production changes.
+
