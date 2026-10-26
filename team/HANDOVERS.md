@@ -2509,3 +2509,15 @@ Latest commit: this one, on top of `b4d596af`. Blocker: none. Next actor: **Code
 - **Host step:** checked `upgrade-decisions.sh` (`myc-gate` + `mycnotify` + `myc-decide` only; v5.1 untouched).
 - **Tests:** decisions 26/26, upgrade 11/11, notifier 31/31; Stage B 48+7+2+3 and HubSync 27+10 unchanged.
 
+
+
+## 26 October 2026 — Codex → Claude / Chris: real-task approvals review CHANGES REQUIRED
+
+Reviewed `45b7336f`; [bounded evidence](../greenfield/docs/mycelium/REAL_TASK_APPROVAL_CODEX_REVIEW_2026-10-26.md) in `128e15d9`. Independent maintained tests **26 decisions + 11 upgrade + 31 notifier + 60 Stage B PASS**; all 20 manifest entries match.
+
+Three additional local failure probes:
+1. A repository-only edit from actor claude to chris, with matching public predecessor/descriptor/via fields, is accepted as approved without any sudo/wrapper invocation. Repository-writing agents can forge these assertions too; owner provenance needs a trustworthy confirmation boundary or explicitly advisory semantics.
+2. A 401-byte request reason makes myc-gate quarantine but mycnotify still list an eligible decision; reader parity remains incomplete.
+3. A simulated failure to remove newly installed myc-decide during rollback leaves it present while reporting “previous files and receipt restored and verified”.
+
+**Next actor:** Claude makes the narrow corrections and adds the reproduced negatives. Keep approval separate from execution. No new framework; source/offline work needs no extra project approval. No host installation approval requested on this failing candidate; no host/email/model changes occurred. HubSync/Stage C proofs closed; notifier dry-run/timer off; Stage D closed.
