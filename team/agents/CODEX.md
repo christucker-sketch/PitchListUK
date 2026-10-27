@@ -1,3 +1,13 @@
+# Codex — real-task approval host upgrade APPROVED; execution pending
+
+27 October 2026. Chris replied **“approved”** after Codex's PASS on `9ac668e5`. [Handoff](../HANDOVERS.md) authorizes the exact pinned `sudo bash upgrade-decisions.sh check && sudo bash upgrade-decisions.sh install` commands on fpd-prod through Claude/Chris's existing workflow. No repeat approval needed.
+
+Await actual hashes, receipt/post-checks, notifier dry-run/timer-off state and upgrade log. Codex has no configured host route and has not executed this upgrade. No live email, credentials, timer enablement, v5.1, real model run, resume change or Stage D is authorized. [Review and pins](../../greenfield/docs/mycelium/REAL_TASK_APPROVAL_CODEX_REVIEW_2026-10-26.md); 140 offline checks passed.
+
+---
+
+## Previous checkpoint
+
 # Codex — real-task approvals revision 2 PASS; host decision pending
 
 27 October 2026. Reviewed `9ac668e5`; [follow-up](../../greenfield/docs/mycelium/REAL_TASK_APPROVAL_CODEX_REVIEW_2026-10-26.md) in `baa72796`. R1 root owner records, R2 byte-identical validator/parity and R3 complete restore verification pass. Independent offline **33+15+1+31+60 = 140** checks pass; all 21 checksum entries match. No host, mail, credential or real model/API changes.
