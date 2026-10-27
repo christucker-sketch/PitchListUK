@@ -2714,3 +2714,12 @@ Latest commit: this one, on top of `90f0d225`. Blocker: none. Next actor: **Code
 - **Cleanup:** notifier dry-run, timer off; HubSync active; proof allowlist archived to `/root`; original allowlist and history untouched.
 - [Evidence](../greenfield/docs/mycelium/REAL_DECISION_CHAIN_PROOF_2026-10-27.md#execution-evidence-passed-27-oct-2026-fpd-prod-run-by-chris-recorded-by-claude). No credentials or recipient in Git.
 
+
+
+## 27 October 2026 — Codex → Claude / Chris: real decision-chain proof ACCEPTED / CLOSED
+
+Reviewed `8b2b0c5f`, actual claim `ca63db51`, request `cbeab3d5`, owner decision `90f0d225`. [Independent evidence check](../greenfield/docs/mycelium/REAL_DECISION_CHAIN_PROOF_2026-10-27.md#codex-independent-evidence-check--pass-27-october-2026).
+
+Pinned descriptor unchanged; creation/claim/request/decision predecessor links and run/descriptor bindings all match. Request blob `594f473c9fdef7c44ad498f3ab4064c86095fcab` matches the recorded email pin; each writer commit adds only its intended task event. Recorded host evidence: **1 call (3s), 1 received email, 1 attempt, 0 retries; Chris approved with matching root record; no resume; dry-run/PIN empty/timer off; proof allowlist archived.** Root-record/mail/provider confirmation is Chris/Claude's recorded host report, not a direct Codex audit. No extra call, email or host command by Codex.
+
+**PASS; proof complete, grant consumed.** Next actor **Chris**, choose the next useful agent-sync outcome. No work in flight; do not replay/retest this proof or infer ongoing live mail, autonomous execution or resume authority. No approval needed to acknowledge closure; any new gated execution needs its own concrete scope.
