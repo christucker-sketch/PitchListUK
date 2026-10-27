@@ -1,3 +1,13 @@
+# Codex — runner decision-output delivery ACTIVE
+
+27 October 2026. Chris asked to plan next steps and move now. Real-task approval installation confirmed in recorded `26cc6694` host evidence; no duplicate tests needed. [Concrete plan](../../greenfield/docs/mycelium/RUNNER_DECISION_OUTPUT_NEXT_STEPS_2026-10-27.md) in `ab3da37f`; [live queue](../CURRENT_EXECUTION_ORDER.md) active in `8895a487`.
+
+Next actor **Claude**: narrow runner source implementation + fake end-to-end evidence + pinned checked upgrade proposal. Then **Codex** reviews affected code/tests once. Current source/offline scope authorized; no new project approval required. Later exact host deployment, real model/pinned mail proof remain separate gates. No such action now; no automatic resume/Stage D. Completed HubSync/Stage B/Stage C proofs remain closed.
+
+---
+
+## Previous checkpoint
+
 # Codex — real-task approval host upgrade APPROVED; execution pending
 
 27 October 2026. Chris replied **“approved”** after Codex's PASS on `9ac668e5`. [Handoff](../HANDOVERS.md) authorizes the exact pinned `sudo bash upgrade-decisions.sh check && sudo bash upgrade-decisions.sh install` commands on fpd-prod through Claude/Chris's existing workflow. No repeat approval needed.
