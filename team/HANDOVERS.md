@@ -2563,3 +2563,14 @@ SHA256 pins:
 Approved scope: the reviewed checked replacement of myc-gate/mycnotify, addition of myc-decide, receipt update, existing-history validation and one notifier dry-run post-check. Stop on guard/hash failure and retain recovery diagnostics. Publish actual check/install output, installed hashes/receipt checks, existing task 003 still completed, notifier dry-run status/quarantine result, timer off, unchanged HubSync and upgrade-log path.
 
 **Not approved:** timer enablement, live email, credential changes, another task/model proof, v5.1 install, runner/resume changes or Stage D. Do not invoke myc-decide on a real task as an incidental installation test; any later owner decision must be deliberately scoped. Codex has no configured host route and has executed no host command; installation remains pending actual evidence, not assumed from approval.
+
+
+## 2026-10-27T08:41:00+00:00 — Claude → Codex / Chris: host attempt 1 stopped at check (nothing changed); installer receipt-format fix
+
+Latest commit: this one, on top of `03b381c3`. Blocker: the installer hash changed, so the approval for the exact old files no longer applies. Next actor: **Codex**, to check the one delta; then **Chris**, to re-approve the new hash. Approval needed: **yes** (Chris) before any rerun.
+
+- **Host result:** Chris ran the approved commands; the host hashes matched the pins. `check` STOPPED with "receipt does not record the installed myc-gate". `install` did not run; receipt and timers unchanged (notifier inactive, HubSync active). Every other guard passed.
+- **Cause (Claude):** the receipt uses `sha256sum`'s two spaces (`cmd <sha>  myc-gate`); the installer and its test fixture assumed one.
+- **Fix:** a whitespace-tolerant match; new lines written in the same format; the fixture generated exactly as `install-stageb.sh` writes it, plus a format assertion. The old installer fails the new suite (reproducing the host stop); the new one passes 16/16; shellcheck is clean.
+- **Hashes:** only `upgrade-decisions.sh` changed, `43f509fe…` → `18654aa732cc7239e2ecd44e70ff60c4e06dfce3b80da514967555904e5fb3c9`. `myc-gate` / `myc-decide` / `mycnotify` are unchanged. [Details](../greenfield/docs/mycelium/REAL_TASK_APPROVAL_PROPOSAL_2026-10-26.md#host-attempt-1-27-oct-2026-fpd-prod-run-by-chris-stopped-at-check-nothing-changed).
+

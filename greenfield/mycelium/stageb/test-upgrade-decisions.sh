@@ -31,11 +31,14 @@ export UPGRADE_TEST=1 T_GATE_OLD=$(sha "$T/old/myc-gate") T_GATE_NEW=$(sha "$T/k
 reset() {
   rm -rf "$T/bin" "$T/state" "$T/f"; mkdir -p "$T/bin" "$T/state" "$T/f"
   cp -p "$T/old/myc-gate" "$T/old/mycnotify" "$T/hubsync" "$T/bin/"; : > "$T/hs.lock"; : > "$T/mn.lock"; : > "$T/state/lock"
-  printf 'installed_at=x\ncmd %s myc-gate\ncmd aaaa myc-agent\ncmd bbbb myc-stageb\n' "$T_GATE_OLD" > "$T_R"
+  { echo "installed_at=x"; (cd "$T/bin" && sha256sum myc-gate) | sed 's/^/cmd /'; printf 'cmd %s  %s\n' aaaa myc-agent bbbb myc-stageb; } > "$T_R"   # = install-stageb.sh format
   printf 'SENDER=x@findpitches.com\nRECIPIENT=y@z\nMODE=dry-run\nPIN=\n' > "$T/notify.conf"; echo inactive > "$T/f/timer"; echo success > "$T/f/result"
 }
 run() { bash "$T/kit/upgrade-decisions.sh" "$1" > "$T/out" 2>&1; echo $?; }
 U=$T/kit/upgrade-decisions.sh
+
+echo "0. the fixture receipt is byte-for-byte the format install-stageb.sh writes"
+reset; [[ $(sed -n 2p "$T_R") == "cmd $T_GATE_OLD  myc-gate" ]] && ok "receipt line: 'cmd <sha256>  myc-gate' (two spaces, as sha256sum prints)" || bad "fixture format"
 
 echo "1. check is read-only"; reset; r=$(run check)
 [[ $r == 0 && $(sha "$T/bin/myc-gate") == "$T_GATE_OLD" && ! -e $T/state/upgrade-decisions && ! -e $T/bin/myc-decide ]] && ok "asserted, nothing changed" || { bad check; cat "$T/out"; }
@@ -52,17 +55,17 @@ reset; ( flock 9; sleep 5 ) 9>>"$T/state/lock" & sleep 0.5; r=$(run install); wa
 
 echo "3. install"; reset; r=$(run install)
 [[ $r == 0 && $(sha "$T/bin/myc-gate") == "$T_GATE_NEW" && $(sha "$T/bin/mycnotify") == "$T_MN_NEW" && $(sha "$T/bin/myc-decide") == "$T_DECIDE_NEW" ]] \
-  && grep -qx "cmd $T_GATE_NEW myc-gate" "$T_R" && grep -qx "cmd $T_DECIDE_NEW myc-decide" "$T_R" && grep -qx 'cmd aaaa myc-agent' "$T_R" \
+  && grep -qx "cmd $T_GATE_NEW  myc-gate" "$T_R" && grep -qx "cmd $T_DECIDE_NEW  myc-decide" "$T_R" && grep -qx 'cmd aaaa  myc-agent' "$T_R" \
   && ! grep -q "$T_GATE_OLD" "$T_R" && grep -q 'DONE: install complete' "$T/out" && ls "$T"/state/upgrade-decisions/install-*.log >/dev/null \
   && ok "replaced and verified; receipt has new myc-gate + myc-decide, v5 myc-agent/myc-stageb lines kept; log kept" || { bad install; cat "$T/out"; }
 
 echo "4. rollback (after 3)"; r=$(run rollback)
-[[ $r == 0 && $(sha "$T/bin/myc-gate") == "$T_GATE_OLD" && $(sha "$T/bin/mycnotify") == "$T_MN_OLD" && ! -e $T/bin/myc-decide ]] && grep -qx "cmd $T_GATE_OLD myc-gate" "$T_R" \
+[[ $r == 0 && $(sha "$T/bin/myc-gate") == "$T_GATE_OLD" && $(sha "$T/bin/mycnotify") == "$T_MN_OLD" && ! -e $T/bin/myc-decide ]] && grep -qx "cmd $T_GATE_OLD  myc-gate" "$T_R" \
   && ! grep -q myc-decide "$T_R" && ok "old files and receipt back; myc-decide removed" || { bad rollback; cat "$T/out"; }
 
 echo "5. a failing post-check after the swap restores everything"
 reset; cp "$T/kit/myc-gate" "$T/good-gate"; cp "$T/bad-gate" "$T/kit/myc-gate"; T_GATE_NEW=$(sha "$T/bad-gate") bash "$U" install > "$T/out" 2>&1; r=$?; cp "$T/good-gate" "$T/kit/myc-gate"
-[[ $r != 0 && $(sha "$T/bin/myc-gate") == "$T_GATE_OLD" && $(sha "$T/bin/mycnotify") == "$T_MN_OLD" && ! -e $T/bin/myc-decide ]] && grep -qx "cmd $T_GATE_OLD myc-gate" "$T_R" \
+[[ $r != 0 && $(sha "$T/bin/myc-gate") == "$T_GATE_OLD" && $(sha "$T/bin/mycnotify") == "$T_MN_OLD" && ! -e $T/bin/myc-decide ]] && grep -qx "cmd $T_GATE_OLD  myc-gate" "$T_R" \
   && grep -q 'restored and verified' "$T/out" && ok "validator post-check failed -> previous files and receipt restored" || { bad "post-check restore"; cat "$T/out"; }
 reset; touch "$T/f/poll_fail"; r=$(run install)
 [[ $r != 0 && $(sha "$T/bin/myc-gate") == "$T_GATE_OLD" && ! -e $T/bin/myc-decide ]] && grep -q 'restored and verified' "$T/out" && ok "notifier dry-run poll failed -> restored" || { bad "poll restore"; cat "$T/out"; }

@@ -44,7 +44,7 @@ case $MODE in
     want "$SRC/myc-gate" "$GATE_NEW"; want "$SRC/myc-decide" "$DECIDE_NEW"; want "$SRC/mycnotify" "$MN_NEW"
     want "$BIN/myc-gate" "$GATE_OLD"; want "$BIN/mycnotify" "$MN_OLD"
     [[ ! -e $BIN/myc-decide ]] || stop "$BIN/myc-decide already exists"
-    grep -qx "cmd $GATE_OLD myc-gate" "$R" || stop "receipt does not record the installed myc-gate" ;;
+    grep -qE "^cmd ${GATE_OLD}[[:space:]]+myc-gate\$" "$R" || stop "receipt does not record the installed myc-gate" ;;   # install-stageb writes sha256sum's two-space format
   rollback)
     want "$BIN/myc-gate" "$GATE_NEW"; want "$BIN/myc-decide" "$DECIDE_NEW"; want "$BIN/mycnotify" "$MN_NEW"
     want "$UP/myc-gate" "$GATE_OLD"; want "$UP/mycnotify" "$MN_OLD"; [[ -f $UP/install-receipt ]] || stop "no receipt backup in $UP" ;;
@@ -101,7 +101,7 @@ if [[ $MODE == install ]]; then
   install -m 755 "${OWN[@]}" "$SRC/mycnotify" "$BIN/mycnotify"
   want "$BIN/myc-gate" "$GATE_NEW"; want "$BIN/myc-decide" "$DECIDE_NEW"; want "$BIN/mycnotify" "$MN_NEW"
   { grep -v -e '^cmd .* myc-gate$' -e '^cmd .* myc-decide$' "$R"; echo "decisions_upgraded_at=$(date -u +%FT%TZ)"
-    echo "cmd $GATE_NEW myc-gate"; echo "cmd $DECIDE_NEW myc-decide"; } > "$R.new"; chmod 600 "$R.new"; mv "$R.new" "$R"
+    printf 'cmd %s  %s\n' "$GATE_NEW" myc-gate "$DECIDE_NEW" myc-decide; } > "$R.new"; chmod 600 "$R.new"; mv "$R.new" "$R"
 else
   install -m 755 "${OWN[@]}" "$UP/myc-gate" "$BIN/myc-gate"; install -m 755 "${OWN[@]}" "$UP/mycnotify" "$BIN/mycnotify"; rm -f "$BIN/myc-decide"
   cp -p "$UP/install-receipt" "$R"

@@ -75,7 +75,7 @@ sudo myc-decide <decision_key> approve|reject ["one-line note"]
 | `stageb/myc-gate` (modified; v5 was `a55383f1…`) | `a74add4e121c9e67bfa7d23dac1fe3fed1cc2e29a6440eecc3b8e8fa8e5480f7` |
 | `stageb/myc-decide` (new) | `7e361a4d60b68a809b00709be22ac910a0fdb443f9092c333c621d37f0ff3dd3` |
 | `notify/mycnotify` (modified; installed is `b18edfaa…`) | `b65180299e8e5984eb9642a37c78bf973eac75c78d6d014f37bc8a260336fab8` |
-| `stageb/upgrade-decisions.sh` (new, checked host step) | `43f509fef094b693fb31ad25bd60586829995c233c34ac4567d48a4a1fb2b43a` |
+| `stageb/upgrade-decisions.sh` (new, checked host step) | `18654aa732cc7239e2ecd44e70ff60c4e06dfce3b80da514967555904e5fb3c9` (rev 2.1; `43f509fe…` stopped on the real receipt format, see below) |
 | `stageb/test-decisions.sh`, `stageb/test-upgrade-decisions.sh`, `stageb/test-fold-parity.sh` (new); `notify/test-mycnotify.sh` (fixtures fully writer-valid, including owner records) | in `stageb/SHA256SUMS` and `notify/SHA256SUMS` |
 
 `myc-agent` and `myc-stageb` are untouched, so **v5.1 stays parked and is not installed by this**. HubSync is untouched.
@@ -152,3 +152,17 @@ Each is a separate later decision.
 - [ ] Notifier fold, email text and default path; pinning, deduplication and the ledger are unchanged.
 - [ ] All offline suites reproduce; `SHA256SUMS` match.
 - [ ] The host step is checked and rollback-safe, and leaves v5.1, timers and live mode untouched.
+
+## Host attempt 1 (27 Oct 2026, fpd-prod, run by Chris): STOPPED at `check`, nothing changed
+
+- **What ran:** Chris ran the approved commands with the four pinned files (hashes verified on the host).
+- **Every guard passed except one:** HubSync rev 3; notifier dry-run with timer off; installed `myc-gate` = v5 `a55383f1…`; installed `mycnotify` = `b18edfaa…`; `myc-decide` absent.
+- **The one that failed:** `check` stopped with "receipt does not record the installed myc-gate". `install` never ran. The receipt and timers were printed afterwards: unchanged, notifier `inactive`, HubSync `active`.
+- **Cause (Claude's error):** `install-stageb.sh` writes the receipt as `sha256sum` output prefixed with `cmd `, which has **two spaces** before the name. `upgrade-decisions.sh` matched exactly one space, and the test fixture also used one space, so the tests could not catch it.
+- **Fix, rev 2.1, installer only:**
+  - the match accepts that format (`^cmd ${GATE_OLD}[[:space:]]+myc-gate$`), and new receipt lines are written in the same two-space format;
+  - the test fixture is now generated exactly as `install-stageb.sh` does it, and a new case 0 asserts the format byte for byte;
+  - the same suite run against `43f509fe…` fails, reproducing the host stop; rev 2.1 passes **16/16**; shellcheck is clean.
+- **Unchanged:** `myc-gate`, `myc-decide` and `mycnotify` (`a74add4e…`, `7e361a4d…`, `b6518029…`). `upgrade-decisions.sh` is now `18654aa732cc7239e2ecd44e70ff60c4e06dfce3b80da514967555904e5fb3c9`.
+- **Re-approval needed:** Chris's approval named the exact four files, so the changed installer needs Codex's check of this one delta and Chris's go-ahead on the new hash.
+
