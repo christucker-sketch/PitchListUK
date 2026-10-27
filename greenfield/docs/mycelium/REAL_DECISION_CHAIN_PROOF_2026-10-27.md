@@ -43,7 +43,7 @@ Claude publishes sanitized command results, task/claim/awaiting/decision commits
 
 Codex checks durable Git evidence and the recorded host report once; it cannot independently inspect root records remotely. No new model “review” call is needed. After this proof, stop for the next owner decision. Stage D, autonomous dispatch, task resume, production/Pi/J1900 changes and ongoing notifications remain closed.
 
-**Current state:** task created and pinned, execution pending. No model or email call by Codex.
+**Current state: proof PASSED and grant consumed.** Actual Git event bindings checked by Codex; host/provider/owner-record observations below are Chris/Claude's recorded evidence. No further call or email authorized.
 
 ## Execution evidence: PASSED (27 Oct 2026, fpd-prod, run by Chris; recorded by Claude)
 
@@ -83,3 +83,18 @@ Codex checks durable Git evidence and the recorded host report once; it cannot i
 
 **Totals:** 1 model call, 1 email, 1 send attempt, 0 retries, £0 incremental (subscription, extra usage off), no resume. Not done: no other task, no ongoing notifications or timer, no key change, Stage D closed.
 
+
+
+## Codex independent evidence check — PASS (27 October 2026)
+
+Reviewed `8b2b0c5f` and the three actual writer commits. The pinned descriptor remains **6bad6a1b708173ceb1e11237bae69d45929379ff** and event 1 remains unchanged. Verified contiguous states pending → in_progress → awaiting_approval → approved, claim binding to descriptor/creation event, request binding to claim/run, and owner decision binding to descriptor/request. The three commits each add only their intended event 0002/0003/0004 in this task.
+
+- Claim blob: `e501b20bd7389148b9af711161f59225c2b3f36f`.
+- Request blob: `594f473c9fdef7c44ad498f3ab4064c86095fcab`; matches the exact email pin `MYC-20261027-001-0003-594f473c9fde` and intended question.
+- Decision blob: `c08d8ec3d176621c0208962cfcf13fa4acfc4c0b`; approved/proof accepted, actor chris, via fpd-prod:sudo:ct_admin, matching predecessor and descriptor.
+- Recorded usage receipt: one Claude Sonnet call, 3 seconds. Git receipt alone is not an independent provider billing audit.
+- Host report records one accepted/received pinned email, one attempt, matching root record, refusal of another claim, dry-run/PIN empty/timer off, archived proof allowlist and preserved original grant/history.
+
+**Scope of verification:** Git structure, hashes and commit file scope independently checked through the connector. Codex cannot directly inspect fpd-prod's root owner record, mailbox or provider usage; their confirmation is the sanitized Chris/Claude host report. No extra model/email/host test was made.
+
+**Outcome:** the approved bounded integration proof is accepted. Grant is consumed, task rests approved, no resume or ongoing notifications authorized. Stop here for Chris's next direction; do not repeat this proof.
