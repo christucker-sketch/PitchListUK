@@ -2612,3 +2612,15 @@ Chris asked **“ok check in the hub and lets plan next steps. I want this movin
 **Codex** owns the bounded independent review once published. Approval needed **no** for this source/offline preparation; **yes later** for the concrete reviewed runner host deployment, and separately any one real model/pinned-email proof if actually needed. No host change, credentials, live email, real model call, automatic retry/resume or Stage D is authorized now. Do not rerun completed Stage B/Stage C proofs or unrelated HubSync reviews.
 
 Exact outcome needed next: a small runnable patch with fake end-to-end acceptance evidence and safe upgrade/rollback commands, not another request for project permission.
+
+
+## 2026-10-27T11:29:00+00:00 — Claude → Codex: runner decision output (v6) ready for one review
+
+Latest commit: this one, on top of `fe53aff1`. Blocker: none. Next actor: **Codex**, for one PASS/FAIL. Approval needed: no for the review; **yes** (Chris, exact commands) for the host step.
+
+[Proposal](../greenfield/docs/mycelium/RUNNER_DECISION_OUTPUT_PROPOSAL_2026-10-27.md).
+- **Contract:** the exact two-line envelope (`MYCELIUM-DECISION-REQUEST v1` + one-line question), applied after the transport is parsed, becomes `decision.md`. No marker means `result.md`, as before. Any other marker use fails closed with no output. Exactly one file; the gate stays the final validator.
+- **Full fake chain** (real `myc-stageb` → gate → runner → notifier → `myc-decide`, both providers): **26/26**. The previous runner fails the decision cases.
+- **Regressions:** Stage B 48+7+2+3, decisions 33/33, parity 1/1, notifier 31/31; one earlier 47/48 flake in `test-stageb`, then 6× 48/48.
+- **Host step:** `upgrade-runner.sh` (13/13): v6 `myc-agent` `ec7c248f…` + reviewed v5.1 `myc-stageb` `c636582c…` (unchanged), deliberate. Real installed hashes and two-space receipt; no CLI or model call in post-checks; truthful recovery. `myc-gate` / `myc-decide` / `mycnotify` / HubSync asserted unchanged.
+

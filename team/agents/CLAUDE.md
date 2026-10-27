@@ -1,7 +1,7 @@
 # Claude status
 
 Author: Claude (Cowork session with Chris; replaces the placeholder Codex created)
-Updated: 2026-10-27T08:46:00+00:00
+Updated: 2026-10-27T11:29:00+00:00
 State: WORKING — follows [CURRENT_EXECUTION_ORDER](../CURRENT_EXECUTION_ORDER.md) (UK-first, acknowledged 21 Oct)
 
 **Checkpoint for a fresh Claude session (25 Oct 14:35 GMT).** Read with Codex's [restart brief](../CLAUDE_RESTART_BRIEF.md). Nothing is uncommitted: the working tree is clean, and every Claude commit up to `a955fdc` is on origin.
@@ -17,8 +17,9 @@ State: WORKING — follows [CURRENT_EXECUTION_ORDER](../CURRENT_EXECUTION_ORDER.
   2. Done.
   3. Stage C approval notice: **single pinned live test PASSED 26 Oct 09:06Z** (one email, no duplicate after 2 reruns, 1 attempt logged); back in dry-run, timer off, dummy cancelled. [Evidence](../../greenfield/docs/mycelium/STAGE_C_APPROVAL_NOTIFICATION_PLAN_2026-10-25.md#single-pinned-live-test-passed-26-oct-2026-fpd-prod-run-by-chris-approved-in-0a68eb01) ([plan](../../greenfield/docs/mycelium/STAGE_C_APPROVAL_NOTIFICATION_PLAN_2026-10-25.md), [source](../../greenfield/mycelium/notify/)). Awaiting Codex's single review. Stage D stays closed.
   4. Real-task approvals: **INSTALLED on fpd-prod 27 Oct 08:45Z** (attempt 2; attempt 1 stopped safely at check). `myc-gate` a74add4e, `myc-decide` 7e361a4d, `mycnotify` b6518029; task 003 still completed; notifier dry-run clean, timer off; HubSync unchanged; v5.1 not installed. [Evidence](../../greenfield/docs/mycelium/REAL_TASK_APPROVAL_PROPOSAL_2026-10-26.md#host-attempt-2-installed-27-oct-2026-0845z-fpd-prod-run-by-chris-approved-codex-pass-on-c91b318a).
+  5. Runner decision output (v6): **patch + offline proof + checked host step done, not installed** ([proposal](../../greenfield/docs/mycelium/RUNNER_DECISION_OUTPUT_PROPOSAL_2026-10-27.md)). Exact two-line envelope → `decision.md`; full fake chain 26/26; installer 13/13; regressions pass. Deploys v6 `myc-agent` + reviewed v5.1 `myc-stageb` explicitly. Awaiting Codex's single review.
   - Parked, not active: v5.1 install (only before any later Stage B run), cache-creation telemetry.
-- **Next action:** none in flight. Chris chooses the next agent-sync step (likely: runner support for `decision.md` plus one approved real end-to-end proof). Each is a separate approval.
+- **Next action:** Codex reviews the runner decision-output patch once. If it passes, Chris decides on `upgrade-runner.sh check && install` on fpd-prod. No host change without Chris's go-ahead.
 
 **Now (22 Oct 14:00):**
 - **25 Oct, Mycelium Stage B: exchange COMPLETED.** Task 003 (Claude) ran once on fpd-prod: 1 call, 14 s, completed in `80c936b2`, result sha256 `4e1f07aa…22fc`. Root cause of 002 and of 003's first pre-flight stop confirmed: `timeout` plus a terminal on stdin (rc 124). v5.1 (`</dev/null`) proposed for Codex review, not installed. Allowance readings still owed. [Plan §10](../../greenfield/docs/mycelium/PHASE_0_2_STAGE_B_PLAN_2026-10-25.md#10-v5-upgrade-and-task-003-run-25-oct-fpd-prod-run-by-chris-completed-exchange-done).
