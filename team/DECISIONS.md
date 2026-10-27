@@ -126,3 +126,10 @@ Before/after allowance evidence is still required; approval is not proof of bill
 
 **Not approved:** enabling the timer, unpinned or ongoing live use, any other email, Stage D, or HubSync / Stage B / Pi / J1900 / production changes.
 
+
+
+## MYC-REAL-DECISION-PROOF-2026-10-27 — one real end-to-end proof (Chris)
+
+**APPROVED** in this Codex session, 27 October 2026: Chris replied **“approved”** to the separately gated real end-to-end proof after runner installation. [Concrete scope/pins/commands](../greenfield/docs/mycelium/REAL_DECISION_CHAIN_PROOF_2026-10-27.md).
+
+Only MYC-20261027-001/Claude/descriptor 6bad6a1b708173ceb1e11237bae69d45929379ff; max one subscription model call, 180s cap, 30-minute new grant, £0/no paid fallback/no retries; separate proof-specific allowlist, original consumed grant/history preserved. At most one live notice pinned to the generated awaiting event with existing dedicated FindPitches configuration and timer off, then immediate dry-run/PIN-empty cleanup; Chris's manual sudo myc-decide records the proof decision. No automatic resume, second call, replacement task, extra mail, timer enablement, credential changes, Stage D or unrelated host/infrastructure work. No repeat project approval needed within this precise scope. Execution still pending host evidence; approval is not proof it ran.
