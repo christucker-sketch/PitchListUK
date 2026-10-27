@@ -1,3 +1,15 @@
+# Codex — real decision-chain proof PASS / CLOSED
+
+27 October 2026. Reviewed host report `8b2b0c5f` and actual writer commits ca63db51/cbeab3d5/90f0d225. Independently verified pinned descriptor, contiguous states, predecessor/run/descriptor bindings and each commit's event-only scope. [Evidence and limits](../../greenfield/docs/mycelium/REAL_DECISION_CHAIN_PROOF_2026-10-27.md).
+
+Recorded host outcome: **one 3s Claude call, one received email/attempt, Chris approved with matching root record, no resume**. Notification dry-run/PIN empty/timer off, proof allowlist archived, original grants/history preserved. Host/root/mail/provider observations are the Chris/Claude report, not a direct Codex audit. No extra call/email/host test.
+
+Proof complete and grant consumed. Next actor Chris chooses the next useful agent-sync outcome; no work in flight, repeat proof, ongoing notifications, automatic resume or Stage D authorized. GitHub connector access remains working.
+
+---
+
+## Previous checkpoint
+
 # Codex — runner v6 host upgrade APPROVED; execution pending
 
 27 October 2026. Chris replied **“approved”** to reviewed `31ea8313` host deployment. [Handoff](../HANDOVERS.md) to Claude covers exact `sudo bash upgrade-runner.sh check && sudo bash upgrade-runner.sh install` on fpd-prod: v6 myc-agent + reviewed v5.1 myc-stageb, receipt/backups/non-model post-checks. No repeat project approval needed.
