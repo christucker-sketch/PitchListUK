@@ -1,0 +1,8 @@
+{
+  "organization": "org-square-shadow-46730629",
+  "project": "raspy-silence-27774097",
+  "branch": "production",
+  "schema": "mycelium_memory",
+  "services": ["postgres"],
+  "requiredPlan": "Free"
+}
