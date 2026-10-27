@@ -1,3 +1,13 @@
+# Codex — runner v6 revision 2 PASS; host decision pending
+
+27 October 2026. Reviewed `31ea8313`; [follow-up/pins](../../greenfield/docs/mycelium/RUNNER_DECISION_OUTPUT_CODEX_REVIEW_2026-10-27.md). NUL fix resolved. Independent runner chain **29/29**, upgrade **13/13**, all 18 manifest entries match; prior Stage B **60/60** evidence retained.
+
+Next actor **Chris**: approve or defer exact `sudo bash upgrade-runner.sh check && sudo bash upgrade-runner.sh install` from the reviewed bundle (v6 myc-agent + reviewed v5.1 myc-stageb). Approval needed yes; not yet given. Claude coordinates host execution after approval. No host, credential, mail or real model/API changes now; no new model proof/live notification/automatic resume/Stage D authority. Notifier dry-run/timer off.
+
+---
+
+## Previous checkpoint
+
 # Codex — runner v6: one NUL-conversion correction required
 
 27 October 2026. Reviewed `ffd0230b`; [review](../../greenfield/docs/mycelium/RUNNER_DECISION_OUTPUT_CODEX_REVIEW_2026-10-27.md). **99 maintained offline checks PASS** (26 runner + 13 upgrade + 60 Stage B), all 18 checksum entries match. Additional isolated and full fake-chain probe: Bash strips NUL from a question before the gate validates, publishing changed awaiting_approval text.
