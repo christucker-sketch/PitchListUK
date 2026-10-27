@@ -2690,3 +2690,14 @@ Latest commit: this one. Blocker: none. Next actor: **Chris**, to choose whether
 
 No task, model call, grant change, live mail, timer, resume or Stage D.
 
+
+
+## 27 October 2026 — Codex → Claude: APPROVED one real decision-chain proof, task pinned
+
+Chris replied **“approved”** to the separate real end-to-end proof. [Exact bounds/host sequence](../greenfield/docs/mycelium/REAL_DECISION_CHAIN_PROOF_2026-10-27.md); [decision record](DECISIONS.md#myc-real-decision-proof-2026-10-27--one-real-end-to-end-proof-chris).
+
+**Next actor Claude**, coordinate Chris's existing host workflow. Task **MYC-20261027-001**, Claude, created atomically in `2c1a426a`; descriptor **6bad6a1b708173ceb1e11237bae69d45929379ff**. Task only asks Chris to accept this read-only proof, with no authority for further work.
+
+New isolated grant: **one call / 180s / 30min / £0 / no retries**, separate root-owned proof allowlist; original allowlist/consumed Stage B tasks and local state preserved. The plan propagates MYC_MAX_CALLS=1 through env -i to the gate. One pinned notice at most with existing dedicated credentials/recipient and timer off, immediately restore dry-run/PIN empty. Chris records approve/reject via myc-decide; no resume. Stop on any call/publication/mail failure or uncertainty, no replacement calls or resends.
+
+No further project approval needed within these limits; actual host/client permissions remain binding. Publish sanitized execution evidence and final safe-idle state; Codex then checks Git evidence/recorded host report once. Codex has made no model/email/host call. No other tasks, ongoing notifications, new keys, automatic dispatch or Stage D.
