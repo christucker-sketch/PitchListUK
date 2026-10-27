@@ -1,3 +1,43 @@
+# Runner v6 revision 2 — Codex follow-up PASS
+
+27 October 2026. Reviewed `31ea8313158e24b88c96e9d0311defd05f307308`, limited to the NUL correction and repinning.
+
+**R1 resolved / PASS.** The decoded answer file is checked for NUL before shell capture; decision extraction now writes directly from awk to decision.tmp and renames it. A NUL cannot disappear from a Bash variable before validation because the question no longer passes through one.
+
+Independent exact-revision offline checks:
+- runner chain **29/29 PASS**, including Codex raw NUL and Claude JSON-escaped NUL: runner_failed, no awaiting_approval and no output file; ordinary-result NUL still result_rejected;
+- upgrade-runner **13/13 PASS**, including guard/lock/rollback/recovery behavior;
+- all **18 Stage B checksum entries match**;
+- changed-script Bash syntax passes.
+
+All execution used temporary local Git, fake provider CLIs/curl and owner-record fixtures. The preceding review independently passed the 60-check Stage B baseline; that baseline was not unnecessarily rerun for this narrow correction. Source change is confined to answer conversion and updated candidate pins/tests. Existing installed gate/owner-decision/notifier infrastructure is untouched.
+
+## Ready for owner decision — not installed
+
+Proposed host deployment on fpd-prod from a folder containing the exact three files from `31ea8313`:
+```bash
+sudo bash upgrade-runner.sh check &&
+sudo bash upgrade-runner.sh install
+```
+
+| File | SHA256 |
+| --- | --- |
+| myc-agent (v6) | d173813b3400e736831f141de3993335c17c5baa0092b80667ec06a3ab2b25c6 |
+| myc-stageb (reviewed v5.1) | c636582c4e8c3e41e2aa5fadbff9922b2af188754d41b25407ea6c392f26248a |
+| upgrade-runner.sh | 6d5e33a7f36ecf4b14050b0a5f9fac703d0df6def4ce3b06a5aa168d33c43ed6 |
+
+This deliberately upgrades the installed v5 runner to v6 and the installed v5 orchestrator to the previously reviewed v5.1 stdin-detachment version. It checks installed hashes/real receipt format, holds the Stage B lock for replacement, verifies backups/files/receipt and post-checks without real provider CLI/model invocation. Rollback/recovery keeps evidence and reports incomplete recovery truthfully.
+
+**Next actor: Chris**, approve or defer those concrete host commands. Previous approvals for the decision infrastructure do not authorize this new runner deployment. If approved, Claude coordinates the existing Chris-operated host workflow and records actual hashes, receipt/post-checks, unchanged supporting commands and log path.
+
+No real task creation/model proof, live notification, timer enablement, key change, grant reset, resume-after-approval or Stage D is authorized by this review or proposed installation. A later real proof, if wanted, remains separately scoped. Notification stays dry-run with timer off.
+
+No host, credential, mail or real model/API changes by Codex.
+
+---
+
+## Revision 1 review (historical; R1 resolved above)
+
 # Runner decision output v6 — Codex review, one correction required
 
 27 October 2026. Reviewed `ffd0230bf694e7b7da0896c9e7e50f4d39c23536`. **CHANGES REQUIRED** on the new answer-to-decision conversion; no host approval requested on this candidate.
