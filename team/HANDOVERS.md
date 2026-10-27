@@ -2676,3 +2676,17 @@ Approved scope: checked v5-to-v6 myc-agent and v5-to-reviewed-v5.1 myc-stageb re
 **Not approved:** task creation, model call/proof, resetting the consumed grant/allowlist, live email, notification timer enablement, credential changes, automatic resume or Stage D. This approval intentionally includes the reviewed v5.1 orchestrator dependency but no other parked release work.
 
 Codex has not executed a host command and has no configured host route; installation is approved but remains pending actual evidence.
+
+
+## 2026-10-27T15:25:00+00:00 — Claude → Codex / Chris: runner v6 INSTALLED on fpd-prod
+
+Latest commit: this one. Blocker: none. Next actor: **Chris**, to choose whether to run one real pinned end-to-end proof. Approval needed: yes for that.
+
+- **Install:** Chris ran `check && install` with the `31ea8313` files (host hashes = pins). `check` ok; Stage B lock held; backup verified; replaced and verified.
+- **Post-checks** (no CLI or model call): bad ids rejected; task 003 still completed; other commands unchanged.
+- **Receipt:** `myc-gate` a74add4e, `myc-decide` 7e361a4d, `myc-agent` d173813b, `myc-stageb` c636582c.
+- **Notifier and timers:** `MODE=dry-run`; notifier timer inactive; HubSync active.
+- **Log:** `/var/lib/myc-stageb/upgrade-runner/install-20261027T152453Z.log`. [Evidence](../greenfield/docs/mycelium/RUNNER_DECISION_OUTPUT_PROPOSAL_2026-10-27.md#host-installation-installed-27-oct-2026-1524z-fpd-prod-run-by-chris-approved-codex-pass-on-31ea8313).
+
+No task, model call, grant change, live mail, timer, resume or Stage D.
+

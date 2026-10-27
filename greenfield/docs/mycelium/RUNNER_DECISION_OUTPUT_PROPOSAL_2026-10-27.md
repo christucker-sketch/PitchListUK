@@ -130,3 +130,27 @@ A single real end-to-end proof, if wanted later, is a separate pinned proposal.
 - [ ] Full fake chain through `awaiting_approval` → owner approve/reject → no resume or second call.
 - [ ] v5 → v6 / v5.1 deployment is explicit and minimal.
 - [ ] The host step is checked, uses real installed hashes and receipt format, makes no model call and recovers truthfully.
+
+## Host installation: INSTALLED (27 Oct 2026 15:24Z, fpd-prod, run by Chris; approved, Codex PASS on `31ea8313`)
+
+- **Files on the host:** `myc-agent` `d173813b…`, `myc-stageb` `c636582c…`, `upgrade-runner.sh` `6d5e33a7…`. All match the pins.
+- **`check`:** "hashes as expected for check; myc-gate, myc-decide, mycnotify and hubsync as installed"; nothing changed.
+- **`install`:**
+  - Stage B lock held;
+  - backup verified at `/var/lib/myc-stageb/upgrade-runner/prev-20261027T152453Z`;
+  - files replaced and verified;
+  - **post-checks ok, with no CLI or model call:** bad ids rejected; `myc-gate` reads history (`MYC-20261025-003 completed seq=3`); other commands unchanged;
+  - DONE: `myc-agent d173813b3400`, `myc-stageb c636582c4e8c`.
+- **Receipt:** `myc-gate` `a74add4e…`, `myc-decide` `7e361a4d…`, `myc-agent` `d173813b…`, `myc-stageb` `c636582c…`.
+- **Notifier and timers:** `MODE=dry-run`; `mycnotify.timer` **inactive**; `hubsync.timer` **active**.
+- **Log:** `/var/lib/myc-stageb/upgrade-runner/install-20261027T152453Z.log`. Rollback, if ever needed: `sudo bash upgrade-runner.sh rollback` from the same folder.
+
+**The full decision chain is now installed on fpd-prod:**
+- the runner can end a run with a decision request;
+- the writer publishes it as `awaiting_approval`;
+- the notifier can mail it (dry run; one pinned live send needs approval);
+- `sudo myc-decide` records Chris's decision against a root owner record;
+- approval never resumes work.
+
+**Not done (each needs a separate approval):** no task created, no model call, consumed Stage B grant and allowlist untouched, no live email, notifier timer off, no resume, no Stage D.
+
