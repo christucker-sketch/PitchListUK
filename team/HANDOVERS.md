@@ -2587,3 +2587,17 @@ Reviewed `c91b318a`; independent upgrade suite **16/16 PASS**, all 15 Stage B ma
 **Next actor: Claude**, coordinate Chris's existing host workflow: `sudo bash upgrade-decisions.sh check && sudo bash upgrade-decisions.sh install`. Install only after check succeeds. Record output, installed hashes/receipt verification, task003 still completed, notifier dry-run/quarantine result, timer off, unchanged HubSync and upgrade-log path. Host attempt1 made no changes; successful installation is still pending evidence. Stop and report any new failure rather than bypass guards.
 
 No timer enablement, live email, key change, v5.1 install, new model task or resume/Stage D authority.
+
+
+## 2026-10-27T08:46:00+00:00 — Claude → Codex / Chris: real-task approvals INSTALLED on fpd-prod
+
+Latest commit: this one. Blocker: none. Next actor: **Chris**, to choose the next step. Approval needed: yes for anything further.
+
+- **Install:** Chris ran `check && install` with the `c91b318a` files (host hashes = pins). `check` ok; locks held; backup verified; replaced and verified.
+- **Post-checks:** task 003 still `completed`; notifier dry-run ok, quarantined none (hub `1db6037d`).
+- **Receipt:** new `myc-gate` / `myc-decide` lines; `myc-agent` / `myc-stageb` v5 kept.
+- **Timers:** notifier inactive, HubSync active.
+- **Log:** `/var/lib/myc-stageb/upgrade-decisions/install-20261027T084544Z.log`. [Evidence](../greenfield/docs/mycelium/REAL_TASK_APPROVAL_PROPOSAL_2026-10-26.md#host-attempt-2-installed-27-oct-2026-0845z-fpd-prod-run-by-chris-approved-codex-pass-on-c91b318a).
+
+No decision recorded, no timer, no live mail, no model call; v5.1 and Stage D untouched.
+

@@ -166,3 +166,28 @@ Each is a separate later decision.
 - **Unchanged:** `myc-gate`, `myc-decide` and `mycnotify` (`a74add4e…`, `7e361a4d…`, `b6518029…`). `upgrade-decisions.sh` is now `18654aa732cc7239e2ecd44e70ff60c4e06dfce3b80da514967555904e5fb3c9`.
 - **Re-approval needed:** Chris's approval named the exact four files, so the changed installer needs Codex's check of this one delta and Chris's go-ahead on the new hash.
 
+## Host attempt 2: INSTALLED (27 Oct 2026 08:45Z, fpd-prod, run by Chris; approved, Codex PASS on `c91b318a`)
+
+- **Files on the host:** `myc-gate` `a74add4e…`, `myc-decide` `7e361a4d…`, `mycnotify` `b6518029…`, `upgrade-decisions.sh` `18654aa7…`. All match the pins.
+- **`check`:** "hashes as expected for check; hubsync rev 3; mycnotify dry-run with timer off"; nothing changed.
+- **`install`:**
+  - Stage B, shared-writer and notifier locks held;
+  - backup verified at `/var/lib/myc-stageb/upgrade-decisions/prev-20261027T084544Z`;
+  - files replaced and verified;
+  - **post-checks:** `myc-gate` reads existing history (`MYC-20261025-003 completed seq=3`), and the notifier dry-run is ok with **quarantined: none** (hub `1db6037d`);
+  - DONE: `myc-gate a74add4e121c`, `mycnotify b65180299e8e`, `myc-decide 7e361a4d60b6`.
+- **Receipt:** `cmd a74add4e…  myc-gate`, `cmd 7e361a4d…  myc-decide`; `myc-agent` `3eac7dbb…` and `myc-stageb` `ee1b9bea…` kept (still v5, **v5.1 not installed**).
+- **Timers:** `mycnotify.timer` **inactive**, `hubsync.timer` **active**.
+- **Log:** `/var/lib/myc-stageb/upgrade-decisions/install-20261027T084544Z.log`. Rollback, if ever needed: `sudo bash upgrade-decisions.sh rollback` from the same folder.
+
+**Now live on fpd-prod (dry run):**
+- the writer accepts decision requests and owner decisions;
+- `sudo myc-decide` exists;
+- the notifier reads the real tasks with the shared validator.
+
+**Not done (each needs a separate approval):**
+- no decision has been recorded (`/var/lib/myc-decisions` is created on first use);
+- the runner does not yet produce `decision.md`;
+- notifier timer off, `MODE=dry-run`;
+- no live email, model call, resume or Stage D.
+
