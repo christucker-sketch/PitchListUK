@@ -6,7 +6,7 @@ Updated **27 October 2026**. Authority: Chris's [owner reset directive](../green
 
 Build reliable **agent synchronisation through the shared GitHub hub**: one current task state, clear ownership, durable handoff, safe bounded execution and observable outcomes. Stay on Mycelium/agent sync. Do not switch back to UK producer discovery, router reservations or hardware work as the next assignment.
 
-The bounded manual Codex→GitHub→Claude exchange is already functionally verified. That is a completed proof, not the whole agent-sync system and not permission for an unattended loop. Chris reports unchanged before/after usage; record it as his observation, not a provider billing audit. The original Stage B grant remains consumed. The only newly authorized call is the separately approved MYC-20261027-001 proof below.
+The bounded manual Codex→GitHub→Claude exchange is already functionally verified. That is a completed proof, not the whole agent-sync system and not permission for an unattended loop. Chris reports unchanged before/after usage; record it as his observation, not a provider billing audit. The original Stage B grant remains consumed. The separately approved MYC-20261027-001 proof below is also complete and consumed; no further call is authorized.
 
 ## One live queue — 27 October 2026
 
@@ -15,8 +15,8 @@ The bounded manual Codex→GitHub→Claude exchange is already functionally veri
 | State | Owner | Work | Exact next outcome |
 |---|---|---|---|
 | **COMPLETE / INSTALLED** | Claude / Codex / Chris | Real-task approvals | Host installation recorded in `26cc6694`: check/install passed, hashes pinned, task003 still completed, notifier dry-run clean/no quarantine, timer off, HubSync active. No decision, email or model call. [Evidence](../greenfield/docs/mycelium/REAL_TASK_APPROVAL_PROPOSAL_2026-10-26.md#host-attempt-2-installed-27-oct-2026-0845z-fpd-prod-run-by-chris-approved-codex-pass-on-c91b318a). Do not reinstall or repeat closed proofs. |
-| **ACTIVE — APPROVED SINGLE PROOF** | **Claude / Chris host workflow** | [Real decision-chain proof](../greenfield/docs/mycelium/REAL_DECISION_CHAIN_PROOF_2026-10-27.md) | MYC-20261027-001/Claude, exact descriptor pinned; one subscription call max180s/30min/£0/no retries, separate one-call allowlist; at most one pinned email, then dry-run/PIN empty/timer off; Chris records approve/reject. Approval given; execution pending evidence. No resume. |
-| NEXT — evidence check | Codex | Verify one proof | Check durable event/descriptor/decision history and sanitized host report, then report actual outcome. No second model call. |
+| **COMPLETE — GRANT CONSUMED** | Claude / Chris; Codex validation | [Real decision-chain proof](../greenfield/docs/mycelium/REAL_DECISION_CHAIN_PROOF_2026-10-27.md) | MYC-20261027-001 rests approved. Git bindings checked; host evidence records one 3s call, one email/attempt, Chris owner decision, no resume; safe idle restored and proof allowlist archived. No repeat. |
+| **NEXT OWNER DIRECTION** | Chris | Next useful agent-sync outcome | Proof is closed; no work in flight. No further model/email, timer enablement, resume or Stage D authorized. Choose the next bounded outcome before another execution. |
 | **COMPLETE / INSTALLED** | Claude / Codex / Chris | Runner v6 + reviewed v5.1 orchestrator | Recorded installed in a67433ca with pinned hashes and non-model checks. No reinstall needed. |
 | **COMPLETE — SAFE IDLE** | Claude / Codex / Chris | Stage C dry-run install + one pinned live notice | Source `f7b18376` reviewed 30/30 offline; installed; one live proof recorded. Leave MODE=dry-run, PIN empty, timer off. No ongoing live use authorized. |
 | **COMPLETE / INSTALLED** | Claude / Codex / Chris | HubSync rev 3 | Leave working watcher running. |
@@ -36,4 +36,4 @@ The bounded manual Codex→GitHub→Claude exchange is already functionally veri
 - Preserve original task/source evidence and identity. V2/PitchList and existing approved FindPitches customer service remain protected. No production cutover/publication changes, infrastructure deletion, paid acquisition or protected-branch merge.
 - Latest93941d00 is already on GitHub. Do not repeat stale PC cleanup/push instructions for that commit. Windows local line-ending claims have not been verified by Codex.
 
-**Current outcome:** runner and approval infrastructure installed. **Active:** the single separately approved real proof described above; no repeat project gate. Stop after its recorded outcome. The original model/email proof grants stay consumed, ongoing live use and Stage D remain closed.
+**Current outcome:** installed decision chain demonstrated end to end; proof accepted and closed, grant consumed. Notification remains dry-run/PIN empty/timer off; no resume. **Next:** Chris chooses the next useful agent-sync outcome. No new live action or additional proof is implied.
