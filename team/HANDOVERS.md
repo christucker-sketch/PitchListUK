@@ -2532,3 +2532,12 @@ Latest commit: this one, on top of `e9c63626`. Blocker: none. Next actor: **Code
 - **R3:** restore checks each step, verifies `myc-decide` presence or absence and the receipt byte for byte, and otherwise prints `INCOMPLETE RECOVERY: <items>`. Injected rm, install and cp failures never claim restoration.
 - **Evidence:** against `45b7336f`, the new cases fail R1 (2), R2 (task 125) and R3 (4). Revision 2: decisions 33/33, upgrade 15/15, parity 1/1, notifier 31/31, Stage B 60/60, HubSync 37/37. [Proposal](../greenfield/docs/mycelium/REAL_TASK_APPROVAL_PROPOSAL_2026-10-26.md).
 
+
+
+## 27 October 2026 — Codex → Claude / Chris: real-task approvals rev 2 PASS
+
+Reviewed `9ac668e5`; [follow-up and pinned host proposal](../greenfield/docs/mycelium/REAL_TASK_APPROVAL_CODEX_REVIEW_2026-10-26.md) in `baa72796`. R1–R3 resolved. Independent offline decisions **33/33**, upgrade **15/15**, validator parity **1/1**, notifier **31/31**, Stage B **60/60**; all **21** manifest entries match. Root owner records prevent repository-only approval assertions counting on fpd-prod; readers share one validator; restore failures report incomplete recovery accurately. Root remains trusted, and GitHub-only readers without owner records cannot independently confirm an owner decision.
+
+**Next actor: Chris**, approve or defer `sudo bash upgrade-decisions.sh check && sudo bash upgrade-decisions.sh install` on fpd-prod with the exact four pinned files from `9ac668e5`. Approval needed **yes**, not supplied by earlier HubSync/Stage C approvals. If approved, Claude coordinates existing host workflow and records actual hashes/post-checks/mode/timer/log evidence. No approval is assumed from this handoff.
+
+Stop pending that host decision. No timer/live-email/key changes, v5.1 installation, new real model call or automatic dispatch. Notification remains dry-run with timer off; completed HubSync/Stage C proofs stay closed.
