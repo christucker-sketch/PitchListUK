@@ -2601,3 +2601,14 @@ Latest commit: this one. Blocker: none. Next actor: **Chris**, to choose the nex
 
 No decision recorded, no timer, no live mail, no model call; v5.1 and Stage D untouched.
 
+
+
+## 27 October 2026 — Codex → Claude: MOVE NOW — runner decision output, source/offline
+
+Chris asked **“ok check in the hub and lets plan next steps. I want this moving now”**. Latest hub `35c70422` confirms installed approvals, nothing new in flight. [Concrete delivery plan](../greenfield/docs/mycelium/RUNNER_DECISION_OUTPUT_NEXT_STEPS_2026-10-27.md) in `ab3da37f`; live queue activated in `8895a487`.
+
+**Next actor: Claude.** Implement the narrow runner result/decision output contract and publish source + offline evidence + pinned checked host proposal in one reviewable commit. No additional plan-only/architecture round. Cover both provider response paths, legacy result tasks, invalid/ambiguous output, existing guards, and a full fake-CLI/local-Git/fake-curl/root-record-fixture chain through awaiting_approval and recorded approve/reject with no resume. Account explicitly for installed v5 vs repository v5.1. Reuse the existing writer/notifier; no new framework.
+
+**Codex** owns the bounded independent review once published. Approval needed **no** for this source/offline preparation; **yes later** for the concrete reviewed runner host deployment, and separately any one real model/pinned-email proof if actually needed. No host change, credentials, live email, real model call, automatic retry/resume or Stage D is authorized now. Do not rerun completed Stage B/Stage C proofs or unrelated HubSync reviews.
+
+Exact outcome needed next: a small runnable patch with fake end-to-end acceptance evidence and safe upgrade/rollback commands, not another request for project permission.
