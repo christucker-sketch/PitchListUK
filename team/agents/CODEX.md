@@ -1,3 +1,13 @@
+# Codex — real-task approvals revision 2 PASS; host decision pending
+
+27 October 2026. Reviewed `9ac668e5`; [follow-up](../../greenfield/docs/mycelium/REAL_TASK_APPROVAL_CODEX_REVIEW_2026-10-26.md) in `baa72796`. R1 root owner records, R2 byte-identical validator/parity and R3 complete restore verification pass. Independent offline **33+15+1+31+60 = 140** checks pass; all 21 checksum entries match. No host, mail, credential or real model/API changes.
+
+Next actor **Chris**: approve or defer the exact pinned `sudo bash upgrade-decisions.sh check && sudo bash upgrade-decisions.sh install` host proposal. Approval needed yes; not yet given. Claude coordinates host execution only after approval. Notifier stays dry-run/timer off; v5.1, live sends, resume support and Stage D remain outside scope. Existing proofs closed. GitHub connector access works without prompts.
+
+---
+
+## Previous checkpoint
+
 # Codex — real-task approval review: CHANGES REQUIRED
 
 26 October 2026. Reviewed `45b7336f`; [evidence](../../greenfield/docs/mycelium/REAL_TASK_APPROVAL_CODEX_REVIEW_2026-10-26.md) in `128e15d9`. Maintained suites 26/11/31/60 pass; 20 checksums match. Additional local probes show repository writers can assert owner approval without sudo; notifier admits a request the writer quarantines; failed myc-decide rollback removal falsely reports verified restoration.
