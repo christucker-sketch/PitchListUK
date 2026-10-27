@@ -1,3 +1,49 @@
+# Real-task approvals revision 2 — Codex follow-up PASS
+
+27 October 2026. Reviewed `9ac668e5816a05dca96513667c5b9b6147ef2bf2`, limited to the R1–R3 corrections and their integration with existing offline suites.
+
+**R1–R3 PASS.** Exact revision retrieved through connected GitHub actions. Independent offline results:
+
+| Suite | Result |
+| --- | --- |
+| decisions | 33/33 |
+| upgrade-decisions | 15/15 |
+| validator block parity | 1/1 |
+| notifier | 31/31 |
+| Stage B maintained + regression + deadline + publication | 48+7+2+3 = 60/60 |
+
+All **15 Stage B + 6 notifier** manifest entries match. Changed-script Bash syntax passes. Tests use temporary local repositories, fake runners/curl/systemctl and local pseudo-terminals only. HubSync source is unchanged and its completed review/proof was not reopened.
+
+- **R1 provenance:** the root wrapper writes a local owner record before publication. Both readers require matching status, note, via, predecessor and descriptor from that record, with root ownership/non-writability checks outside the offline test mode. Repository-only forged owner decisions, conflicting records and writable records are refused/quarantined. Offline tests intentionally relax UID ownership for fixtures; this is source/offline acceptance, not a deployed host ownership audit. Root on fpd-prod remains trusted; GitHub alone is advisory, and readers lacking the owner records quarantine the decision. Approval still does not make a task claimable or launch work.
+- **R2 parity:** the 128-line validator block is byte-identical in writer/notifier (block SHA256 prefix `09329abd6c07`). Fixtures compare reader verdicts, including the previously accepted 401-byte request; malformed histories now quarantine in both.
+- **R3 restore:** every restore operation propagates failure; verification covers myc-decide presence/absence/hash and the receipt byte for byte. Injected rm/install/cp failures report INCOMPLETE RECOVERY and never falsely claim verified restoration.
+
+## Concrete next owner decision — not executed or authorized yet
+
+On fpd-prod, in a folder holding the exact reviewed `myc-gate`, `myc-decide`, `mycnotify` and `upgrade-decisions.sh` from `9ac668e5`:
+
+```bash
+sudo bash upgrade-decisions.sh check &&
+sudo bash upgrade-decisions.sh install
+```
+
+| File | SHA256 |
+| --- | --- |
+| myc-gate | a74add4e121c9e67bfa7d23dac1fe3fed1cc2e29a6440eecc3b8e8fa8e5480f7 |
+| myc-decide | 7e361a4d60b68a809b00709be22ac910a0fdb443f9092c333c621d37f0ff3dd3 |
+| mycnotify | b65180299e8e5984eb9642a37c78bf973eac75c78d6d014f37bc8a260336fab8 |
+| upgrade-decisions.sh | 43f509fef094b693fb31ad25bd60586829995c233c34ac4567d48a4a1fb2b43a |
+
+The proposed upgrade replaces myc-gate/mycnotify, adds myc-decide and updates the installation receipt; it checks existing task history and performs a notifier dry-run. It requires the expected installed versions, notification dry-run mode and timer off, locks the relevant writers during replacement, and keeps verified backups/recovery logs. It does not install the parked v5.1 runner files, enable timers, alter keys/configuration, send email or invoke models.
+
+**Next actor: Chris**, decide whether/when to approve those exact host commands. Previous HubSync and Stage C approvals do not authorize this new upgrade. If approved, Claude coordinates the existing Chris-operated host workflow and returns actual hashes, post-check output, timer/mode and log evidence. No fresh email or model test is needed. Real-task live notification, runner decision-output support, resume-after-approval and Stage D remain outside this approval.
+
+No host, credential, live email or real model/API changes by Codex.
+
+---
+
+## Revision 1 review (historical; R1–R3 resolved above)
+
 # Real-task approvals — Codex bounded review, CHANGES REQUIRED
 
 26 October 2026. Reviewed `45b7336f468384ad532141e66b184223561a3763`. Exact files fetched through GitHub connector; temporary local repositories, fake runner output, fake systemctl/curl and real local pseudo-terminal only. No host changes, email, credentials, real models or paid APIs.
