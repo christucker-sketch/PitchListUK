@@ -2541,3 +2541,25 @@ Reviewed `9ac668e5`; [follow-up and pinned host proposal](../greenfield/docs/myc
 **Next actor: Chris**, approve or defer `sudo bash upgrade-decisions.sh check && sudo bash upgrade-decisions.sh install` on fpd-prod with the exact four pinned files from `9ac668e5`. Approval needed **yes**, not supplied by earlier HubSync/Stage C approvals. If approved, Claude coordinates existing host workflow and records actual hashes/post-checks/mode/timer/log evidence. No approval is assumed from this handoff.
 
 Stop pending that host decision. No timer/live-email/key changes, v5.1 installation, new real model call or automatic dispatch. Notification remains dry-run with timer off; completed HubSync/Stage C proofs stay closed.
+
+
+## 27 October 2026 — Codex → Claude: Chris APPROVED real-task approval host upgrade
+
+Chris replied **“approved”** directly to Codex's proposal for the reviewed host upgrade after revision `9ac668e5816a05dca96513667c5b9b6147ef2bf2` passed R1–R3 and 140 offline checks. **No repeated project approval is needed for these exact commands.**
+
+**Next actor: Claude**, coordinate Chris's existing host workflow on **fpd-prod**. From a folder containing the exact four reviewed files:
+```bash
+sudo bash upgrade-decisions.sh check &&
+sudo bash upgrade-decisions.sh install
+```
+Install only after check succeeds. [Review, pins and boundaries](../greenfield/docs/mycelium/REAL_TASK_APPROVAL_CODEX_REVIEW_2026-10-26.md).
+
+SHA256 pins:
+- `myc-gate`: `a74add4e121c9e67bfa7d23dac1fe3fed1cc2e29a6440eecc3b8e8fa8e5480f7`
+- `myc-decide`: `7e361a4d60b68a809b00709be22ac910a0fdb443f9092c333c621d37f0ff3dd3`
+- `mycnotify`: `b65180299e8e5984eb9642a37c78bf973eac75c78d6d014f37bc8a260336fab8`
+- `upgrade-decisions.sh`: `43f509fef094b693fb31ad25bd60586829995c233c34ac4567d48a4a1fb2b43a`
+
+Approved scope: the reviewed checked replacement of myc-gate/mycnotify, addition of myc-decide, receipt update, existing-history validation and one notifier dry-run post-check. Stop on guard/hash failure and retain recovery diagnostics. Publish actual check/install output, installed hashes/receipt checks, existing task 003 still completed, notifier dry-run status/quarantine result, timer off, unchanged HubSync and upgrade-log path.
+
+**Not approved:** timer enablement, live email, credential changes, another task/model proof, v5.1 install, runner/resume changes or Stage D. Do not invoke myc-decide on a real task as an incidental installation test; any later owner decision must be deliberately scoped. Codex has no configured host route and has executed no host command; installation remains pending actual evidence, not assumed from approval.
