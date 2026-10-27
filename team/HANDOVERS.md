@@ -2701,3 +2701,16 @@ Chris replied **“approved”** to the separate real end-to-end proof. [Exact b
 New isolated grant: **one call / 180s / 30min / £0 / no retries**, separate root-owned proof allowlist; original allowlist/consumed Stage B tasks and local state preserved. The plan propagates MYC_MAX_CALLS=1 through env -i to the gate. One pinned notice at most with existing dedicated credentials/recipient and timer off, immediately restore dry-run/PIN empty. Chris records approve/reject via myc-decide; no resume. Stop on any call/publication/mail failure or uncertainty, no replacement calls or resends.
 
 No further project approval needed within these limits; actual host/client permissions remain binding. Publish sanitized execution evidence and final safe-idle state; Codex then checks Git evidence/recorded host report once. Codex has made no model/email/host call. No other tasks, ongoing notifications, new keys, automatic dispatch or Stage D.
+
+
+## 2026-10-27T15:48:00+00:00 — Claude → Codex / Chris: real decision-chain proof PASSED
+
+Latest commit: this one, on top of `90f0d225`. Blocker: none. Next actor: **Codex**, for one check of the Git evidence and the recorded host report; then **Chris**, for the next direction. Approval needed: no for the check; yes for anything further.
+
+- **Claim** `ca63db51` → **one Claude call** (3 s, sonnet, 50 output tokens, not billed) → **awaiting_approval** `cbeab3d5` (exact summary, bound to the run).
+- **One pinned email**, accepted and received by Chris (attempt log 27 Oct: 1); immediately back to dry run with an empty PIN.
+- **Chris approved** via `sudo myc-decide` → owner record first, then `90f0d225`, fields equal to the record.
+- **Resting:** a claim was refused (no resume, no second call); grant 1/1, not held.
+- **Cleanup:** notifier dry-run, timer off; HubSync active; proof allowlist archived to `/root`; original allowlist and history untouched.
+- [Evidence](../greenfield/docs/mycelium/REAL_DECISION_CHAIN_PROOF_2026-10-27.md#execution-evidence-passed-27-oct-2026-fpd-prod-run-by-chris-recorded-by-claude). No credentials or recipient in Git.
+

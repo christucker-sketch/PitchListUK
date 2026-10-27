@@ -44,3 +44,42 @@ Claude publishes sanitized command results, task/claim/awaiting/decision commits
 Codex checks durable Git evidence and the recorded host report once; it cannot independently inspect root records remotely. No new model “review” call is needed. After this proof, stop for the next owner decision. Stage D, autonomous dispatch, task resume, production/Pi/J1900 changes and ongoing notifications remain closed.
 
 **Current state:** task created and pinned, execution pending. No model or email call by Codex.
+
+## Execution evidence: PASSED (27 Oct 2026, fpd-prod, run by Chris; recorded by Claude)
+
+**Phase 1, preflight (no model call).**
+- Installed hashes = the pins: `myc-agent` d173813b, `myc-stageb` c636582c, `myc-gate` a74add4e, `myc-decide` 7e361a4d, `mycnotify` b6518029.
+- Stage B lock free; `mycnotify.timer` inactive, `hubsync.timer` active; `MODE=dry-run`, `PIN=` empty.
+- Task `MYC-20261027-001 pending seq=1`.
+- Proof allowlist `/etc/myc-stageb/proof-20261027-001.allowed` created, root:hubsync 0640, containing exactly the pinned line. The original `allowed` was untouched.
+- Proof grant read-only: `{"claims":0,"max":1,…,"held":""}`.
+- Claude sign-in preflight OK (2.1.308, no model call).
+- Notifier baseline: 0 outstanding; `decisions` empty.
+- Chris confirmed extra usage / credits off before the run (`MYC_BILLING_CONFIRMED=yes`).
+
+**Phase 2, the one call.** The exact approved command was run once.
+- Grant 0/1, preflight OK.
+- **Claim** `ca63db51` (run `MYC-20261027-001-r1793115711-3093d975`, event 2 blob `e501b20b…`); admitted, deadline 16:11:21Z.
+- **One Claude call, 3 s:** `decision written` (the exact two-line envelope).
+- **awaiting_approval** `cbeab3d5`, event 3 blob `594f473c9fde…`, bound to the run and the claim event. Summary: "Do you accept this read-only end-to-end proof, with no permission to execute further work?"
+- Usage as recorded: `claude-sonnet-5-5`, 2 input / 0 cached / 50 output tokens, API-equivalent $0.011344 **not billed**.
+- Grant afterwards: `claims 1 / max 1`, held for Chris's decision.
+
+**Phase 3, the one pinned email.** Run only after `decisions` showed exactly `MYC-20261027-001-0003-594f473c9fde  ledger=none` with the timer inactive.
+- Then `MODE=live`, `PIN=<that key>`, one `systemctl start mycnotify.service` (rc 0): `sent 1`, ledger accepted, no hold.
+- **Chris received exactly one email.**
+- Immediately reset to `MODE=dry-run`, `PIN=` empty; `decisions` shows `ledger=accepted`. Attempt logs: 26 Oct 1 (the Stage C test), 27 Oct **1**. Timer inactive.
+
+**Phase 4, Chris's decision.**
+- `sudo myc-decide MYC-20261027-001-0003-594f473c9fde approve "proof accepted"`; the state and summary were shown and the task id typed to confirm.
+- Owner record `/var/lib/myc-decisions/MYC-20261027-001-0003-594f473c9fde.json` (root:root 0644) written first; then **approved** in `90f0d225`, event 4 blob `c08d8ec3…`.
+- `actor chris`, `decided_via fpd-prod:sudo:ct_admin`, `prev_event 594f473c…`, `descriptor_blob 6bad6a1b…`: equal to the owner record field for field.
+
+**Resting state and cleanup.**
+- `MYC-20261027-001 approved seq=4`; no `result.md`.
+- Grant `claims 1 / max 1`, no longer held. A `claim` attempt was refused ("only a pending task can be claimed (no replay)"): **no resume, no second call.**
+- Notifier: nothing outstanding, `MODE=dry-run`, `PIN=` empty, timer inactive; HubSync active.
+- Proof allowlist archived to `/root/proof-20261027-001/`; `/etc/myc-stageb/` holds only the original `allowed`. Owner record kept.
+
+**Totals:** 1 model call, 1 email, 1 send attempt, 0 retries, £0 incremental (subscription, extra usage off), no resume. Not done: no other task, no ongoing notifications or timer, no key change, Stage D closed.
+
