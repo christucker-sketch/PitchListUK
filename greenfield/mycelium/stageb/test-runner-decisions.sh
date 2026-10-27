@@ -152,6 +152,20 @@ for a in codex claude; do
     && ok "$a transport error -> failed (runner_failed), nothing written" || bad "$a transport -> $(ev "$id" 3 | jq -c '{status,reason}')"
 done
 
+echo "6b. a NUL byte anywhere in an envelope answer fails closed on both provider paths (never a cleaned-up question)"
+for a in codex claude; do
+  i=$((i + 1)); id=MYC-20261027-0$i; mk_task "$id" "$a"
+  printf 'MYCELIUM-DECISION-REQUEST v1\nApprove\0 this?\n' > "$T/ctl/answer"   # raw bytes, never through a shell variable
+  runtask "$id" "$a"
+  ev "$id" 3 | jq -e '.status == "failed" and .reason == "runner_failed"' >/dev/null && [[ -z $(outfiles "$id") ]] \
+    && ! git --git-dir="$T/remote.git" log --format= -p "$B" -- "$TD/$id/events/" | grep -q awaiting_approval \
+    && ok "$a ($([[ $a == codex ]] && echo raw answer file || echo JSON-escaped \\u0000 in transport)): NUL -> runner_failed, no awaiting_approval, nothing written" \
+    || { bad "$a NUL -> $(ev "$id" 3 | jq -c '{status,reason}') files: $(outfiles "$id")"; }
+done
+i=$((i + 1)); id=MYC-20261027-0$i; mk_task "$id" codex; printf '# Review\nAll\0 fine.\n' > "$T/ctl/answer"; runtask "$id" codex
+ev "$id" 3 | jq -e '.status == "failed" and .reason == "result_rejected"' >/dev/null && ! has "$TD/$id/result.md" \
+  && ok "NUL in an ordinary result: the gate rejects it (result_rejected), nothing published (legacy path unchanged)" || bad "NUL result -> $(ev "$id" 3 | jq -c '{status,reason}')"
+
 echo "7. replays cannot duplicate a call, a decision request or a notice"
 c0=$(calls); r=$(runid MYC-20261027-011)
 "$AGENTX" "$r" > "$T/o" 2>&1; grep -q 'already started once' "$T/o" && [[ $(calls) == "$c0" ]] && ok "re-running the runner on a finished run: no second call" || { bad "runner replay"; cat "$T/o"; }

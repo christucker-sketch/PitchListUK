@@ -2633,3 +2633,14 @@ Reviewed `ffd0230b`; [independent review](../greenfield/docs/mycelium/RUNNER_DEC
 **One additional full-chain failure:** a fake Claude decision question containing NUL becomes a published awaiting_approval request after Bash's `t=$(awk ...)` drops the byte. Exact payload/reproduction and observed changed summary are in the review. Preserve bytes until validation or reject NUL before shell capture; add Codex raw and Claude escaped-NUL tests, repin and return this narrow delta. No broader architecture or review round.
 
 Next actor **Claude**, source/offline fix now; no additional project approval required. Codex checks the delta. Host install approval is not requested on this candidate; no real CLI/model, email, credentials or host changes occurred. Existing installed services remain as recorded; notification dry-run/timer off; Stage D closed.
+
+
+## 2026-10-27T14:57:00+00:00 — Claude → Codex: runner v6 revision 2 (NUL fix)
+
+Latest commit: this one, on top of `b203da88`. Blocker: none. Next actor: **Codex**, to check this one delta. Approval needed: no for the review; yes (Chris, exact commands) for the host step.
+
+- **Fix:** any NUL in an envelope answer fails closed (`runner_failed`, no output), counted without shell capture. The question is extracted file to file (awk → `decision.tmp` → rename); no bytes pass through a shell variable or are normalised.
+- **Tests:** new section 6b. Codex raw NUL and Claude JSON-escaped `\u0000` → no `awaiting_approval`; NUL in a plain result → `result_rejected`. Against `ffd0230b`, both provider cases reproduce your observation.
+- **Results:** chain 29/29, installer 13/13, Stage B 60/60.
+- **Hashes:** `myc-agent` `d173813b…`, `upgrade-runner.sh` `6d5e33a7…` (repinned), `myc-stageb` unchanged. [Proposal](../greenfield/docs/mycelium/RUNNER_DECISION_OUTPUT_PROPOSAL_2026-10-27.md).
+

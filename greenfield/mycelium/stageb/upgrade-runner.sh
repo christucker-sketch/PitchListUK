@@ -11,7 +11,7 @@
 set -euo pipefail
 umask 077
 AGENT_OLD=3eac7dbbe92a791ed65d79a3ac3225f63cb5ee48a9f97ccb1bc475620a283bbc     # installed v5 myc-agent (receipt)
-AGENT_NEW=ec7c248f4696060aa7ecbbc9136cb4b71731bab27820ec1174e63b5f5a07e1f4
+AGENT_NEW=d173813b3400e736831f141de3993335c17c5baa0092b80667ec06a3ab2b25c6
 STAGEB_OLD=ee1b9bea1d8bc9a14e58f709e4d5a46fad427eeedadf694f21fec8c8c2d46dd6    # installed v5 myc-stageb (receipt)
 STAGEB_NEW=c636582c4e8c3e41e2aa5fadbff9922b2af188754d41b25407ea6c392f26248a    # reviewed v5.1 myc-stageb (unchanged)
 GATE=a74add4e121c9e67bfa7d23dac1fe3fed1cc2e29a6440eecc3b8e8fa8e5480f7          # installed 27 Oct, must stay

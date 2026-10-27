@@ -1,4 +1,19 @@
-# Runner decision output (v6): patch, offline evidence, checked host step (Claude, 27 Oct 2026). For one Codex review
+# Runner decision output (v6): patch, offline evidence, checked host step (Claude, 27 Oct 2026, revision 2)
+
+**Revision 2** fixes the one [Codex finding](RUNNER_DECISION_OUTPUT_CODEX_REVIEW_2026-10-27.md): 99 checks passed, R1 found NUL lost before validation.
+
+- **The bug:** the question was captured with `t=$(awk …)`, and Bash silently drops NUL. A malformed answer therefore became a clean, different question and was published.
+- **The fix:**
+  - any NUL in an envelope answer now fails closed (`runner_failed`, no output file), counted with `tr -dc '\000' | wc -c`, so no bytes are captured in a shell variable;
+  - the question is extracted **file to file** (awk → `decision.tmp` → rename), so the gate validates exactly the model's bytes;
+  - prohibited bytes are never normalised.
+- **New regressions (section 6b):**
+  - Codex raw NUL → `runner_failed`, no `awaiting_approval`;
+  - Claude JSON-escaped `\u0000` → the same;
+  - NUL in an ordinary result → the gate's `result_rejected` (legacy path unchanged).
+  - Against `ffd0230b`, both provider cases fail exactly as Codex observed (`awaiting_approval`, reason "Approve this?").
+- **Results:** runner chain **29/29**, installer 13/13, Stage B 48 + 7 + 2 + 3.
+- **Hashes:** `myc-agent` is now `d173813b3400e736831f141de3993335c17c5baa0092b80667ec06a3ab2b25c6`, and `upgrade-runner.sh` is repinned to `6d5e33a7f36ecf4b14050b0a5f9fac703d0df6def4ce3b06a5aa168d33c43ed6`. `myc-stageb` is unchanged (`c636582c…`).
 
 Delivers the [runner plan](RUNNER_DECISION_OUTPUT_NEXT_STEPS_2026-10-27.md). Source and offline only: **nothing installed**, no CLI/model call, no email, no credentials. It reuses the installed `myc-gate`, `myc-decide` and `mycnotify` unchanged.
 
@@ -28,7 +43,7 @@ The provider transport is parsed first: Claude's `out.json` `.result`, or Codex'
 
 | File | Installed on fpd-prod | This candidate |
 |---|---|---|
-| `myc-agent` | v5 `3eac7dbb…` | **v6** `ec7c248f4696060aa7ecbbc9136cb4b71731bab27820ec1174e63b5f5a07e1f4` = reviewed v5.1 (stdin from `/dev/null` for every CLI) + decision output |
+| `myc-agent` | v5 `3eac7dbb…` | **v6** `d173813b3400e736831f141de3993335c17c5baa0092b80667ec06a3ab2b25c6` = reviewed v5.1 (stdin from `/dev/null` for every CLI) + decision output |
 | `myc-stageb` | v5 `ee1b9bea…` | **v5.1** `c636582c4e8c3e41e2aa5fadbff9922b2af188754d41b25407ea6c392f26248a`, the reviewed file, **byte-unchanged** |
 | `myc-gate`, `myc-decide`, `mycnotify` | `a74add4e…`, `7e361a4d…`, `b6518029…` | unchanged (asserted, never touched) |
 
@@ -42,7 +57,7 @@ v5.1 is deployed **deliberately**, not silently:
 
 ## Offline acceptance (local bare Git, fake codex/claude CLIs, fake curl, a real pseudo-terminal for `myc-decide`; no network/model/mail)
 
-The new `stageb/test-runner-decisions.sh` passes **26/26**. It drives **real `myc-stageb` → `myc-gate` → `myc-agent` → `mycnotify` → `myc-decide`** end to end:
+The new `stageb/test-runner-decisions.sh` passes **29/29** (revision 2: 26 + three NUL cases). It drives **real `myc-stageb` → `myc-gate` → `myc-agent` → `mycnotify` → `myc-decide`** end to end:
 
 | Plan case | Covered by |
 |---|---|
@@ -72,7 +87,7 @@ The new `stageb/test-runner-decisions.sh` passes **26/26**. It drives **real `my
 
 ## Checked host step (only after Codex review and Chris's explicit go-ahead)
 
-`stageb/upgrade-runner.sh` `check|install|rollback`: sha256 `3fb0da5a809c127995edfe465c1f3544fd011252ceea58da9ea59c67346b74da`. Its offline test, `test-upgrade-runner.sh`, passes **13/13**.
+`stageb/upgrade-runner.sh` `check|install|rollback`: sha256 `6d5e33a7f36ecf4b14050b0a5f9fac703d0df6def4ce3b06a5aa168d33c43ed6`. Its offline test, `test-upgrade-runner.sh`, passes **13/13**.
 
 **Refuses unless all of these hold:**
 

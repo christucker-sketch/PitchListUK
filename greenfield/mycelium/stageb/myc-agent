@@ -81,16 +81,19 @@ fi
 
 MARK='MYCELIUM-DECISION-REQUEST v1'
 emit() {  # answer-file -> writes EXACTLY ONE of $O/result.md or $O/decision.md; returns 3 (writes nothing) if malformed
-  local a=$1 t
+  local a=$1
   if ! grep -q 'MYCELIUM-DECISION-REQUEST' "$a"; then
     cp "$a" "$O/result.tmp" && mv "$O/result.tmp" "$O/result.md"; OUTPUT=result; return 0
   fi
-  # the marker is present: the whole answer (ignoring surrounding blank lines and CRs) must be exactly the envelope
-  t=$(awk '{ sub(/\r$/, ""); l[NR] = $0 }
+  # the marker is present: the whole answer (ignoring surrounding blank lines and CRs) must be exactly the envelope.
+  # Bytes never pass through a shell variable (Bash drops NUL silently): any NUL fails closed here, and the question is
+  # extracted file-to-file, so the gate validates exactly the bytes the model produced.
+  [[ $(tr -dc '\000' < "$a" | wc -c) -eq 0 ]] || return 3
+  awk '{ sub(/\r$/, ""); l[NR] = $0 }
      END { s = 1; while (s <= NR && l[s] ~ /^[ \t]*$/) s++; e = NR; while (e >= s && l[e] ~ /^[ \t]*$/) e--
            if (e - s + 1 != 2 || l[s] != "MYCELIUM-DECISION-REQUEST v1" || l[s+1] ~ /^[ \t]*$/ || index(l[s+1], "MYCELIUM-DECISION-REQUEST")) exit 3
-           print l[s+1] }' "$a") || return 3
-  printf '%s\n' "$t" > "$O/decision.tmp" && mv "$O/decision.tmp" "$O/decision.md"; OUTPUT=decision
+           print l[s+1] }' "$a" > "$O/decision.tmp" || { rm -f "$O/decision.tmp"; return 3; }
+  mv "$O/decision.tmp" "$O/decision.md"; OUTPUT=decision
 }
 
 P=$LOGS/prompt.txt
