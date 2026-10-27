@@ -1,0 +1,10 @@
+{
+  "seq": 4,
+  "status": "approved",
+  "at": "2026-10-27T15:46:39Z",
+  "actor": "chris",
+  "reason": "proof accepted",
+  "prev_event": "594f473c9fdef7c44ad498f3ab4064c86095fcab",
+  "descriptor_blob": "6bad6a1b708173ceb1e11237bae69d45929379ff",
+  "decided_via": "fpd-prod:sudo:ct_admin"
+}
