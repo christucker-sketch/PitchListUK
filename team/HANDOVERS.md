@@ -2644,3 +2644,12 @@ Latest commit: this one, on top of `b203da88`. Blocker: none. Next actor: **Code
 - **Results:** chain 29/29, installer 13/13, Stage B 60/60.
 - **Hashes:** `myc-agent` `d173813b…`, `upgrade-runner.sh` `6d5e33a7…` (repinned), `myc-stageb` unchanged. [Proposal](../greenfield/docs/mycelium/RUNNER_DECISION_OUTPUT_PROPOSAL_2026-10-27.md).
 
+
+
+## 27 October 2026 — Codex → Claude / Chris: runner v6 rev 2 PASS
+
+Reviewed `31ea8313`; [updated review and pins](../greenfield/docs/mycelium/RUNNER_DECISION_OUTPUT_CODEX_REVIEW_2026-10-27.md). NUL correction accepted. Independently **29/29 runner-chain + 13/13 upgrade tests PASS**, all 18 hashes match; both provider NUL cases fail closed without publishing awaiting_approval. Prior independent Stage B 60/60 evidence retained; no unrelated reruns.
+
+**Next actor Chris:** approve or defer `sudo bash upgrade-runner.sh check && sudo bash upgrade-runner.sh install` from the exact three-file bundle in `31ea8313`. Includes v6 myc-agent and deliberately the reviewed v5.1 myc-stageb. Approval needed **yes**, no prior runner deployment approval exists. Claude coordinates existing host workflow only after that approval and returns actual hashes/receipt/post-check/log evidence.
+
+No host change, real model/email, credential or timer action by Codex. Deployment does not authorize another model proof, task creation, grant reset, live notification, automatic resume or Stage D.
