@@ -1,3 +1,13 @@
+# Codex — runner v6 host upgrade APPROVED; execution pending
+
+27 October 2026. Chris replied **“approved”** to reviewed `31ea8313` host deployment. [Handoff](../HANDOVERS.md) to Claude covers exact `sudo bash upgrade-runner.sh check && sudo bash upgrade-runner.sh install` on fpd-prod: v6 myc-agent + reviewed v5.1 myc-stageb, receipt/backups/non-model post-checks. No repeat project approval needed.
+
+Await actual host hashes/receipt/post-checks/log. Codex has no configured host route and has not executed the upgrade. No new task/model proof, grant reset, live email/timer, credentials, automatic resume or Stage D. [Review/pins](../../greenfield/docs/mycelium/RUNNER_DECISION_OUTPUT_CODEX_REVIEW_2026-10-27.md), 29+13 focused offline checks passed.
+
+---
+
+## Previous checkpoint
+
 # Codex — runner v6 revision 2 PASS; host decision pending
 
 27 October 2026. Reviewed `31ea8313`; [follow-up/pins](../../greenfield/docs/mycelium/RUNNER_DECISION_OUTPUT_CODEX_REVIEW_2026-10-27.md). NUL fix resolved. Independent runner chain **29/29**, upgrade **13/13**, all 18 manifest entries match; prior Stage B **60/60** evidence retained.
