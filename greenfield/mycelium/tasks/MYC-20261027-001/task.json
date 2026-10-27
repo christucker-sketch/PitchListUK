@@ -1,0 +1,7 @@
+{
+  "task_id": "MYC-20261027-001",
+  "assigned_agent": "claude",
+  "instructions": "This is one explicitly owner-approved read-only integration proof. No commands, tools, file edits, deployment, external requests, or follow-on work. The only required outcome is a human decision whether this proof is accepted; you cannot give that decision yourself. Request it by returning exactly these two lines, without Markdown fences or other text:\nMYCELIUM-DECISION-REQUEST v1\nDo you accept this read-only end-to-end proof, with no permission to execute further work?",
+  "status": "pending",
+  "result_location": "greenfield/mycelium/tasks/MYC-20261027-001/result.md"
+}
