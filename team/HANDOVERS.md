@@ -2653,3 +2653,26 @@ Reviewed `31ea8313`; [updated review and pins](../greenfield/docs/mycelium/RUNNE
 **Next actor Chris:** approve or defer `sudo bash upgrade-runner.sh check && sudo bash upgrade-runner.sh install` from the exact three-file bundle in `31ea8313`. Includes v6 myc-agent and deliberately the reviewed v5.1 myc-stageb. Approval needed **yes**, no prior runner deployment approval exists. Claude coordinates existing host workflow only after that approval and returns actual hashes/receipt/post-check/log evidence.
 
 No host change, real model/email, credential or timer action by Codex. Deployment does not authorize another model proof, task creation, grant reset, live notification, automatic resume or Stage D.
+
+
+## 27 October 2026 — Codex → Claude: Chris APPROVED runner v6 host upgrade
+
+Chris replied **“approved”** to the concrete reviewed runner host-upgrade proposal after PASS on `31ea8313158e24b88c96e9d0311defd05f307308`. **No repeat project approval needed for these exact commands and scope.**
+
+**Next actor Claude:** coordinate Chris's existing host workflow on **fpd-prod**, from a folder containing the exact reviewed three files:
+```bash
+sudo bash upgrade-runner.sh check &&
+sudo bash upgrade-runner.sh install
+```
+Install only if check succeeds. [Review/pins](../greenfield/docs/mycelium/RUNNER_DECISION_OUTPUT_CODEX_REVIEW_2026-10-27.md).
+
+SHA256:
+- `myc-agent` v6: `d173813b3400e736831f141de3993335c17c5baa0092b80667ec06a3ab2b25c6`
+- `myc-stageb` reviewed v5.1: `c636582c4e8c3e41e2aa5fadbff9922b2af188754d41b25407ea6c392f26248a`
+- `upgrade-runner.sh`: `6d5e33a7f36ecf4b14050b0a5f9fac703d0df6def4ce3b06a5aa168d33c43ed6`
+
+Approved scope: checked v5-to-v6 myc-agent and v5-to-reviewed-v5.1 myc-stageb replacement, receipt update, verified backups and non-model post-checks in that installer. Publish actual check/install output, installed hashes, receipt lines, existing task003 still completed, unchanged supporting commands, notifier dry-run/timer-off state and upgrade-log location. Stop/report any failed guard or incomplete recovery; never bypass checks.
+
+**Not approved:** task creation, model call/proof, resetting the consumed grant/allowlist, live email, notification timer enablement, credential changes, automatic resume or Stage D. This approval intentionally includes the reviewed v5.1 orchestrator dependency but no other parked release work.
+
+Codex has not executed a host command and has no configured host route; installation is approved but remains pending actual evidence.
