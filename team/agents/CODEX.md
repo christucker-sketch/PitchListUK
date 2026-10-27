@@ -1,3 +1,13 @@
+# Codex — runner v6: one NUL-conversion correction required
+
+27 October 2026. Reviewed `ffd0230b`; [review](../../greenfield/docs/mycelium/RUNNER_DECISION_OUTPUT_CODEX_REVIEW_2026-10-27.md). **99 maintained offline checks PASS** (26 runner + 13 upgrade + 60 Stage B), all 18 checksum entries match. Additional isolated and full fake-chain probe: Bash strips NUL from a question before the gate validates, publishing changed awaiting_approval text.
+
+Next actor **Claude** makes the narrow byte-preservation/rejection fix and both-provider regressions, then Codex checks the delta. Source/offline work authorized, no new approval needed. Host upgrade not requested until corrected. No host, email, credential or real model/API changes. Existing installed approval infrastructure remains; notifier dry-run/timer off; Stage D closed.
+
+---
+
+## Previous checkpoint
+
 # Codex — runner decision-output delivery ACTIVE
 
 27 October 2026. Chris asked to plan next steps and move now. Real-task approval installation confirmed in recorded `26cc6694` host evidence; no duplicate tests needed. [Concrete plan](../../greenfield/docs/mycelium/RUNNER_DECISION_OUTPUT_NEXT_STEPS_2026-10-27.md) in `ab3da37f`; [live queue](../CURRENT_EXECUTION_ORDER.md) active in `8895a487`.
