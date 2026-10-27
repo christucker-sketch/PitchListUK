@@ -1,3 +1,24 @@
+# Real-task approvals rev 2.1 — receipt-format correction PASS
+
+27 October 2026. Reviewed `c91b318aef0e7cec298d2259d91db80f9b74a7c9`, limited to the installer compatibility correction after host attempt 1 stopped at check. **16/16 independent offline upgrade checks PASS**; all 15 Stage B manifest entries match; changed-script Bash syntax passes. Confirmed original install-stageb.sh writes sha256sum output prefixed with cmd, yielding two spaces before each file name; uninstall-stageb.sh parses whitespace-separated fields.
+
+The corrected installer accepts whitespace between the exact expected hash and exact myc-gate name, retains all other preconditions, writes canonical two-space receipt lines, and keeps the checked install/rollback/recovery behavior. The test now generates the receipt using the original installer mechanism. myc-gate/myc-decide/mycnotify hashes and behavior are unchanged; prior 140-check runtime review remains applicable. No unrelated runtime suites were rerun.
+
+**Updated installer SHA256:** `18654aa732cc7239e2ecd44e70ff60c4e06dfce3b80da514967555904e5fb3c9`. Use it with the same three previously reviewed program hashes below.
+
+**Authorization:** Chris already approved the real-task host upgrade in this chat. This narrowly reviewed receipt-format repair enables that same operation and does not expand its authority or effects. Continue under that existing approval; do not add another project-approval loop solely because this repair changes the installer hash. The old hash pin is superseded by the verified pin above for this correction only. Actual host/client permission controls still apply.
+
+**Next actor: Claude**, coordinate the existing Chris-operated workflow with files from c91b318a:
+```bash
+sudo bash upgrade-decisions.sh check &&
+sudo bash upgrade-decisions.sh install
+```
+Stop on any further check failure; publish actual check/install evidence and recovery output if needed. No installation has been confirmed yet. Keep notifier MODE=dry-run and timer off; no email, credentials, v5.1, new model call, resume support or Stage D.
+
+---
+
+## Prior revision 2 review and original pins (installer pin superseded above)
+
 # Real-task approvals revision 2 — Codex follow-up PASS
 
 27 October 2026. Reviewed `9ac668e5816a05dca96513667c5b9b6147ef2bf2`, limited to the R1–R3 corrections and their integration with existing offline suites.
