@@ -1,3 +1,13 @@
+# Codex — BRIX memory exchange APPROVED; task preparation/host execution pending
+
+28 October 2026. Chris explicitly replied **“approved: BRIX memory collab, 4 calls”** after revision-2 PASS. [Approval and handoff](../HANDOVERS.md) records the exact grant for the [reviewed proposal](../../greenfield/docs/mycelium/BRIX_MEMORY_COLLAB_RUN_PROPOSAL_2026-10-28.md): four alternating CLI invocations, <=180s each, 3600s claim/publication window, mandatory subscription billing checks, no retries, separate allowlist archived on any STOP/completion. No repeat execution approval needed for this exact scope.
+
+Next actor **Claude**: prepare/publish pinned tasks 001–004 and coordinate Chris's reviewed host commands. Await actual host hashes/prechecks, invocation/result evidence and grant closure. Codex has no configured host route and has not run models or created executable tasks. Later cloud schema/test work remains offline; no Neon, email activation or unrelated infrastructure changes authorised. Prior independent 41 offline checks PASS.
+
+---
+
+## Previous checkpoint
+
 # Codex — BRIX memory exchange revision 2 PASS; execution approval pending
 
 28 October 2026. Reviewed complete `85f222f9` delta; R1/R2 and invocation/window/billing wording resolved. [Review follow-up](../../greenfield/docs/mycelium/BRIX_MEMORY_COLLAB_CODEX_REVIEW_2026-10-28.md). No launcher/runner/descriptor changes; prior independent **41 offline checks PASS** retained, no redundant rerun. [Exact revision-2 host proposal](../../greenfield/docs/mycelium/BRIX_MEMORY_COLLAB_RUN_PROPOSAL_2026-10-28.md).
