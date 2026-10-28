@@ -2953,3 +2953,42 @@ Reviewed complete `3e542f77` documentation delta. Recorded Windows evidence: bui
 **Approval not yet given for these writes.** Proposed concise approval: **“approved: Mycelium Neon migration, roles and persistence proof”**. After approval Claude coordinates the exact existing Windows script/local-log execution with Chris; no repeated project authorization. Claude's terminal typing limitation remains: do not claim unattended PC execution or a direct shell that is unavailable.
 
 Pending outcome: actual migration/role/proof/ledger receipts and preserved existing tables. No database write occurred from this acceptance.
+
+
+## 28 October 2026 — Chris APPROVES Mycelium Neon migration, roles and persistence proof
+
+Chris explicitly replied: **“approved: Mycelium Neon migration, roles and persistence proof”** after Codex accepted Windows recheck `3e542f77`. This is the exact bounded write approval proposed in the preceding handoff.
+
+**Next actor Claude:** prepare/run via the established Windows script + Chris one-command + sanitized-log workflow. No repeated execution approval for this exact scope. Actual checkout C:\Users\ChrisT\PitchListUK, branch findpitches-v3/greenfield, isolated greenfield/mycelium/memory; preserve existing .env.local. Claude's click-only-terminal limitation still applies: do not pretend a direct PC shell exists.
+
+**Target:** existing project raspy-silence-27774097 / org-square-shadow-46730629 / production br-old-rice-zat3kd07 / endpoint ep-little-thunder-zahn9b42.c-2.eu-west-2.aws.neon.tech / neondb as neondb_owner. Free owner-confirmed. Use the reviewed c3e0936f/eb9cdcdb implementation and [frozen canonical SQL hashes](../greenfield/mycelium/memory/OFFLINE_DELIVERY_2026-10-28.md). No later source delta may silently expand this grant.
+
+**Authorized exact actions:** [Windows runbook step3](../greenfield/mycelium/memory/WINDOWS_DEPLOYMENT.md): migrations 001/002/003, atomic for all pending SQL; separate runtime_grants transaction for exactly two NOLOGIN templates/grants; two synthetic nodes and one edge; fresh-process persistence read; read-only final identity/catalog/ledger/grant checks. No real redaction, login/password/membership creation, model dispatch, paid resource, compute/plan/config change, Neon deploy, notifier or other services. Preserve all nine neon_auth tables and all non-Mycelium objects.
+
+From the existing verified memory directory (do not reconfigure credentials), after checking hashes unchanged:
+
+```powershell
+$env:MYCELIUM_REMOTE_WRITES_APPROVED = 'yes'
+try {
+    node --env-file=.env.local .\scripts\database.mjs migrate
+    if ($LASTEXITCODE -ne 0) { throw 'Migration failed/uncertain: stop and inspect ledger; no blind retry' }
+
+    node --env-file=.env.local .\scripts\database.mjs roles
+    if ($LASTEXITCODE -ne 0) { throw 'Role setup failed/uncertain: stop and inspect roles' }
+
+    node --env-file=.env.local .\scripts\database.mjs smoke-write
+    if ($LASTEXITCODE -ne 0) { throw 'Proof write failed/uncertain: preserve .smoke/proof.json; reconcile with smoke-read' }
+} finally {
+    Remove-Item Env:\MYCELIUM_REMOTE_WRITES_APPROVED -ErrorAction SilentlyContinue
+}
+node --env-file=.env.local .\scripts\database.mjs smoke-read
+if ($LASTEXITCODE -ne 0) { throw 'Persistent proof read failed: stop and inspect' }
+node --env-file=.env.local .\scripts\database.mjs inspect
+if ($LASTEXITCODE -ne 0) { throw 'Final read-only inspection failed' }
+```
+
+Any STOP/failure/uncertain publication outcome stops later write steps. No DROP/delete/reset/automatic rerun; never remove the proof manifest to repeat a write. If the manifest already exists, read/reconcile rather than write another proof. All captured output must remain free of connection URLs/passwords/env values.
+
+**Evidence to publish:** actual Windows command results/exit status; ledger versions/canonical checksums; final Mycelium table inventory and unchanged nine neon_auth table names; role attributes/grants confirming NOLOGIN/no privileged role flags and no private-capability runtime grant; fresh-process synthetic read outcome and benign stable IDs if useful; errors only sanitized; write-approval env flag removed. Distinguish observed outcomes from expectations.
+
+Codex then reviews actual evidence and reports completion/any limitation. This approval record is not itself database execution. No extra call/test/grant or general autonomy is inferred.
