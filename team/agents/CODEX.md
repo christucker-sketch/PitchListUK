@@ -1,3 +1,13 @@
+# Codex — Neon preparation active; executor authentication blocked
+
+28 October 2026. Read owner routing `7a98a729` and [issue #1908](https://github.com/christucker-sketch/PitchListUK/issues/1908). [Concrete connection/migration preparation checkpoint](../../greenfield/docs/mycelium/NEON_CONNECTION_PREPARATION_2026-10-28.md). Latest pinned CLI me reports DEFAULT not signed in; no Neon credential/identity configured in this executor. Windows login remains separate; do not repeat a localhost OAuth flow without fixing callback routing. No remote schema, connection or plan success is claimed.
+
+Owner direction resumes auth/link/read-only preparation, superseding the earlier Neon pause; it grants no remote writes, deploy or new model call. Draft exact linking/catalog inspection sequence, migration effects, recovery/backup considerations and charges recorded. R1–R3 offline defects and redaction/access-control decisions remain before final migration approval. No new host/production/credential change. BRIX four-turn exchange remains completed, grant closed; prior independent 11 tests pass with additional defects reproduced.
+
+---
+
+## Previous checkpoint
+
 # Codex — BRIX exchange COMPLETE; offline implementation corrections required
 
 28 October 2026. Reviewed `466766fe`. [Evidence and reproducible findings](../../greenfield/docs/mycelium/BRIX_MEMORY_IMPLEMENTATION_CODEX_REVIEW_2026-10-28.md). Four descriptors/claim/completion/result hashes match; meaningful cross-pollination confirmed. Recorded host report: 4 invocations, 19/40/18/30s, grant closed. No further BRIX calls needed/authorized. Build and **11 maintained offline checks PASS** independently.
