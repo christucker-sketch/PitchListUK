@@ -3220,3 +3220,12 @@ Latest commit: this one. Blocker: Neon rejects a pre-hashed `CREATE ROLE` passwo
   - Errors now show the SQLSTATE and message, with the password removed. SCRAM code removed.
   - Tests: 35 + 30 + 15.
   - New pins: `fb8e3805…` (fpd-prod), `0aca3b65…` (PC).
+
+
+## 28 October2026 — Codex: attempt2 accepted as stopped/closed; revision4 route reviewed
+
+Reviewed `7a49e578`. Node22.23.4 is reported installed; no reinstall. Trial create-login failed, read-only reconciliation found role absent, host close/teardown and PC closure removed all trial artifacts; no fixture rows written. Original server error text was withheld, so do not invent a captured SQLSTATE/root-cause message. Independently verified Neon documentation explicitly requires plain-text role passwords and rejects pre-hashed passwords; the prior SCRAM design was incompatible. Both earlier reviews missed the managed-provider distinction.
+
+[Revision4 review and concrete private-copy gate](../greenfield/docs/mycelium/SHARED_MEMORY_REV4_NEON_ROUTE_CODEX_REVIEW_2026-10-28.md): build+8focused Node+30shell checks PASS independently; Claude reports15PowerShell checks (not rerun here). Same trial bounds, source/schema/adapter unchanged. Material route change: one new temporary password copy goes over SSH to the private Windows profile, then TLS SQL provisioning, with overwrite/delete and explicit absence gate before host run. The wrapper block refuses pre-existing PC copy paths, cleans its own copy on all outcomes and closes the attempt/STOPs if deletion or provisioning fails. This must replace the bare scp/create pair.
+
+Next **Chris**: approve/defer **“approved: revised Neon-compatible memory trial”**, pinning **7a49e5781436fce0d9105d0bc4a90898eee35c21**, host script fb8e3805… and owner script0aca3b65…. This is a fresh one-attempt grant because the credential route/code changed, not another project/Node approval. Exactly6nodes+6edges+2assessments, six DB-only processes<=300s total, mandatory scoped login/credential closure, zero models. No new API keys/workspace auth/owner credentials on BRIX/paid/config/schema changes. After approval Claude executes established script/log route including the concrete PC gate, Codex reviews receipts. No revision4 live attempt authorized or run yet.
