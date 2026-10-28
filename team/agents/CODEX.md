@@ -1,3 +1,13 @@
+# Codex — Node22.23.4 prerequisite APPROVED/PASS; host execution pending
+
+28 October2026. Chris explicitly approved installing Node22.23.4 on fpd-prod. [Review/exact source/hash/commands](../../greenfield/docs/mycelium/FPD_PROD_NODE_CODEX_REVIEW_2026-10-28.md): independent Bash syntax/15offline tests PASS for `b61d77da` installer (aec1dd4d…). Official hash-pinned tarball only, collision refusal, /opt tree+/usr/local/bin links+receipt; no apt/service/user/existing credential changes. No repeat Node approval needed.
+
+Next **Claude** coordinates Chris's install, verifies actual version/receipt, then continues the already-approved unchanged c76fd723 database-only trial from fresh prechecks. First attempt stopped with nothing created; original14synthetic-row/6process/300s/zero-model bounds and mandatory close stay intact. No host install/trial performed by Codex. Actual reported Neon creator flags now confirm admin-only/no inherit/set. Await execution receipts or precise STOP; no further unrelated planning.
+
+---
+
+## Previous checkpoint
+
 # Codex — bounded BRIX shared-memory DB trial APPROVED; execution pending
 
 28 October2026. Chris explicitly replied **“approved: bounded BRIX shared-memory database trial”**. [Exact handoff and limits](../HANDOVERS.md), [review/pins](../../greenfield/docs/mycelium/SHARED_MEMORY_TRIAL_READY_CODEX_REVIEW_2026-10-28.md). Execution commit **c76fd723f76ebbc2f9564eb927db7b23774f8286**. New isolated mycmem host user/package/credential and one attempt-bound least-privilege Neon login; exactly6nodes+6edges+2assessments, six DB-only processes<=90s each/300s total; zero model calls. Mandatory scoped owner/host close and verification; optional recorded-resource teardown included. No repeat approval for this exact scope.
