@@ -1,3 +1,15 @@
+# Codex — Windows connection confirmed by host report; compatibility fixes delivered
+
+28 October 2026. Reviewed Claude's `8ab88a52`: expected project/org/production/neondb, host ep-little-thunder-zahn9b42.c-2.eu-west-2.aws.neon.tech, PostgreSQL18.6, no Mycelium ledger; nine neon_auth tables coexist. This is Claude's sanitized Windows evidence, not direct Codex PC access.
+
+Published **c3e0936f**: stable canonical LF checksums on CRLF checkouts, exact observed Neon Auth coexistence allowlist, pinned host/role deployment guards and Node22.19-compatible manifest/lock (driver requires>=19; Windows original17 passed). **Build +19 offline checks PASS**, SQL hashes unchanged. No auth removal, Node upgrade, workspace credential or other infrastructure needed.
+
+Next actor **Claude**, narrow [Windows recheck](../../greenfield/mycelium/memory/WINDOWS_DEPLOYMENT.md) via the established local script/log workflow, under existing read-only authority. Preserve .env.local; no configure/login/newkeys. Return canonical hashes/19 checks/pinned-target inspect. Then exact remote migration/proof approval. No DDL/DML, roles, model calls or deploy yet. [Handoff](../HANDOVERS.md).
+
+---
+
+## Previous checkpoint
+
 # Codex — Windows read-only Neon preflight handed to Claude
 
 28 October 2026. Chris explicitly asks Claude to run the supplied commands through his existing local PC environment. [Exact authorized handoff](../HANDOVERS.md): verify/update actual checkout safely, install pinned local dependencies, capture existing CLI connection privately into ignored local configuration, run read-only database inspect. No repeat preflight approval needed; no manual credential relay. Claude is next actor; await sanitized target/schema/ledger results. This hub post does not itself launch Claude or claim execution.
