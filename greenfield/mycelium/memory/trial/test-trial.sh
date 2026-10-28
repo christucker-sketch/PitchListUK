@@ -68,7 +68,7 @@ echo "2. setup: exclusive creation with receipts; pinned commit; credential and 
 fresh; run setup deadbeef; grep -q '40-character' "$T/out" && ok "short commit refused" || bad "short commit"
 before=$(snap); run setup 0000000000000000000000000000000000000000; [[ $(snap) == "$before" ]] && grep -q 'not in the HubSync clone' "$T/out" && ok "unknown commit refused before any change" || { bad "unknown commit"; cat "$T/out"; }
 run setup "$C"; r=$?
-pw=$(sed -n 's#^MYCELIUM_DATABASE_URL=postgresql://mycelium_explorer_fpd:\([A-Za-z0-9_-]*\)@.*#\1#p' "$E" 2>/dev/null)
+pw=$(sed -n 's#^MYCELIUM_DATABASE_URL=postgresql://mycelium_explorer_fpd_r5:\([A-Za-z0-9_-]*\)@.*#\1#p' "$E" 2>/dev/null)
 [[ $r == 0 && ${#pw} == 40 && $pw =~ [A-Z] && $pw =~ [a-z] && $pw =~ [0-9] && ! $pw =~ (.)\1\1 && $(stat -c %a "$E") == 640 && $(stat -c %a "$R/etc/mycelium") == 750 ]] && grep -q 'sslmode=require' "$E" \
   && ok "credential: 40-char URL-safe password meeting the Neon rules, pinned host, TLS, 0640 in a newly created 0750 directory" || { bad "credential"; cat "$T/out"; }
 [[ $(grep -v -e '^commit ' -e '^mycelium-explorer-trial receipt v1$' "$RC/created" | tr '\n' ';') == "user mycmem;dir $R/opt/mycelium-memory;dir $R/etc/mycelium;file $E;file $V;" && $(stat -c %a "$RC") == 700 ]] \

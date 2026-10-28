@@ -9,8 +9,8 @@
 //   node --env-file=.env.local scripts/explorer-provision.mjs verify-closed <attempt>     read-only: exit 1 unless absent or ours+closed
 //   MYCELIUM_REMOTE_WRITES_APPROVED=yes ... create-login <password-file> <attempt>        refuses if the name exists
 //   MYCELIUM_REMOTE_WRITES_APPROVED=yes ... disable-login <attempt>                       NOLOGIN + revoke, ONLY if ours
-// The login gets only mycelium_memory_runtime's privileges, inherited (INHERIT TRUE, SET FALSE, no ADMIN), at most two
-// connections. Neon accepts only PLAIN-TEXT passwords in CREATE ROLE ("Hashed passwords are not supported", Neon docs), so
+// The login gets only mycelium_memory_runtime's privileges, inherited (INHERIT TRUE, SET FALSE, no ADMIN), at most
+// EXPLORER_CONN_LIMIT connections. Neon accepts only PLAIN-TEXT passwords in CREATE ROLE ("Hashed passwords are not supported", Neon docs), so
 // the password generated on fpd-prod is copied here once, sent over TLS in CREATE ROLE, and wiped by the caller.
 import { readFile } from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
@@ -18,7 +18,11 @@ import { resolve } from 'node:path';
 import { connect } from '../src/connection.mjs';
 import { assertDeploymentTarget } from '../src/preflight.mjs';
 
-export const EXPLORER_ROLE = 'mycelium_explorer_fpd';
+// Revision 5: a fresh name. The attempt-3 login `mycelium_explorer_fpd` stays as it is (NOLOGIN, membership revoked), as
+// designed; nothing is dropped. Limit 20: Neon's proxy keeps server connections open for reuse (attempt 3 measured two idle
+// sessions held by a single one-query process), so 2 was exhausted by the second process.
+export const EXPLORER_ROLE = 'mycelium_explorer_fpd_r5';
+export const EXPLORER_CONN_LIMIT = 20;
 const R = [EXPLORER_ROLE, 'mycelium_memory_runtime', 'mycelium_memory_redactor'];
 const ATTEMPT_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 export const attemptComment = attempt => {
@@ -55,7 +59,7 @@ export function createLoginStatements(password, attempt) {
       IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'mycelium_memory_runtime' AND NOT rolcanlogin) THEN RAISE EXCEPTION 'runtime template missing'; END IF;
     END $$` },
     { text: `CREATE ROLE ${EXPLORER_ROLE} LOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS INHERIT
-             CONNECTION LIMIT 2 PASSWORD '${password}'` },
+             CONNECTION LIMIT ${EXPLORER_CONN_LIMIT} PASSWORD '${password}'` },
     { text: `COMMENT ON ROLE ${EXPLORER_ROLE} IS '${comment}'` },
     { text: `GRANT mycelium_memory_runtime TO ${EXPLORER_ROLE} WITH INHERIT TRUE, SET FALSE, ADMIN FALSE` }
   ];
@@ -92,7 +96,7 @@ export function assertExplorerLogin(state, attempt) {
   const r = roles.find(x => x.rolname === EXPLORER_ROLE);
   const m = memberships.filter(x => x.member === EXPLORER_ROLE);
   const ok = ownership(state, attempt) === 'ours' && r.rolcanlogin && !r.rolsuper && !r.rolcreatedb && !r.rolcreaterole
-    && !r.rolreplication && !r.rolbypassrls && r.rolconnlimit === 2 && m.length === 1 && m[0].role === 'mycelium_memory_runtime'
+    && !r.rolreplication && !r.rolbypassrls && r.rolconnlimit === EXPLORER_CONN_LIMIT && m.length === 1 && m[0].role === 'mycelium_memory_runtime'
     && m[0].inherit_option === true && m[0].set_option === false && m[0].admin_option === false;
   if (!ok) throw new Error('Explorer login is not in the approved least-privilege state for this attempt.');
 }
@@ -126,7 +130,7 @@ if (process.argv[1] && pathToFileURL(resolve(process.argv[1])).href === import.m
     if (mode === 'create-login') {
       secret = (await readFile(a1, 'utf8')).trim();
       await db.transaction(createLoginStatements(secret, attempt));
-      console.log(`Created ${EXPLORER_ROLE} for attempt ${attempt}: LOGIN, connection limit 2, inherits mycelium_memory_runtime only.`);
+      console.log(`Created ${EXPLORER_ROLE} for attempt ${attempt}: LOGIN, connection limit ${EXPLORER_CONN_LIMIT}, inherits mycelium_memory_runtime only.`);
     } else if (mode === 'disable-login') {
       await db.transaction(disableLoginStatements(attempt));
       console.log(`Closed ${EXPLORER_ROLE} for attempt ${attempt} (or it was absent): NOLOGIN, runtime membership revoked.`);

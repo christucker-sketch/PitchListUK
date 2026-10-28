@@ -7,7 +7,7 @@ import { PGlite } from '@electric-sql/pglite';
 import { migrate } from '../src/schema.mjs';
 import { target } from '../src/preflight.mjs';
 import { createLoginStatements, disableLoginStatements, membershipQueries, EXPLORER_ROLE, assertExplorerLogin, assertExplorerClosed,
-  assertExplorerAbsent, ownership, assertTrialPassword, describeError } from '../scripts/explorer-provision.mjs';
+  assertExplorerAbsent, ownership, assertTrialPassword, describeError, EXPLORER_CONN_LIMIT } from '../scripts/explorer-provision.mjs';
 import { randomUUID } from 'node:crypto';
 import { assertExplorerTarget, assertLeastPrivilege, whoamiQueries, footprintQueries, LIVE } from '../scripts/explorer-live.mjs';
 import { explorerA, explorerB } from '../examples/fixtures.mjs';
@@ -47,7 +47,7 @@ test('create-login: PostgreSQL stores a hash of the plain-text password; inherit
     const rs = await db.transaction(membershipQueries);
     const role = rs[1].find(r => r.rolname === EXPLORER_ROLE);
     assert.deepEqual({ login: role.rolcanlogin, superuser: role.rolsuper, createrole: role.rolcreaterole, limit: role.rolconnlimit },
-      { login: true, superuser: false, createrole: false, limit: 2 });
+      { login: true, superuser: false, createrole: false, limit: 20 });
     const m = rs[2].filter(x => x.member === EXPLORER_ROLE);
     assert.deepEqual(m.map(x => [x.role, x.admin_option, x.inherit_option, x.set_option]), [['mycelium_memory_runtime', false, true, false]]);
     await assert.rejects(db.transaction(createLoginStatements(PW, ATT)), /already exists/);
@@ -88,6 +88,12 @@ test('live steps as the explorer login: least-privilege check passes, A then B s
     assert.throws(() => assertLeastPrivilege(o), /not least-privilege/);
     await db.query('RESET ROLE');
   } finally { await pg.close(); }
+});
+
+test('revision 5: a fresh login name, and a connection limit above what Neon\'s proxy holds open', () => {
+  assert.equal(EXPLORER_ROLE, 'mycelium_explorer_fpd_r5');           // the closed attempt-3 login is never reused or dropped
+  assert.ok(EXPLORER_CONN_LIMIT >= 12 && EXPLORER_CONN_LIMIT <= 25);    // 6 processes x 2 held sessions, well under ~100
+  assert.match(createLoginStatements(PW, ATT)[1].text, /CONNECTION LIMIT 20 /);
 });
 
 test('explorer target guard: pinned host/database and the explorer login only', () => {

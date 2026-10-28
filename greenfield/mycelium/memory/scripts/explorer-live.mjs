@@ -10,7 +10,7 @@ import { target } from '../src/preflight.mjs';
 import { createExplorerMemory } from '../src/explorer.mjs';
 import { derivedId } from '../src/memory.mjs';
 import { explorerA, explorerB } from '../examples/fixtures.mjs';
-import { EXPLORER_ROLE } from './explorer-provision.mjs';
+import { EXPLORER_ROLE, describeError } from './explorer-provision.mjs';
 import { pathToFileURL } from 'node:url';
 import { resolve } from 'node:path';
 
@@ -76,8 +76,10 @@ if (process.argv[1] && pathToFileURL(resolve(process.argv[1])).href === import.m
         links: r.links.map(e => e.relation).sort(), stances: Object.fromEntries(Object.entries(r.stances).map(([k, v]) => [k, v.stances])) };
     }
     console.log(JSON.stringify({ mode, pid: process.pid, ...out }));
-  } catch {
-    console.error('Explorer live step failed or refused. No credential details logged.');
+  } catch (e) {
+    // Diagnosable but safe: SQLSTATE and server message with the password, any URL and long tokens removed.
+    let secret = null; try { secret = decodeURIComponent(new URL(process.env.MYCELIUM_DATABASE_URL).password) || null; } catch { }
+    console.error(`Explorer live step failed or refused: ${describeError(e, secret)}`);
     process.exitCode = 1;
   }
 }

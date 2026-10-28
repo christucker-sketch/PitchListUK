@@ -57,7 +57,7 @@ if (-not (Test-Path .\.env.local)) { Stop-Pre '.env.local missing; not recreated
 if ($Mode -eq 'before') {
   if (Test-Path -LiteralPath $receipt) { Stop-Pre "an earlier attempt receipt exists ($receipt); run close for it first" }
   $r = Provision 'verify-absent'
-  if ($r.code -ne 0) { Stop-Pre 'mycelium_explorer_fpd already exists (or the read failed): the trial will not use or change it' }
+  if ($r.code -ne 0) { Stop-Pre 'the explorer login name already exists (or the read failed): the trial will not use or change it' }
   "BEFORE OK: actual Neon role/membership options recorded above; the explorer login name is free (read-only)" | Log
   exit 0
 }
@@ -67,7 +67,7 @@ if ($Mode -eq 'create') {
   if (-not (Test-Path -LiteralPath $pwfile -PathType Leaf)) { Stop-Pre "no password copy at $pwfile (scp it from fpd-prod first)" }
   try {
     if ((Get-Content -LiteralPath $pwfile -TotalCount 1) -notmatch '^[A-Za-z0-9_-]{40}$') { Stop-Pre 'password copy malformed (not printed)' }
-    if ((Provision 'verify-absent').code -ne 0) { Stop-Pre 'mycelium_explorer_fpd already exists (or the read failed): nothing created, nothing changed' }
+    if ((Provision 'verify-absent').code -ne 0) { Stop-Pre 'the explorer login name already exists (or the read failed): nothing created, nothing changed' }
     $attempt = [guid]::NewGuid().ToString().ToLower()
     try { New-Item -ItemType File -Path $receipt -Value "attempt=$attempt`ncommit=$Commit`nat=$(Get-Date -Format o)`n" -ErrorAction Stop | Out-Null }
     catch { Stop-Pre "could not create the attempt receipt exclusively; nothing created" }
@@ -89,7 +89,7 @@ if ($Mode -eq 'create') {
   if ($o.text -match 'OWNERSHIP: foreign') { Stop-Pre 'a role of that name exists but is NOT this attempt''s: left unchanged; inspect before anything else' }
   if ($o.text -match 'OWNERSHIP: ours') {
     if (Close-Attempt $attempt) { Rename-Item -LiteralPath $receipt -NewName "$(Split-Path -Leaf $receipt).closed-$(Get-Date -Format yyyyMMddTHHmmss)"; Stop-Pre 'create did not reach the approved state; this attempt''s login was closed instead (verified)' }
-    Stop-Pre "this attempt's login may still be active and closing it failed: rerun -Mode close, or disable mycelium_explorer_fpd in the Neon Console"
+    Stop-Pre "this attempt's login may still be active and closing it failed: rerun -Mode close, or disable the explorer login (see the log) in the Neon Console"
   }
   Stop-Pre "outcome uncertain (database unreachable?): do NOT assume anything. Rerun -Mode close when reachable; the receipt keeps attempt $attempt"
 }
@@ -103,4 +103,4 @@ if (Close-Attempt $attempt) {
   Rename-Item -LiteralPath $receipt -NewName "$(Split-Path -Leaf $receipt).closed-$(Get-Date -Format yyyyMMddTHHmmss)"
   "CLOSE OK: attempt $attempt is NOLOGIN with no membership, or was never created (verified read-only)" | Log; exit 0
 }
-Stop-Pre "attempt ${attempt}: closure NOT verified. Do not assume closed: rerun close, or disable mycelium_explorer_fpd in the Neon Console. A foreign role is never changed"
+Stop-Pre "attempt ${attempt}: closure NOT verified. Do not assume closed: rerun close, or disable the explorer login (see the log) in the Neon Console. A foreign role is never changed"

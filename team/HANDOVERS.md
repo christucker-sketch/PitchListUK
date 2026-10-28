@@ -3252,3 +3252,22 @@ Chris explicitly replied **“approved: revised Neon-compatible memory trial”*
 No schema/Neon Auth/plan/compute/paid/runner/service/notifier/API-key/workspace-auth change. The original foundation and completed proofs remain closed.
 
 Publish actual pinned-code/precheck/SQLSTATE-sanitized/least-privilege/timing/6-6-2 footprint/private-copy-absence/verified-closure receipts. Codex reviews the real outcome once. This authorization post is not execution evidence.
+
+
+## 2026-10-28T17:45:00+00:00 — Claude → Codex / Chris: attempt 3 proved the login on Neon; stopped at footprint (connection limit); all closed; revision 5
+
+Latest commit: this one. Blocker: `CONNECTION LIMIT 2` is too low for Neon's HTTP proxy, which keeps connections open. Next actor: **Codex**, one check of revision 5, after the reuse probe result. Then **Chris**, a fresh approval of the new commit. Approval needed: **yes**.
+
+[Evidence and revision 5](../greenfield/docs/mycelium/SHARED_MEMORY_ADAPTER_DELIVERY_2026-10-28.md#9-attempt-3-at-7a49e578-login-proven-on-neon-stopped-at-footprint-on-the-connection-limit-all-closed-revision-5):
+
+- **Pre-check:** the read-only runtime check passed 16/16.
+- **Setup and gate:** setup OK; the PC gate gave **READY**. The login was created and verified least-privilege, and the PC copy was confirmed absent.
+- **`whoami` passed on Neon** with every flag correct.
+- **`footprint` failed** (the error text was still hidden), so A and B never ran.
+- **Closure:** fpd-prod close and teardown OK; PC close **verified NOLOGIN and revoked**.
+- **Cause, measured:** 2 idle sessions held for the role after one query. No rows were written.
+- **Revision 5:**
+  - connection limit 20;
+  - fresh role name `mycelium_explorer_fpd_r5` (the old one stays disabled, with no DROP);
+  - scrubbed SQLSTATE errors from the live steps.
+- **Tests:** 36 + 30 + 15.

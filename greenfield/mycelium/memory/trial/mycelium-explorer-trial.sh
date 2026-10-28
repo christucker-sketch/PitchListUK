@@ -13,7 +13,7 @@
 # wiped there); run/close shred the fpd-prod copy. Never prints the password. Never retries.
 set -euo pipefail
 umask 077
-HOST=ep-little-thunder-zahn9b42.c-2.eu-west-2.aws.neon.tech DBNAME=neondb ROLE=mycelium_explorer_fpd U=mycmem
+HOST=ep-little-thunder-zahn9b42.c-2.eu-west-2.aws.neon.tech DBNAME=neondb ROLE=mycelium_explorer_fpd_r5 U=mycmem
 RC=/var/lib/mycelium-explorer-trial PKG=/opt/mycelium-memory ETC=/etc/mycelium VER=/home/ct_admin/mycelium-explorer.pw
 ARCH=/root REPO=/var/lib/hubsync/repo BRANCH=origin/findpitches-v3/greenfield SUB=greenfield/mycelium/memory
 DEADLINE_S=300 STEP_S=90 GRACE_S=5 NODE_MIN=22.19.0 TEST=0

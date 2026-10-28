@@ -312,3 +312,36 @@ The safety design worked as intended:
 | PC `trial/mycelium-explorer-owner.ps1` | `0aca3b6519a0e27bf066d05404a0df0429489acbf0b31b62a5cb14e5b518d9b4` |
 
 The approved commit becomes the commit that publishes this revision. The steps are the same as section 5, except that step 2 is `scp ct_admin@fpd-prod.Home:mycelium-explorer.pw C:\Users\ChrisT\` and the PC `create` wipes that file. Limits, bounds and closure are unchanged.
+
+## 9. Attempt 3 at `7a49e578`: login proven on Neon; stopped at `footprint` on the connection limit; all closed; revision 5
+
+**Read-only pre-check, from the PC as owner.** `mycelium-runtime-check.mjs` gave **16/16 PASS**. The runtime role the login inherits has exactly what `whoami` requires:
+- CONNECT, schema USAGE, and INSERT/SELECT on the graph;
+- no database or schema CREATE, no UPDATE or DELETE, no capability table and no `redact`;
+- `password_encryption=scram-sha-256`, and `createrole_self_grant` empty.
+
+**Execution:**
+
+| Step | Result |
+|---|---|
+| fpd-prod script | sha256 `fb8e3805…` (matches the pin); `precheck` OK (17:21:34Z) |
+| fpd-prod `setup` (17:22:49Z) | `SETUP OK`: user/group `mycmem`, package `@7a49e578`, credential 0640, one-time PC copy 0600 |
+| PC gate (Codex's wrapper) | `before` OK; scp; `create`: **`Created mycelium_explorer_fpd for attempt aef3d63f-2a5f-455f-8de2-0343160ea1e7`**, then `VERIFIED: … approved least-privilege state`; the PC copy was overwritten and deleted; **`PC password copy absent: True`**; **READY** (17:23:20Z) |
+| fpd-prod `run` (17:25:01Z) | Shredded the fpd-prod PC copy. **`whoami` PASSED on Neon** as `mycelium_explorer_fpd`: elevated=false, can_append=true, can_mutate=false, can_see_capability=false, can_redact=false, can_create_schema=false, owner_member=false. **`footprint` failed**, with the error text still hidden by `explorer-live.mjs` (a gap). STOP; nothing retried; **A and B never ran** |
+| fpd-prod `close` and `teardown` (17:25:30Z) | Shredded the credential; removed the package, `/etc/mycelium` and `mycmem`; receipt archived at `/root/mycelium-explorer-trial-receipt-20261028T172530Z.txt` |
+| PC `close` (17:25:38Z) | `disable-login` for attempt `aef3d63f`, then **`VERIFIED: … closed (NOLOGIN, no membership)`**; receipt archived |
+
+**Root cause, measured read-only at 17:27:43Z.** `pg_stat_activity` showed **2 idle sessions** for `mycelium_explorer_fpd`, both opened at 17:25:01.9Z by the single one-query `whoami` process. Neon's HTTP proxy keeps server connections open for reuse, so the `CONNECTION LIMIT 2` was full, and the next process's first query could not connect. The same check confirmed `rolcanlogin=false` and that memory is untouched (2 nodes, 1 edge, 0 assessments, 0 trial rows).
+
+**Final state:**
+- `mycelium_explorer_fpd` remains on Neon, NOLOGIN with its membership revoked, as the design intends.
+- No credential remains anywhere, and no rows were written.
+- On fpd-prod only Node remains.
+- The two idle pooled sessions expire with the proxy or compute idle timeout; the password itself is shredded everywhere.
+
+**Revision 5 (offline; schema, migrations and the adapter untouched):**
+- **Connection limit 2 → 20**, about a fifth of the Free compute's capacity, with room for the proxy's held sessions. A read-only reuse probe (`mycelium-pool-probe.mjs`) is being run to confirm that 20 suffices.
+- **A fresh login name, `mycelium_explorer_fpd_r5`.** The closed attempt-3 login is neither reused nor dropped, so there is no destructive Neon step.
+- **`explorer-live.mjs` errors now report the SQLSTATE and the server message,** with the password, any URL and any long token removed, using the same `describeError` as provisioning.
+- **Tests:** 36/36 Node tests, 30/30 trial checks and 15/15 owner checks.
+- **New pins:** fpd-prod `3459deed44e4042e6d7269d439e64a8726446a1ee1d5686aa7270e2c0a015748`; PC `04513c592d23b30c4576ce25289fb92f4dd8906022a447ad93b15d2cc1dd2bf2`.
