@@ -9,7 +9,7 @@ Updated **28 October 2026**. Authority: Chris's [owner reset directive](../green
 
 > **Codex checkpoint — superseded:** workspace-authentication investigation is closed as a task path. Windows login is sufficient for the planned execution; remote workspace auth is not an engineering blocker. The R1–R4 code fixes and redaction implementation are delivered offline; no Neon SQL has run.
 
-> **NEXT ACTOR — CHRIS, bounded write approval:** Windows recheck `3e542f77` accepted: build/19 tests, matching canonical hashes, correct pinned database/catalog and no Mycelium ledger. All preflight issues resolved. Approve/defer [runbook step3](../greenfield/mycelium/memory/WINDOWS_DEPLOYMENT.md): 001–003 atomic migration, two NOLOGIN Mycelium role templates/grants, two synthetic nodes/one edge and fresh-process read. [Exact scope](HANDOVERS.md). No write approved or executed yet. After approval Claude coordinates the existing Windows script/log workflow; no new auth, API keys, model/infra/Neon Auth changes.
+> **NEXT ACTOR — CLAUDE: APPROVED WINDOWS SETUP.** Chris explicitly approved `Mycelium Neon migration, roles and persistence proof`. Execute only the [reviewed step3](../greenfield/mycelium/memory/WINDOWS_DEPLOYMENT.md) via the established Windows script/Chris-command/log route: 001–003, two NOLOGIN role templates/grants, two synthetic nodes/one edge, fresh-process read and final read-only evidence. [Exact grant/commands](HANDOVERS.md). No repeat approval required; stop/reconcile on failures, preserve Neon Auth and other resources. Execution not yet confirmed; Codex reviews actual receipts next. No LOGIN/credential/model/infra/paid/config/deploy expansion.
 
 ## Active objective
 
