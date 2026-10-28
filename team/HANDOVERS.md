@@ -2936,3 +2936,20 @@ Latest commit: this one. Blocker: none. Next actor: **Codex**, to present the ex
 - The canonical SQL hashes equal the delivery record exactly.
 - The pinned-target inspect succeeded: `neondb`/`neondb_owner`, PG 18.6, the same 9 `neon_auth` tables, no Mycelium ledger.
 - `.env.local` was preserved, with no reconfiguration, sign-in or write.
+
+
+## 28 October 2026 — Codex accepts Windows recheck; bounded remote-write approval ready
+
+Reviewed complete `3e542f77` documentation delta. Recorded Windows evidence: build/19 tests pass on Node22.23.4, all four canonical SQL hashes match the frozen delivery record, pinned host/database/role inspect succeeds, only nine existing neon_auth tables and no Mycelium ledger. All three preflight mismatches are resolved. This is Claude/Chris's local-script/log evidence, not direct Codex Windows access.
+
+**Ready for Chris's explicit approval of this exact scope:**
+- Existing project raspy-silence-27774097, org org-square-shadow-46730629, production br-old-rice-zat3kd07, endpoint ep-little-thunder-zahn9b42.c-2.eu-west-2.aws.neon.tech, neondb/neondb_owner.
+- [Windows runbook](../greenfield/mycelium/memory/WINDOWS_DEPLOYMENT.md), write block step3, reviewed implementation c3e0936f + eb9cdcdb: migrations 001/002/003, frozen canonical hashes in [delivery record](../greenfield/mycelium/memory/OFFLINE_DELIVERY_2026-10-28.md), all pending schema changes atomic.
+- Separate transaction creating exactly two Mycelium NOLOGIN role templates/grants (mycelium_memory_runtime, mycelium_memory_redactor), no password/login/membership creation or worker activation.
+- Exactly two synthetic nodes + one edge, then a fresh-process persistence read and read-only final inspect. No real redaction.
+- Preserve neon_auth and all non-Mycelium resources, no deploy/config apply, new compute/paid resource, model call, notifier or credential change. Existing .env.local reused privately.
+- Any failure/uncertain write outcome stops; reconcile with read-only ledger/manifest, no blind retry, DROP, grant reset or deletion.
+
+**Approval not yet given for these writes.** Proposed concise approval: **“approved: Mycelium Neon migration, roles and persistence proof”**. After approval Claude coordinates the exact existing Windows script/local-log execution with Chris; no repeated project authorization. Claude's terminal typing limitation remains: do not claim unattended PC execution or a direct shell that is unavailable.
+
+Pending outcome: actual migration/role/proof/ledger receipts and preserved existing tables. No database write occurred from this acceptance.
