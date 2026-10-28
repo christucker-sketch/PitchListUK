@@ -3229,3 +3229,26 @@ Reviewed `7a49e578`. Node22.23.4 is reported installed; no reinstall. Trial crea
 [Revision4 review and concrete private-copy gate](../greenfield/docs/mycelium/SHARED_MEMORY_REV4_NEON_ROUTE_CODEX_REVIEW_2026-10-28.md): build+8focused Node+30shell checks PASS independently; Claude reports15PowerShell checks (not rerun here). Same trial bounds, source/schema/adapter unchanged. Material route change: one new temporary password copy goes over SSH to the private Windows profile, then TLS SQL provisioning, with overwrite/delete and explicit absence gate before host run. The wrapper block refuses pre-existing PC copy paths, cleans its own copy on all outcomes and closes the attempt/STOPs if deletion or provisioning fails. This must replace the bare scp/create pair.
 
 Next **Chris**: approve/defer **“approved: revised Neon-compatible memory trial”**, pinning **7a49e5781436fce0d9105d0bc4a90898eee35c21**, host script fb8e3805… and owner script0aca3b65…. This is a fresh one-attempt grant because the credential route/code changed, not another project/Node approval. Exactly6nodes+6edges+2assessments, six DB-only processes<=300s total, mandatory scoped login/credential closure, zero models. No new API keys/workspace auth/owner credentials on BRIX/paid/config/schema changes. After approval Claude executes established script/log route including the concrete PC gate, Codex reviews receipts. No revision4 live attempt authorized or run yet.
+
+
+## 28 October2026 — Chris APPROVES revised Neon-compatible memory trial
+
+Chris explicitly replied **“approved: revised Neon-compatible memory trial”** after the [review and concrete Windows private-copy gate](../greenfield/docs/mycelium/SHARED_MEMORY_REV4_NEON_ROUTE_CODEX_REVIEW_2026-10-28.md).
+
+**Next actor Claude:** execute one fresh revision4 attempt via the established host/Windows script + Chris-command + sanitized-log route. No repeated project, Node or exact-route approval needed. Node22.23.4 remains installed; do not reinstall it.
+
+**Approved package commit:** `7a49e5781436fce0d9105d0bc4a90898eee35c21`. Use this full SHA for setup/`-Commit`, not the old c76fd723 package. Script hashes:
+- host `fb8e3805e173de235ea8287d59dc7ea5dbac22c2b77f69f884d163bcc8569a3d`
+- PC `0aca3b6519a0e27bf066d05404a0df0429489acbf0b31b62a5cb14e5b518d9b4`
+
+**Exact scope:** [delivery section8 revision4](../greenfield/docs/mycelium/SHARED_MEMORY_ADAPTER_DELIVERY_2026-10-28.md) supersedes old verifier/.scram commands; use the concrete copy/create guard from the Codex review, replacing bare scp/create. Same production/neondb target; isolated mycmem user/group/package/credential/receipt; one attempt-bound temporary least-privilege mycelium_explorer_fpd login (runtime inheritance only, SET/ADMIN false, connection limit2). The password is generated on fpd-prod, held in a protected one-time .pw file, transferred privately over SSH to Windows and sent to Neon via TLS SQL. No owner credential goes to BRIX.
+
+**Mandatory PC gate:** refuse an existing PC password-copy path/attempt receipt before transfer; the wrapper attempts overwrite/delete only of its just-copied file in finally, including early provisioning-script refusal. Verify PC copy ABSENT and provisioning success before host run. If transfer/create/verification/deletion fails, STOP the trial, perform only attempt-scoped closure/read-only reconciliation and recorded host close, explicitly report any remaining private copy. Never claim cleanup success from CREATE OK alone. No password/env/URI/verifier value in transcripts, chat, hub, receipts or logs.
+
+**Trial:** exactly6synthetic nodes+6edges+2assessments, six fresh DB-only processes (whoami/footprint/A/B/check/footprint), <=90s each/300s total; zero AI/CLI/model calls, no automatic retries or second attempt.
+
+**ALWAYS close:** verify attempt-bound NOLOGIN and revoked membership, clear write flag, archive owner receipt; remove only recorded host credentials/copies; optional receipt-scoped teardown of trial-created host artifacts is included. Synthetic rows and disabled role remain. Refuse foreign/pre-existing paths/roles unchanged. On STOP/uncertainty perform scoped closure and report; do not silently retry or expand scope.
+
+No schema/Neon Auth/plan/compute/paid/runner/service/notifier/API-key/workspace-auth change. The original foundation and completed proofs remain closed.
+
+Publish actual pinned-code/precheck/SQLSTATE-sanitized/least-privilege/timing/6-6-2 footprint/private-copy-absence/verified-closure receipts. Codex reviews the real outcome once. This authorization post is not execution evidence.
