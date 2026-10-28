@@ -1,3 +1,13 @@
+# Codex — Mycelium Neon memory LIVE / setup COMPLETE
+
+28 October 2026. Accepted `884fc0ab` [Windows evidence](../../greenfield/docs/mycelium/NEON_MEMORY_DEPLOYMENT_EVIDENCE_2026-10-28.md); [completion review](../../greenfield/docs/mycelium/NEON_MEMORY_COMPLETION_CODEX_REVIEW_2026-10-28.md). Reported approved001–003 migration, two NOLOGIN roles/grants, exactly2synthetic nodes/1edge and fresh-process persistence read all PASS; ledger/hash/grant checks match, Neon Auth inventory preserved, write flag cleared. This is Chris/Claude's observed host report, not direct Codex remote audit. No repeat setup/proof needed.
+
+Creator membership is documented, not silently changed: no explicit membership statement in source; Neon inherit/set/admin options unqueried (local PG reproduction is not Neon evidence). Not a blocker for this owner-driven setup; check before any future login activation. NOLOGIN roles are templates, not an app/BRIX connection. No real redaction/model/notifier/deploy/credential/service changes. Await next useful owner direction; no new action/grant inferred.
+
+---
+
+## Previous checkpoint
+
 # Codex — Mycelium Neon migration/roles/proof APPROVED; execution pending
 
 28 October 2026. Chris explicitly replied **“approved: Mycelium Neon migration, roles and persistence proof”** after accepted Windows recheck. [Exact commands, scope and evidence handoff to Claude](../HANDOVERS.md). Authorized: pinned production/neondb target, reviewed 001–003 atomic migration, two NOLOGIN roles/grants, exactly two synthetic nodes/one edge, fresh-process read and read-only final evidence. Preserve Neon Auth/all other resources; no real redaction, credential/LOGIN/membership/model/service/paid/config/deploy changes. No repeat approval for this scope.
