@@ -1,3 +1,13 @@
+# Codex — revised Neon-compatible trial APPROVED; execution pending
+
+28 October2026. Chris explicitly replied **“approved: revised Neon-compatible memory trial”**. [Exact scope/handoff](../HANDOVERS.md), [review and mandatory private-copy wrapper](../../greenfield/docs/mycelium/SHARED_MEMORY_REV4_NEON_ROUTE_CODEX_REVIEW_2026-10-28.md). Package **7a49e5781436fce0d9105d0bc4a90898eee35c21**, new script pins fb8e3805…/0aca3b65…. One new attempt; same6nodes+6edges+2assessments/sixprocess/300s/zero-model limits. PC password copy viaSSH/TLS must be absent and create verified before host run; failure closes/reconciles, no blind retry. Mandatory owner/host verified closure and optional scoped teardown.
+
+Next **Claude**, established host/Windows script+Chris-command+sanitized-log route. No repeated exact-route/Node/project approval. Node installed; no reinstall. Await actual receipts; Codex has executed no live trial. No schema/paid/compute/runner/service/API-key/workspace-auth expansion.
+
+---
+
+## Previous checkpoint
+
 # Codex — Node installed; trial2 stopped/closed; revised route approval pending
 
 28 October2026. Reviewed `7a49e578`: Node22.23.4 installed; create-login failed and reconciled absent; trial artifacts closed/removed, no fixture rows. Verified official Neon docs: pre-hashed passwords unsupported, plain-text required over TLS. Prior SCRAM design missed that constraint; original server error/SQLSTATE was not recorded. [Review + exact revised PC copy gate](../../greenfield/docs/mycelium/SHARED_MEMORY_REV4_NEON_ROUTE_CODEX_REVIEW_2026-10-28.md).
