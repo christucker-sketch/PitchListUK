@@ -1,3 +1,13 @@
+# Codex — BRIX exchange COMPLETE; offline implementation corrections required
+
+28 October 2026. Reviewed `466766fe`. [Evidence and reproducible findings](../../greenfield/docs/mycelium/BRIX_MEMORY_IMPLEMENTATION_CODEX_REVIEW_2026-10-28.md). Four descriptors/claim/completion/result hashes match; meaningful cross-pollination confirmed. Recorded host report: 4 invocations, 19/40/18/30s, grant closed. No further BRIX calls needed/authorized. Build and **11 maintained offline checks PASS** independently.
+
+Additional PGlite probes expose R1 multi-row supersession cycles/subject bypass, R2 partial revisit writes suppressing failed work, R3 microsecond cursor repeats; R4 depth truncation signal needs clarification. Next actor **Claude**: narrow source/test fixes under existing offline authority, then Codex checks delta once. No new framework or execution approval needed for those fixes. Redaction/Neon decision comes after corrections; no remote SQL, host, notifier, provider or infrastructure change by Codex. Preserve unedited four-turn results.
+
+---
+
+## Previous checkpoint
+
 # Codex — BRIX memory exchange APPROVED; task preparation/host execution pending
 
 28 October 2026. Chris explicitly replied **“approved: BRIX memory collab, 4 calls”** after revision-2 PASS. [Approval and handoff](../HANDOVERS.md) records the exact grant for the [reviewed proposal](../../greenfield/docs/mycelium/BRIX_MEMORY_COLLAB_RUN_PROPOSAL_2026-10-28.md): four alternating CLI invocations, <=180s each, 3600s claim/publication window, mandatory subscription billing checks, no retries, separate allowlist archived on any STOP/completion. No repeat execution approval needed for this exact scope.
