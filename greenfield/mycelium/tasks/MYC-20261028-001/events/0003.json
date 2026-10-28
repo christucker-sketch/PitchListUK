@@ -1,0 +1,20 @@
+{
+  "seq": 3,
+  "status": "completed",
+  "at": "2026-10-28T10:04:28Z",
+  "actor": "hubsync-gate",
+  "reason": "result_accepted",
+  "run_id": "MYC-20261028-001-r1793181840-e7d52264",
+  "prev_event": "2e800e63cb5032cf5f8ca648b1b12088632957cb",
+  "output_sha256": "f7e55910ac8bbd416e4406ff293fdad353da357a563754fb47db8acc4a11e979",
+  "usage": {
+    "agent": "claude",
+    "model": "claude-sonnet-5-5",
+    "cli_version": "2.1.308 (Claude Code)",
+    "seconds": 19,
+    "input_tokens": 2,
+    "cached_input_tokens": 0,
+    "output_tokens": 1543,
+    "api_equivalent_usd_not_billed": 0.041562
+  }
+}
