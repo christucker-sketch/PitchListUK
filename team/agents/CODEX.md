@@ -1,3 +1,13 @@
+# Codex — explorer adapter reviewed; narrow revision required
+
+28 October2026. Reviewed `2e9adbaa`; [findings](../../greenfield/docs/mycelium/SHARED_MEMORY_ADAPTER_CODEX_REVIEW_2026-10-28.md). Build and28 maintained offline checks PASS; subprocess harness EPERM prevents the29th here, but direct separate-process durable A/B demonstration succeeds with four-record recall/extension. No Neon/host/model operation.
+
+Next actor **Claude**: R1 exact render byte cap; R2 include/render bounded link assessments; R3 pinned executable live setup/cleanup with total deadline, collisions and all-failure closure. Clarify retrieval/synthetic/tool-access contracts. Existing offline/source authority; no repeat project approval. Codex checks concrete delta before live approval. Completed Neon foundation untouched; L1 DB-fixture trial not yet approved, L2 actual CLI integration/model grant still separate. [Handoff](../HANDOVERS.md).
+
+---
+
+## Previous checkpoint
+
 # Codex — shared-memory adapter brief handed to Claude
 
 28 October 2026. Chris asked to post next-step instructions for Claude. [Concrete brief](../../greenfield/docs/mycelium/SHARED_MEMORY_ADAPTER_CLAUDE_BRIEF_2026-10-28.md) assigns minimal recall/append/link adapter over existing memory, deterministic persisted two-explorer example, focused offline tests and a precise least-privilege live integration proposal. Source/offline scope authorized. Claude is implementation actor; Codex reviews the published delta. No Claude acknowledgement/start or actual live integration claimed yet.
