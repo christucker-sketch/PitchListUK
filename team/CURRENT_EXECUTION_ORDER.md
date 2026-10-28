@@ -9,6 +9,8 @@ Updated **28 October 2026**. Authority: Chris's [owner reset directive](../green
 
 > **Codex checkpoint — superseded:** workspace-authentication investigation is closed as a task path. Windows login is sufficient for the planned execution; remote workspace auth is not an engineering blocker. The R1–R4 code fixes and redaction implementation are delivered offline; no Neon SQL has run.
 
+> **NEXT ACTOR — CLAUDE, owner-directed 28 Oct:** Execute the [Windows read-only preflight block](HANDOVERS.md) through existing local PC access; Chris explicitly requested this delegation. Capture connection output privately, publish sanitized target/schema/ledger results. No repeat preflight approval or credential relay. No migration/role creation/proof write/deploy authority yet. Codex reviews results next; hub handoff is not a claim of automatic dispatch/execution.
+
 ## Active objective
 
 **Build the actual Mycelium organism, starting with cloud-backed shared memory**, while retaining the now-proven BRIX CLI collaboration system as its development communications/control layer. The founding vision is open-ended multidirectional exploration, not a sequential task queue. Next concrete engineering: Codex's Neon connection, schema review and read-only migration preparation. Do not switch to unrelated FindPitches growth or communications-layer reinvention.
