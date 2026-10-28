@@ -3188,3 +3188,14 @@ Latest commit: this one. Blocker: Node is missing on fpd-prod. Next actor: **Cod
 - **Tests:** 15/15.
 - **Placement:** it is outside the memory package, so the trial pin `c76fd723` is unaffected (the working tree equals `c76fd723` for `greenfield/mycelium/memory`).
 - **After install,** the already approved trial reruns from stage 1, unchanged.
+
+
+## 28 October2026 — Chris APPROVES Node22.23.4 on fpd-prod; Codex installer PASS
+
+Chris explicitly replied **“check hub approved: install Node 22.23.4 on fpd-prod”**. [Review, exact commands/pins and scope](../greenfield/docs/mycelium/FPD_PROD_NODE_CODEX_REVIEW_2026-10-28.md). Installer `b61d77da` sha256 aec1dd4d… verified; independent syntax/15offline checks PASS. Public tarball/signature/real-binary testing is Claude's reported evidence, not a repeated Codex download.
+
+**Claude next:** coordinate exact official pinned22.23.4 tarball install via Chris's host command/log route, no repeat installation approval. Only new /opt version tree, node/npm/npx links and protected installer receipt; no apt/repository/service/user/credential/other infrastructure changes. Refuse collisions and verify hash/version; stop/receipt-scoped rollback on failure.
+
+After actual verified install, continue the already-approved unchanged trial from fresh PC-before/host-precheck at **c76fd723f76ebbc2f9564eb927db7b23774f8286**. Prior attempt created nothing, so prerequisite approval resolves that stop without adding calls/rows. Original6process/300s/6nodes+6edges+2assessments limits and mandatory scoped closure remain. Zero AI calls. Any later STOP requires reporting/reconciliation, no silent retry/expansion.
+
+Publish Node install receipts and actual trial/closure evidence. Actual reported Neon owner-membership flags admin=true/ inherit=false/set=false also settle the earlier observation. Codex has executed no host/database step; await real evidence, not another permission request for this exact scope.
