@@ -1,0 +1,7 @@
+{
+  "seq": 1,
+  "status": "pending",
+  "at": "2026-10-28T10:01:26Z",
+  "actor": "chris",
+  "reason": "Created on Chris's explicit approval (\"approved: BRIX memory collab, 4 calls\", recorded 8062df5a) of BRIX_MEMORY_COLLAB_RUN_PROPOSAL_2026-10-28 revision 2; one CLI invocation, no retries, no automatic continuation."
+}

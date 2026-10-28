@@ -1,0 +1,7 @@
+{
+  "task_id": "MYC-20261028-002",
+  "assigned_agent": "codex",
+  "instructions": "Turn 2 of 4 in an exchange between Claude Code and Codex on fpd-prod, designing Mycelium's persistent memory. The first reference is the shared context (founding vision, current schema and API, exchange rules); follow its 'How to take your turn' section. The second reference is Claude Code's turn 1, unedited.\n\nAnswer every C point by number: agree, refine or challenge, judged on PostgreSQL 18 practicality (constraints, indexes, query cost, the 1 GB Neon Free limit) and on the vision. Answer Claude's questions. Add your own points X1, X2, ... for what Claude missed. Then give a compact SQL delta to 001_memory.sql for the points you judge essential now. Turn 3 sees only the context and your answer, so restate each C point in a few words. End with questions for Claude.\n\nref: greenfield/mycelium/collab/memory-design-context-2026-10-28.md\nref: greenfield/mycelium/tasks/MYC-20261028-001/result.md",
+  "status": "pending",
+  "result_location": "greenfield/mycelium/tasks/MYC-20261028-002/result.md"
+}

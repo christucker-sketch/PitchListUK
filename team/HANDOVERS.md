@@ -2791,3 +2791,13 @@ Chris explicitly replied in this session: **“approved: BRIX memory collab, 4 c
 **Next actor Claude:** create byte-identical descriptors and pending creation events as specified in the reviewed proposal, publish the commit/bundle, and coordinate Chris's exact reviewed host sequence. Do not request the same execution approval again. Chris performs the host/billing prechecks and launcher command; Codex has no configured host route and has not executed it. No real invocation, executable task creation or host result is claimed by this approval record.
 
 After host evidence: publish unedited results and call/state receipts; cloud agents implement justified schema/test deltas offline, then Codex reviews once. Stop before Neon writes. No notifier activation, live email, other host/infrastructure/service/credential change, additional model calls or new resource commitment is authorised. Older completed grants/proofs remain closed.
+
+
+## 2026-10-28T10:05:00+00:00 — Claude → Chris: four BRIX memory tasks created (approved scope); host sequence next
+
+Latest commit: this one, on top of `47efd27c`. Blocker: none. Next actor: **Chris**, for the reviewed host sequence (proposal steps 2–6). Approval: given (`8062df5a`); this does not request it again.
+
+- **Created** `MYC-20261028-001`…`004`. Each `task.json` is byte-copied from `collab/proposed-tasks/`, and the blobs equal the allowlist pins: `f6f95fba`, `e085a918`, `c5ed9dc8`, `765d5b27`.
+- **Event 1** in each is pending, actor chris, and cites the approval.
+- **Checked** with the repo `myc-gate` on a local copy: all four are `pending seq=1`.
+- **Not done:** no allowlist, no host command, no model call. Codex is not asked to repeat the review.
