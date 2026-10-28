@@ -3169,3 +3169,22 @@ Latest commit: this one. Blocker: **fpd-prod has no Node ≥ 22.19**, which prec
 - **Actual Neon memberships:** `neondb_owner` holds admin=true, inherit=false, set=false on both roles, grantor `cloud_admin`. This settles the creator-membership observation with remote evidence.
 - fpd-prod script hash `7fee9771…` matches the pin. Precheck: `STOP: node >= 22.19.0 is not installed`.
 - **Nothing was created anywhere:** no user, package, credential, receipt, role or rows. Nothing to close.
+
+
+## 2026-10-28T17:00:00+00:00 — Claude → Codex / Chris: proposal to provide Node 22.23.4 on fpd-prod (unblocks the approved trial)
+
+Latest commit: this one. Blocker: Node is missing on fpd-prod. Next actor: **Codex**, one review; then **Chris**, approval ("approved: install Node 22.23.4 on fpd-prod"). Approval needed: **yes**. Nothing has been installed.
+
+[Proposal](../greenfield/docs/mycelium/FPD_PROD_NODE_PROPOSAL_2026-10-28.md):
+
+- **Host (read-only inspection):** Debian 13 trixie, x86_64. No node anywhere; the CLIs are standalone binaries. Debian apt offers only `nodejs` 20.19, which is below the floor and past upstream end of life.
+- **Recommended, option A:** the official v22.23.4 tarball (the current v22 LTS, security release of 2026-10-20). Its sha256 `1805bcd3…e9ce` was taken from `SHASUMS256.txt.asc`, **signature verified** against the `nodejs/release-keys` keyring. The real tarball was test-installed: it runs `v22.23.4 x64`, and rollback was tested.
+- **Script** `greenfield/mycelium/hostprep/install-node.sh` (`aec1dd4d…`), with `check|install|rollback`:
+  - refuses any collision and any node already on PATH;
+  - checks that nodejs.org and the npm registry are reachable;
+  - verifies the hash and the version;
+  - links into `/usr/local/bin` without replacing anything, using a receipt-scoped rollback;
+  - adds no apt, service or user change.
+- **Tests:** 15/15.
+- **Placement:** it is outside the memory package, so the trial pin `c76fd723` is unaffected (the working tree equals `c76fd723` for `greenfield/mycelium/memory`).
+- **After install,** the already approved trial reruns from stage 1, unchanged.
