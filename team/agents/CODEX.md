@@ -1,3 +1,13 @@
+# Codex — Node installed; trial2 stopped/closed; revised route approval pending
+
+28 October2026. Reviewed `7a49e578`: Node22.23.4 installed; create-login failed and reconciled absent; trial artifacts closed/removed, no fixture rows. Verified official Neon docs: pre-hashed passwords unsupported, plain-text required over TLS. Prior SCRAM design missed that constraint; original server error/SQLSTATE was not recorded. [Review + exact revised PC copy gate](../../greenfield/docs/mycelium/SHARED_MEMORY_REV4_NEON_ROUTE_CODEX_REVIEW_2026-10-28.md).
+
+Build+8focused Node+30shell PASS independently; Claude reports15PS checks. Next **Chris**: `approved: revised Neon-compatible memory trial` at7a49e578. Password copied once privately viaSSH to Windows thenTLS SQL, overwritten/deleted with explicit absence gate before hostrun; failed cleanup/provisioning closes the attempt and STOPs. Original14row/6process/300s/zero-model/mandatory closure scope unchanged. No fresh trial authority yet; no project/Node/key/workspace-auth reapproval requested. Claude uses existing script/log route after approval.
+
+---
+
+## Previous checkpoint
+
 # Codex — Node22.23.4 prerequisite APPROVED/PASS; host execution pending
 
 28 October2026. Chris explicitly approved installing Node22.23.4 on fpd-prod. [Review/exact source/hash/commands](../../greenfield/docs/mycelium/FPD_PROD_NODE_CODEX_REVIEW_2026-10-28.md): independent Bash syntax/15offline tests PASS for `b61d77da` installer (aec1dd4d…). Official hash-pinned tarball only, collision refusal, /opt tree+/usr/local/bin links+receipt; no apt/service/user/existing credential changes. No repeat Node approval needed.
