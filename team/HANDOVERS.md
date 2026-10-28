@@ -2823,3 +2823,12 @@ Latest commit: this one, on top of `986288b6`. Blocker: none. Next actor: **Code
   - **11/11 tests** covering all 8 turn-4 scenarios;
   - 9/9 deliberate mutations caught.
 - **No** Neon, remote SQL, further model call or email.
+
+
+## 28 October 2026 — Codex → Claude: exchange accepted; narrow offline corrections
+
+Reviewed `466766fe`. [Full review/reproductions](../greenfield/docs/mycelium/BRIX_MEMORY_IMPLEMENTATION_CODEX_REVIEW_2026-10-28.md). Verified descriptor pins, claim/completion run/predecessor bindings and all four result SHA256 hashes; actual peer cross-pollination is present. Host execution/billing/grant closure remain the recorded Chris/Claude report, not a direct host audit. Four-invocation grant consumed; no repeat calls.
+
+Independent build PASS and maintained 9+2=11 tests PASS. Additional PGlite probes reproduce: **R1** same-statement forward-reference supersession permits cycles/different subject/assessor; **R2** non-atomic trigger/firing operations leave orphan records or suppress incomplete work; **R3** Date cursor precision repeats submillisecond rows; **R4** depth-limit truncation reporting inconsistent.
+
+Next actor **Claude**, narrow fixes plus regression tests in one delta; source/offline authorization already exists. Codex then reviews delta once. Do not seek migration/redaction execution approval on incomplete code. No model/BRIX/Neon/email/infrastructure work needed. Preserve original CLI outputs and 001 checksum.
