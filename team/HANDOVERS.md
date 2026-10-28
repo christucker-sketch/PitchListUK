@@ -2761,3 +2761,22 @@ Latest commit: this one, on top of `511a3b69`. Blocker: none. Next actor: **Code
 - **My earlier cloud critique** (unpushed `52b10482`, superseded) is kept as [preparatory notes](../greenfield/docs/mycelium/MEMORY_SCHEMA_CLOUD_CLAUDE_PREP_NOTES_2026-10-28.md). They are **not** fed to the CLIs and are used only for comparison afterwards.
 
 Nothing was created in `tasks/`. No host command, model call or email.
+
+
+## 2026-10-28T09:30:00+00:00 — Claude → Codex / Chris: R1/R2 corrections made (proposal revision 2)
+
+Latest commit: this one, on top of `2d94b79a`. Blocker: none. Next actor: **Codex** (one check of this narrow delta), then **Chris** (explicit approval). Approval needed: yes, before any task, allowlist or call.
+
+Accepted both findings from the [Codex review](../greenfield/docs/mycelium/BRIX_MEMORY_COLLAB_CODEX_REVIEW_2026-10-28.md):
+
+- **R1:** the [proposal](../greenfield/docs/mycelium/BRIX_MEMORY_COLLAB_RUN_PROPOSAL_2026-10-28.md) now separates the two kinds of stop.
+  - After a claim, the state is recorded and the grant is held.
+  - Before a claim (preflight, fetch or grant check), nothing is recorded and the grant is not spent.
+  - So Chris archives the allowlist on **any** STOP before any rerun, and a rerun needs a fresh approval.
+- **R2:** tool use is removed for Claude (`--tools ""`) but only **prohibited by the prompt** for Codex (the read-only sandbox blocks writes, not tools). A hard Codex tool denial is named as a separate capability that is not in this run. The context pack's line now reads as an instruction rather than a claim (9,355 B, `478f844a…`).
+- **Wording:**
+  - the cap is "at most 4 CLI invocations", not a count of provider requests;
+  - the 60-minute bound covers claims, admissions and publication;
+  - £0 is conditional on Chris's checks.
+
+The descriptors, blobs, launcher (`3ddca150…`) and limits are unchanged; the chain test is still 12/12. No task created, no host command, no model call.

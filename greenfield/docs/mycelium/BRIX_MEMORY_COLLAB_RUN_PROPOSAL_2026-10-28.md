@@ -1,4 +1,6 @@
-# BRIX memory-design exchange: bounded run proposal (Claude, 28 Oct 2026)
+# BRIX memory-design exchange: bounded run proposal (Claude, 28 Oct 2026, revision 2)
+
+**Revision 2** makes the factual corrections from the [Codex review](BRIX_MEMORY_COLLAB_CODEX_REVIEW_2026-10-28.md). R1: a stop before a claim does not hold the grant, so the allowlist is archived on any STOP. R2: Codex's tools are prohibited by the prompt, not removed. It also states the call count as CLI invocations and the 60-minute bound as claim-to-publication. No code, descriptor, limit or test changed; the context pack's tools line is reworded to an instruction.
 
 Answers the [course correction](MEMORY_SCHEMA_COLLABORATION_2026-10-28.md#correction--use-the-existing-brix-cli-collaboration-runner): the installed Claude Code and Codex CLIs on fpd-prod design Mycelium's memory schema through the installed `myc` runner (`myc-stageb` v5.1 `c636582c…`, `myc-agent` v6 `d173813b…`, `myc-gate` `a74add4e…`). **Nothing has run.** This is source, a context pack and offline tests only. No task exists in `tasks/`, no allowlist, no model call, no host change. **It grants nothing until Chris approves it explicitly.**
 
@@ -18,7 +20,7 @@ Answers the [course correction](MEMORY_SCHEMA_COLLABORATION_2026-10-28.md#correc
 1. **The turns are fixed in advance.** There are four turns, in a set order. A CLI cannot open a fifth turn, pick its peer or branch the conversation. This is the main distance from the founding vision's open-ended growth; it is the comms layer, not Mycelium.
 2. **No memory between turns.** Each call is fresh (`--no-session-persistence`, Codex `--ephemeral`). Continuity is only the context pack plus the previous answer. Each CLI is told to restate what the next one needs.
 3. **The prompt asks for at most 400 words per answer** (the installed `myc-agent` text). The hard cap is a 16 KB result.
-4. **The CLIs have no tools.** They cannot run SQL or tests (Claude `--tools ""`, Codex read-only sandbox). **The offline schema test evidence therefore comes afterwards**: the cloud agents implement turn 4's consolidated delta and its test scenarios in PGlite and publish them. That is reviewable code, not relaying.
+4. **Tool use is removed for Claude, but only prohibited for Codex** (Codex review R2). Claude Code runs with `--tools ""`, so it has no tools. Codex runs `exec --sandbox read-only` in a fresh empty work folder with user config and rules ignored. That blocks writes, not tools: the "do not run commands or use tools" line in the installed prompt and in the context pack is an instruction Codex could in principle ignore, and the fake-CLI tests cannot prove it never does. A hard tool denial for Codex would be a separate capability, not in this run. Neither CLI is asked to run SQL or tests. **The offline schema test evidence therefore comes afterwards**: the cloud agents implement turn 4's consolidated delta and its test scenarios in PGlite and publish them. That is reviewable code, not relaying.
 5. **One human command launches it.** Chris runs one launcher; after that no human touches content until the end.
 
 ## The exchange
@@ -32,7 +34,7 @@ Answers the [course correction](MEMORY_SCHEMA_COLLABORATION_2026-10-28.md#correc
 
 **Inputs, all in Git:**
 
-- **[Context pack](../../mycelium/collab/memory-design-context-2026-10-28.md)** (9,341 bytes, sha256 `31fe7d24…`). It contains the founding vision verbatim, `001_memory.sql` and `memory.mjs` verbatim, environment facts, and the exchange rules: free exploration, no lanes, number your points, answer by number, restate for the next CLI, never use the decision envelope.
+- **[Context pack](../../mycelium/collab/memory-design-context-2026-10-28.md)** (9,355 bytes, sha256 `478f844a…`). It contains the founding vision verbatim, `001_memory.sql` and `memory.mjs` verbatim, environment facts, and the exchange rules: free exploration, no lanes, number your points, answer by number, restate for the next CLI, never use the decision envelope.
 - **[Descriptors](../../mycelium/collab/proposed-tasks/)** (five-field contract, instructions 765–904 bytes). The pinned blobs are:
   - 001 `f6f95fba672dfbe3f0da7c57ce5b7c47901991e5`
   - 002 `e085a918658e70703fdbfcf54837f0fbb259cbf0`
@@ -45,16 +47,21 @@ My earlier cloud-session critique is **kept out of the pack on purpose**. It is 
 
 | Limit | Value | Enforced by |
 |---|---|---|
-| Calls | **4 total**, 1 per task, no retries | `myc-gate` claim cap `MYC_MAX_CALLS=4` over the 4-line allowlist; a finished or failed task can never be claimed again |
+| Calls | **at most 4 CLI invocations**, one per task, no orchestrator retries. This counts admitted runs, not the provider's internal requests: Claude's retries are set to zero; the Codex command has no explicit retry override. | `myc-gate` claim cap `MYC_MAX_CALLS=4` over the 4-line allowlist; a finished or failed task can never be claimed again |
 | Per call | ≤ 180 s (TERM, then KILL to the process group) | `myc-agent` `MYC_CALL_TIMEOUT` |
-| Whole run | ≤ 60 min from the first claim (expected ~15) | `MYC_WINDOW_S=3600`; each claim's lease is 30 min |
+| Whole run | claims, admissions and publication within 60 min of the first claim (expected ~15). This bounds the model work, not the launcher's own checks or the cleanup. | `MYC_WINDOW_S=3600`; each claim's lease is 30 min |
 | Order | 002 cannot start before 001 completes, and so on | the gate's ref rule (completed only) **and** the launcher |
 | Stop | any non-`completed` turn stops everything | the launcher, and the gate's hold on failed/awaiting/quarantined/in-progress |
-| Billing | £0 expected: 2 Claude calls on the subscription, 2 Codex calls on the ChatGPT plan, no API keys | the installed `myc-run` billing guard (`~myc/bin/myc-run`), `MYC_BILLING_CONFIRMED=yes` after Chris checks Claude extra usage OFF and no Codex credits/API key, and each turn's sign-in preflight before any claim |
+| Billing | £0 expected, **conditional on Chris's checks** (the fixtures are not a billing audit): 2 Claude calls on the subscription, 2 Codex calls on the ChatGPT plan, no API keys | the installed `myc-run` billing guard (`~myc/bin/myc-run`), `MYC_BILLING_CONFIRMED=yes` after Chris checks Claude extra usage OFF and no Codex credits/API key, and each turn's sign-in preflight before any claim |
 | Size | instructions ≤ 4096 B, 2 refs × ≤ 32 KB, result ≤ 16 KB, credential-pattern refusal | `myc-gate` |
 | Notifications | none: the notifier stays `MODE=dry-run`, empty PIN, timer off | unchanged |
 
-**The fail-closed stop.** Any refusal, transport failure, rejected result, decision request or timeout ends the run where it is, and nothing retries. The grant then stays held, so even running a later task by hand makes no call. Chris decides what happens next, and a fresh run needs a fresh approval.
+**The fail-closed stop** (corrected per Codex review R1). Any `STOP:` ends the run where it is, and nothing retries. Two kinds of stop differ:
+
+- **After a claim** (a failed call, a rejected result, a decision request, a timeout): the task's state is recorded on GitHub. The gate then **holds the grant**, so even running a later task by hand makes no call.
+- **Before a claim** (a sign-in preflight failure, a failed state fetch, a refused grant check): nothing is recorded and the grant is **not** spent. The gate would technically allow a rerun.
+
+**So the procedure, not the gate, closes both cases.** On any STOP, Chris archives the allowlist (step 6) before anything else, and any rerun needs a fresh direction and approval. The gate is not claimed to enforce an unrecorded failure.
 
 ## The launcher (only installed commands)
 
@@ -109,8 +116,8 @@ The regression suites are unchanged: runner decisions 29/29, and `shellcheck -S 
    ```bash
    sudo MYC_BILLING_CONFIRMED=yes bash ~/memory-collab-launch.sh 2>&1 | tee ~/memory-collab-20261028.log
    ```
-   It ends either with `DONE: all four turns completed` or with a `STOP:` line. On a STOP, do nothing more and paste the output.
-6. **Close the grant whatever the outcome**, then paste steps 5–6 to Claude:
+   It ends either with `DONE: all four turns completed` or with a `STOP:` line. On a STOP, do not rerun anything: go straight to step 6 and paste the output.
+6. **Close the grant whatever the outcome, and always before any rerun**, then paste steps 5–6 to Claude:
    ```bash
    sudo mkdir -p /root/collab-20261028 && sudo mv /etc/myc-stageb/collab-20261028.allowed /root/collab-20261028/
    ```

@@ -2,7 +2,7 @@
 
 You are one of two AI CLIs (Claude Code and Codex) taking turns on fpd-prod to design Mycelium's persistent memory.
 Each turn is one answer. The other CLI reads your answer as its input on the next turn. A human only launches the run;
-nobody edits or relays your answers. Work from the material below. You have no tools, files or network beyond this text.
+nobody edits or relays your answers. Work only from the material below: do not run commands, use tools, read files or use the network.
 
 ## How to take your turn
 
