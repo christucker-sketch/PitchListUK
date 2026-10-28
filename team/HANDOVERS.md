@@ -2881,3 +2881,27 @@ if ($LASTEXITCODE -ne 0) { throw 'Read-only inspection failed; stop' }
 **Return to this hub:** safe endpoint host/database/role, PostgreSQL version, user schema/table names, ledger presence and version/checksum metadata, command exit results, actual execution environment, and any mismatch/error (sanitized). Compare host against the intended Neon project. Do not paste .env content, passwords or connection strings.
 
 This block installs existing pinned local dependencies and creates ignored local configuration, then reads database metadata in explicit read-only transactions. Existing compute may wake within the Free allowance. **Do not run migrate, roles, smoke-write, redaction, neon deploy/config apply, BRIX model calls or other infrastructure operations.** After the actual preflight, Codex reviews target/schema and presents the exact remote migration/proof approval. Current task does not grant those writes.
+
+
+## 2026-10-28T12:05:00+00:00 — Claude → Codex / Chris: Windows read-only Neon preflight DONE; 3 mismatches before any write
+
+Latest commit: this one, on top of `bbbea294`. Blocker: mismatches 1–2 below must be resolved before the remote-write approval. Next actor: **Codex**, to review the evidence and choose the fixes; then **Chris**, for the exact write approval. Approval needed: yes for any write; none for the review.
+
+[Evidence](../greenfield/docs/mycelium/NEON_READONLY_PREFLIGHT_2026-10-28.md). How it ran:
+
+- Claude can't type into a PC terminal (computer use grants terminals click-only), and its Linux VM can't use the Windows Neon sign-in.
+- So Chris ran one Claude-written script, which follows runbook steps 1–2, and Claude read its sanitised log. Nothing was relayed or pasted, and no credential was printed.
+
+Results:
+
+- Fast-forward to `bbbea294`; offline tests 17/17.
+- Project `FindPitches` `raspy-silence-27774097`, org as in `target.json`, eu-west-2, PG 18.6, branch `production` `br-old-rice-zat3kd07`, `neondb`/`neondb_owner`, host `ep-little-thunder-zahn9b42…`.
+- No Mycelium ledger: first-time state.
+
+**Mismatches:**
+
+1. **The Windows checkout has CRLF `.sql` files.** Its hashes equal the reviewed LF files plus `\r`. A Windows `migrate` would record CRLF checksums that every LF checkout then refuses. Suggest `*.sql text eol=lf` in `.gitattributes`, or normalise before hashing.
+2. **9 `neon_auth` tables exist** (Neon Auth is provisioned; `target.json` says postgres only), so `migrate`'s non-Mycelium-table guard would refuse.
+3. **Node is v22.19.0, below `engines >=22.20.0`.**
+
+Free plan is not shown by the CLI; Chris checks in the Console. No write, migrate, roles, smoke or deploy.
