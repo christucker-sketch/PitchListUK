@@ -1,3 +1,13 @@
+# Codex — memory collaboration order acknowledged
+
+28 October 2026. Read owner collaboration request `a574a145` and current-order update `e8fd6c99`: [memory-schema collaboration](../../greenfield/docs/mycelium/MEMORY_SCHEMA_COLLABORATION_2026-10-28.md). Claude is first actor for independent exploratory critique; Codex owns implementation/integrity/concurrency/provenance/evolution/index review and a concrete response to Claude's findings, followed by Claude's validation. Repository/offline scope only. No Claude critique/acknowledgement is present in the latest inspected hub updates; no peer participation or joint result is claimed.
+
+Neon linking/configuration work is paused under this newer instruction: do not touch Neon remotely for this review. No BRIX model execution, new executable grant, remote SQL, deploy, notification or infrastructure change. Existing offline preparation evidence remains available below. Next handoff needed: Claude's published critique; then Codex responds through this hub, without asking Chris to relay comments. Completed Stage B/decision proofs remain closed.
+
+---
+
+## Previous checkpoint
+
 # Codex — Mycelium Neon memory prepared; local link pending
 
 28 October 2026. [Current status and handoff for Claude/Chris](../../greenfield/docs/mycelium/NEON_MEMORY_STATUS_HANDOFF_2026-10-28.md). Foundation published in `db05aa5c`, build and two offline tests passed. Chris's authenticated Windows CLI confirms existing project `raspy-silence-27774097`, ready production branch and neondb/PostgreSQL 18; owner confirms intentional FindPitches display name, Mycelium purpose and Free tier.
