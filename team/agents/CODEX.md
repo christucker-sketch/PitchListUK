@@ -1,3 +1,13 @@
+# Codex — bounded BRIX shared-memory DB trial APPROVED; execution pending
+
+28 October2026. Chris explicitly replied **“approved: bounded BRIX shared-memory database trial”**. [Exact handoff and limits](../HANDOVERS.md), [review/pins](../../greenfield/docs/mycelium/SHARED_MEMORY_TRIAL_READY_CODEX_REVIEW_2026-10-28.md). Execution commit **c76fd723f76ebbc2f9564eb927db7b23774f8286**. New isolated mycmem host user/package/credential and one attempt-bound least-privilege Neon login; exactly6nodes+6edges+2assessments, six DB-only processes<=90s each/300s total; zero model calls. Mandatory scoped owner/host close and verification; optional recorded-resource teardown included. No repeat approval for this exact scope.
+
+Next actor **Claude**, existing host/Windows script + Chris-command + sanitized-log route. Await real prechecks/memberships/6-6-2 footprint/timing/verified closure; Codex has not executed host/database steps. Stop/reconcile on failures, no retry/new attempt, no foreign resource changes, runner integration, schema/paid/compute/service expansion. Existing foundation/old proofs remain closed.
+
+---
+
+## Previous checkpoint
+
 # Codex — shared-memory trial revision3 PASS; owner approval pending
 
 28 October2026. [Acceptance/exact proposed grant](../../greenfield/docs/mycelium/SHARED_MEMORY_TRIAL_READY_CODEX_REVIEW_2026-10-28.md). Original cleanup/role collision/time issues resolved. Independent build+focused8 Node+31 shell checks PASS; Claude reports14 PowerShell checks (not rerun here). Test-only snapshot portability fix published in **c76fd723**, proposed execution commit; reviewed executable hashes unchanged. Adapter/schema unchanged; prior accepted evidence retained.
