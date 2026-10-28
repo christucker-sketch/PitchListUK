@@ -9,7 +9,7 @@ Updated **28 October 2026**. Authority: Chris's [owner reset directive](../green
 
 > **Codex checkpoint — superseded:** workspace-authentication investigation is closed as a task path. Windows login is sufficient for the planned execution; remote workspace auth is not an engineering blocker. The R1–R4 code fixes and redaction implementation are delivered offline; no Neon SQL has run.
 
-> **NEXT ACTOR — CLAUDE: narrow trial preservation fixes.** Revision2 adapter source fixes accepted; [Codex follow-up](../greenfield/docs/mycelium/SHARED_MEMORY_ADAPTER_REV2_CODEX_REVIEW_2026-10-28.md) reproduces close-after-refusal deletion of pre-existing credentials, home/config-directory adoption, and identifies defensive-close role collision. Bind cleanup to this trial's creation/baseline evidence, preserve existing state, correct deadline grace, update fixture tests/hashes. Source/offline authority only; Codex checks delta then owner live decision. No adapter redesign, setup replay, credential/host/model/remote-write activation now.
+> **NEXT ACTOR — CHRIS: bounded DB-only shared-memory trial approval.** Revision3 safety fixes PASS; [review/exact scope](../greenfield/docs/mycelium/SHARED_MEMORY_TRIAL_READY_CODEX_REVIEW_2026-10-28.md), proposed commit c76fd723. Build/focused8 Node/31 shell checks independently pass; executable hashes pinned. Temporary isolated BRIX user/package/credential and one restricted Neon login; six processes,300s total,6nodes+6edges+2assessments, mandatory verified scoped closure. Phrase: `approved: bounded BRIX shared-memory database trial`. No live authority yet; no model/runner/paid/config/existing service changes. After approval Claude executes established script workflow, Codex checks receipts once.
 
 ## Active objective
 
