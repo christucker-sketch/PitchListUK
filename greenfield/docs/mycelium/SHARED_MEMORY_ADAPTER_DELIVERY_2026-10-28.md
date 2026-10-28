@@ -224,3 +224,29 @@ L2 needs fresh model-call approval in any case.
 - [ ] Atomicity, retry and rollback, and the untrusted-data handling are sufficient.
 - [ ] The L1 least-privilege design and the SCRAM-verifier credential route are sound. Unix-user separation from `myc` is the right boundary.
 - [ ] R3a–R3c and the time bound are fixed as reproduced. Every cleanup is scoped to artifacts this trial provably created (the fpd-prod receipt; the database comment plus PC receipt). The two hashed scripts are exact. L2 is correctly not requested.
+
+## 7. Execution attempt 1 (approved, `c76fd723`): STOPPED at precheck, 28 Oct 2026 16:36Z, with nothing created
+
+Ran under Chris's approval (recorded in `f2f8a02a`/`72f01e64`), stage 1 only (read-only).
+
+| Step | Result |
+|---|---|
+| 0a PC `before` (16:35:56Z) | Checkout fast-forwarded to `72f01e64`; **memory package identical to `c76fd723`**. **`VERIFIED: mycelium_explorer_fpd does not exist`**, so `BEFORE OK`. The log's secret scan found nothing. |
+| 0b fpd-prod script fetch | Taken from the HubSync clone at `c76fd723`; sha256 **`7fee97712b93…af9c`, matching the pin** |
+| 0c fpd-prod `precheck` (16:36:29Z) | **`STOP: node >= 22.19.0 is not installed; installing it is a separate approval`** |
+
+**Actual Neon membership options**, read-only, now recorded as remote evidence and not only the local reproduction:
+
+| Role | Member | Grantor | admin | inherit | set |
+|---|---|---|---|---|---|
+| `mycelium_memory_runtime` | `neondb_owner` | `cloud_admin` | **true** | false | false |
+| `mycelium_memory_redactor` | `neondb_owner` | `cloud_admin` | **true** | false | false |
+
+Both roles are NOLOGIN with no elevated flags and no comment. This confirms that the creator-ADMIN membership Codex noted is PostgreSQL's automatic grant: admin only, with no inherit or set, so `neondb_owner` gains no privileges through those roles.
+
+**State:**
+- **Nothing was created on fpd-prod,** because precheck is read-only: no user, package, `/etc/mycelium` or receipt.
+- **Nothing was created on Neon:** no role and no rows. No PC attempt receipt exists.
+- There is nothing to close. `close` and `teardown` would report "no recognised receipt; nothing changed".
+
+**The trial does not continue, as the approval requires.** Providing Node ≥ 22.19 on fpd-prod is a separate host change that needs its own approval; a fresh attempt then follows under the same approved scope. Options are being prepared after a read-only inspection of fpd-prod.

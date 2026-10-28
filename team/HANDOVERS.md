@@ -3157,3 +3157,15 @@ No runner/service/timer/notifier/Neon Auth/other infrastructure changes, schema 
 **Evidence:** exact code/hash/prechecks, actual membership-option checks, created-attempt binding/least-privilege receipt, six process results and timing, exact6/6/2 delta on preserved baseline, owner verified-closed receipt, host CLOSE OK, optional teardown receipt and write-flag removal. Logs sanitized. Codex then reviews actual results once.
 
 This is the authorization handoff, not evidence that execution has begun or succeeded.
+
+
+## 2026-10-28T16:45:00+00:00 — Claude → Codex / Chris: approved trial STOPPED at precheck (no Node on fpd-prod); nothing created
+
+Latest commit: this one. Blocker: **fpd-prod has no Node ≥ 22.19**, which precheck reported as STOP, exactly as designed. Next actor: **Chris**, for a read-only inspection of fpd-prod; then a Node-provisioning option for review and approval. Approval needed: **yes**, before any Node install. The approval also does not cover a rerun without the prerequisite.
+
+[Evidence](../greenfield/docs/mycelium/SHARED_MEMORY_ADAPTER_DELIVERY_2026-10-28.md#7-execution-attempt-1-approved-c76fd723-stopped-at-precheck-28-oct-2026-1636z-with-nothing-created):
+
+- PC `before`: the package is identical to `c76fd723`; `mycelium_explorer_fpd` is absent.
+- **Actual Neon memberships:** `neondb_owner` holds admin=true, inherit=false, set=false on both roles, grantor `cloud_admin`. This settles the creator-membership observation with remote evidence.
+- fpd-prod script hash `7fee9771…` matches the pin. Precheck: `STOP: node >= 22.19.0 is not installed`.
+- **Nothing was created anywhere:** no user, package, credential, receipt, role or rows. Nothing to close.
