@@ -2,25 +2,26 @@
 # Mycelium L1 explorer trial on fpd-prod (PROPOSAL; run only after Chris approves the exact plan in
 # greenfield/docs/mycelium/SHARED_MEMORY_ADAPTER_DELIVERY_2026-10-28.md section 5). Database only: no model or CLI call.
 #   sudo bash mycelium-explorer-trial.sh precheck            read-only; changes nothing
-#   sudo bash mycelium-explorer-trial.sh setup <commit>      user mycmem, package at /opt, credential, SCRAM verifier
+#   sudo bash mycelium-explorer-trial.sh setup <commit>      user mycmem, package at /opt, credential, one-time PC copy
 #   sudo bash mycelium-explorer-trial.sh run                 whoami, footprint, A, B, check, footprint (hard cap 300 s)
-#   sudo bash mycelium-explorer-trial.sh close               ALWAYS after the trial: shred the credential and verifier
+#   sudo bash mycelium-explorer-trial.sh close               ALWAYS after the trial: shred the credential and PC copy
 #   sudo bash mycelium-explorer-trial.sh teardown            optional: remove the user/package/config dir it created
 # Ownership: setup first creates the root-only receipt directory EXCLUSIVELY (mkdir, never -p), then records each artifact
 # only AFTER creating it exclusively (useradd, mkdir, O_EXCL file creation). close and teardown act ONLY on recorded
 # artifacts; with no receipt they change nothing. Any pre-existing path, user, group or symlink is refused, never adopted.
-# Never prints the password or the verifier. Never retries.
+# Neon accepts only plain-text passwords in CREATE ROLE, so setup leaves ONE 0600 copy for the PC owner step (scp, then
+# wiped there); run/close shred the fpd-prod copy. Never prints the password. Never retries.
 set -euo pipefail
 umask 077
 HOST=ep-little-thunder-zahn9b42.c-2.eu-west-2.aws.neon.tech DBNAME=neondb ROLE=mycelium_explorer_fpd U=mycmem
-RC=/var/lib/mycelium-explorer-trial PKG=/opt/mycelium-memory ETC=/etc/mycelium VER=/home/ct_admin/mycelium-explorer.scram
+RC=/var/lib/mycelium-explorer-trial PKG=/opt/mycelium-memory ETC=/etc/mycelium VER=/home/ct_admin/mycelium-explorer.pw
 ARCH=/root REPO=/var/lib/hubsync/repo BRANCH=origin/findpitches-v3/greenfield SUB=greenfield/mycelium/memory
 DEADLINE_S=300 STEP_S=90 GRACE_S=5 NODE_MIN=22.19.0 TEST=0
 AS_HS=(runuser -u hubsync -- env -i HOME=/var/lib/hubsync PATH=/usr/local/bin:/usr/bin:/bin)
 AS_U=(runuser -u "$U" -- env -i HOME=/nonexistent PATH=/usr/local/bin:/usr/bin:/bin)
 if [[ ${TRIAL_TEST:-0} == 1 ]]; then   # offline test harness only: everything under $T_ROOT; users/groups are files
   TEST=1 RC=$T_ROOT/var/lib/mycelium-explorer-trial PKG=$T_ROOT/opt/mycelium-memory ETC=$T_ROOT/etc/mycelium
-  VER=$T_ROOT/home/ct_admin/mycelium-explorer.scram ARCH=$T_ROOT/root REPO=$T_REPO BRANCH=$T_BRANCH
+  VER=$T_ROOT/home/ct_admin/mycelium-explorer.pw ARCH=$T_ROOT/root REPO=$T_REPO BRANCH=$T_BRANCH
   DEADLINE_S=${T_DEADLINE:-300} STEP_S=${T_STEP:-90} GRACE_S=${T_GRACE:-5} AS_HS=(env) AS_U=(env)
 fi
 ENV=$ETC/explorer.env RECEIPT=$RC/created LOG=$RC/log
@@ -83,7 +84,8 @@ setup)
   mkdir -m 0750 "$ETC" || stop "could not create $ETC exclusively (run close, then teardown)"; record dir "$ETC"
   [[ $TEST == 1 ]] || chown "root:$U" "$ETC"
   pwf=$(mktemp "$RC/pw.XXXXXX"); trap 'shred -u "$pwf" 2>/dev/null || rm -f "$pwf"' EXIT
-  openssl rand -hex 24 | tr -d '\n' > "$pwf"
+  # URL-safe base64, 40 characters (240 random bits), upper+lower+digit, no character three times running (Neon >= 60 bits)
+  node -e 'const c=require("crypto");for(;;){const p=c.randomBytes(30).toString("base64url");if(/[A-Z]/.test(p)&&/[a-z]/.test(p)&&/[0-9]/.test(p)&&!/(.)\1\1/.test(p)){process.stdout.write(p);break}}' > "$pwf"
   excl "$ENV" || stop "could not create $ENV exclusively (run close, then teardown)"; record file "$ENV"
   chmod 0640 "$ENV"; [[ $TEST == 1 ]] || chown "root:$U" "$ENV"
   { printf 'MYCELIUM_DATABASE_URL=postgresql://%s:' "$ROLE"; cat "$pwf"; printf '@%s/%s?sslmode=require\n' "$HOST" "$DBNAME"
@@ -91,17 +93,16 @@ setup)
   [[ -d $(dirname "$VER") && ! -L $(dirname "$VER") ]] || stop "$(dirname "$VER") missing (run close, then teardown)"
   excl "$VER" || stop "could not create $VER exclusively (run close, then teardown)"; record file "$VER"
   chmod 0600 "$VER"; [[ $TEST == 1 ]] || chown ct_admin:ct_admin "$VER"
-  node "$PKG/scripts/scram-verifier.mjs" < "$pwf" >| "$VER" || stop "verifier generation failed (run close, then teardown)"
-  grep -qE '^SCRAM-SHA-256\$4096:' "$VER" || stop "verifier malformed (run close, then teardown)"
+  cat "$pwf" >| "$VER"; grep -qE '^[A-Za-z0-9_-]{40}$' "$VER" || stop "password copy malformed (run close, then teardown)"
   shred -u "$pwf"; trap - EXIT
-  say "credential at $ENV (root:$U 0640; password not shown); SCRAM verifier at $VER (ct_admin 0600)"
-  say "SETUP OK. Next: copy the verifier to the PC with scp, run the PC 'create' step, then 'run' here" ;;
+  say "credential at $ENV (root:$U 0640; password not shown); one-time PC copy at $VER (ct_admin 0600)"
+  say "SETUP OK. Next: scp $VER to the PC, run the PC 'create' step (it wipes its copy), then 'run' here (it shreds this copy)" ;;
 
 run)
   recognise || stop "no recognised receipt: setup was not run by this script (nothing changed)"
   recorded file "$ENV" && [[ -f $ENV && ! -L $ENV ]] || stop "no credential recorded by setup (not done, or already closed)"
   recorded dir "$PKG" || stop "package not installed by setup"
-  if recorded file "$VER" && [[ -f $VER && ! -L $VER ]]; then shred -u "$VER"; record closed "$VER"; say "removed the verifier copy on fpd-prod (no longer needed)"; fi
+  if recorded file "$VER" && [[ -f $VER && ! -L $VER ]]; then shred -u "$VER"; record closed "$VER"; say "shredded the one-time PC copy of the password on fpd-prod"; fi
   start=$(date +%s); out=$RC/out
   step() {  # one fresh node process as $U; its TERM deadline plus kill grace stays inside min(STEP_S, time left)
     local left=$(( start + DEADLINE_S - $(date +%s) )) cap t
@@ -131,7 +132,7 @@ close)
   for f in "$RC"/pw.* "$RC/out"; do [[ -f $f && ! -L $f ]] && shred -u "$f"; done
   [[ -z $bad ]] || stop "unexpected state:$bad"
   { recorded file "$ENV" && exists "$ENV"; } && stop "the credential still exists"
-  say "CLOSE OK on fpd-prod: no credential or verifier created by this trial remains. The PC close step disables the login" ;;
+  say "CLOSE OK on fpd-prod: no credential or password copy created by this trial remains. The PC close step disables the login" ;;
 
 teardown)
   recognise || { echo "explorer-trial: TEARDOWN: no recognised receipt, so nothing here was created by this trial; nothing changed"; exit 0; }

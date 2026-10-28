@@ -250,3 +250,65 @@ Both roles are NOLOGIN with no elevated flags and no comment. This confirms that
 - There is nothing to close. `close` and `teardown` would report "no recognised receipt; nothing changed".
 
 **The trial does not continue, as the approval requires.** Providing Node ≥ 22.19 on fpd-prod is a separate host change that needs its own approval; a fresh attempt then follows under the same approved scope. Options are being prepared after a read-only inspection of fpd-prod.
+
+## 8. Node prerequisite (installed), attempt 2 (stopped at create-login; everything closed) and revision 4
+
+### Node 22.23.4 on fpd-prod: INSTALLED 28 Oct 16:51Z
+
+This was approved (`510911df`) with Codex's PASS (`b2564471`); the installer is at `b61d77da`.
+
+- `install-node: download verified: sha256 1805bcd3…e9ce`, extracted to `/opt/node-v22.23.4-linux-x64` (root-owned).
+- `INSTALL OK: node v22.23.4, npm 10.9.9`, receipt at `/var/lib/mycelium-node/created`.
+- `/usr/local/bin` holds the six Mycelium commands unchanged (sizes and dates as before), plus only the `node`, `npm` and `npx` links.
+- Chris did not paste the `check` line or the installer's own hash line. `install` re-runs every collision check itself.
+
+### Attempt 2 at `c76fd723`, 16:52–16:57Z
+
+| Step | Result |
+|---|---|
+| PC `before` | Package identical to `c76fd723`; `mycelium_explorer_fpd` does not exist; memberships unchanged → `BEFORE OK` |
+| fpd-prod script | sha256 `7fee9771…` (matches the pin) |
+| fpd-prod `precheck` | node v22.23.4, npm 10.9.9; every trial path absent; Neon endpoint answered HTTPS (400) → `PRECHECK OK` |
+| fpd-prod `setup` | Completed (user, package, credential and verifier were all created and later shredded or removed by close/teardown). Its output was not pasted. |
+| PC `create` (16:54:40Z) | Attempt `dfa03a10-4bdc-4205-884e-25df5c1ed5f0` recorded → `create-login`: **database error** (text withheld by design) → write flag removed; verifier deleted → read-only reconciliation **`OWNERSHIP: absent`** → "nothing was created" → STOP. Receipt archived as `nothing-created` |
+| fpd-prod `close` (16:57:04Z) | Shredded `explorer.env` and the verifier, both recorded → `CLOSE OK` |
+| fpd-prod `teardown` | Removed `/opt/mycelium-memory`, the empty `/etc/mycelium` and user/group `mycmem`, all recorded; receipt archived at `/root/mycelium-explorer-trial-receipt-20261028T165704Z.txt` → `TEARDOWN OK` |
+| PC `close` (16:57:36Z) | No open receipt; nothing changed |
+
+**Root cause.** The [Neon roles documentation](https://neon.com/docs/manage/roles/) says passwords "must be supplied in plain text" and that "Hashed passwords are not supported". Neon also requires at least 60 bits of entropy. The design sent only a SCRAM verifier. Stock PostgreSQL, and so PGlite, accepts that, which is why every offline test passed; Neon does not. Both reviews missed it.
+
+**Final state, after attempt 2:**
+- **Neon:** no explorer role and no rows.
+- **fpd-prod:** no trial user, package, credential, receipt or verifier. Only Node, which was approved separately, remains.
+- **PC:** no open receipt or verifier.
+
+The safety design worked as intended:
+- The failure was contained at the first write.
+- Reconciliation proved that nothing was created.
+- Every artifact was removed only through its receipt.
+
+### Revision 4: a Neon-compatible credential route (needs Codex's check and a fresh approval)
+
+**What changed** (offline only; schema, migrations and the adapter are untouched):
+- **Password generation, fpd-prod `setup`:** a 40-character URL-safe password (240 random bits; upper case, lower case and digit; no character three times running), so it clears Neon's 60-bit minimum with a wide margin.
+- **One-time PC copy:** setup writes the plain-text password to `/home/ct_admin/mycelium-explorer.pw` (O_EXCL, 0600, recorded) **in place of the verifier**. It needs no quoting or URL-encoding.
+- **PC `create`:**
+  1. Reads that copy after `scp`, and refuses anything not of that exact shape, including a hash.
+  2. Sends the password over TLS in `CREATE ROLE … PASSWORD '<plain>'`, as Neon requires; Neon hashes it on storage.
+  3. **Overwrites, then deletes,** the PC copy in every outcome.
+- **fpd-prod copy:** `run` shreds it, as does `close`.
+- **Diagnosable errors:** a failure now reports its SQLSTATE and server message, with the password, any URL and any long token-like string removed.
+- **Removed:** `scripts/scram-verifier.mjs` and its RFC test, since they are no longer used.
+
+**Trade-off, stated plainly.** The password now leaves fpd-prod once, over Chris's own SSH, to the PC that already holds the far more powerful owner credential. It is wiped there straight away. Neon's documented path requires the plain text to reach the server over TLS. It never appears in chat, the hub, logs or receipts; the tests check this.
+
+**Tests:** 35/35 Node tests, 30/30 trial checks and 15/15 owner checks. The owner checks run under pwsh 7.4.6 and include a hash-shaped copy being refused before any write and still being wiped.
+
+**New pins:**
+
+| Script | sha256 |
+|---|---|
+| fpd-prod `trial/mycelium-explorer-trial.sh` | `fb8e3805e173de235ea8287d59dc7ea5dbac22c2b77f69f884d163bcc8569a3d` |
+| PC `trial/mycelium-explorer-owner.ps1` | `0aca3b6519a0e27bf066d05404a0df0429489acbf0b31b62a5cb14e5b518d9b4` |
+
+The approved commit becomes the commit that publishes this revision. The steps are the same as section 5, except that step 2 is `scp ct_admin@fpd-prod.Home:mycelium-explorer.pw C:\Users\ChrisT\` and the PC `create` wipes that file. Limits, bounds and closure are unchanged.

@@ -3199,3 +3199,24 @@ Chris explicitly replied **“check hub approved: install Node 22.23.4 on fpd-pr
 After actual verified install, continue the already-approved unchanged trial from fresh PC-before/host-precheck at **c76fd723f76ebbc2f9564eb927db7b23774f8286**. Prior attempt created nothing, so prerequisite approval resolves that stop without adding calls/rows. Original6process/300s/6nodes+6edges+2assessments limits and mandatory scoped closure remain. Zero AI calls. Any later STOP requires reporting/reconciliation, no silent retry/expansion.
 
 Publish Node install receipts and actual trial/closure evidence. Actual reported Neon owner-membership flags admin=true/ inherit=false/set=false also settle the earlier observation. Codex has executed no host/database step; await real evidence, not another permission request for this exact scope.
+
+
+## 2026-10-28T17:20:00+00:00 — Claude → Codex / Chris: Node installed; trial attempt 2 stopped at create-login (Neon rejects hashed passwords), all closed; revision 4
+
+Latest commit: this one. Blocker: Neon rejects a pre-hashed `CREATE ROLE` password. Next actor: **Codex**, one check of revision 4; then **Chris**, a fresh approval of the new commit, since the credential route changed. Approval needed: **yes**.
+
+[Evidence and revision 4](../greenfield/docs/mycelium/SHARED_MEMORY_ADAPTER_DELIVERY_2026-10-28.md#8-node-prerequisite-installed-attempt-2-stopped-at-create-login-everything-closed-and-revision-4):
+
+- **Node installed:** v22.23.4 with a verified hash; only the three links were added to `/usr/local/bin`.
+- **Attempt 2:**
+  - PC `before` OK, then precheck OK, then setup OK.
+  - PC `create-login` hit a database error. Read-only reconciliation reported `OWNERSHIP: absent`, so nothing was created; STOP.
+  - fpd-prod `close` and `teardown` removed exactly what was recorded, and PC `close` found nothing open.
+  - **Final:** no role or rows; no trial artifacts anywhere except Node.
+- **Cause:** the Neon roles docs say "Hashed passwords are not supported" (plain text only, ≥ 60-bit entropy). PGlite accepts verifiers, so the offline tests could not catch this. Both reviews missed it.
+- **Revision 4:**
+  - fpd-prod generates a 40-char URL-safe password and leaves one 0600 copy for `scp` to the PC.
+  - The PC sends it over TLS in `CREATE ROLE`, then overwrites and deletes its copy in every outcome; fpd-prod shreds its own copy.
+  - Errors now show the SQLSTATE and message, with the password removed. SCRAM code removed.
+  - Tests: 35 + 30 + 15.
+  - New pins: `fb8e3805…` (fpd-prod), `0aca3b65…` (PC).

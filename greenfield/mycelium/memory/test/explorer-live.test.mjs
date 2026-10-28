@@ -1,15 +1,13 @@
-// Offline tests for the PROPOSED live explorer proof: SCRAM verifier, least-privilege login provisioning and the live steps,
+// Offline tests for the PROPOSED live explorer proof: trial password rules, least-privilege login provisioning and the live steps,
 // all on PGlite (PostgreSQL 18.6). No Neon, no network, no model.
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createHmac } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { PGlite } from '@electric-sql/pglite';
 import { migrate } from '../src/schema.mjs';
 import { target } from '../src/preflight.mjs';
-import { scramKeys, deriveKeys, scramVerifier, VERIFIER_RE } from '../scripts/scram-verifier.mjs';
 import { createLoginStatements, disableLoginStatements, membershipQueries, EXPLORER_ROLE, assertExplorerLogin, assertExplorerClosed,
-  assertExplorerAbsent, ownership } from '../scripts/explorer-provision.mjs';
+  assertExplorerAbsent, ownership, assertTrialPassword, describeError } from '../scripts/explorer-provision.mjs';
 import { randomUUID } from 'node:crypto';
 import { assertExplorerTarget, assertLeastPrivilege, whoamiQueries, footprintQueries, LIVE } from '../scripts/explorer-live.mjs';
 import { explorerA, explorerB } from '../examples/fixtures.mjs';
@@ -18,20 +16,16 @@ const adapter = pg => ({ query: async (s, p = []) => (await pg.query(s, p)).rows
   transaction: ss => pg.transaction(async tx => { const o = []; for (const s of ss) o.push((await tx.query(s.text, s.values ?? [])).rows); return o; }) });
 const counts = async db => (await db.query(`SELECT (SELECT count(*) FROM mycelium_memory.nodes)::int AS n,
   (SELECT count(*) FROM mycelium_memory.edges)::int AS e, (SELECT count(*) FROM mycelium_memory.assessments)::int AS a`))[0];
-const PW = 'Zm9vYmFyYmF6cXV4cXV1eHF1dXo0Mg+/AbC';
+const PW = 'Qx7_vR2k-Lm9pT4wZb8nYc3dHf6gJs1aEu5oKi0q';   // the shape setup generates: 40 base64url chars
 const ATT = '6f1c2b8e-3d4a-4e5f-9a0b-1c2d3e4f5a6b';
 
-test('SCRAM-SHA-256 matches the RFC 7677 test vector', () => {
-  // RFC 7677 section 3: user "user", password "pencil" (below our length floor, so keys are derived directly).
-  const salt = Buffer.from('W22ZaJ0SNY7soEsUEjb6gQ==', 'base64');
-  const auth = 'n=user,r=rOprNGfwEbeRWgbNEkqO,r=rOprNGfwEbeRWgbNEkqO%hvYDpWUa2RaTCAfuxFIlj)hNlF$k0,s=W22ZaJ0SNY7soEsUEjb6gQ==,i=4096,c=biws,r=rOprNGfwEbeRWgbNEkqO%hvYDpWUa2RaTCAfuxFIlj)hNlF$k0';
-  const k = deriveKeys('pencil', salt);
-  const sig = createHmac('sha256', k.storedKey).update(auth).digest();
-  const proof = Buffer.from(k.clientKey.map((b, i) => b ^ sig[i]));
-  assert.equal(proof.toString('base64'), 'dHzbZapWIk4jUhN+Ute9ytag9zjfMHgsqmmiz7AndVQ=');
-  assert.equal(createHmac('sha256', k.serverKey).update(auth).digest('base64'), '6rriTRBi23WpRR/wtup+mMhUZUn/dB5nLTJRsjl95G4=');
-  assert.match(scramVerifier(PW), VERIFIER_RE);
-  assert.throws(() => scramKeys('pencil', salt), /24-256/);          // our own floor for generated passwords
+test('trial password rules: Neon needs plain text; only a generated URL-safe password passes; errors are scrubbed', () => {
+  assert.equal(assertTrialPassword(PW), PW);
+  for (const bad of ['SCRAM-SHA-256$4096:abc', 'short1A', PW + "'", 'a'.repeat(40), PW.replace(/[0-9]/g, 'x'), 'Qx7aaab' + PW.slice(7)])
+    assert.throws(() => assertTrialPassword(bad), /valid generated trial password/);
+  const e = Object.assign(new Error(`password "${PW}" rejected near postgresql://u:${PW}@h/db`), { code: '22023' });
+  const d = describeError(e, PW);
+  assert.ok(d.startsWith('SQLSTATE 22023:') && !d.includes(PW) && !d.includes('postgresql://'));
 });
 
 async function world() {
@@ -42,23 +36,21 @@ async function world() {
   return { pg, db };
 }
 
-test('create-login: only the verifier is sent and stored; inherited runtime membership only; refuses plaintext and reruns', async () => {
+test('create-login: PostgreSQL stores a hash of the plain-text password; inherited runtime membership only; refuses bad input and reruns', async () => {
   const { pg, db } = await world();
   try {
-    const v = scramVerifier(PW);
-    assert.throws(() => createLoginStatements(PW, ATT), /plaintext/);
-    assert.throws(() => createLoginStatements(v + "'; DROP ROLE x; --", ATT), /plaintext/);
-    for (const s of createLoginStatements(v, ATT)) assert.ok(!s.text.includes(PW));
-    await db.transaction(createLoginStatements(v, ATT));
+    assert.throws(() => createLoginStatements('SCRAM-SHA-256$4096:x', ATT), /valid generated trial password/);   // Neon rejects hashes
+    assert.throws(() => createLoginStatements(PW + "'; DROP ROLE x; --", ATT), /valid generated trial password/);
+    await db.transaction(createLoginStatements(PW, ATT));
     const [{ rolpassword }] = await db.query('SELECT rolpassword FROM pg_authid WHERE rolname=$1', [EXPLORER_ROLE]);
-    assert.equal(rolpassword, v);                                     // PostgreSQL stored the verifier as given
+    assert.ok(rolpassword.startsWith('SCRAM-SHA-256$') && !rolpassword.includes(PW));   // stored hashed by the server
     const rs = await db.transaction(membershipQueries);
     const role = rs[1].find(r => r.rolname === EXPLORER_ROLE);
     assert.deepEqual({ login: role.rolcanlogin, superuser: role.rolsuper, createrole: role.rolcreaterole, limit: role.rolconnlimit },
       { login: true, superuser: false, createrole: false, limit: 2 });
     const m = rs[2].filter(x => x.member === EXPLORER_ROLE);
     assert.deepEqual(m.map(x => [x.role, x.admin_option, x.inherit_option, x.set_option]), [['mycelium_memory_runtime', false, true, false]]);
-    await assert.rejects(db.transaction(createLoginStatements(scramVerifier(PW), ATT)), /already exists/);
+    await assert.rejects(db.transaction(createLoginStatements(PW, ATT)), /already exists/);
     await db.transaction(disableLoginStatements(ATT));
     const after = await db.transaction(membershipQueries);
     assert.equal(after[1].find(r => r.rolname === EXPLORER_ROLE).rolcanlogin, false);
@@ -69,7 +61,7 @@ test('create-login: only the verifier is sent and stored; inherited runtime memb
 test('live steps as the explorer login: least-privilege check passes, A then B share memory, reruns write nothing', async () => {
   const { pg, db } = await world();
   try {
-    await db.transaction(createLoginStatements(scramVerifier(PW), ATT));
+    await db.transaction(createLoginStatements(PW, ATT));
     await db.query(`SET ROLE ${EXPLORER_ROLE}`);
     const [w] = (await db.transaction(whoamiQueries))[1];
     assert.doesNotThrow(() => assertLeastPrivilege(w));
@@ -114,7 +106,7 @@ test('owner close is safe in every state; verify-login / verify-closed fail clos
     await db.transaction(disableLoginStatements(ATT));                          // role absent: no error
     assertExplorerClosed(await state(), ATT);
     assert.throws(() => assertExplorerLogin({ roles: [], memberships: [] }, ATT), /approved least-privilege/);
-    await db.transaction(createLoginStatements(scramVerifier(PW), ATT));
+    await db.transaction(createLoginStatements(PW, ATT));
     assertExplorerLogin(await state(), ATT);
     assert.throws(() => assertExplorerClosed({ roles: [{ rolname: EXPLORER_ROLE, rolcanlogin: true, comment: `mycelium-explorer-trial ${ATT}` }], memberships: [] }, ATT), /still active/);
     await db.query(`GRANT mycelium_memory_redactor TO ${EXPLORER_ROLE}`);   // any extra membership is refused
@@ -130,7 +122,7 @@ test('footprint receipt: before/after delta is exactly the trial rows and existi
   const { pg, db } = await world();
   try {
     await db.query("INSERT INTO mycelium_memory.nodes (id, kind) VALUES (gen_random_uuid(), 'pre-existing')");
-    await db.transaction(createLoginStatements(scramVerifier(PW), ATT));
+    await db.transaction(createLoginStatements(PW, ATT));
     await db.query(`SET ROLE ${EXPLORER_ROLE}`);
     const fp = async () => (await db.transaction(footprintQueries))[1][0];
     const before = await fp();
@@ -153,20 +145,20 @@ test('R3c: a pre-existing or foreign role of the same name is refused and never 
     const before = JSON.stringify(await state());
     assert.throws(() => assertExplorerAbsent({ roles: (JSON.parse(before)).roles }), /already exists/);   // baseline refuses
     assert.equal(ownership(JSON.parse(before), ATT), 'foreign');
-    await assert.rejects(db.transaction(createLoginStatements(scramVerifier(PW), ATT)), /already exists/);
+    await assert.rejects(db.transaction(createLoginStatements(PW, ATT)), /already exists/);
     await assert.rejects(db.transaction(disableLoginStatements(ATT)), /not created by this trial/);   // defensive close refuses
     assert.throws(() => assertExplorerClosed(JSON.parse(before), ATT), /not this trial/);
     assert.equal(JSON.stringify(await state()), before);                                             // byte-identical: untouched
     // a role created by a DIFFERENT attempt is also foreign to this one
     await db.query(`DROP ROLE ${EXPLORER_ROLE}`);
     const other = randomUUID();
-    await db.transaction(createLoginStatements(scramVerifier(PW), other));
+    await db.transaction(createLoginStatements(PW, other));
     assert.equal(ownership(await state(), ATT), 'foreign'); assert.equal(ownership(await state(), other), 'ours');
     await assert.rejects(db.transaction(disableLoginStatements(ATT)), /not created by this trial/);
     assert.equal((await state()).roles.find(r => r.rolname === EXPLORER_ROLE).rolcanlogin, true);
     await db.transaction(disableLoginStatements(other));
     assertExplorerClosed(await state(), other);
-    assert.throws(() => createLoginStatements(scramVerifier(PW), 'not-a-uuid'), /UUID/);
+    assert.throws(() => createLoginStatements(PW, 'not-a-uuid'), /UUID/);
     assert.throws(() => disableLoginStatements('6F1C2B8E-3D4A-4E5F-9A0B-1C2D3E4F5A6B'), /UUID/);
   } finally { await pg.close(); }
 });
@@ -176,7 +168,7 @@ test('R3c: uncertain create is reconciled read-only: absent -> nothing to close;
   try {
     const state = async () => { const rs = await db.transaction(membershipQueries); return { roles: rs[1], memberships: rs[2] }; };
     // a create that fails part-way leaves NOTHING (existence check, create, comment and grant are one transaction)
-    const st = createLoginStatements(scramVerifier(PW), ATT);
+    const st = createLoginStatements(PW, ATT);
     await assert.rejects(db.transaction([...st, { text: 'SELECT 1/0' }]), /division by zero/);
     assert.equal(ownership(await state(), ATT), 'absent');
     await db.transaction(disableLoginStatements(ATT));                    // nothing to close: no-op, no error

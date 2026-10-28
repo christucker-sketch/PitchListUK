@@ -40,16 +40,16 @@ calls() { [[ -f $T/ctl/calls ]] && tr '\n' ' ' < "$T/ctl/calls"; }
 # Directory allocation size can change when the intentional archive is added; compare directory modes/paths,
 # regular-file byte sizes/content and symlink targets, not filesystem-dependent directory st_size.
 snap() { (cd "$R" && { find . -type d -printf '%p d %m - %l\n'; find . ! -type d -printf '%p %y %m %s %l\n'; } | sort; find . -type f -exec sha256sum {} + | sort) 2>/dev/null; }
-E=$R/etc/mycelium/explorer.env V=$R/home/ct_admin/mycelium-explorer.scram RC=$R/var/lib/mycelium-explorer-trial
+E=$R/etc/mycelium/explorer.env V=$R/home/ct_admin/mycelium-explorer.pw RC=$R/var/lib/mycelium-explorer-trial
 
 echo "1. pre-existing paths are refused by precheck AND setup, and the always-run close/teardown then change NOTHING (R3a/R3b)"
-for what in env etcdir verifier verifier_symlink dangling_symlink etc_symlink pkg receiptdir user group; do
+for what in env etcdir pwcopy pwcopy_symlink dangling_symlink etc_symlink pkg receiptdir user group; do
   fresh
   case $what in
     env)              mkdir -m 0711 "$R/etc/mycelium"; echo unrelated > "$R/etc/mycelium/explorer.env" ;;
     etcdir)           mkdir -m 0711 "$R/etc/mycelium"; echo other > "$R/etc/mycelium/other.conf" ;;
-    verifier)         echo unrelated > "$V" ;;
-    verifier_symlink) echo target > "$R/home/ct_admin/real"; ln -s real "$V" ;;
+    pwcopy)           echo unrelated > "$V" ;;
+    pwcopy_symlink)   echo target > "$R/home/ct_admin/real"; ln -s real "$V" ;;
     dangling_symlink) ln -s /nonexistent/x "$V" ;;
     etc_symlink)      mkdir "$R/elsewhere"; ln -s ../elsewhere "$R/etc/mycelium" ;;
     pkg)              mkdir -p "$R/opt/mycelium-memory"; echo mine > "$R/opt/mycelium-memory/file" ;;
@@ -64,29 +64,23 @@ for what in env etcdir verifier verifier_symlink dangling_symlink etc_symlink pk
   else bad "existing $what (precheck=$r1 setup=$r2 close=$r3 teardown=$r4)"; diff <(echo "$before") <(echo "$after") | head; cat "$T/out"; fi
 done
 
-echo "2. setup: exclusive creation with receipts; pinned commit; credential/verifier shape; password never printed"
+echo "2. setup: exclusive creation with receipts; pinned commit; credential and PC-copy shape; password never printed"
 fresh; run setup deadbeef; grep -q '40-character' "$T/out" && ok "short commit refused" || bad "short commit"
 before=$(snap); run setup 0000000000000000000000000000000000000000; [[ $(snap) == "$before" ]] && grep -q 'not in the HubSync clone' "$T/out" && ok "unknown commit refused before any change" || { bad "unknown commit"; cat "$T/out"; }
 run setup "$C"; r=$?
-pw=$(sed -n 's#^MYCELIUM_DATABASE_URL=postgresql://mycelium_explorer_fpd:\([0-9a-f]*\)@.*#\1#p' "$E" 2>/dev/null)
-[[ $r == 0 && ${#pw} == 48 && $(stat -c %a "$E") == 640 && $(stat -c %a "$R/etc/mycelium") == 750 ]] && grep -q 'sslmode=require' "$E" \
-  && ok "credential: 48-hex password, pinned host, TLS, 0640 in a newly created 0750 directory" || { bad "credential"; cat "$T/out"; }
+pw=$(sed -n 's#^MYCELIUM_DATABASE_URL=postgresql://mycelium_explorer_fpd:\([A-Za-z0-9_-]*\)@.*#\1#p' "$E" 2>/dev/null)
+[[ $r == 0 && ${#pw} == 40 && $pw =~ [A-Z] && $pw =~ [a-z] && $pw =~ [0-9] && ! $pw =~ (.)\1\1 && $(stat -c %a "$E") == 640 && $(stat -c %a "$R/etc/mycelium") == 750 ]] && grep -q 'sslmode=require' "$E" \
+  && ok "credential: 40-char URL-safe password meeting the Neon rules, pinned host, TLS, 0640 in a newly created 0750 directory" || { bad "credential"; cat "$T/out"; }
 [[ $(grep -v -e '^commit ' -e '^mycelium-explorer-trial receipt v1$' "$RC/created" | tr '\n' ';') == "user mycmem;dir $R/opt/mycelium-memory;dir $R/etc/mycelium;file $E;file $V;" && $(stat -c %a "$RC") == 700 ]] \
   && ok "receipt (root-only 0700) records exactly the five artifacts created, in order" || { bad receipt; cat "$RC/created"; }
-grep -qE '^SCRAM-SHA-256\$4096:[A-Za-z0-9+/]{22}==\$[A-Za-z0-9+/]{43}=:[A-Za-z0-9+/]{43}=$' "$V" && [[ $(stat -c %a "$V") == 600 ]] && ok "verifier: valid SCRAM format, 0600" || bad verifier
-(cd "$R/opt/mycelium-memory" && node --input-type=module -e "
-  import { deriveKeys } from './scripts/scram-verifier.mjs';
-  const [, it, rest] = process.argv[1].match(/^SCRAM-SHA-256\\\$(\d+):(.*)\$/); const [salt, keys] = rest.split('\$'); const [sk, svk] = keys.split(':');
-  const k = deriveKeys(process.argv[2], Buffer.from(salt, 'base64'), Number(it));
-  process.exit(k.storedKey.toString('base64') === sk && k.serverKey.toString('base64') === svk ? 0 : 1);" "$(cat "$V")" "$pw") \
-  && ok "the verifier matches the stored password" || bad "verifier/password mismatch"
-pws=("$RC"/pw.*); ! grep -rq "$pw" "$T/out" "$RC/log" && [[ ! -e ${pws[0]} ]] && ok "password never printed or logged; temporary password file shredded" || bad "password leak"
+[[ $(cat "$V") == "$pw" && $(stat -c %a "$V") == 600 ]] && ok "one-time PC copy holds exactly the credential's password, 0600" || bad "PC copy"
+pws=("$RC"/pw.*); ! grep -rq "$pw" "$T/out" "$RC/log" "$RC/created" && [[ ! -e ${pws[0]} ]] && ok "password never printed or logged; temporary password file shredded" || bad "password leak"
 before=$(snap | grep -v 'mycelium-explorer-trial/log'); run setup "$C"; [[ $? != 0 && $(snap | grep -v 'mycelium-explorer-trial/log') == "$before" ]] && ok "second setup refuses and changes nothing (beyond its own log line)" || bad "setup rerun"
 
-echo "3. run: order, exact footprint, verifier removed; failures, deadline and a TERM-ignoring child stop within the cap"
+echo "3. run: order, exact footprint, PC copy shredded; failures, deadline and a TERM-ignoring child stop within the cap"
 run run; r=$?
 [[ $r == 0 && $(calls) == "whoami footprint A B check footprint " ]] && grep -q 'footprint delta nodes=6 edges=6 assessments=2' "$T/out" && [[ ! -e $V ]] \
-  && grep -qx "closed $V" "$RC/created" && ok "six steps in order; delta exactly 6/6/2; verifier shredded and recorded closed" || { bad run; cat "$T/out"; }
+  && grep -qx "closed $V" "$RC/created" && ok "six steps in order; delta exactly 6/6/2; fpd-prod PC copy shredded and recorded closed" || { bad run; cat "$T/out"; }
 rm -f "$T/ctl/calls" "$T/ctl/fp"; EXTRA_A=1 run run; [[ $? != 0 ]] && grep -q 'not exactly 6/6/2' "$T/out" && ok "wrong footprint: STOP" || bad "footprint"
 unset EXTRA_A; rm -f "$T/ctl/calls" "$T/ctl/fp"; touch "$T/ctl/fail_B"; run run
 [[ $? != 0 && $(calls) == "whoami footprint A B " ]] && ok "B fails: STOP immediately, nothing after it, nothing retried" || { bad "fail stop"; cat "$T/out"; }

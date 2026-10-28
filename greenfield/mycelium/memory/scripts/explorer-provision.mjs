@@ -7,16 +7,16 @@
 //   node --env-file=.env.local scripts/explorer-provision.mjs owned <attempt>             read-only: prints absent|ours|foreign
 //   node --env-file=.env.local scripts/explorer-provision.mjs verify-login <attempt>      read-only: exit 1 unless ours and exact
 //   node --env-file=.env.local scripts/explorer-provision.mjs verify-closed <attempt>     read-only: exit 1 unless absent or ours+closed
-//   MYCELIUM_REMOTE_WRITES_APPROVED=yes ... create-login <verifier-file> <attempt>        refuses if the name exists
+//   MYCELIUM_REMOTE_WRITES_APPROVED=yes ... create-login <password-file> <attempt>        refuses if the name exists
 //   MYCELIUM_REMOTE_WRITES_APPROVED=yes ... disable-login <attempt>                       NOLOGIN + revoke, ONLY if ours
 // The login gets only mycelium_memory_runtime's privileges, inherited (INHERIT TRUE, SET FALSE, no ADMIN), at most two
-// connections. Its password never reaches this machine: only the SCRAM verifier made on fpd-prod (scram-verifier.mjs).
+// connections. Neon accepts only PLAIN-TEXT passwords in CREATE ROLE ("Hashed passwords are not supported", Neon docs), so
+// the password generated on fpd-prod is copied here once, sent over TLS in CREATE ROLE, and wiped by the caller.
 import { readFile } from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
 import { resolve } from 'node:path';
 import { connect } from '../src/connection.mjs';
 import { assertDeploymentTarget } from '../src/preflight.mjs';
-import { VERIFIER_RE } from './scram-verifier.mjs';
 
 export const EXPLORER_ROLE = 'mycelium_explorer_fpd';
 const R = [EXPLORER_ROLE, 'mycelium_memory_runtime', 'mycelium_memory_redactor'];
@@ -37,10 +37,17 @@ export const membershipQueries = [
            WHERE r.rolname = ANY($1) OR m.rolname = ANY($1) ORDER BY 1, 2, 3`, values: [R] }
 ];
 
-// Statements for create-login. The verifier and attempt are strictly validated literals (utility statements take no
+// The generated password: URL-safe base64 (no quoting or URL-encoding needed), 32-64 characters, upper, lower and digit,
+// no character three times in a row -- comfortably above Neon's 60-bit entropy minimum.
+export function assertTrialPassword(p) {
+  if (typeof p !== 'string' || !/^[A-Za-z0-9_-]{32,64}$/.test(p) || !/[A-Z]/.test(p) || !/[a-z]/.test(p) || !/[0-9]/.test(p) || /(.)\1\1/.test(p))
+    throw new Error('password file does not hold a valid generated trial password; refusing.');
+  return p;
+}
+// Statements for create-login. The password and attempt are strictly validated literals (utility statements take no
 // parameters). The existence check, creation, binding comment and grant commit together or not at all.
-export function createLoginStatements(verifier, attempt) {
-  if (!VERIFIER_RE.test(verifier)) throw new Error('Not a SCRAM-SHA-256 verifier; refusing (a plaintext password must never be sent).');
+export function createLoginStatements(password, attempt) {
+  assertTrialPassword(password);
   const comment = attemptComment(attempt);
   return [
     { text: `DO $$ BEGIN
@@ -48,7 +55,7 @@ export function createLoginStatements(verifier, attempt) {
       IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'mycelium_memory_runtime' AND NOT rolcanlogin) THEN RAISE EXCEPTION 'runtime template missing'; END IF;
     END $$` },
     { text: `CREATE ROLE ${EXPLORER_ROLE} LOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS INHERIT
-             CONNECTION LIMIT 2 PASSWORD '${verifier}'` },
+             CONNECTION LIMIT 2 PASSWORD '${password}'` },
     { text: `COMMENT ON ROLE ${EXPLORER_ROLE} IS '${comment}'` },
     { text: `GRANT mycelium_memory_runtime TO ${EXPLORER_ROLE} WITH INHERIT TRUE, SET FALSE, ADMIN FALSE` }
   ];
@@ -96,8 +103,17 @@ export function assertExplorerClosed(state, attempt) {
   if (own === 'ours' && (r.rolcanlogin || state.memberships.some(x => x.member === EXPLORER_ROLE))) throw new Error('Explorer login is still active.');
 }
 
+// Diagnosable but safe: the SQLSTATE and server message, with the password, any URL and any long secret-like token removed.
+export function describeError(e, secret = null) {
+  let msg = String(e?.message ?? e);
+  if (secret) msg = msg.split(secret).join('<password>');
+  msg = msg.replace(/postgres(?:ql)?:\/\/\S+/gi, '<url>').replace(/[A-Za-z0-9_+\/=-]{32,}/g, '<redacted>').slice(0, 300);
+  return e?.code ? `SQLSTATE ${e.code}: ${msg}` : msg;
+}
+
 if (process.argv[1] && pathToFileURL(resolve(process.argv[1])).href === import.meta.url) {
   const [mode, a1, a2] = process.argv.slice(2);
+  let secret = null;
   try {
     const modes = ['memberships', 'verify-absent', 'owned', 'verify-login', 'verify-closed', 'create-login', 'disable-login'];
     if (!modes.includes(mode)) throw new Error('Unknown command.');
@@ -108,8 +124,8 @@ if (process.argv[1] && pathToFileURL(resolve(process.argv[1])).href === import.m
     const db = await connect();
     const read = async () => { const rs = await db.transaction(membershipQueries); return { roles: rs[1], memberships: rs[2] }; };
     if (mode === 'create-login') {
-      const verifier = (await readFile(a1, 'utf8')).trim();
-      await db.transaction(createLoginStatements(verifier, attempt));
+      secret = (await readFile(a1, 'utf8')).trim();
+      await db.transaction(createLoginStatements(secret, attempt));
       console.log(`Created ${EXPLORER_ROLE} for attempt ${attempt}: LOGIN, connection limit 2, inherits mycelium_memory_runtime only.`);
     } else if (mode === 'disable-login') {
       await db.transaction(disableLoginStatements(attempt));
@@ -123,7 +139,7 @@ if (process.argv[1] && pathToFileURL(resolve(process.argv[1])).href === import.m
       if (mode === 'verify-closed') { assertExplorerClosed(state, attempt); console.log('VERIFIED: this attempt\'s explorer login is closed (NOLOGIN, no membership) or absent.'); }
     }
   } catch (e) {
-    console.error(`Explorer provisioning stopped: ${/exists|not this trial|not created by this trial|approved|active|attempt|Unknown|Requires/.test(e.message) ? e.message : 'database error (details withheld)'}`);
+    console.error(`Explorer provisioning stopped: ${describeError(e, secret)}`);
     process.exitCode = 1;
   }
 }

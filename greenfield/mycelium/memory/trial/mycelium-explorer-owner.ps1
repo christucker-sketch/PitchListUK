@@ -1,21 +1,23 @@
 # Mycelium L1 explorer trial: OWNER steps on Chris's Windows PC (PROPOSAL; only after Chris approves the exact plan).
 #   powershell -ExecutionPolicy Bypass -File <checkout>\greenfield\mycelium\memory\trial\mycelium-explorer-owner.ps1 -Mode before -Commit <sha>
-#   ... -Mode create -Commit <sha>    create the explorer login bound to a new attempt id, verify it, delete the verifier
+#   ... -Mode create -Commit <sha>    create the explorer login bound to a new attempt id, verify it, wipe the password copy
 #   ... -Mode close  -Commit <sha>    ALWAYS after the trial: close ONLY this PC's recorded attempt (NOLOGIN + revoke), verify
 # Every database change is bound to one attempt id, kept in an exclusively created receipt on this PC and written as the
 # role's comment in the creating transaction. A pre-existing or foreign role of the same name is reported, never changed.
-# Uses the existing migration-owner .env.local; never prints a connection string, password or verifier.
+# Neon accepts only plain-text passwords in CREATE ROLE, so create reads the one-time copy scp'd from fpd-prod, sends it over
+# TLS, then overwrites and deletes it in every outcome. Uses the existing migration-owner .env.local; never prints a
+# connection string or password.
 param([Parameter(Mandatory)][ValidateSet('before','create','close')][string]$Mode,
       [Parameter(Mandatory)][ValidatePattern('^[0-9a-f]{40}$')][string]$Commit)
 $ErrorActionPreference = 'Continue'
 Set-PSDebug -Off
 $repo = 'C:\Users\ChrisT\PitchListUK'
-$verifier = 'C:\Users\ChrisT\mycelium-explorer.scram'
+$pwfile = 'C:\Users\ChrisT\mycelium-explorer.pw'
 $receipt = 'C:\Users\ChrisT\mycelium-explorer-attempt.txt'
 $log = 'C:\Users\ChrisT\mycelium-explorer-owner.log'
 if ($env:MYC_OWNER_TEST_ROOT) {   # offline test harness only (pwsh with fake git/node); never set on the real PC
   $t = $env:MYC_OWNER_TEST_ROOT
-  $repo = "$t/repo"; $verifier = "$t/mycelium-explorer.scram"; $receipt = "$t/mycelium-explorer-attempt.txt"; $log = "$t/owner.log"
+  $repo = "$t/repo"; $pwfile = "$t/mycelium-explorer.pw"; $receipt = "$t/mycelium-explorer-attempt.txt"; $log = "$t/owner.log"
 }
 function Log { param([Parameter(ValueFromPipeline)]$l) process { $s = "$l"; Write-Host $s; Add-Content -Path $log -Value $s -Encoding UTF8 } }
 function Stop-Pre($m) { "STOP: $m" | Log; exit 1 }
@@ -62,18 +64,21 @@ if ($Mode -eq 'before') {
 
 if ($Mode -eq 'create') {
   if (Test-Path -LiteralPath $receipt) { Stop-Pre "an attempt receipt already exists ($receipt); run close for it first" }
-  if (-not (Test-Path -LiteralPath $verifier -PathType Leaf)) { Stop-Pre "no verifier at $verifier (copy it from fpd-prod with scp first)" }
+  if (-not (Test-Path -LiteralPath $pwfile -PathType Leaf)) { Stop-Pre "no password copy at $pwfile (scp it from fpd-prod first)" }
   try {
-    if ((Get-Content -LiteralPath $verifier -TotalCount 1) -notmatch '^SCRAM-SHA-256\$4096:') { Stop-Pre 'verifier malformed' }
+    if ((Get-Content -LiteralPath $pwfile -TotalCount 1) -notmatch '^[A-Za-z0-9_-]{40}$') { Stop-Pre 'password copy malformed (not printed)' }
     if ((Provision 'verify-absent').code -ne 0) { Stop-Pre 'mycelium_explorer_fpd already exists (or the read failed): nothing created, nothing changed' }
     $attempt = [guid]::NewGuid().ToString().ToLower()
     try { New-Item -ItemType File -Path $receipt -Value "attempt=$attempt`ncommit=$Commit`nat=$(Get-Date -Format o)`n" -ErrorAction Stop | Out-Null }
     catch { Stop-Pre "could not create the attempt receipt exclusively; nothing created" }
     "attempt $attempt recorded in $receipt" | Log
-    $c = Write-Mode { Provision 'create-login' $verifier $attempt }
-  } finally {
-    Remove-Item -LiteralPath $verifier -Force -ErrorAction SilentlyContinue
-    "verifier deleted from the PC: $(-not (Test-Path -LiteralPath $verifier))" | Log
+    $c = Write-Mode { Provision 'create-login' $pwfile $attempt }
+  } finally {   # overwrite, then delete: the copy never outlives this step, whatever happened
+    if (Test-Path -LiteralPath $pwfile -PathType Leaf) {
+      try { $n = (Get-Item -LiteralPath $pwfile).Length; [System.IO.File]::WriteAllBytes($pwfile, (New-Object byte[] ([Math]::Max($n, 64)))) } catch { }
+      Remove-Item -LiteralPath $pwfile -Force -ErrorAction SilentlyContinue
+    }
+    "password copy overwritten and deleted from the PC: $(-not (Test-Path -LiteralPath $pwfile))" | Log
   }
   if ($c.code -eq 0 -and (Provision 'verify-login' $attempt).code -eq 0) {
     "CREATE OK: login for attempt $attempt verified least-privilege. Next: run 'run' on fpd-prod, then close on both" | Log; exit 0

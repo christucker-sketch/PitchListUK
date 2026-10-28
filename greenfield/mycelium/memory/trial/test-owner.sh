@@ -43,38 +43,42 @@ fresh() {
 }
 own() { "$PWSH" -NoProfile -File "$S" -Mode "$1" -Commit "$C" > "$T/out" 2>&1; }
 role() { cat "$T/w/ctl/role" 2>/dev/null || echo absent; }
-verifier() { echo 'SCRAM-SHA-256$4096:AAAAAAAAAAAAAAAAAAAAAA==$AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=' > "$T/w/mycelium-explorer.scram"; }
+pwcopy() { echo 'Qx7_vR2k-Lm9pT4wZb8nYc3dHf6gJs1aEu5oKi0q' > "$T/w/mycelium-explorer.pw"; }
 receipt() { local f; for f in "$T/w"/mycelium-explorer-attempt*; do [[ -e $f ]] && printf '%s ' "${f##*/}"; done; }
 
 echo "1. before: refuses an existing role and an unfinished receipt; read-only"
 fresh; own before; [[ $? == 0 ]] && grep -q 'BEFORE OK' "$T/out" && [[ $(role) == absent ]] && ok "free name: BEFORE OK, nothing changed" || { bad before; cat "$T/out"; }
 fresh; echo foreign > "$T/w/ctl/role"; own before; [[ $? != 0 && $(role) == foreign ]] && grep -q 'will not use or change it' "$T/out" && ok "pre-existing role: STOP, unchanged" || { bad "before foreign"; cat "$T/out"; }
 
-echo "2. create: happy path binds an attempt; verifier always deleted; flag always removed"
-fresh; verifier; own create; r=$?
+echo "2. create: happy path binds an attempt; password copy always wiped; flag always removed"
+fresh; pwcopy; own create; r=$?
 att=$(sed -n 's/^attempt=//p' "$T/w/mycelium-explorer-attempt.txt" 2>/dev/null)
-[[ $r == 0 && -n $att && $(role) == "ours:$att" && ! -e $T/w/mycelium-explorer.scram ]] && grep -q 'CREATE OK' "$T/out" && grep -q 'write flag removed: True' "$T/out" \
-  && ok "created for attempt $att; verifier deleted; write flag removed" || { bad create; cat "$T/out"; }
+[[ $r == 0 && -n $att && $(role) == "ours:$att" && ! -e $T/w/mycelium-explorer.pw ]] && grep -q 'CREATE OK' "$T/out" && grep -q 'write flag removed: True' "$T/out" \
+  && ok "created for attempt $att; password copy wiped; write flag removed" || { bad create; cat "$T/out"; }
 own create; [[ $? != 0 ]] && grep -q 'receipt already exists' "$T/out" && [[ $(role) == "ours:$att" ]] && ok "a second create refuses while the receipt exists" || bad "create twice"
 own close; [[ $? == 0 && $(role) == "closed:$att" ]] && grep -q 'CLOSE OK' "$T/out" && [[ $(receipt) == *closed-* && ! -e $T/w/mycelium-explorer-attempt.txt ]] && ok "close: this attempt closed and verified; receipt archived" || { bad close; cat "$T/out"; }
 own close; [[ $? == 0 ]] && grep -q 'no attempt receipt' "$T/out" && ok "close again: nothing recorded, nothing changed" || bad "close twice"
 
 echo "3. R3c: a foreign role is never changed by create, defensive close or close"
-fresh; verifier; echo foreign > "$T/w/ctl/role"; own create
-[[ $? != 0 && $(role) == foreign && ! -e $T/w/mycelium-explorer-attempt.txt && ! -e $T/w/mycelium-explorer.scram ]] && ! grep -q '^create-login' "$T/w/ctl/calls" \
-  && ok "pre-existing role: create refuses before writing (no create-login call, no receipt), verifier deleted" || { bad "create foreign"; cat "$T/out"; }
+fresh; pwcopy; echo foreign > "$T/w/ctl/role"; own create
+[[ $? != 0 && $(role) == foreign && ! -e $T/w/mycelium-explorer-attempt.txt && ! -e $T/w/mycelium-explorer.pw ]] && ! grep -q '^create-login' "$T/w/ctl/calls" \
+  && ok "pre-existing role: create refuses before writing (no create-login call, no receipt), password copy wiped" || { bad "create foreign"; cat "$T/out"; }
 own close; [[ $? == 0 && $(role) == foreign ]] && ! grep -q '^disable-login' "$T/w/ctl/calls" && ok "close without a receipt never touches the foreign role" || { bad "close foreign"; cat "$T/out"; }
 fresh; echo "attempt=11111111-2222-4333-8444-555555555555" > "$T/w/mycelium-explorer-attempt.txt"; echo foreign > "$T/w/ctl/role"; own close
 [[ $? != 0 && $(role) == foreign ]] && grep -q 'closure NOT verified' "$T/out" && ok "close with a receipt for another attempt: refused, foreign role unchanged" || { bad "close other"; cat "$T/out"; }
 
+fresh; echo 'SCRAM-SHA-256$4096:notplain' > "$T/w/mycelium-explorer.pw"; own create
+[[ $? != 0 && ! -e $T/w/mycelium-explorer.pw && $(role) == absent ]] && grep -q 'password copy malformed' "$T/out" && ! grep -q '^create-login' "$T/w/ctl/calls" 2>/dev/null \
+  && ok "a hash or malformed copy is refused before any write, and still wiped" || { bad "malformed copy"; cat "$T/out"; }
+
 echo "4. failed or uncertain create is reconciled read-only, acting only on this attempt"
-fresh; verifier; touch "$T/w/ctl/create_noeffect"; own create
+fresh; pwcopy; touch "$T/w/ctl/create_noeffect"; own create
 [[ $? != 0 && $(role) == absent && $(receipt) == *nothing-created-* ]] && grep -q 'nothing was created' "$T/out" && ok "failed with no effect: nothing created, nothing closed" || { bad "noeffect"; cat "$T/out"; }
-fresh; verifier; touch "$T/w/ctl/create_uncertain"; own create; att=$(ls "$T/w" | sed -n 's/^mycelium-explorer-attempt.txt.closed-.*//p'; cat "$T/w/ctl/role")
+fresh; pwcopy; touch "$T/w/ctl/create_uncertain"; own create; att=$(ls "$T/w" | sed -n 's/^mycelium-explorer-attempt.txt.closed-.*//p'; cat "$T/w/ctl/role")
 [[ $(role) == closed:* && $(receipt) == *closed-* ]] && grep -q 'was closed instead (verified)' "$T/out" && ok "uncertain create that took effect: proven ours by comment, closed and verified" || { bad "uncertain"; cat "$T/out"; }
-fresh; verifier; touch "$T/w/ctl/login_wrong"; own create
+fresh; pwcopy; touch "$T/w/ctl/login_wrong"; own create
 [[ $? != 0 && $(role) == closed:* ]] && grep -q 'was closed instead' "$T/out" && ok "created but not least-privilege: closed defensively, reported as STOP" || { bad "wrong login"; cat "$T/out"; }
-fresh; verifier; touch "$T/w/ctl/create_uncertain" "$T/w/ctl/unreachable_owned"; own create
+fresh; pwcopy; touch "$T/w/ctl/create_uncertain" "$T/w/ctl/unreachable_owned"; own create
 [[ $? != 0 && -e $T/w/mycelium-explorer-attempt.txt ]] && grep -q 'outcome uncertain' "$T/out" && ok "database unreachable after create: STOP uncertain, receipt kept for a later close" || { bad "unreachable"; cat "$T/out"; }
 rm -f "$T/w/ctl/unreachable_owned"; own close; [[ $? == 0 && $(role) == closed:* ]] && ok "the later close closes exactly that attempt" || { bad "later close"; cat "$T/out"; }
 
