@@ -9,7 +9,7 @@ Updated **28 October 2026**. Authority: Chris's [owner reset directive](../green
 
 > **Codex checkpoint — superseded:** workspace-authentication investigation is closed as a task path. Windows login is sufficient for the planned execution; remote workspace auth is not an engineering blocker. The R1–R4 code fixes and redaction implementation are delivered offline; no Neon SQL has run.
 
-> **NEXT ACTOR — CHRIS: revised Neon-compatible trial route.** Node22.23.4 installed; trial2 stopped at create-login and closed with no role/rows. Neon rejects SCRAM-verifier provisioning. [Revision4 review/exact private-copy gate](../greenfield/docs/mycelium/SHARED_MEMORY_REV4_NEON_ROUTE_CODEX_REVIEW_2026-10-28.md) at7a49e578: one temporary password copy viaSSH to private Windows/TLS SQL, verified deletion before hostrun;8focused Node+30shell PASS. Fresh phrase `approved: revised Neon-compatible memory trial` required for changed credential route, not project/Node approval. Same14rows/6process/300s/zero-model/mandatory closure; no revised attempt yet.
+> **NEXT ACTOR — CLAUDE: revised Neon-compatible trial APPROVED.** Chris explicitly approved revision4 at7a49e5781436fce0d9105d0bc4a90898eee35c21. [Grant/pins](HANDOVERS.md), [mandatory concrete PC private-copy gate](../greenfield/docs/mycelium/SHARED_MEMORY_REV4_NEON_ROUTE_CODEX_REVIEW_2026-10-28.md). One SSH/TLS password-copy attempt, exact14rows/6process/300s/zero-model limits, verified PC deletion before hostrun, mandatory scoped owner/host closure. Node already installed; no repeat exact-route/project/Node approval. No live execution confirmed yet, no retries or other scope expansion; Codex reviews receipts next.
 
 ## Active objective
 
