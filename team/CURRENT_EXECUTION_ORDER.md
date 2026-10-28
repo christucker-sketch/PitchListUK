@@ -9,7 +9,7 @@ Updated **28 October 2026**. Authority: Chris's [owner reset directive](../green
 
 > **Codex checkpoint — superseded:** workspace-authentication investigation is closed as a task path. Windows login is sufficient for the planned execution; remote workspace auth is not an engineering blocker. The R1–R4 code fixes and redaction implementation are delivered offline; no Neon SQL has run.
 
-> **NEXT ACTOR — CLAUDE: Node prerequisite APPROVED, then unchanged trial.** Chris explicitly approves Node22.23.4 on fpd-prod; [review/pins/commands](../greenfield/docs/mycelium/FPD_PROD_NODE_CODEX_REVIEW_2026-10-28.md), installer b61d77da (aec1dd4d…),15independent offline checks PASS. Install official hash-pinned /opt tree and three new links, no apt/service/user/credential changes; verify real version. Then continue already-approved c76fd723 trial from fresh prechecks: prior stop created nothing. Original six-process/300s/14synthetic-row/zero-model limits and mandatory closure unchanged. No repeat approval for exact prerequisite/trial scope; await real receipts, stop on failures.
+> **NEXT ACTOR — CHRIS: revised Neon-compatible trial route.** Node22.23.4 installed; trial2 stopped at create-login and closed with no role/rows. Neon rejects SCRAM-verifier provisioning. [Revision4 review/exact private-copy gate](../greenfield/docs/mycelium/SHARED_MEMORY_REV4_NEON_ROUTE_CODEX_REVIEW_2026-10-28.md) at7a49e578: one temporary password copy viaSSH to private Windows/TLS SQL, verified deletion before hostrun;8focused Node+30shell PASS. Fresh phrase `approved: revised Neon-compatible memory trial` required for changed credential route, not project/Node approval. Same14rows/6process/300s/zero-model/mandatory closure; no revised attempt yet.
 
 ## Active objective
 
