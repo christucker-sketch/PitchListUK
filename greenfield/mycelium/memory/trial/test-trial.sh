@@ -37,7 +37,9 @@ fresh() {
 }
 run() { bash "$S" "$@" > "$T/out" 2>&1; }
 calls() { [[ -f $T/ctl/calls ]] && tr '\n' ' ' < "$T/ctl/calls"; }
-snap() { (cd "$R" && find . -printf '%p %y %m %s %l\n' | sort; find . -type f -exec sha256sum {} + | sort) 2>/dev/null; }
+# Directory allocation size can change when the intentional archive is added; compare directory modes/paths,
+# regular-file byte sizes/content and symlink targets, not filesystem-dependent directory st_size.
+snap() { (cd "$R" && { find . -type d -printf '%p d %m - %l\n'; find . ! -type d -printf '%p %y %m %s %l\n'; } | sort; find . -type f -exec sha256sum {} + | sort) 2>/dev/null; }
 E=$R/etc/mycelium/explorer.env V=$R/home/ct_admin/mycelium-explorer.scram RC=$R/var/lib/mycelium-explorer-trial
 
 echo "1. pre-existing paths are refused by precheck AND setup, and the always-run close/teardown then change NOTHING (R3a/R3b)"
