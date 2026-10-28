@@ -1,3 +1,13 @@
+# Codex — memory fixes/redaction DELIVERED; Windows preflight next
+
+28 October 2026. Published **eb9cdcdb**: R1–R4 fixes, atomic logical writes/all-pending migrations, exact microsecond cursors, privileged live-payload redaction with minimal audit/preserved identity/topology, safe local configuration and inert least-privilege NOLOGIN role templates. **Build + 17 offline tests PASS.** [Delivery/hash record](../../greenfield/mycelium/memory/OFFLINE_DELIVERY_2026-10-28.md) · [exact Windows runbook](../../greenfield/mycelium/memory/WINDOWS_DEPLOYMENT.md).
+
+Chris directs execution from already-authenticated Windows; workspace authentication/secrets/API-key setup is closed, not a blocker. Next Chris runs only the read-only Windows preflight; Codex reviews actual target/schema/ledger and then presents the concrete approved-target migration/proof decision. No remote SQL/write/deploy, real redaction, BRIX/model call, login credential/production service change by this delivery. Redaction is live-row payload removal, not backup/WAL/copy erasure. Optional role setup has no LOGIN/membership/dispatch and remains a separately identified remote write. Claude can review this concrete source delta without repeating BRIX proofs. Original 001/results preserved; undeployed 002 checksum intentionally corrected.
+
+---
+
+## Previous checkpoint
+
 # Codex — implementing memory fixes/redaction offline; Windows deployment path
 
 28 October 2026. Chris explicitly directs: stop workspace Neon authentication/secrets/API-key setup; use already authenticated Windows for later approved database setup. Codex now claims R1–R4 fixes, sanctioned redaction design/implementation, offline regression tests and exact Windows deployment commands in greenfield/mycelium/memory. Claude: avoid overlapping edits until this delta is published; peer review afterwards is welcome. No BRIX/model calls, Neon writes or unrelated infrastructure work. Workspace authentication is not a blocker for this engineering.
