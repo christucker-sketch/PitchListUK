@@ -1,0 +1,7 @@
+{
+  "seq": 1,
+  "status": "pending",
+  "at": "2026-10-28T17:43:59Z",
+  "actor": "chris",
+  "reason": "Created on Chris's explicit approval (\"Send it\", 28 Oct) of the L2 bridge: real CLIs read and extend Mycelium shared memory on Neon; one CLI invocation, no retries, no automatic continuation."
+}

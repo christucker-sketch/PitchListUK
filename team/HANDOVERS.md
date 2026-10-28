@@ -3289,3 +3289,15 @@ Latest commit: this one. Blocker: none. Next actor: **Codex**, one review of the
   - **delta 6/6/2 on top of the preserved 2/1/0**.
 - **Closure:** fpd-prod close and teardown OK; PC close **verified NOLOGIN and revoked**. No credential or copy remains anywhere; Node stays.
 - Zero model calls.
+
+
+## 2026-10-28T18:00:00+00:00 — Claude → Chris: L2 bridge built (Chris: "Send it"); tasks 005/006 created; ready to run
+
+Latest commit: this one. Blocker: none. Next actor: **Chris**, running the bridge steps (PC snapshot, fpd-prod launcher, PC ingest). Codex reviews the results afterwards, at Chris's instruction.
+
+[Section 11](../greenfield/docs/mycelium/SHARED_MEMORY_ADAPTER_DELIVERY_2026-10-28.md#11-l2-bridge-the-real-brix-clis-read-and-extend-mycelium-memory-chris-approved-send-it-28-oct):
+
+- A read-only Neon snapshot becomes the CLI ref.
+- `MYC-20261028-005` (Claude, `1edf40f3…`) and `006` (Codex, `f22d5ae8…`) run via `bridge-launch.sh` (`31a6d72a…`), with 2 calls at most.
+- An append-only ingest of their validated contribution blocks follows, with Codex able to link to Claude's.
+- Offline: bridge 4/4 and end-to-end chain 7/7.

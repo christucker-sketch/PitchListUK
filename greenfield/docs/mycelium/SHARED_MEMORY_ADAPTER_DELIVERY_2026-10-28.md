@@ -395,3 +395,33 @@ The approved commit becomes the commit that publishes this revision. The steps a
 - everything was append-only and bounded, and closed afterwards with receipts.
 
 **What it does not yet do.** Connect the BRIX Claude and Codex CLIs to this memory (the L2 bridge, section 5). That remains a separate decision.
+
+## 11. L2 bridge: the real BRIX CLIs read and extend Mycelium memory (Chris approved: "Send it", 28 Oct)
+
+The installed runner is unchanged. Memory reaches the CLIs as a task ref, and their answers return to memory through the append-only adapter. No human edits or relays any content.
+
+1. **Snapshot** (PC, owner, **read-only** on Neon). `mycelium-bridge.ps1 -Mode snapshot` runs `scripts/bridge.mjs snapshot`. It searches memory for "polymer P", recalls the neighbourhood and renders it as a fenced untrusted-data block (≤ 24 KB) at `greenfield/mycelium/collab/memory-recall-2026-10-28.md`. It then commits and pushes **only that file**; it refuses local changes and never overwrites.
+2. **Two CLI turns** (fpd-prod, the installed runner). `collab/bridge-launch.sh` (sha256 `31a6d72a…64a3`) is the reviewed four-turn launcher reduced to two turns: allowlist `/etc/myc-stageb/bridge-20261028.allowed`, `MAX_CALLS=2`, a 1800 s window, stop on any non-completed turn.
+   - **`MYC-20261028-005`, Claude Code** (descriptor `1edf40f3f81f523171c6d5bc5b6dec3451709efe`): refs the snapshot. It proposes one contribution that takes the memory somewhere new.
+   - **`MYC-20261028-006`, Codex** (descriptor `f22d5ae81aebea61b11a6e8fc70e6bd2f1578d7e`): refs the snapshot and 005's unedited result. It responds to Claude, then proposes its own contribution, which may link to Claude's as `@MYC-20261028-005`.
+   - Each answer ends in one `mycelium-contribution` JSON block: kind, title, body, 1–4 links, and 0–3 stances.
+3. **Ingest** (PC, owner, **append-only**). `mycelium-bridge.ps1 -Mode ingest` runs `bridge.mjs ingest`.
+   - **Validation:** strict. There must be exactly one block; ids must come from the snapshot, or be `@005`; fields are bounded.
+   - **Recorded as:** agent `claude-cli` or `codex-cli`, run = the BRIX run id, key = the task id. A re-ingest is a no-op, and a changed answer is refused with nothing written.
+   - **Tags:** `bridge: l2-proof-2026-10-28` and `model_written: true`.
+   - It then verifies with a read-only recall.
+
+**Bounds:**
+- **Model calls:** 2 (1 Claude, 1 Codex), subscription only after Chris's billing check.
+- **Writes:** at most 2 contributions, ≤ 8 links and ≤ 6 stances, plus the 1 snapshot file in Git.
+- **Unchanged:** no runner change, no schema change, no new login, no service.
+- **Afterwards:** the allowlist is archived.
+
+**Offline evidence:**
+- `test/bridge.test.mjs` passes 4/4: snapshot ref rules; ingest with a cross-CLI link; no-op re-ingest; refusal of a changed answer; strict parsing; atomic per-answer writes.
+- `collab/test-bridge-chain.sh` passes **7/7**. It runs the exact tasks and launcher through the real runner with fake CLIs, and confirms:
+  - Claude's prompt carries the memory;
+  - Codex's prompt carries the memory and Claude's answer;
+  - a rerun makes no call;
+  - the real ingest links Codex's contribution `refines` → Claude's.
+- **Full suite:** 40 Node tests, 30 trial checks and 15 owner checks. The SQL is unchanged.
