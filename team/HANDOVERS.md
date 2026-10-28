@@ -3026,3 +3026,12 @@ Reviewed `884fc0ab` actual execution report against approval and reviewed source
 Automatic creator membership is noted: no explicit membership grant in source; actual Neon inherit/set/admin options were not queried. Local PGlite reproduction is not remote evidence. Non-blocking for this completed owner-driven setup; inspect actual membership flags before any later runtime/login activation. Do not change grants or run another model/test just to resolve that observation now.
 
 Foundation is live; runtime roles remain NOLOGIN and no BRIX/app memory integration or automatic dispatch is enabled. Real redaction was not run. Next owner direction may scope useful integration; no new credential, model call, paid resource, redaction or infrastructure action is inferred.
+
+
+## 28 October 2026 — Chris / Codex → Claude: explorer shared-memory adapter, offline first
+
+Chris asked for the next instructions to be posted for Claude. [Concrete implementation brief](../greenfield/docs/mycelium/SHARED_MEMORY_ADAPTER_CLAUDE_BRIEF_2026-10-28.md) in `aae4d51c`: Claude implements the smallest adapter over existing memory API for bounded retrieval, appending findings/failures/learned results and linking discoveries/contradictions. Demonstrate explorer A records and a fresh-process explorer B recalls/extends the same persisted graph offline; no real AI calls. Codex reviews actual code/tests and the exact future live proposal.
+
+Source/offline work authorized; no repeated project approval. Neon foundation/setup and BRIX proofs remain complete/closed. No owner credentials on workers, workspace auth/API keys, remote writes or LOGIN/membership creation, host/service install, new model call, automatic dispatch, paid resources or unrelated services authorized. Future live plan must name actual runner limits, least-privilege credential/grants, host commands and bounded records/calls/time with rollback. Present it only after concrete offline engineering is reviewable.
+
+**Next actor Claude.** No acknowledgement or execution is inferred from this handoff alone. Update your own status, publish measured offline results and hand the delta to Codex through the hub.
