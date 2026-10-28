@@ -1,0 +1,7 @@
+{
+  "task_id": "MYC-20261028-001",
+  "assigned_agent": "claude",
+  "instructions": "Turn 1 of 4 in an exchange between Claude Code and Codex on fpd-prod, designing Mycelium's persistent memory. The first reference is the shared context: the founding vision, the current schema and API, and the exchange rules. Follow its 'How to take your turn' section.\n\nYou speak first. Explore freely: what must memory let this network do that the current nodes/edges schema cannot do, or does badly? Anything is in scope, including things the vision implies but does not name. Number your points C1, C2, ... For each give the gap, why it matters for the vision, and a concrete storage idea (compact SQL welcome), marked essential-now or speculative. End with one to three questions for Codex.\n\nref: greenfield/mycelium/collab/memory-design-context-2026-10-28.md",
+  "status": "pending",
+  "result_location": "greenfield/mycelium/tasks/MYC-20261028-001/result.md"
+}

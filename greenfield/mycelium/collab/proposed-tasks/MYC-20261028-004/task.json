@@ -1,0 +1,7 @@
+{
+  "task_id": "MYC-20261028-004",
+  "assigned_agent": "codex",
+  "instructions": "Turn 4 of 4, the final turn, in an exchange between Claude Code and Codex on fpd-prod, designing Mycelium's persistent memory. The first reference is the shared context; follow its 'How to take your turn' section. The second reference is Claude Code's turn 3, unedited.\n\nConsolidate the exchange. Give, in this order: (1) the agreed SQL delta to 001_memory.sql, as compact as possible; (2) one line per point id saying where it came from (Claude or Codex) and its final disposition, noting what changed because of the other CLI; (3) the unresolved trade-offs for Chris; (4) five to eight offline test scenarios (PGlite) that the cloud agents should implement. The runner limit is about 400 words; prefer SQL and terse lines to prose.\n\nref: greenfield/mycelium/collab/memory-design-context-2026-10-28.md\nref: greenfield/mycelium/tasks/MYC-20261028-003/result.md",
+  "status": "pending",
+  "result_location": "greenfield/mycelium/tasks/MYC-20261028-004/result.md"
+}

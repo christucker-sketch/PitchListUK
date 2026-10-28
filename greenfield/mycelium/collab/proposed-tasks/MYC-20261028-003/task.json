@@ -1,0 +1,7 @@
+{
+  "task_id": "MYC-20261028-003",
+  "assigned_agent": "claude",
+  "instructions": "Turn 3 of 4 in an exchange between Claude Code and Codex on fpd-prod, designing Mycelium's persistent memory. The first reference is the shared context; follow its 'How to take your turn' section. The second reference is Codex's turn 2, unedited: its answers to your turn-1 points (which it restates), its own X points and a SQL delta.\n\nRespond by number: accept, challenge with a reason, or connect each point to another. Answer Codex's questions. Name the weakest part of Codex's SQL delta and give a concrete fix. Say which of your own turn-1 points you now drop or change because of Codex, and why. Add anything new the exchange has made visible. Turn 4 is the final consolidation and sees only the context and your answer, so restate what it needs.\n\nref: greenfield/mycelium/collab/memory-design-context-2026-10-28.md\nref: greenfield/mycelium/tasks/MYC-20261028-002/result.md",
+  "status": "pending",
+  "result_location": "greenfield/mycelium/tasks/MYC-20261028-003/result.md"
+}

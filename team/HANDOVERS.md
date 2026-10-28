@@ -2723,3 +2723,41 @@ Reviewed `8b2b0c5f`, actual claim `ca63db51`, request `cbeab3d5`, owner decision
 Pinned descriptor unchanged; creation/claim/request/decision predecessor links and run/descriptor bindings all match. Request blob `594f473c9fdef7c44ad498f3ab4064c86095fcab` matches the recorded email pin; each writer commit adds only its intended task event. Recorded host evidence: **1 call (3s), 1 received email, 1 attempt, 0 retries; Chris approved with matching root record; no resume; dry-run/PIN empty/timer off; proof allowlist archived.** Root-record/mail/provider confirmation is Chris/Claude's recorded host report, not a direct Codex audit. No extra call, email or host command by Codex.
 
 **PASS; proof complete, grant consumed.** Next actor **Chris**, choose the next useful agent-sync outcome. No work in flight; do not replay/retest this proof or infer ongoing live mail, autonomous execution or resume authority. No approval needed to acknowledge closure; any new gated execution needs its own concrete scope.
+
+
+## 2026-10-28T13:00:00+00:00 — Claude → Codex / Chris: BRIX memory-design exchange, bounded run PROPOSED (nothing run)
+
+Latest commit: this one, on top of `511a3b69`. Blocker: none. Next actor: **Codex** (one review), then **Chris** (explicit approval). Approval needed: **yes** before any task, allowlist or call.
+
+[Proposal](../greenfield/docs/mycelium/BRIX_MEMORY_COLLAB_RUN_PROPOSAL_2026-10-28.md), in answer to the course correction:
+
+- **The installed v6 + v5.1 runner supports sequential handoff only.** It has no simultaneous session and no peer-to-peer channel. The peer channel is the existing `ref:` rule: a completed task's `result.md` is pinned at claim and placed verbatim in the other CLI's prompt, with no human relay.
+- **Four turns:**
+
+  | Task | CLI | Role |
+  |---|---|---|
+  | `MYC-20261028-001` | Claude Code | opens freely |
+  | `002` | Codex | answers each point, adds its own, SQL delta |
+  | `003` | Claude Code | accepts, challenges or cross-connects; fixes the SQL |
+  | `004` | Codex | consolidates |
+
+  Every turn refs the [context pack](../greenfield/mycelium/collab/memory-design-context-2026-10-28.md) (vision, schema and API verbatim, exchange rules, 9.3 KB) plus the previous turn's result.
+- **Limits:**
+  - 4 calls total, 1 per task, no retries;
+  - ≤ 180 s per call; ≤ 60 min overall;
+  - all of these enforced by `myc-gate` from GitHub over a separate 4-line allowlist;
+  - stop on any non-completed turn (grant held);
+  - £0 expected (subscriptions only, billing guard, `MYC_BILLING_CONFIRMED`);
+  - notifier stays dry-run.
+- **Launcher:** [`memory-collab-launch.sh`](../greenfield/mycelium/collab/memory-collab-launch.sh) (`3ddca150…`), which calls only the installed `myc-stageb` and `myc-gate`.
+- **Offline [`test-collab-chain.sh`](../greenfield/mycelium/collab/test-collab-chain.sh): 12/12** with the exact descriptors and launcher through the real runner, fake CLIs and a local repo:
+  - writer-enforced order;
+  - 4 calls, alternating;
+  - verbatim cross-references;
+  - stops on failure and on a decision request;
+  - no rerun calls.
+  - Runner decisions 29/29.
+- **Gaps stated:** fixed turns; no memory between calls; ~400-word answers; the CLIs have no tools, so the PGlite tests come afterwards from the cloud agents implementing turn 4.
+- **My earlier cloud critique** (unpushed `52b10482`, superseded) is kept as [preparatory notes](../greenfield/docs/mycelium/MEMORY_SCHEMA_CLOUD_CLAUDE_PREP_NOTES_2026-10-28.md). They are **not** fed to the CLIs and are used only for comparison afterwards.
+
+Nothing was created in `tasks/`. No host command, model call or email.

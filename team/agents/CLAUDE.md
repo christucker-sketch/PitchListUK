@@ -1,7 +1,7 @@
 # Claude status
 
 Author: Claude (Cowork session with Chris; replaces the placeholder Codex created)
-Updated: 2026-10-27T15:48:00+00:00
+Updated: 2026-10-28T13:00:00+00:00
 State: WORKING — follows [CURRENT_EXECUTION_ORDER](../CURRENT_EXECUTION_ORDER.md) (UK-first, acknowledged 21 Oct)
 
 **Checkpoint for a fresh Claude session (25 Oct 14:35 GMT).** Read with Codex's [restart brief](../CLAUDE_RESTART_BRIEF.md). Nothing is uncommitted: the working tree is clean, and every Claude commit up to `a955fdc` is on origin.
@@ -20,7 +20,11 @@ State: WORKING — follows [CURRENT_EXECUTION_ORDER](../CURRENT_EXECUTION_ORDER.
   5. Runner decision output (v6): **INSTALLED on fpd-prod 27 Oct 15:24Z** (Codex PASS, Chris approved). `myc-agent` v6 d173813b + reviewed v5.1 `myc-stageb` c636582c; post-checks with no CLI or model call ok; task 003 intact; notifier dry-run, timer off; HubSync active. [Evidence](../../greenfield/docs/mycelium/RUNNER_DECISION_OUTPUT_PROPOSAL_2026-10-27.md#host-installation-installed-27-oct-2026-1524z-fpd-prod-run-by-chris-approved-codex-pass-on-31ea8313).
   6. **Real end-to-end decision-chain proof PASSED 27 Oct** (`MYC-20261027-001`): 1 Claude call (3 s) → awaiting_approval `cbeab3d5` → 1 pinned email received → Chris approved via `sudo myc-decide` (`90f0d225`, matching owner record) → resting, no resume. Back to dry run, timer off, proof allowlist archived. [Evidence](../../greenfield/docs/mycelium/REAL_DECISION_CHAIN_PROOF_2026-10-27.md#execution-evidence-passed-27-oct-2026-fpd-prod-run-by-chris-recorded-by-claude).
   - Parked, not active: cache-creation telemetry. (The v5.1 terminal fix is now installed as part of the runner upgrade.)
-- **Next action:** none in flight. Codex checks the Git evidence once; then Chris decides what agent sync does next (for example, ongoing pinned or unpinned notifications, or resume-after-approval). Each is a separate approval.
+  7. **BRIX memory-design exchange (28 Oct): bounded run PROPOSED, nothing run.**
+     - What it is: 4 turns, Claude Code → Codex → Claude Code → Codex, through the installed runner, with refs as the peer channel and 4 calls at most.
+     - Offline evidence: 12/12. [Proposal](../../greenfield/docs/mycelium/BRIX_MEMORY_COLLAB_RUN_PROPOSAL_2026-10-28.md).
+     - Next: Codex reviews, then Chris approves explicitly.
+- **Next action (superseded below):** none in flight. Codex checks the Git evidence once; then Chris decides what agent sync does next (for example, ongoing pinned or unpinned notifications, or resume-after-approval). Each is a separate approval.
 
 **Now (22 Oct 14:00):**
 - **25 Oct, Mycelium Stage B: exchange COMPLETED.** Task 003 (Claude) ran once on fpd-prod: 1 call, 14 s, completed in `80c936b2`, result sha256 `4e1f07aa…22fc`. Root cause of 002 and of 003's first pre-flight stop confirmed: `timeout` plus a terminal on stdin (rc 124). v5.1 (`</dev/null`) proposed for Codex review, not installed. Allowance readings still owed. [Plan §10](../../greenfield/docs/mycelium/PHASE_0_2_STAGE_B_PLAN_2026-10-25.md#10-v5-upgrade-and-task-003-run-25-oct-fpd-prod-run-by-chris-completed-exchange-done).
