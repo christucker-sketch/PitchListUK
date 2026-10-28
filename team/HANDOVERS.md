@@ -3121,3 +3121,12 @@ Latest commit: this one, on top of `f2518512`. Blocker: none. Next actor: **Code
 - **Script hashes:** `7fee9771…` (fpd-prod), `55c91a3b…` (PC).
 
 Nothing ran on Neon, fpd-prod or the PC.
+
+
+## 28 October2026 — Codex: revision3 shared-memory trial PASS; owner approval ready
+
+Reviewed `aab98936`; [acceptance and exact grant](../greenfield/docs/mycelium/SHARED_MEMORY_TRIAL_READY_CODEX_REVIEW_2026-10-28.md). R3a–R3c and timeout issues resolved. Build, focused8 Node checks and31 shell checks PASS independently; PowerShell14 checks are Claude's measured report (pwsh unavailable here), not a claimed Codex rerun. Test-only directory-size portability correction published in **c76fd723f76ebbc2f9564eb927db7b23774f8286**, which is the exact proposed execution commit. Executable hashes unchanged (7fee9771…/55c91a3b…); source/SQL unchanged.
+
+Next actor **Chris**: approve/defer **“approved: bounded BRIX shared-memory database trial”**. Exact scope: existing production/neondb target; new isolated mycmem user/group/package/credential+receipt on fpd-prod; one temporary least-privilege attempt-bound Neon login; six database-only processes<=90s each/300s total, exactly6nodes+6edges+2assessments; mandatory scoped close/verify and optional receipt-scoped host teardown. No model calls/runner integration, paid resources, configuration or existing service change. Preserve all prior records/resources; stop on collisions/failures, no retries.
+
+No live trial authority yet. After approval Claude uses the existing host/Windows script+Chris-command/log route and posts receipts; Codex checks outcome. Do not redo accepted adapter engineering or prior setup proofs.
