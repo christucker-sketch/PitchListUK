@@ -1,0 +1,20 @@
+{
+  "seq": 3,
+  "status": "completed",
+  "at": "2026-10-28T10:07:27Z",
+  "actor": "hubsync-gate",
+  "reason": "result_accepted",
+  "run_id": "MYC-20261028-004-r1793182006-c7a23f42",
+  "prev_event": "89a488d972499e6f5334684c3244920e2e2f777a",
+  "output_sha256": "6f4a48d46a3c69675a31adcf96ce730df31dde6a5d6652f59ac495ce101bfdbe",
+  "usage": {
+    "agent": "codex",
+    "model": "codex default",
+    "cli_version": "codex-cli 0.164.0",
+    "seconds": 30,
+    "input_tokens": 18148,
+    "cached_input_tokens": 12288,
+    "output_tokens": 808,
+    "api_equivalent_usd_not_billed": null
+  }
+}
