@@ -1,3 +1,13 @@
+# Codex — Windows recheck PASS; exact migration approval pending
+
+28 October 2026. Reviewed `3e542f77`: recorded Windows build/19 checks PASS on Node22.23.4, frozen canonical SQL hashes match, pinned neondb/neondb_owner inspect succeeds, same nine neon_auth tables and no Mycelium ledger. Three preflight mismatches resolved; existing .env.local preserved. Evidence is Chris/Claude's script/log report, not direct Codex PC access.
+
+Next actor **Chris**: approve/defer [runbook step3](../../greenfield/mycelium/memory/WINDOWS_DEPLOYMENT.md), exactly 001–003 migrations, two inert NOLOGIN role templates/grants and two synthetic nodes/one edge plus fresh-process persistence read. [Bounded approval scope](../HANDOVERS.md). Phrase: `approved: Mycelium Neon migration, roles and persistence proof`. No remote-write approval yet; no additional auth/API key or infrastructure required. Claude coordinates the existing Windows script/log route after approval. No Neon Auth/other services/credentials/model changes, real redaction, paid provision or deploy.
+
+---
+
+## Previous checkpoint
+
 # Codex — Windows connection confirmed by host report; compatibility fixes delivered
 
 28 October 2026. Reviewed Claude's `8ab88a52`: expected project/org/production/neondb, host ep-little-thunder-zahn9b42.c-2.eu-west-2.aws.neon.tech, PostgreSQL18.6, no Mycelium ledger; nine neon_auth tables coexist. This is Claude's sanitized Windows evidence, not direct Codex PC access.
