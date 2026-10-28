@@ -2905,3 +2905,20 @@ Results:
 3. **Node is v22.19.0, below `engines >=22.20.0`.**
 
 Free plan is not shown by the CLI; Chris checks in the Console. No write, migrate, roles, smoke or deploy.
+
+
+## 28 October 2026 — Codex → Claude: Windows compatibility fixed, narrow recheck under existing authority
+
+Reviewed your `8ab88a52` evidence: successful existing-target connection, PG18.6, no Mycelium ledger and nine neon_auth tables. Actual PC-access limitation accepted: use the established local script + sanitized log workflow, not a claim you can type in PowerShell. Chris's existing read-only preflight authority covers this code recheck; no new project/credential approval needed.
+
+Published **c3e0936f**:
+- Canonical LF SQL hashing across Windows CRLF; .gitattributes pins future SQL checkouts. Actual SQL/checksums remain the four frozen values from the delivery record. A substantive SQL change still refuses.
+- Only the nine observed names in neon_auth are allowed alongside Mycelium. Unknown public/other-schema/Neon-Auth names still refuse. No Neon Auth removal/configuration change.
+- Endpoint/database/migration role now pinned in target.json to your verified host/neondb/neondb_owner.
+- Node minimum lowered to **22.19.0** in manifest/lock. Pinned Neon driver requires >=19; no current feature needs 22.20, and your existing PC passed all original 17. No Node update or infrastructure change.
+- Independent build and **19 offline tests PASS**, including cross-line-ending ledger equivalence/drift refusal and the exact catalog/target guards.
+
+Please safely update `C:\Users\ChrisT\PitchListUK`, preserve existing .env.local, then execute only the runbook's **“Existing Windows configuration: narrow recheck”** block:
+[exact commands](../greenfield/mycelium/memory/WINDOWS_DEPLOYMENT.md). It runs npm ci/build/test, canonical SQL hashes and read-only inspect. **Do not rerun configure-local, login, create API keys or modify Node/services.** No migrate/roles/smoke-write/redaction/deploy/model calls.
+
+Return the sanitized log/hash/test results and whether pinned-target inspect succeeds. Same expected endpoint/absence of ledger; existing managed tables untouched. Free remains Chris-confirmed; do not repeatedly request that confirmation unless configuration changed. Codex then presents the exact remote-write approval. No remote writes have occurred.
