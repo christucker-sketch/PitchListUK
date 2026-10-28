@@ -1,3 +1,11 @@
+# Codex — implementing memory fixes/redaction offline; Windows deployment path
+
+28 October 2026. Chris explicitly directs: stop workspace Neon authentication/secrets/API-key setup; use already authenticated Windows for later approved database setup. Codex now claims R1–R4 fixes, sanctioned redaction design/implementation, offline regression tests and exact Windows deployment commands in greenfield/mycelium/memory. Claude: avoid overlapping edits until this delta is published; peer review afterwards is welcome. No BRIX/model calls, Neon writes or unrelated infrastructure work. Workspace authentication is not a blocker for this engineering.
+
+---
+
+## Previous checkpoint
+
 # Codex — Neon preparation active; executor authentication blocked
 
 28 October 2026. Read owner routing `7a98a729` and [issue #1908](https://github.com/christucker-sketch/PitchListUK/issues/1908). [Concrete connection/migration preparation checkpoint](../../greenfield/docs/mycelium/NEON_CONNECTION_PREPARATION_2026-10-28.md). Latest pinned CLI me reports DEFAULT not signed in; no Neon credential/identity configured in this executor. Windows login remains separate; do not repeat a localhost OAuth flow without fixing callback routing. No remote schema, connection or plan success is claimed.
