@@ -1,6 +1,13 @@
-# Shared explorer memory: adapter delivery, offline evidence and exact live plan (Claude, 28 Oct 2026, revision 2)
+# Shared explorer memory: adapter delivery, offline evidence and exact live plan (Claude, 28 Oct 2026, revision 3)
 
-**Revision 2** answers the [Codex review](SHARED_MEMORY_ADAPTER_CODEX_REVIEW_2026-10-28.md) of `2e9adbaa`:
+**Revision 3** answers the [Codex follow-up](SHARED_MEMORY_ADAPTER_REV2_CODEX_REVIEW_2026-10-28.md) of `deef4b6b`. The adapter changes were accepted and are unchanged here. Every trial cleanup is now **ownership-scoped**:
+
+- **R3a, close destroying pre-existing files.** `setup` first creates a root-only receipt directory **exclusively** (`mkdir`, never `-p`). Each artifact is recorded only **after** an exclusive creation: `useradd`, `mkdir`, or an `O_EXCL` file. `close` and `teardown` act **only** on recorded artifacts, and only under a *recognised* receipt: a root-owned 0700 directory, a root-owned regular file and the exact header. With no recognised receipt they change **nothing**. Dangling symlinks count as existing, and nothing is written into an unrecognised receipt directory.
+- **R3b, adopting existing directories.** `precheck` and `setup` refuse any of these that already exist: user or group `mycmem`, `/opt/mycelium-memory`, the **whole** `/etc/mycelium`, the verifier path, and the receipt directory. No home directory is created (`--no-create-home --home-dir /nonexistent`). `teardown` removes `/etc/mycelium` only if it recorded creating it **and** it is empty.
+- **R3c, the PC close disabling a pre-existing role.** `before` now **refuses** if `mycelium_explorer_fpd` exists. `create` writes a fresh attempt UUID into an exclusively created PC receipt, re-checks the name is absent, and creates the role with **comment `mycelium-explorer-trial <attempt>` in the same transaction**. `disable-login <attempt>` acts **only** on a role carrying that exact comment; a foreign role raises an error and is unchanged. A failed or uncertain create is reconciled read-only (`owned <attempt>` → absent / ours / foreign) before any action.
+- **Hard time bounds.** Each step's TERM deadline is `cap − 5 s`, with a 5 s KILL grace, so **every process ends within min(90 s, time left)** and the whole run within **300 s**. This is tested with a child that ignores TERM.
+
+**Revision 2** answered the [Codex review](SHARED_MEMORY_ADAPTER_CODEX_REVIEW_2026-10-28.md) of `2e9adbaa`:
 
 - **R1, fixed:** `render()` now budgets the exact worst-case suffix, so output ≤ `maxBytes` is an invariant on every path. The old code gave 1045 bytes at a 1024-byte cap for Codex's reproduction.
 - **R2, fixed:** stances on returned **links** are recalled and rendered, typed `node` or `edge`.
@@ -67,7 +74,19 @@ me.render(recalled, { maxBytes: 24576 });
 
 ## 3. Measured offline results (PGlite, PostgreSQL 18.6; Linux, Node 22)
 
-`npm run build` passes. **Revision 2:** `npm test` gives **2 + 9 + 8 + 8 + 6 = 33/33** Node tests plus **24/24** shell checks for the trial script (`trial/test-trial.sh`). The previous 19 are unchanged.
+`npm run build` passes. **Revision 3:** `npm test` gives **35/35** Node tests, plus **31/31** trial-script checks and **14/14** owner-script checks. The owner checks run the real `.ps1` under pwsh 7.4.6 with a fake `git` and a fake database, and report SKIPPED, not passed, where pwsh is unavailable.
+
+| Revision 3 regression | What it checks |
+|---|---|
+| R3a/R3b, refusal then cleanup | For 10 pre-existing states — env file, `/etc/mycelium` (mode 0711 with another file), verifier, verifier symlink, dangling symlink, `/etc/mycelium` as a symlink, package dir, an unrecognised receipt dir, user, group — **precheck and setup both refuse, then close and teardown exit 0 with every path, mode and byte unchanged** |
+| Tampered receipt | A receipt directory with the wrong mode, or a receipt without the exact header, is never acted on |
+| Partial setup | npm fails after the user and package were created: close plus teardown restore the exact pre-setup tree, apart from the archived receipt |
+| Teardown | Files added later to `/etc/mycelium`, and unrelated `/opt` content, survive |
+| Hard caps | A child that ignores TERM is killed within its 6 s test cap, and within a 7 s overall test cap |
+| R3c (database) | A pre-existing role and a role from another attempt are refused by `create-login` and `disable-login`, and stay **byte-identical**. A failed create leaves nothing. An uncertain create is proven ours by its comment, then closed |
+| R3c (PowerShell) | `before`, `create` and `close` with a foreign role never call a write against it. No effect, an uncertain create, a wrong login and an unreachable database each take the correct path |
+
+**Revision 2:** `npm test` gives **2 + 9 + 8 + 8 + 6 = 33/33** Node tests plus **24/24** shell checks for the trial script (`trial/test-trial.sh`). The previous 19 are unchanged.
 
 | Revision 2 regression | What it checks |
 |---|---|
@@ -148,23 +167,23 @@ It proves cross-process shared memory on the real Neon database without any mode
 
 | Script | Where | sha256 |
 |---|---|---|
-| [`trial/mycelium-explorer-trial.sh`](../../mycelium/memory/trial/mycelium-explorer-trial.sh) | fpd-prod | `2dbea2a96d4177d85cc35f66c6aa07c0c08e5880cc013e1857757067aee48805` |
-| [`trial/mycelium-explorer-owner.ps1`](../../mycelium/memory/trial/mycelium-explorer-owner.ps1) | PC | `7950ad2987cf262ccf6df302d324caf738a6388c5fe8582c4921e12adf87b6fb` |
+| [`trial/mycelium-explorer-trial.sh`](../../mycelium/memory/trial/mycelium-explorer-trial.sh) | fpd-prod | `7fee97712b93e1379d917eb7c23cc3b3b2d55962b276c42b9b52296ec8c5af9c` |
+| [`trial/mycelium-explorer-owner.ps1`](../../mycelium/memory/trial/mycelium-explorer-owner.ps1) | PC | `55c91a3bc909c1ab4749b23812d4e6e849e1233b06c04af75d838b1904d40416` |
 
 `<C>` below is the **approved commit**, the commit that publishes this revision, named in Chris's approval record. Both scripts refuse any other commit, and any memory-package difference from it.
 
 | # | Where | Command | What it does / refuses |
 |---|---|---|---|
-| 0a | PC | `powershell -ExecutionPolicy Bypass -File C:\Users\ChrisT\PitchListUK\greenfield\mycelium\memory\trial\mycelium-explorer-owner.ps1 -Mode before -Commit <C>` | Read-only: records the **actual Neon role and membership options** (`pg_auth_members` admin/inherit/set, with grantor) |
+| 0a | PC | `powershell -ExecutionPolicy Bypass -File C:\Users\ChrisT\PitchListUK\greenfield\mycelium\memory\trial\mycelium-explorer-owner.ps1 -Mode before -Commit <C>` | Read-only: records the **actual Neon role and membership options** (`pg_auth_members` admin/inherit/set, grantor, role comments). **STOP if `mycelium_explorer_fpd` already exists, or if an earlier attempt receipt is still open** |
 | 0b | fpd-prod | `sudo runuser -u hubsync -- git -C /var/lib/hubsync/repo show <C>:greenfield/mycelium/memory/trial/mycelium-explorer-trial.sh > ~/mycelium-explorer-trial.sh && sha256sum ~/mycelium-explorer-trial.sh` | The hash must equal the one above |
-| 0c | fpd-prod | `sudo bash ~/mycelium-explorer-trial.sh precheck` | Read-only. Node ≥ 22.19 and npm present; user `mycmem`, `/opt/mycelium-memory`, `/etc/mycelium/explorer.env` and the verifier file all **absent**; Neon endpoint reachable over HTTPS. Otherwise STOP |
-| 1 | fpd-prod | `sudo bash ~/mycelium-explorer-trial.sh setup <C>` | Re-checks all of 0c and requires `<C>` to be on `origin/findpitches-v3/greenfield` in the HubSync clone. Then: system user `mycmem` (with marker); `git archive <C>` of the package into root-owned `/opt/mycelium-memory` (with marker); `npm ci --ignore-scripts --omit=dev` (pinned Neon driver only); a 48-hex password from `openssl rand` held only in a root 0600 temporary file; `/etc/mycelium/explorer.env` root:mycmem 0640; the SCRAM verifier at `/home/ct_admin/mycelium-explorer.scram` (0600); the temporary password file **shredded**. Never prints the password or the verifier. **No owner credential is ever on fpd-prod** |
+| 0c | fpd-prod | `sudo bash ~/mycelium-explorer-trial.sh precheck` | Read-only. Node ≥ 22.19 and npm present. User **and group** `mycmem`, `/opt/mycelium-memory`, the **whole** `/etc/mycelium`, the verifier path and `/var/lib/mycelium-explorer-trial` all **absent**, symlinks included. Neon endpoint reachable over HTTPS. Otherwise STOP |
+| 1 | fpd-prod | `sudo bash ~/mycelium-explorer-trial.sh setup <C>` | Re-checks all of 0c and requires `<C>` to be on `origin/findpitches-v3/greenfield` in the HubSync clone. Then it creates, **each exclusively and each recorded in the root-only receipt only after it succeeds**: the receipt directory; system user and group `mycmem`, with no home; `/opt/mycelium-memory` via `mkdir`, filled by `git archive <C>`; `/etc/mycelium` via `mkdir`; `npm ci --ignore-scripts --omit=dev` (pinned Neon driver only); a 48-hex password from `openssl rand` held only in a temporary file inside the root-only receipt directory; `explorer.env` (O_EXCL) root:mycmem 0640; the SCRAM verifier (O_EXCL) at `/home/ct_admin/mycelium-explorer.scram`, 0600; the temporary password file **shredded**. Never prints the password or the verifier. **No owner credential is ever on fpd-prod** |
 | 2 | PC | `scp ct_admin@fpd-prod.Home:mycelium-explorer.scram C:\Users\ChrisT\` | The verifier is sensitive, and it is deleted in step 3 |
-| 3 | PC | `… mycelium-explorer-owner.ps1 -Mode create -Commit <C>` | `create-login` from the verifier (flag cleared in `finally`). Then **`verify-login`**: LOGIN, unprivileged, limit 2, exactly one membership (runtime, INHERIT TRUE, SET FALSE, ADMIN FALSE). The verifier is deleted in `finally`. **If the create or the verify fails, it closes the login itself and reports STOP** |
-| 4 | fpd-prod | `sudo bash ~/mycelium-explorer-trial.sh run` | Shreds the fpd-prod verifier copy. Then six fresh processes as `mycmem`: `whoami` (least privilege on Neon), `footprint`, `A`, `B`, `check`, `footprint`. **Overall deadline 300 s**, ≤ 90 s per step, killed on timeout. **STOP at the first failure, with no retry.** It ends `RUN OK` only if the footprint delta is **exactly 6 nodes / 6 edges / 2 assessments** and those are the trial's own rows, so existing rows are preserved |
-| 5 | PC | `… mycelium-explorer-owner.ps1 -Mode close -Commit <C>` | **ALWAYS**, whatever happened in steps 1–4. Safe in any state: NOLOGIN, then revoke the membership, then **`verify-closed`** |
-| 6 | fpd-prod | `sudo bash ~/mycelium-explorer-trial.sh close` | **ALWAYS**: shreds the credential and any verifier; safe to repeat |
-| 7 | fpd-prod | `sudo bash ~/mycelium-explorer-trial.sh teardown` | Optional: removes **only** the user and package carrying the trial's marker. It refuses while a credential exists, and never touches unmarked files |
+| 3 | PC | `… mycelium-explorer-owner.ps1 -Mode create -Commit <C>` | Refuses if a receipt is open or the name exists. Writes a new attempt UUID into an **exclusively created** PC receipt. `create-login` makes the role and its comment `mycelium-explorer-trial <attempt>` in one transaction (flag cleared in `finally`). Then **`verify-login <attempt>`**: ours, LOGIN, unprivileged, limit 2, exactly one membership (runtime, INHERIT TRUE, SET FALSE, ADMIN FALSE). The verifier is deleted in `finally`. **On a failure it reconciles read-only:** absent means nothing was created; ours means it closes and verifies; foreign means STOP with nothing changed; unreachable means STOP, keeping the receipt for a later close |
+| 4 | fpd-prod | `sudo bash ~/mycelium-explorer-trial.sh run` | Shreds the fpd-prod verifier copy. Then six fresh processes as `mycmem`: `whoami` (least privilege on Neon), `footprint`, `A`, `B`, `check`, `footprint`. **Hard caps: each process ≤ min(90 s, time left)** (TERM at cap − 5 s, KILL at the cap), **300 s overall**. **STOP at the first failure, with no retry.** It ends `RUN OK` only if the footprint delta is **exactly 6 nodes / 6 edges / 2 assessments** and those are the trial's own rows, so existing rows are preserved |
+| 5 | PC | `… mycelium-explorer-owner.ps1 -Mode close -Commit <C>` | **ALWAYS**, whatever happened in steps 1–4. With no receipt it changes nothing. Otherwise `disable-login <attempt>`, which acts only on the role carrying this attempt's comment (a foreign role is never changed), then **`verify-closed <attempt>`**, then the receipt is archived |
+| 6 | fpd-prod | `sudo bash ~/mycelium-explorer-trial.sh close` | **ALWAYS**: shreds only the recorded credential and verifier, never a symlink or an unrecorded file. With no recognised receipt it changes nothing. Safe to repeat |
+| 7 | fpd-prod | `sudo bash ~/mycelium-explorer-trial.sh teardown` | Optional: removes **only** recorded artifacts: the package dir, the user and group, and `/etc/mycelium` only if empty. It refuses while a recorded credential exists, then archives the receipt and log to `/root` |
 
 **If anything is uncertain:**
 - If step 5 cannot verify closure (for example the PC is offline), it prints STOP "do NOT assume closed". Chris then reruns `close`, or disables `mycelium_explorer_fpd` in the Neon Console.
@@ -204,4 +223,4 @@ L2 needs fresh model-call approval in any case.
 - [ ] The adapter contract is narrow, bounded and free of lanes; `appendAll` is the only change to the existing API.
 - [ ] Atomicity, retry and rollback, and the untrusted-data handling are sufficient.
 - [ ] The L1 least-privilege design and the SCRAM-verifier credential route are sound. Unix-user separation from `myc` is the right boundary.
-- [ ] R1–R3 and the contract corrections are fixed as reproduced. The two trial scripts, hashed above, are exact, refuse-first, close on every path and give the receipts. L2 is correctly not requested.
+- [ ] R3a–R3c and the time bound are fixed as reproduced. Every cleanup is scoped to artifacts this trial provably created (the fpd-prod receipt; the database comment plus PC receipt). The two hashed scripts are exact. L2 is correctly not requested.

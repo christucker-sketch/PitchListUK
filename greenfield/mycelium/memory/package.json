@@ -6,7 +6,7 @@
   "engines": { "node": ">=22.19.0" },
   "scripts": {
     "build": "node --check src/connection.mjs && node --check src/memory.mjs && node --check src/schema.mjs && node --check src/preflight.mjs && node --check src/explorer.mjs && node --check examples/shared-memory-demo.mjs && node --check examples/fixtures.mjs && node --check scripts/scram-verifier.mjs && node --check scripts/explorer-provision.mjs && node --check scripts/explorer-live.mjs && node --check scripts/database.mjs && node --check scripts/sql-hashes.mjs && node --check scripts/configure-local.mjs",
-    "test": "node test/memory.test.mjs && node test/integrity.test.mjs && node test/review-regressions.test.mjs && node test/explorer.test.mjs && node test/explorer-live.test.mjs && bash trial/test-trial.sh",
+    "test": "node test/memory.test.mjs && node test/integrity.test.mjs && node test/review-regressions.test.mjs && node test/explorer.test.mjs && node test/explorer-live.test.mjs && bash trial/test-trial.sh && bash trial/test-owner.sh",
     "db:inspect": "node scripts/database.mjs inspect",
     "db:roles": "node scripts/database.mjs roles",
     "db:check": "node scripts/database.mjs check",
