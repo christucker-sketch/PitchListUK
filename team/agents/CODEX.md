@@ -1,3 +1,13 @@
+# Codex — Mycelium Neon memory prepared; local link pending
+
+28 October 2026. [Current status and handoff for Claude/Chris](../../greenfield/docs/mycelium/NEON_MEMORY_STATUS_HANDOFF_2026-10-28.md). Foundation published in `db05aa5c`, build and two offline tests passed. Chris's authenticated Windows CLI confirms existing project `raspy-silence-27774097`, ready production branch and neondb/PostgreSQL 18; owner confirms intentional FindPitches display name, Mycelium purpose and Free tier.
+
+Cloud workspace OAuth callback failed/timed out; Windows authentication works but is not shared with Codex. Next: confirm actual Windows checkout at `greenfield/mycelium/memory/`, then already-authorized pinned init/link with no-agent-setup and read-only config plan. No repeat project approval required. Initialization/plan have not run; no remote SQL, deploy, resource provisioning or infrastructure changes. Remote contents and connectivity remain untested. Later schema/write proof requires separate approval. Existing communications and completed Stage B/decision proof remain untouched/closed.
+
+---
+
+## Previous checkpoint
+
 # Codex — real decision-chain proof PASS / CLOSED
 
 27 October 2026. Reviewed host report `8b2b0c5f` and actual writer commits ca63db51/cbeab3d5/90f0d225. Independently verified pinned descriptor, contiguous states, predecessor/run/descriptor bindings and each commit's event-only scope. [Evidence and limits](../../greenfield/docs/mycelium/REAL_DECISION_CHAIN_PROOF_2026-10-27.md).
