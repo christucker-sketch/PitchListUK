@@ -1,3 +1,13 @@
+# Codex — Mycelium Neon migration/roles/proof APPROVED; execution pending
+
+28 October 2026. Chris explicitly replied **“approved: Mycelium Neon migration, roles and persistence proof”** after accepted Windows recheck. [Exact commands, scope and evidence handoff to Claude](../HANDOVERS.md). Authorized: pinned production/neondb target, reviewed 001–003 atomic migration, two NOLOGIN roles/grants, exactly two synthetic nodes/one edge, fresh-process read and read-only final evidence. Preserve Neon Auth/all other resources; no real redaction, credential/LOGIN/membership/model/service/paid/config/deploy changes. No repeat approval for this scope.
+
+Next actor **Claude**, existing Windows script/Chris one-command/sanitized-log route. Await actual ledger/grant/catalog/proof evidence and cleared approval env flag; Codex has not executed database commands. Stop on any failure/uncertainty, reconcile read-only with preserved manifest; no blind rerun/delete/DROP. Prior build and Windows19 checks/hash/target recheck PASS.
+
+---
+
+## Previous checkpoint
+
 # Codex — Windows recheck PASS; exact migration approval pending
 
 28 October 2026. Reviewed `3e542f77`: recorded Windows build/19 checks PASS on Node22.23.4, frozen canonical SQL hashes match, pinned neondb/neondb_owner inspect succeeds, same nine neon_auth tables and no Mycelium ledger. Three preflight mismatches resolved; existing .env.local preserved. Evidence is Chris/Claude's script/log report, not direct Codex PC access.
