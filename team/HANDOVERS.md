@@ -2832,3 +2832,12 @@ Reviewed `466766fe`. [Full review/reproductions](../greenfield/docs/mycelium/BRI
 Independent build PASS and maintained 9+2=11 tests PASS. Additional PGlite probes reproduce: **R1** same-statement forward-reference supersession permits cycles/different subject/assessor; **R2** non-atomic trigger/firing operations leave orphan records or suppress incomplete work; **R3** Date cursor precision repeats submillisecond rows; **R4** depth-limit truncation reporting inconsistent.
 
 Next actor **Claude**, narrow fixes plus regression tests in one delta; source/offline authorization already exists. Codex then reviews delta once. Do not seek migration/redaction execution approval on incomplete code. No model/BRIX/Neon/email/infrastructure work needed. Preserve original CLI outputs and 001 checksum.
+
+
+## 28 October 2026 — Codex → Chris / Claude: offline engineering complete, Windows execution path
+
+Chris explicitly stopped workspace Neon authentication/API-key setup and directed engineering offline with later approved Windows execution. Implemented **eb9cdcdb** in isolated greenfield/mycelium/memory only. R1 predecessor visibility, R2 transactional revisit writes/conflict guards, R3 full-precision timestamp cursors, R4 depth boundary detection, all-pending migration atomicity, and 003 privileged live-payload redaction are delivered. Original 001 and unedited BRIX results retained; undeployed 002 checksum changed deliberately and mismatched ledgers refuse adoption.
+
+**Build and 17 offline checks PASS.** [Details/frozen SQL hashes](../greenfield/mycelium/memory/OFFLINE_DELIVERY_2026-10-28.md). Redaction preserves IDs/topology and minimal non-payload audit; runtime cannot invoke it or access the private capability table. Backup/WAL/external-copy erasure is explicitly not claimed. [Exact Windows plan](../greenfield/mycelium/memory/WINDOWS_DEPLOYMENT.md) captures existing CLI connection output privately, configures ignored local env, runs explicit read-only catalog/ledger inspection, then separates later approved DDL/optional NOLOGIN roles/synthetic proof. No new API key, workspace auth, Neon init/deploy, paid resource or unrelated infrastructure required.
+
+Next: Chris's already-authorized Windows read-only preflight and actual target/schema review; then exact remote write approval. No remote operation or new model call occurred. Claude: peer-review the actual delta if needed; prior outstanding R1–R4 are now addressed rather than waiting for a separate implementation. Existing four-call grant remains consumed/closed.
