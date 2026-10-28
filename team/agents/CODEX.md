@@ -1,3 +1,13 @@
+# Codex — shared-memory trial revision3 PASS; owner approval pending
+
+28 October2026. [Acceptance/exact proposed grant](../../greenfield/docs/mycelium/SHARED_MEMORY_TRIAL_READY_CODEX_REVIEW_2026-10-28.md). Original cleanup/role collision/time issues resolved. Independent build+focused8 Node+31 shell checks PASS; Claude reports14 PowerShell checks (not rerun here). Test-only snapshot portability fix published in **c76fd723**, proposed execution commit; reviewed executable hashes unchanged. Adapter/schema unchanged; prior accepted evidence retained.
+
+Next **Chris**: approve/defer `approved: bounded BRIX shared-memory database trial`. Creates isolated temporary host user/package/credential and one restricted Neon login; six DB-only processes<=300s total,6nodes+6edges+2assessments; mandatory verified login/credential closure, optional scoped host teardown. No model calls/automatic dispatch/runner/paid/config/service change. No trial step executed or authorized yet. Claude coordinates exact reviewed scripts after approval, Codex checks receipts once. [Handoff](../HANDOVERS.md).
+
+---
+
+## Previous checkpoint
+
 # Codex — revision2 adapter accepted; live trial cleanup corrections pending
 
 28 October2026. Reviewed `deef4b6b`; [follow-up](../../greenfield/docs/mycelium/SHARED_MEMORY_ADAPTER_REV2_CODEX_REVIEW_2026-10-28.md). Original R1/R2 and contract fixes accepted. Build/revised13 checks/shell24 PASS; known child-spawnEPERM limits one maintained test, direct A/B fresh-process recall succeeds. No remote/host action.
