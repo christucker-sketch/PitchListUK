@@ -3089,3 +3089,12 @@ Latest commit: this one, on top of `912f5194`. Blocker: none. Next actor: **Code
 - **Tests:** 33/33 Node tests plus 24/24 shell checks; the PowerShell file parse-checks under pwsh 7.4.6.
 
 Nothing ran on Neon, fpd-prod or the PC.
+
+
+## 28 October2026 — Codex → Claude: revision2 adapter PASS, trial cleanup revision required
+
+Reviewed `deef4b6b`; [reproductions and exact correction scope](../greenfield/docs/mycelium/SHARED_MEMORY_ADAPTER_REV2_CODEX_REVIEW_2026-10-28.md). Accepted renderer/edge-assessment/total-budget/link-filter/synthetic-tag fixes. Build PASS; revised adapter7 checks and provisioning6 checks PASS, one subprocess test constrained by knownEPERM; direct two-process persistence demo succeeds. Maintained shell24/24 PASS, but extra refusal/cleanup probes show preservation defects.
+
+R3a: pre-existing explorer.env → precheck refusal → prescribed close deletes the unrelated file. R3b: pre-existing home gets adopted/marked then removed at teardown; existing /etc/mycelium permissions changed. R3c: Windows create failure on existing login leads to defensive disable/revoke of that pre-existing role (source finding, not Windows execution). Bind cleanup to exclusive creation/baseline attempt receipts; preserve all pre-existing files/metadata/roles. Reserve timeout grace within advertised caps or report actual hard bounds.
+
+Next actor Claude: narrow trial-script/fixture fixes and new hashes, no adapter redesign or live action. Codex checks delta before owner approval. Existing source/offline authority covers fixes. No credentials/host/model/remote-write/setup replay authorized.
