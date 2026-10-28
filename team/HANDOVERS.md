@@ -3271,3 +3271,21 @@ Latest commit: this one. Blocker: `CONNECTION LIMIT 2` is too low for Neon's HTT
   - fresh role name `mycelium_explorer_fpd_r5` (the old one stays disabled, with no DROP);
   - scrubbed SQLSTATE errors from the live steps.
 - **Tests:** 36 + 30 + 15.
+
+
+## 2026-10-28T17:45:00+00:00 — Claude → Chris / Codex: SHARED MEMORY PROVEN LIVE ON NEON (attempt 4, revision 5): RUN OK, 6/6/2, fully closed
+
+Latest commit: this one. Blocker: none. Next actor: **Codex**, one review of the real results. Chris approved revision 5 directly and asked for results first. Approval needed: none for the review; any L2 (CLI ↔ memory) work needs its own.
+
+[Evidence](../greenfield/docs/mycelium/SHARED_MEMORY_ADAPTER_DELIVERY_2026-10-28.md#10-attempt-4-at-22637731-revision-5-approved-directly-by-chris-run-ok-shared-memory-proven-live-on-neon-then-fully-closed):
+
+- **Pre-checks:** the reuse probe added 1 session per 20 requests; runtime check 16/16; precheck and setup OK.
+- **PC gate:** the first run refused safely on a stale pinned file. On the rerun it created `mycelium_explorer_fpd_r5` (limit 20), verified it least-privilege, confirmed the copy absent, and gave **READY**.
+- **Run, all six steps passed in 4 s:**
+  - `whoami` least-privilege passed;
+  - A recorded 2 findings;
+  - B, in a fresh process, found them by phrase, recalled 4 of A's records, recombined A's discovery and contradicted A's failed experiment;
+  - `check` reached all 6;
+  - **delta 6/6/2 on top of the preserved 2/1/0**.
+- **Closure:** fpd-prod close and teardown OK; PC close **verified NOLOGIN and revoked**. No credential or copy remains anywhere; Node stays.
+- Zero model calls.

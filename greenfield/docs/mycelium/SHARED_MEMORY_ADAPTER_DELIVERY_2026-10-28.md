@@ -345,3 +345,53 @@ The approved commit becomes the commit that publishes this revision. The steps a
 - **`explorer-live.mjs` errors now report the SQLSTATE and the server message,** with the password, any URL and any long token removed, using the same `describeError` as provisioning.
 - **Tests:** 36/36 Node tests, 30/30 trial checks and 15/15 owner checks.
 - **New pins:** fpd-prod `3459deed44e4042e6d7269d439e64a8726446a1ee1d5686aa7270e2c0a015748`; PC `04513c592d23b30c4576ce25289fb92f4dd8906022a447ad93b15d2cc1dd2bf2`.
+
+## 10. Attempt 4 at `22637731` (revision 5, approved directly by Chris): **RUN OK: shared memory proven live on Neon**, then fully closed
+
+**Approval.** Chris approved revision 5 directly ("no more codex checking for now, get it working and then report back"), after seeing the attempt-3 diagnosis. Codex reviews these real results afterwards.
+
+**Reuse probe** (read-only, owner, 17:31Z). 20 sequential HTTP requests added **1** server session (from 1 to 2): `POOL REUSES`. That confirms connection limit 20 is ample for six sequential processes.
+
+### Execution
+
+| Step | Result |
+|---|---|
+| fpd-prod script | sha256 `3459deed…5748` (matches the pin); `precheck` OK (17:33:36Z) |
+| fpd-prod `setup` | `SETUP OK`: package `@22637731e489`, credential 0640, one-time PC copy 0600 |
+| PC runtime check | `RUNTIME CHECK OK` (16/16; `mycelium_explorer_fpd_r5` free) |
+| PC gate, first run (17:33:53Z) | **Refused safely**: the gate file on the PC still pinned `7a49e578`, because the file transfer had resent a cached copy. Its `before` step reported "memory package differs from approved" and stopped with no transfer. The file was then corrected in place and verified (pin `22637731`, 2703 bytes) |
+| PC gate, second run (17:35Z) | `before` OK; then **`Created mycelium_explorer_fpd_r5 for attempt 11f49f29-5670-40ed-b35b-313ae2eabc92: LOGIN, connection limit 20, inherits mycelium_memory_runtime only`**; then `VERIFIED … approved least-privilege state`; the PC copy was overwritten and deleted (**absent: True**); then **READY** |
+| fpd-prod `run` (17:36:07Z), **RUN OK in 4 s** | See the six process results below |
+| fpd-prod `close` and `teardown` (17:36:11Z) | Shredded the credential; removed the package, `/etc/mycelium` and `mycmem`; receipt archived at `/root/mycelium-explorer-trial-receipt-20261028T173611Z.txt` |
+| PC `close` (17:36:18Z) | `disable-login` for attempt `11f49f29`, then **`VERIFIED: … closed (NOLOGIN, no membership)`**; receipt archived |
+
+**The six fresh processes,** all as `mycelium_explorer_fpd_r5` on `neondb`:
+
+1. **`whoami`** (pid 183695): elevated=false, can_append=true, can_mutate=false, can_see_capability=false, can_redact=false, can_create_schema=false, owner_member=false.
+2. **`footprint`, before** (pid 183711): 2 nodes, 1 edge, 0 assessments. These are the earlier smoke rows; there were no trial rows.
+3. **`A`** (pid 183728): recorded discovery `6a2f791e-f845-8f0c-801b-7ea2f5ee8776` and failed experiment `40733259-1c92-872f-9b7e-c6e242f2cb3c`, each with evidence.
+4. **`B`** (pid 183744, a fresh process that knew only the phrase "polymer P"):
+   - searched and found 2 records, then **recalled all 4 of A's records** (both findings and both measurements);
+   - recorded cross-branch result `08874091-5434-8418-aea8-6684084a90bb` with 3 links and 2 stances;
+   - its rendered prompt block was 1,509 bytes.
+5. **`check`** (pid 183761, read-only recall from B's record): reached all 6 trial nodes, with A's declared as run `live-proof-2026-10-28-a` and B's as `…-b`. Links: `contradicts`, `evidenced_by` ×3, `recombines`, `tests_limit_of`. Stances: A's discovery is **supported** (0.6); A's failed experiment is **contradicted** (0.7). The failure is kept and contested, not erased.
+6. **`footprint`, after** (pid 183777): 8 nodes, 7 edges, 2 assessments.
+
+**`footprint delta nodes=6 edges=6 assessments=2; trial rows 6/6/2`**: the existing rows were preserved.
+
+### Final state
+
+- **Neon:**
+  - **14 synthetic rows** are kept, identifiable by `attributes.synthetic` and the run tags, as designed.
+  - `mycelium_explorer_fpd_r5` and the attempt-3 `mycelium_explorer_fpd` are both NOLOGIN with their membership revoked.
+  - No schema or grant changed.
+- **fpd-prod:** no trial user, package, credential or password copy. Node 22.23.4 remains, approved separately.
+- **PC:** no password copy and no open receipt. The logs scan clean of connection strings.
+- **Model calls:** zero AI calls throughout.
+
+**What this proves.** Two separate explorer processes on fpd-prod shared memory through the live Neon database:
+- each used a least-privilege login, never the owner;
+- the second found the first's work knowing only a phrase, built on it in a new direction, and contested one of its findings;
+- everything was append-only and bounded, and closed afterwards with receipts.
+
+**What it does not yet do.** Connect the BRIX Claude and Codex CLIs to this memory (the L2 bridge, section 5). That remains a separate decision.

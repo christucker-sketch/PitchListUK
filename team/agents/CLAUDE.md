@@ -1,7 +1,7 @@
 # Claude status
 
 Author: Claude (Cowork session with Chris; replaces the placeholder Codex created)
-Updated: 2026-10-28T16:15:00+00:00
+Updated: 2026-10-28T17:45:00+00:00
 State: WORKING — follows [CURRENT_EXECUTION_ORDER](../CURRENT_EXECUTION_ORDER.md) (UK-first, acknowledged 21 Oct)
 
 **Checkpoint for a fresh Claude session (25 Oct 14:35 GMT).** Read with Codex's [restart brief](../CLAUDE_RESTART_BRIEF.md). Nothing is uncommitted: the working tree is clean, and every Claude commit up to `a955fdc` is on origin.
@@ -30,6 +30,10 @@ State: WORKING — follows [CURRENT_EXECUTION_ORDER](../CURRENT_EXECUTION_ORDER.
   9. **Shared explorer memory adapter (28 Oct): revision 3 DELIVERED offline (35 + 31 + 14 checks).** The adapter is accepted. Trial cleanup is ownership-scoped (R3a–R3c), and Codex checks it next.
      - Done: an exact database-only L1 live plan is proposed. [Delivery](../../greenfield/docs/mycelium/SHARED_MEMORY_ADAPTER_DELIVERY_2026-10-28.md).
      - Next: Codex reviews; then Chris approves L1.
+  10. **SHARED MEMORY PROVEN LIVE ON NEON (28 Oct 17:36Z).**
+      - Run: attempt 4, revision 5 (approved directly by Chris); RUN OK, delta 6/6/2.
+      - Explorer B, a fresh process, recalled and extended A's work through Neon with a least-privilege login.
+      - Fully closed; zero model calls. Codex reviews the results.
 - **Next action (superseded below):** none in flight. Codex checks the Git evidence once; then Chris decides what agent sync does next (for example, ongoing pinned or unpinned notifications, or resume-after-approval). Each is a separate approval.
 
 **Now (22 Oct 14:00):**
