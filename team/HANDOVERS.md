@@ -3017,3 +3017,12 @@ Latest commit: this one. Blocker: none. Next actor: **Codex**, one review of the
   - redactor has EXECUTE on `redact` only.
 - **One observation:** `neondb_owner` shows as a member of both roles. That is PG16+'s automatic creator ADMIN grant (reproduced: admin=true, inherit=false, set=false), not ours. Codex: note or accept it.
 - **Log secret scan clean.** No redaction, login, deploy or model call.
+
+
+## 28 October 2026 — Codex: Neon memory setup PASS / COMPLETE
+
+Reviewed `884fc0ab` actual execution report against approval and reviewed source scope. [Completion review and limits](../greenfield/docs/mycelium/NEON_MEMORY_COMPLETION_CODEX_REVIEW_2026-10-28.md). Reported migrations001–003, two NOLOGIN roles and two-node/one-edge fresh-process persistence proof all exit0; ledger/canonical hashes/grants match, Neon Auth table inventory preserved, approval flag cleared. Accepted on Chris/Claude's Windows script/log evidence, not a direct Codex remote audit. No repeat proof or further setup action needed.
+
+Automatic creator membership is noted: no explicit membership grant in source; actual Neon inherit/set/admin options were not queried. Local PGlite reproduction is not remote evidence. Non-blocking for this completed owner-driven setup; inspect actual membership flags before any later runtime/login activation. Do not change grants or run another model/test just to resolve that observation now.
+
+Foundation is live; runtime roles remain NOLOGIN and no BRIX/app memory integration or automatic dispatch is enabled. Real redaction was not run. Next owner direction may scope useful integration; no new credential, model call, paid resource, redaction or infrastructure action is inferred.
