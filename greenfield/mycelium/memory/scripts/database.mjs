@@ -6,15 +6,33 @@ import { nodeInsert, edgeInsert, createMemory } from '../src/memory.mjs';
 
 const mode = process.argv[2];
 try {
-  if (!['check', 'migrate', 'smoke-write', 'smoke-read'].includes(mode)) throw new Error('Unknown command.');
-  if (['migrate', 'smoke-write'].includes(mode) && process.env.MYCELIUM_REMOTE_WRITES_APPROVED !== 'yes') {
+  if (!['check', 'inspect', 'migrate', 'roles', 'smoke-write', 'smoke-read'].includes(mode)) throw new Error('Unknown command.');
+  if (['migrate', 'roles', 'smoke-write'].includes(mode) && process.env.MYCELIUM_REMOTE_WRITES_APPROVED !== 'yes') {
     throw new Error('Remote schema/data changes require MYCELIUM_REMOTE_WRITES_APPROVED=yes after owner approval.');
   }
   const db = await connect();
-  if (mode === 'check') {
+  if (mode === 'inspect') {
+    const result = await db.transaction([
+      { text: 'SET TRANSACTION READ ONLY' },
+      { text: "SELECT current_database() AS database, current_user AS role, current_setting('server_version') AS version" },
+      { text: "SELECT table_schema,table_name FROM information_schema.tables WHERE table_schema NOT IN ('pg_catalog','information_schema') ORDER BY table_schema,table_name" },
+      { text: "SELECT to_regclass('mycelium_memory.schema_migrations')::text AS ledger" }
+    ]);
+    if(result[1][0].database !== 'neondb') throw new Error('Wrong database.');
+    console.log(JSON.stringify({ identity: result[1], tables: result[2], ledger: result[3] },null,2));
+    if(result[3][0].ledger) console.log(JSON.stringify(await db.transaction([
+      {text:'SET TRANSACTION READ ONLY'}, {text:'SELECT version,checksum FROM mycelium_memory.schema_migrations ORDER BY version'}
+    ])));
+  } else if (mode === 'roles') {
+    const source = await readFile(new URL('../sql/runtime_grants.sql', import.meta.url), 'utf8');
+    await db.transaction(source.split('-- statement').map(text=>({text:text.trim()})).filter(s=>s.text));
+    console.log('Created two Mycelium-only NOLOGIN roles and explicit grants. No credential/login change or dispatch.');
+  } else if (mode === 'check') {
     await db.query('SELECT 1 AS connected');
     console.log('Authenticated HTTPS database connection passed. No schema/data writes.');
   } else if (mode === 'migrate') {
+    const foreign = await db.query("SELECT table_schema,table_name FROM information_schema.tables WHERE table_schema NOT IN ('pg_catalog','information_schema','mycelium_memory')");
+    if(foreign.length) throw new Error('Unexpected non-Mycelium tables; inspect and stop.');
     console.log(`Mycelium-only schema migration ${await migrate(db)}.`);
   } else if (mode === 'smoke-write') {
     const discovery = randomUUID(), result = randomUUID(), edge = randomUUID();

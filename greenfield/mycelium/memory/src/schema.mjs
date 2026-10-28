@@ -2,7 +2,7 @@ import { readFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 
 // Ordered, checksummed migrations. Applied ones must match byte-for-byte; unknown recorded versions stop everything.
-export const versions = ['001_memory', '002_integrity_assessments'];
+export const versions = ['001_memory', '002_integrity_assessments', '003_redaction'];
 export const version = versions[versions.length - 1];
 
 export async function migration(v) {
@@ -30,11 +30,9 @@ export async function migrate(db) {
   const pending = all.filter(m => !applied.has(m.version));
   if (pending.length === 0) return 'already applied';
   // A pre-existing unrecognized schema causes CREATE SCHEMA to fail. Never adopt or overwrite it.
-  for (const m of pending) {
-    await db.transaction([...m.statements, {
+  await db.transaction(pending.flatMap(m => [...m.statements, {
       text: 'INSERT INTO mycelium_memory.schema_migrations (version, checksum) VALUES ($1,$2)',
       values: [m.version, m.checksum]
-    }]);
-  }
+    }]));
   return 'applied';
 }

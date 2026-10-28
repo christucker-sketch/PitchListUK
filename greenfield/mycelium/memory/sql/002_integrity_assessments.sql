@@ -51,7 +51,7 @@ DECLARE p mycelium_memory.assessments%ROWTYPE;
 BEGIN
   IF NEW.supersedes IS NULL THEN RETURN NEW; END IF;
   SELECT * INTO p FROM mycelium_memory.assessments WHERE id = NEW.supersedes;
-  IF NOT FOUND THEN RETURN NEW; END IF;  -- the foreign key reports it
+  IF NOT FOUND THEN RAISE EXCEPTION 'supersession check: superseded assessment must already exist (foreign key predecessor)'; END IF;
   IF p.node_id IS DISTINCT FROM NEW.node_id OR p.edge_id IS DISTINCT FROM NEW.edge_id OR p.assessor <> NEW.assessor THEN
     RAISE EXCEPTION 'an assessment may only supersede one with the same subject and assessor';
   END IF;

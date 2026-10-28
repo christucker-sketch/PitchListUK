@@ -15,7 +15,7 @@ function adapter(pg) {
 async function fresh(opts) { const pg = new PGlite(); const db = adapter(pg); await migrate(db); return { pg, db, m: createMemory(db, opts) }; }
 const count = async (db, t) => (await db.query(`SELECT count(*)::int AS n FROM mycelium_memory.${t}`))[0].n;
 
-test('migrations: 001 then 002 in order, checksummed, idempotent; a changed or unknown applied migration stops all', async () => {
+test('migrations: 001 through 003 in order, checksummed, idempotent; a changed or unknown applied migration stops all', async () => {
   const pg = new PGlite(); const db = adapter(pg);
   assert.equal(await migrate(db), 'applied');
   assert.deepEqual((await db.query('SELECT version FROM mycelium_memory.schema_migrations ORDER BY version')).map(r => r.version), versions);
@@ -172,7 +172,9 @@ test('7. mutation is denied (owner triggers and runtime grants); identical retri
     await assert.rejects(db.query(sql), /append-only/, sql);
   await db.query('CREATE ROLE mycelium_runtime');
   await db.query('GRANT USAGE ON SCHEMA mycelium_memory TO mycelium_runtime');
-  await db.query('GRANT SELECT, INSERT ON ALL TABLES IN SCHEMA mycelium_memory TO mycelium_runtime');
+  await db.query('GRANT SELECT, INSERT ON mycelium_memory.nodes, mycelium_memory.edges, mycelium_memory.assessments TO mycelium_runtime');
+  await db.query('GRANT EXECUTE ON FUNCTION mycelium_memory.require_identical_retry(boolean) TO mycelium_runtime');
+  await db.query('GRANT SELECT ON mycelium_memory.assessment_heads, mycelium_memory.redactions TO mycelium_runtime');
   await db.query('SET ROLE mycelium_runtime');
   await m.appendNode({ kind: 'runtime-write' });                                                   // runtime can append
   await assert.rejects(db.query("UPDATE mycelium_memory.nodes SET title='x'"), /permission denied/);

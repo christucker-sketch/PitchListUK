@@ -68,11 +68,16 @@ export function createMemory(db, { maxDatabaseBytes = 900 * 1024 * 1024 } = {}) 
   // Supplied ids make retries safe: an identical retry returns the id; a different payload under the same id is refused.
   async function insert(q) {
     await admit();
-    const rows = await db.query(q.text, q.values);
-    if (rows.length === 1) return rows[0].id;
-    const [s] = await db.query(q.same, q.values);
-    if (s?.same) return q.values[0];
-    throw new Error(`Id ${q.values[0]} already exists with a different payload; nothing written.`);
+    return (await insertMany([q]))[0];
+  }
+  // One transaction for a logical append. A conflicting retry must roll back EVERY statement.
+  async function insertMany(queries) {
+    const statements = queries.flatMap(q => [q, {
+      text: `SELECT mycelium_memory.require_identical_retry((SELECT same FROM (${q.same}) retry))`,
+      values: q.values
+    }]);
+    await db.transaction(statements);
+    return queries.map(q => q.values[0]);
   }
   const memory = {
     async appendNode(node) { return insert(nodeInsert(node)); },          // async: validation errors become rejections
@@ -82,11 +87,13 @@ export function createMemory(db, { maxDatabaseBytes = 900 * 1024 * 1024 } = {}) 
 
     // C10: relation filter and keyset paging. Pass the last row's {recorded_at, id} as `after` for the next page.
     async connections(id, { relation = null, after = null, limit = 100 } = {}) {
+      if (after && !(after.cursor_time || typeof after.recorded_at === 'string')) throw new Error('Use the exact cursor_time and id from the prior row.');
       const n = Math.min(Math.max(1, limit | 0), LIMITS.connections);
-      return db.query(`SELECT * FROM mycelium_memory.edges WHERE (source_id=$1 OR target_id=$1)
+      return db.query(`SELECT *, to_char(recorded_at AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.US"Z"') AS cursor_time
+        FROM mycelium_memory.edges WHERE (source_id=$1 OR target_id=$1)
         AND ($2::text IS NULL OR relation=$2)
         AND ($3::timestamptz IS NULL OR (recorded_at, id) > ($3::timestamptz, $4::uuid))
-        ORDER BY recorded_at, id LIMIT ${n}`, [id, relation, after?.recorded_at ?? null, after?.id ?? null]);
+        ORDER BY recorded_at, id LIMIT ${n}`, [id, relation, after?.cursor_time ?? (typeof after?.recorded_at === 'string' ? after.recorded_at : null), after?.id ?? null]);
     },
 
     // C10: cycle-safe traversal with a global visited set (not per-path), depth and result budgets, both directions.
@@ -109,8 +116,17 @@ export function createMemory(db, { maxDatabaseBytes = 900 * 1024 * 1024 } = {}) 
         }
         frontier = next;
       }
-      if (frontier.length && depthCap === LIMITS.depth) truncated = true;
-      return { nodes: [...seen].filter(([n]) => n !== id).map(([n, depth]) => ({ id: n, depth })), edges: [...edges.values()], truncated };
+      // A depth boundary is separate from row/result truncation: do not claim the graph is exhausted.
+      let depthLimited = false;
+      if (frontier.length) {
+        const [r] = await db.query(`SELECT EXISTS (SELECT 1 FROM mycelium_memory.edges
+          WHERE (source_id = ANY($1::uuid[]) OR target_id = ANY($1::uuid[]))
+          AND ($2::text[] IS NULL OR relation = ANY($2::text[]))
+          AND (NOT source_id = ANY($3::uuid[]) OR NOT target_id = ANY($3::uuid[]))) AS more`,
+          [frontier, relations, [...seen.keys()]]);
+        depthLimited = r.more;
+      }
+      return { nodes: [...seen].filter(([n]) => n !== id).map(([n, depth]) => ({ id: n, depth })), edges: [...edges.values()], truncated: truncated || depthLimited, depthLimited };
     },
 
     // X2 + turn 3: belief is derived at read time from heads only; correlated evidence (one independence_key) counts once.
@@ -118,10 +134,10 @@ export function createMemory(db, { maxDatabaseBytes = 900 * 1024 * 1024 } = {}) 
       if ((node === null) === (edge === null)) throw new Error('Give exactly one of node or edge.');
       const col = node !== null ? 'node_id' : 'edge_id', subject = node ?? edge;
       const stances = await db.query(`WITH k AS (SELECT stance, independence_key, max(weight) AS w FROM mycelium_memory.assessment_heads
-          WHERE ${col}=$1 GROUP BY stance, independence_key)
+          WHERE ${col}=$1 AND NOT EXISTS (SELECT 1 FROM mycelium_memory.redactions r WHERE r.subject_type='assessment' AND r.subject_id=assessment_heads.id) GROUP BY stance, independence_key)
         SELECT stance, count(*)::int AS independent_sources, sum(w)::float8 AS weight FROM k GROUP BY stance ORDER BY stance`, [subject]);
       const conflicts = await db.query(`SELECT assessor, count(*)::int AS heads FROM mycelium_memory.assessment_heads
-        WHERE ${col}=$1 GROUP BY assessor HAVING count(*) > 1 ORDER BY assessor`, [subject]);
+        WHERE ${col}=$1 AND NOT EXISTS (SELECT 1 FROM mycelium_memory.redactions r WHERE r.subject_type='assessment' AND r.subject_id=assessment_heads.id) GROUP BY assessor HAVING count(*) > 1 ORDER BY assessor`, [subject]);
       return { stances, conflictingHeads: conflicts };
     },
 
@@ -130,8 +146,10 @@ export function createMemory(db, { maxDatabaseBytes = 900 * 1024 * 1024 } = {}) 
       if (!PREDICATES.includes(predicate)) throw new Error(`Unknown revisit predicate ${predicate}; allowed: ${PREDICATES.join(', ')}.`);
       if (predicate === 'condition_changed' && !(params.condition && params.kind)) throw new Error('condition_changed needs params.condition and params.kind.');
       if (predicate === 'not_before' && !(params.at && !Number.isNaN(Date.parse(params.at)))) throw new Error('not_before needs params.at (a timestamp).');
-      const t = await memory.appendNode({ kind: 'revisit_trigger', attributes: { predicate, params, target }, provenance });
-      await memory.appendEdge({ source: t, target, relation: 'revisits', provenance });
+      const t = randomUUID();
+      await admit();
+      await insertMany([nodeInsert({ id: t, kind: 'revisit_trigger', attributes: { predicate, params, target }, provenance }),
+        edgeInsert({ source: t, target, relation: 'revisits', provenance })]);
       return t;
     },
     async cancelRevisitTrigger(trigger, { by, provenance = {} }) {
@@ -171,9 +189,10 @@ export function createMemory(db, { maxDatabaseBytes = 900 * 1024 * 1024 } = {}) 
     // Its payload is fully determined by (trigger, target, cause), so concurrent firers write identical rows.
     async fireRevisit({ trigger, target, cause }) {
       const probe = derivedId('revisit', trigger, cause), provenance = { fired_by: 'revisit_trigger' };
-      await memory.appendNode({ id: probe, kind: 'probe', attributes: { trigger, cause, target }, provenance });
-      await memory.appendEdge({ id: derivedId('fired_from', probe), source: probe, target: trigger, relation: 'fired_from', provenance });
-      await memory.appendEdge({ id: derivedId('revisits', probe), source: probe, target, relation: 'revisits', provenance });
+      await admit();
+      await insertMany([nodeInsert({ id: probe, kind: 'probe', attributes: { trigger, cause, target }, provenance }),
+        edgeInsert({ id: derivedId('fired_from', probe), source: probe, target: trigger, relation: 'fired_from', provenance }),
+        edgeInsert({ id: derivedId('revisits', probe), source: probe, target, relation: 'revisits', provenance })]);
       return probe;
     }
   };
