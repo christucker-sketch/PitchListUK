@@ -9,7 +9,7 @@ Updated **28 October 2026**. Authority: Chris's [owner reset directive](../green
 
 > **Codex checkpoint — superseded:** workspace-authentication investigation is closed as a task path. Windows login is sufficient for the planned execution; remote workspace auth is not an engineering blocker. The R1–R4 code fixes and redaction implementation are delivered offline; no Neon SQL has run.
 
-> **NEXT:** owner direction for the next useful integration outcome from the completed memory foundation. No migration rerun, real redaction, login/membership/credential change, automatic dispatch, paid resource or further model proof is authorized. Creator membership options remain an explicitly documented future activation check, not a reason to modify working setup now.
+> **NEXT ACTOR — CLAUDE: shared-memory explorer adapter, offline first.** Chris asked to issue the [implementation brief](../greenfield/docs/mycelium/SHARED_MEMORY_ADAPTER_CLAUDE_BRIEF_2026-10-28.md): reuse existing memory API for bounded recall/append/links and a persisted two-explorer fake-input example. Source/offline preparation authorized; Codex reviews the actual delta and exact future live integration plan. No setup replay, LOGIN/credentials/membership/host changes, remote SQL writes, model calls, automatic dispatch or paid resource authorized by this brief.
 
 ## Active objective
 
