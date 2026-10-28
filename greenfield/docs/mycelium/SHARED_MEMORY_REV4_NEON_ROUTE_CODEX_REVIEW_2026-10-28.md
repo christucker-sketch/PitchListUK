@@ -51,3 +51,50 @@ Pin **7a49e5781436fce0d9105d0bc4a90898eee35c21**, using [delivery section8 revis
 Approval phrase: **“approved: revised Neon-compatible memory trial”**. This approval is needed because the prior grant pinned different code and promised a verifier-only transfer. Prior project/install/setup approvals remain valid; do not ask for them again.
 
 After approval Claude coordinates the established script/Chris-command/log route with the private-copy gates above and posts actual SQLSTATE (sanitized), membership/6-6-2 footprint/timing/deletion/verified closure receipts. No new trial is claimed by this review.
+
+
+## Concrete Windows copy/create gate (after approval, host setup and pinned-code sync)
+
+Save/run this block through the existing local-script route. It replaces the bare scp + owner-create commands; the host run remains prohibited unless the final READY line appears. Subsequent mandatory owner/host close steps remain unchanged. Source-reviewed here; actual PowerShell execution is not claimed.
+
+```powershell
+$ErrorActionPreference = 'Stop'
+Set-PSDebug -Off
+$commit = '7a49e5781436fce0d9105d0bc4a90898eee35c21'
+$owner = 'C:\Users\ChrisT\PitchListUK\greenfield\mycelium\memory\trial\mycelium-explorer-owner.ps1'
+$copy = 'C:\Users\ChrisT\mycelium-explorer.pw'
+function Copy-Exists { return ($null -ne (Get-Item -LiteralPath $copy -Force -ErrorAction SilentlyContinue)) }
+
+if (Copy-Exists) { throw 'STOP: PC copy path already exists; preserve it and inspect' }
+& powershell.exe -NoProfile -File $owner -Mode before -Commit $commit
+if ($LASTEXITCODE -ne 0) { throw 'STOP: owner baseline refused; no transfer' }
+
+$created = $false
+$copyAttempted = $false
+try {
+    $copyAttempted = $true
+    & scp.exe -q 'ct_admin@fpd-prod.Home:/home/ct_admin/mycelium-explorer.pw' $copy
+    if ($LASTEXITCODE -ne 0) { throw 'Transfer failed' }
+    & powershell.exe -NoProfile -File $owner -Mode create -Commit $commit
+    if ($LASTEXITCODE -ne 0) { throw 'Create/verification failed' }
+    $created = $true
+} catch {
+    Write-Host 'STOP: transfer or create/verification failed; private details withheld'
+} finally {
+    if ($copyAttempted -and (Copy-Exists)) {
+        try {
+            $length = (Get-Item -LiteralPath $copy -Force).Length
+            [System.IO.File]::WriteAllBytes($copy, (New-Object byte[] ([Math]::Max($length, 64))))
+        } catch { Write-Host 'Private-copy overwrite failed; still attempting removal' }
+        Remove-Item -LiteralPath $copy -Force -ErrorAction SilentlyContinue
+    }
+}
+$gone = -not (Copy-Exists)
+Write-Host "PC password copy absent: $gone"
+if (-not $created -or -not $gone) {
+    & powershell.exe -NoProfile -File $owner -Mode close -Commit $commit
+    if ($LASTEXITCODE -ne 0) { Write-Host 'CLOSURE UNVERIFIED: follow attempt-scoped recovery; do not assume disabled' }
+    throw 'STOP: no host run; close host artifacts and resolve any remaining private copy'
+}
+Write-Host 'READY: create verified and PC password copy absent. Run the pinned host proof, then mandatory owner close and host close.'
+```
