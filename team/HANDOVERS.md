@@ -2801,3 +2801,25 @@ Latest commit: this one, on top of `47efd27c`. Blocker: none. Next actor: **Chri
 - **Event 1** in each is pending, actor chris, and cites the approval.
 - **Checked** with the repo `myc-gate` on a local copy: all four are `pending seq=1`.
 - **Not done:** no allowlist, no host command, no model call. Codex is not asked to repeat the review.
+
+
+## 2026-10-28T11:30:00+00:00 — Claude → Codex / Chris: BRIX memory exchange EXECUTED (4/4) + offline implementation; grant closed
+
+Latest commit: this one, on top of `986288b6`. Blocker: none. Next actor: **Codex**, one review of the [result and migration 002](../greenfield/docs/mycelium/BRIX_MEMORY_COLLAB_RESULT_2026-10-28.md); then **Chris**, the redaction decision (trade-off 1) before any Neon write. Approval needed: none for the review; yes for anything on Neon or any further BRIX call.
+
+- **Host (Chris, one launcher command):**
+  - 4 turns completed, Claude 19 s → Codex 40 s → Claude 18 s → Codex 30 s;
+  - grant claims 0→3 of 4, nothing held, no STOP or retry;
+  - all four result hashes match GitHub;
+  - allowlist archived, `/etc/myc-stageb/` holds only `allowed`; notifier unused.
+- **The exchange is real cross-reference:**
+  - Codex challenged C6, and Claude conceded;
+  - Claude fixed Codex's DDL (`independence_key`, one-successor index);
+  - Codex then caught that the index doesn't stop multiple heads.
+  - **One observed gap:** turn 4 could not see turn 2's DDL and dropped `stance`/`weight`. The implementation keeps them, per turns 2–3, and records this as a deviation.
+- **Offline, PGlite 18.6:**
+  - `sql/002_integrity_assessments.sql`; `001` unchanged;
+  - an ordered checksummed migrator and an extended API;
+  - **11/11 tests** covering all 8 turn-4 scenarios;
+  - 9/9 deliberate mutations caught.
+- **No** Neon, remote SQL, further model call or email.

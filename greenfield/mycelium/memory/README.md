@@ -15,6 +15,15 @@ Failed experiments remain records with outcomes/evidence rather than disappearin
 
 Version/checksum tracking is separate in schema_migrations. The migration is atomic, creates only this new schema and refuses an existing unrecognized schema or changed applied checksum. There is no FindPitches data copy, import, DROP or shared public table.
 
+**Migration `002_integrity_assessments` (28 Oct 2026, offline only)** implements the BRIX exchange's agreed design ([result](../../docs/mycelium/BRIX_MEMORY_COLLAB_RESULT_2026-10-28.md)):
+
+- assessments on nodes or edges, with supersession and independence keys;
+- enforced append-only (triggers);
+- validity intervals and payload bounds;
+- in the API: capacity admission, keyset paging, cycle-safe traversal, idempotent retries, a secret refusal, and the four revisit predicates.
+
+`npm test` runs 11 tests on PGlite. Not applied to Neon.
+
 ## Prepared files and local verification
 
 `package.json`, `package-lock.json`, `.gitignore`, `.env.example`, `target.json`, `sql/001_memory.sql`, `src/{connection,schema,memory}.mjs`, `scripts/{check,database}.mjs`, `test/memory.test.mjs` and this README.

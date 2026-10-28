@@ -6,7 +6,7 @@
   "engines": { "node": ">=22.20.0" },
   "scripts": {
     "build": "node scripts/check.mjs",
-    "test": "node test/memory.test.mjs",
+    "test": "node --test test/*.test.mjs",
     "db:check": "node scripts/database.mjs check",
     "db:migrate": "node scripts/database.mjs migrate",
     "db:smoke:write": "node scripts/database.mjs smoke-write",
