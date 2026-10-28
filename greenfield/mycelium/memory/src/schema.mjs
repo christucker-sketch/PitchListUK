@@ -5,8 +5,11 @@ import { createHash } from 'node:crypto';
 export const versions = ['001_memory', '002_integrity_assessments', '003_redaction'];
 export const version = versions[versions.length - 1];
 
+// Hash the reviewed LF SQL identically on Windows CRLF checkouts. Other byte changes remain significant.
+export const canonicalSql = source => source.replace(/\r\n/g, '\n');
+
 export async function migration(v) {
-  const source = await readFile(new URL(`../sql/${v}.sql`, import.meta.url), 'utf8');
+  const source = canonicalSql(await readFile(new URL(`../sql/${v}.sql`, import.meta.url), 'utf8')); 
   return { version: v, checksum: createHash('sha256').update(source).digest('hex'),
     statements: source.split('-- statement').map(text => ({ text: text.trim() })).filter(s => s.text) };
 }

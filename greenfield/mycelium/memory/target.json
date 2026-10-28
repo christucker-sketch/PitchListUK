@@ -3,6 +3,24 @@
   "project": "raspy-silence-27774097",
   "branch": "production",
   "schema": "mycelium_memory",
-  "services": ["postgres"],
-  "requiredPlan": "Free"
+  "services": [
+    "postgres"
+  ],
+  "requiredPlan": "Free",
+  "endpointHost": "ep-little-thunder-zahn9b42.c-2.eu-west-2.aws.neon.tech",
+  "database": "neondb",
+  "migrationRole": "neondb_owner",
+  "existingUntouchedSchemas": {
+    "neon_auth": [
+      "account",
+      "invitation",
+      "jwks",
+      "member",
+      "organization",
+      "project_config",
+      "session",
+      "user",
+      "verification"
+    ]
+  }
 }

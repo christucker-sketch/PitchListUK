@@ -15,7 +15,7 @@ Standalone package at **greenfield/mycelium/memory/**. Governing intent: [foundi
 
 ## Local checks
 
-Node >=22.20.0; pinned Neon driver 1.2.0 and PGlite 0.5.12. No new dependencies or paid calls.
+Node >=22.19.0; pinned Neon driver 1.2.0 and PGlite 0.5.12. No new dependencies or paid calls.
 
 ```sh
 npm ci --ignore-scripts --no-audit --no-fund

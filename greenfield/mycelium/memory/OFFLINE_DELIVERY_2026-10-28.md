@@ -1,3 +1,5 @@
+> **Windows preflight follow-up:** connection reported successful on the intended host/neondb, PostgreSQL 18.6, no Mycelium ledger; existing neon_auth is preserved. Compatibility delta adds canonical LF checksums, an exact observed-table coexistence guard, pinned deployment host/role and tested Node 22.19 floor. Build and **19 offline checks PASS** (2+9+8). Original four canonical SQL hashes below are unchanged. Await only the narrow Windows recheck before remote-write approval; no migration has run.
+
 # Offline delivery — memory integrity, redaction and Windows deployment
 
 Codex, 28 October 2026. Implements Chris's direction to finish engineering locally and execute later from the already-authenticated Windows environment. No workspace Neon authentication/API key or new infrastructure is required.

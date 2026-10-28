@@ -2,6 +2,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { randomUUID } from 'node:crypto';
 import { connect } from '../src/connection.mjs';
 import { migrate } from '../src/schema.mjs';
+import { assertMigrationCatalog, assertDeploymentTarget } from '../src/preflight.mjs';
 import { nodeInsert, edgeInsert, createMemory } from '../src/memory.mjs';
 
 const mode = process.argv[2];
@@ -10,6 +11,7 @@ try {
   if (['migrate', 'roles', 'smoke-write'].includes(mode) && process.env.MYCELIUM_REMOTE_WRITES_APPROVED !== 'yes') {
     throw new Error('Remote schema/data changes require MYCELIUM_REMOTE_WRITES_APPROVED=yes after owner approval.');
   }
+  assertDeploymentTarget(process.env);
   const db = await connect();
   if (mode === 'inspect') {
     const result = await db.transaction([
@@ -32,7 +34,7 @@ try {
     console.log('Authenticated HTTPS database connection passed. No schema/data writes.');
   } else if (mode === 'migrate') {
     const foreign = await db.query("SELECT table_schema,table_name FROM information_schema.tables WHERE table_schema NOT IN ('pg_catalog','information_schema','mycelium_memory')");
-    if(foreign.length) throw new Error('Unexpected non-Mycelium tables; inspect and stop.');
+    assertMigrationCatalog(foreign);
     console.log(`Mycelium-only schema migration ${await migrate(db)}.`);
   } else if (mode === 'smoke-write') {
     const discovery = randomUUID(), result = randomUUID(), edge = randomUUID();

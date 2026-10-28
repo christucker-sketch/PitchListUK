@@ -2,8 +2,10 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { randomUUID } from 'node:crypto';
 import { PGlite } from '@electric-sql/pglite';
-import { migrate } from '../src/schema.mjs';
-import { readFile, mkdtemp, rm } from 'node:fs/promises';
+import { migrate, versions } from '../src/schema.mjs';
+import { assertMigrationCatalog, assertDeploymentTarget, target } from '../src/preflight.mjs';
+import { pathToFileURL } from 'node:url';
+import { readFile, writeFile, mkdir, mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { configureLocal } from '../scripts/configure-local.mjs';
@@ -156,4 +158,30 @@ test('Windows configuration helper accepts captured URI, returns only metadata, 
     const saved=await readFile(file,'utf8');assert.ok(saved.includes('MYCELIUM_DATABASE_HOST'));
     await assert.rejects(configureLocal(value,file),/EEXIST/);assert.equal(await readFile(file,'utf8'),saved);
   }finally{await rm(root,{recursive:true,force:true});}
+});
+
+test('Windows CRLF migration checksums match LF ledgers; substantive SQL drift still refuses',async()=>{
+  const root=await mkdtemp(join(tmpdir(),'mycelium-crlf-'));const pg=new PGlite();const db=adapter(pg);
+  try{
+    await migrate(db);await mkdir(join(root,'src'));await mkdir(join(root,'sql'));
+    await writeFile(join(root,'src','schema.mjs'),await readFile(new URL('../src/schema.mjs',import.meta.url),'utf8'));
+    for(const v of versions){const sql=await readFile(new URL(`../sql/${v}.sql`,import.meta.url),'utf8');await writeFile(join(root,'sql',`${v}.sql`),sql.replace(/\r?\n/g,'\r\n'));}
+    const windows=await import(pathToFileURL(join(root,'src','schema.mjs')).href);
+    assert.equal(await windows.migrate(db),'already applied');
+    const last=join(root,'sql',`${versions.at(-1)}.sql`);
+    await writeFile(last,(await readFile(last,'utf8'))+'\r\n-- actual source change\r\n');
+    await assert.rejects(windows.migrate(db),/checksum/);
+  }finally{await pg.close();await rm(root,{recursive:true,force:true});}
+});
+
+test('migration catalog permits only inspected Neon Auth names; deployment host/role is pinned',()=>{
+  const existing=target.existingUntouchedSchemas.neon_auth.map(table_name=>({table_schema:'neon_auth',table_name}));
+  assert.doesNotThrow(()=>assertMigrationCatalog([...existing,{table_schema:'mycelium_memory',table_name:'nodes'}]));
+  for(const row of [{table_schema:'public',table_name:'user'},{table_schema:'neon_auth',table_name:'unexpected'},
+    {table_schema:'findpitches',table_name:'events'}]) assert.throws(()=>assertMigrationCatalog([...existing,row]),/Unexpected/);
+  const env={MYCELIUM_DATABASE_HOST:target.endpointHost,MYCELIUM_DATABASE_NAME:target.database,
+    MYCELIUM_DATABASE_URL:`postgresql://${target.migrationRole}:synthetic-only@${target.endpointHost}/${target.database}?sslmode=require`};
+  assert.doesNotThrow(()=>assertDeploymentTarget(env));
+  assert.throws(()=>assertDeploymentTarget({...env,MYCELIUM_DATABASE_HOST:'ep-other.neon.tech'}),/target/);
+  assert.throws(()=>assertDeploymentTarget({...env,MYCELIUM_DATABASE_URL:env.MYCELIUM_DATABASE_URL.replace('neondb_owner:','wrong:')}),/role/);
 });
