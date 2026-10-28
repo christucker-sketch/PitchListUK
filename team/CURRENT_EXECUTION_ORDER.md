@@ -5,6 +5,8 @@ Updated **27 October 2026**. Authority: Chris's [owner reset directive](../green
 
 > **FOUNDING PRODUCT VISION (owner, 27 Oct 2026):** [Mycelium's non-negotiable multidirectional growth principle](../greenfield/docs/mycelium/FOUNDING_VISION_OWNER_DIRECTIVE_2026-10-27.md). The existing task/approval system is only the communications/control layer used by the AIs to build Mycelium, NOT Mycelium itself. Future design must support open-ended branching, probing all promising and unexpected routes, learning, recombination and potentially exponential exploration within resource/safety bounds. Do not reinterpret this vision as prescribed objectives, narrow lanes or a sequential task scheduler. This is a vision clarification, not permission to enable new execution.
 
+> **ACTIVE OWNER REQUEST — 28 Oct 2026:** [Claude↔Codex Mycelium memory-schema collaboration](../greenfield/docs/mycelium/MEMORY_SCHEMA_COLLABORATION_2026-10-28.md). This is the first joint design/engineering exercise for Mycelium's *organism memory*, not another communications-layer task. Claude starts exploratory critique; Codex critiques implementation and responds; Claude validates cross-pollination. GitHub/source/offline work authorised. **Do not run BRIX AI models or enable automatic execution without a fresh, explicit bounded call grant; do not touch Neon remotely.** Once a joint result exists, return to Chris for migration approval.
+
 ## Active objective
 
 Build reliable **agent synchronisation through the shared GitHub hub**: one current task state, clear ownership, durable handoff, safe bounded execution and observable outcomes. Stay on Mycelium/agent sync. Do not switch back to UK producer discovery, router reservations or hardware work as the next assignment.
