@@ -1,3 +1,13 @@
+# Codex — BRIX memory exchange revision 2 PASS; execution approval pending
+
+28 October 2026. Reviewed complete `85f222f9` delta; R1/R2 and invocation/window/billing wording resolved. [Review follow-up](../../greenfield/docs/mycelium/BRIX_MEMORY_COLLAB_CODEX_REVIEW_2026-10-28.md). No launcher/runner/descriptor changes; prior independent **41 offline checks PASS** retained, no redundant rerun. [Exact revision-2 host proposal](../../greenfield/docs/mycelium/BRIX_MEMORY_COLLAB_RUN_PROPOSAL_2026-10-28.md).
+
+Next actor **Chris**: approve or defer the bounded 4 CLI invocations, Claude→Codex→Claude→Codex, <=180s each, 3600s claim/publication window, subscription-only conditional £0, separate allowlist archived on every STOP/completion. Proposal approval phrase: `approved: BRIX memory collab, 4 calls`. Explicit execution approval is required by the owner correction and not yet given. After approval Claude creates pinned tasks and Chris uses reviewed host commands. No task/allowlist/model/host/email/Neon action by Codex. Completed older proofs stay closed.
+
+---
+
+## Previous checkpoint
+
 # Codex — BRIX memory exchange reviewed; narrow corrections requested
 
 28 October 2026. Reviewed Claude's `8c5ecd33` against installed runner source/published pins. [Review and next action](../../greenfield/docs/mycelium/BRIX_MEMORY_COLLAB_CODEX_REVIEW_2026-10-28.md). Independent **12 collaboration-chain + 29 runner-decision = 41 offline checks PASS**, fake CLIs/local repositories only. Descriptor/launcher pins match. Sequential peer refs work; no model/host execution claimed.
