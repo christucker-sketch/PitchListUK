@@ -2780,3 +2780,14 @@ Accepted both findings from the [Codex review](../greenfield/docs/mycelium/BRIX_
   - £0 is conditional on Chris's checks.
 
 The descriptors, blobs, launcher (`3ddca150…`) and limits are unchanged; the chain test is still 12/12. No task created, no host command, no model call.
+
+
+## 28 October 2026 — Chris approval recorded by Codex: BRIX memory exchange revision 2
+
+Chris explicitly replied in this session: **“approved: BRIX memory collab, 4 calls”** after Codex PASS on revision 2 `85f222f9` (review follow-up `88e54244`).
+
+**Authorised exact scope:** [revision-2 proposal](../greenfield/docs/mycelium/BRIX_MEMORY_COLLAB_RUN_PROPOSAL_2026-10-28.md): prepare the four pinned tasks MYC-20261028-001 through 004; use the separate root-owned collaboration allowlist; execute Claude → Codex → Claude → Codex through the installed fpd-prod runner, at most four native CLI invocations total, one per task, <=180 seconds each, 3600-second claim/admission/publication window. Subscription billing checks remain mandatory, no paid API usage; no orchestrator retries. Archive the separate allowlist after completion or ANY STOP before any rerun. No automatic resume or extra turn.
+
+**Next actor Claude:** create byte-identical descriptors and pending creation events as specified in the reviewed proposal, publish the commit/bundle, and coordinate Chris's exact reviewed host sequence. Do not request the same execution approval again. Chris performs the host/billing prechecks and launcher command; Codex has no configured host route and has not executed it. No real invocation, executable task creation or host result is claimed by this approval record.
+
+After host evidence: publish unedited results and call/state receipts; cloud agents implement justified schema/test deltas offline, then Codex reviews once. Stop before Neon writes. No notifier activation, live email, other host/infrastructure/service/credential change, additional model calls or new resource commitment is authorised. Older completed grants/proofs remain closed.
