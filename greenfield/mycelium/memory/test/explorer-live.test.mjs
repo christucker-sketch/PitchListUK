@@ -8,8 +8,8 @@ import { PGlite } from '@electric-sql/pglite';
 import { migrate } from '../src/schema.mjs';
 import { target } from '../src/preflight.mjs';
 import { scramKeys, deriveKeys, scramVerifier, VERIFIER_RE } from '../scripts/scram-verifier.mjs';
-import { createLoginStatements, disableLoginStatements, membershipQueries, EXPLORER_ROLE } from '../scripts/explorer-provision.mjs';
-import { assertExplorerTarget, assertLeastPrivilege, whoamiQueries, LIVE } from '../scripts/explorer-live.mjs';
+import { createLoginStatements, disableLoginStatements, membershipQueries, EXPLORER_ROLE, assertExplorerLogin, assertExplorerClosed } from '../scripts/explorer-provision.mjs';
+import { assertExplorerTarget, assertLeastPrivilege, whoamiQueries, footprintQueries, LIVE } from '../scripts/explorer-live.mjs';
 import { explorerA, explorerB } from '../examples/fixtures.mjs';
 
 const adapter = pg => ({ query: async (s, p = []) => (await pg.query(s, p)).rows,
@@ -81,6 +81,10 @@ test('live steps as the explorer login: least-privilege check passes, A then B s
     assert.deepEqual(await counts(db), { n: 6, e: 6, a: 2 });          // reruns are no-ops
     const synthetic = await db.query("SELECT count(*)::int AS n FROM mycelium_memory.nodes WHERE kind IN ('discovery','failed_experiment','cross_branch_result') AND attributes->>'synthetic' = 'true'");
     assert.equal(synthetic[0].n, 3);
+    const tagged = (await db.query(`SELECT (SELECT count(*) FROM mycelium_memory.nodes WHERE attributes->>'synthetic'='true')::int AS n,
+      (SELECT count(*) FROM mycelium_memory.edges WHERE attributes->>'synthetic'='true')::int AS e,
+      (SELECT count(*) FROM mycelium_memory.assessments WHERE assessor = $1)::int AS a`, [`fixture-explorer-b/${LIVE.bRun}`]))[0];
+    assert.deepEqual(tagged, { n: 6, e: 6, a: 2 });                    // all 14 rows identifiable
     await db.query('RESET ROLE');
     await db.query('GRANT ALL ON SCHEMA mycelium_memory TO neondb_owner');
     await db.query('GRANT ALL ON ALL TABLES IN SCHEMA mycelium_memory TO neondb_owner');
@@ -98,4 +102,40 @@ test('explorer target guard: pinned host/database and the explorer login only', 
   assert.throws(() => assertExplorerTarget(env(url('neondb_owner'))), /explorer login/);
   assert.throws(() => assertExplorerTarget(env(url(EXPLORER_ROLE, 'ep-other.neon.tech'))), /inspected target/);
   assert.throws(() => assertExplorerTarget(env(url(EXPLORER_ROLE, target.endpointHost, 'otherdb'))), /inspected target/);
+});
+
+test('owner close is safe in every state; verify-login / verify-closed fail closed', async () => {
+  const { pg, db } = await world();
+  try {
+    const state = async () => { const rs = await db.transaction(membershipQueries); return { roles: rs[1], memberships: rs[2] }; };
+    await db.transaction(disableLoginStatements);                          // role absent: no error
+    assertExplorerClosed(await state());
+    assert.throws(() => assertExplorerLogin({ roles: [], memberships: [] }), /approved least-privilege/);
+    await db.transaction(createLoginStatements(scramVerifier(PW)));
+    assertExplorerLogin(await state());
+    assert.throws(() => assertExplorerClosed({ roles: [{ rolname: EXPLORER_ROLE, rolcanlogin: true }], memberships: [] }), /still active/);
+    await db.query(`GRANT mycelium_memory_redactor TO ${EXPLORER_ROLE}`);   // any extra membership is refused
+    const extra = await state();
+    assert.throws(() => assertExplorerLogin(extra), /approved least-privilege/);
+    await db.query(`REVOKE mycelium_memory_redactor FROM ${EXPLORER_ROLE}`);
+    await db.transaction(disableLoginStatements); await db.transaction(disableLoginStatements);   // twice: idempotent
+    assertExplorerClosed(await state());
+  } finally { await pg.close(); }
+});
+
+test('footprint receipt: before/after delta is exactly the trial rows and existing rows are preserved', async () => {
+  const { pg, db } = await world();
+  try {
+    await db.query("INSERT INTO mycelium_memory.nodes (id, kind) VALUES (gen_random_uuid(), 'pre-existing')");
+    await db.transaction(createLoginStatements(scramVerifier(PW)));
+    await db.query(`SET ROLE ${EXPLORER_ROLE}`);
+    const fp = async () => (await db.transaction(footprintQueries))[1][0];
+    const before = await fp();
+    await explorerA(db, { synthetic: true, run: LIVE.aRun }); await explorerB(db, { synthetic: true, run: LIVE.bRun, aRun: LIVE.aRun });
+    const after = await fp();
+    assert.deepEqual([after.nodes_total - before.nodes_total, after.edges_total - before.edges_total, after.assessments_total - before.assessments_total], [6, 6, 2]);
+    assert.deepEqual([after.trial_nodes, after.trial_edges, after.trial_assessments], [6, 6, 2]);
+    assert.equal(before.nodes_total, 1);
+    await db.query('RESET ROLE');
+  } finally { await pg.close(); }
 });

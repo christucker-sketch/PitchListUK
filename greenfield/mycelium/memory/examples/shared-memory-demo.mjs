@@ -26,7 +26,7 @@ if (dir && who) {
   try {
     for (const w of ['A', 'B']) {
       const r = spawnSync(process.execPath, [me, d, w], { encoding: 'utf8' });
-      if (r.status !== 0) { process.stderr.write(r.stderr); process.exit(1); }
+      if (r.error || r.status !== 0 || !r.stdout.trim()) { console.error(`explorer ${w} could not run: ${r.error?.code ?? `exit ${r.status}`} ${r.stderr ?? ''}`); process.exit(1); }
       console.log(r.stdout.trim());
     }
   } finally { await rm(d, { recursive: true, force: true }); }

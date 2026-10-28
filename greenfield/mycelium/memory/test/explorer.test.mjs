@@ -21,7 +21,12 @@ const demo = fileURLToPath(new URL('../examples/shared-memory-demo.mjs', import.
 test('fresh processes: explorer A records, explorer B (separate process) recalls by phrase and extends A\'s graph durably', async () => {
   const dir = await mkdtemp(join(tmpdir(), 'mycelium-explorer-'));
   try {
-    const run = w => { const r = spawnSync(process.execPath, [demo, dir, w], { encoding: 'utf8' }); assert.equal(r.status, 0, r.stderr); return JSON.parse(r.stdout); };
+    const run = w => {
+      const r = spawnSync(process.execPath, [demo, dir, w], { encoding: 'utf8' });
+      assert.ifError(r.error);                                                      // e.g. EPERM where child processes are refused
+      assert.equal(r.status, 0, r.stderr); assert.ok(r.stdout.trim(), `explorer ${w} printed nothing`);
+      return JSON.parse(r.stdout);
+    };
     const a = run('A'), b = run('B');
     assert.notEqual(a.pid, b.pid);                                                   // really two processes
     assert.ok(b.reusedFromA.includes(a.finding) && b.reusedFromA.includes(a.failure)); // B reached A's records without A's ids
@@ -66,9 +71,15 @@ test('bounded retrieval: result and depth caps flag truncation; limits clamp; ex
     const hub = await e.contribute({ key: 'hub', kind: 'hub', title: 'hub' });
     for (let i = 0; i < 30; i++) await e.contribute({ key: `spoke-${i}`, kind: 'spoke', title: `needle spoke ${i}`, links: [{ to: hub.id, relation: 'near' }] });
     const capped = await e.recall({ from: [hub.id], maxResults: 10 });
-    assert.equal(capped.items.length, 11); assert.equal(capped.truncated, true);
+    assert.equal(capped.items.length, 10); assert.equal(capped.truncated, true);       // TOTAL budget, seed included
+    const isolated = []; for (let i = 0; i < 20; i++) isolated.push((await e.contribute({ key: `iso-${i}`, kind: 'iso' })).id);
+    const one = await e.recall({ from: isolated, maxResults: 1 });
+    assert.equal(one.items.length, 1); assert.equal(one.truncated, true);              // starts count against the budget too
+    assert.equal((await e.recall({ from: [hub.id, hub.id], maxResults: 5 })).items.filter(i => i.id === hub.id).length, 1);
+    for (const l of capped.links) assert.ok(capped.items.some(i => i.id === l.source_id) && capped.items.some(i => i.id === l.target_id));
+    assert.ok(capped.omittedLinks > 0);                                                 // links to cut-off nodes are counted, not shown
     const clamped = await e.recall({ from: [hub.id], maxDepth: 99, maxResults: 99999 });
-    assert.deepEqual(clamped.limits, { maxDepth: EXPLORER_LIMITS.depth, maxResults: EXPLORER_LIMITS.results });
+    assert.deepEqual(clamped.limits, { maxDepth: EXPLORER_LIMITS.depth, maxResults: EXPLORER_LIMITS.results, maxLinks: EXPLORER_LIMITS.recallLinks });
     let prev = hub; const chain = [];
     for (let i = 0; i < 6; i++) { prev = await e.contribute({ key: `chain-${i}`, kind: 'step', links: [{ to: prev.id, relation: 'next' }] }); chain.push(prev.id); }
     const shallow = await e.recall({ from: [chain.at(-1)], relations: ['next'], maxDepth: 2 });
@@ -134,6 +145,50 @@ test('runtime role: the adapter works with SELECT/INSERT-only grants; redaction,
     for (const banned of [/\bredact\s*\(/i, /\bmigrate\b/, /\b(CREATE|ALTER|DROP|GRANT|REVOKE|UPDATE|DELETE|TRUNCATE)\s/])
       assert.doesNotMatch(src.replace(/^\s*\/\/.*$/gm, ''), banned);                   // no privileged path in the adapter code
   } finally { await pg.close(); }
+});
+
+test('R2: a stance against a LINK survives recall and render, under runtime grants', async () => {
+  const { pg, db } = await fresh();
+  try {
+    const grants = await readFile(new URL('../sql/runtime_grants.sql', import.meta.url), 'utf8');
+    await db.transaction(grants.split('-- statement').map(t => ({ text: t.trim() })).filter(s => s.text));
+    await db.query('SET ROLE mycelium_memory_runtime');
+    const e = createExplorerMemory(db, { agent: 'a', run: 'r' });
+    const A = await e.contribute({ key: 'A', kind: 'claim', title: 'A' });
+    const B = await e.contribute({ key: 'B', kind: 'claim', title: 'B', links: [{ to: A.id, relation: 'causes' }] });
+    const causes = B.links[0];
+    const C = await createExplorerMemory(db, { agent: 'c', run: 'r' }).contribute({ key: 'C', kind: 'evidence', title: 'C',
+      stances: [{ edge: causes, stance: 'contradicts', weight: 0.9, independenceKey: 'trial-7' }] });
+    const r = await e.recall({ from: [A.id], maxDepth: 1 });
+    assert.ok(r.links.some(l => l.id === causes));
+    assert.equal(r.stances[causes].type, 'edge');
+    assert.deepEqual(r.stances[causes].stances.map(x => [x.stance, x.independent_sources]), [['contradicts', 1]]);
+    const text = e.render(r);
+    const at = text.indexOf(`[link ${causes}]`);
+    assert.ok(at >= 0 && text.slice(at).split('\n')[1].includes('"contradicts"'));   // printed under the link itself
+    assert.ok(C.id); await db.query('RESET ROLE');
+  } finally { await pg.close(); }
+});
+
+test('R1: render never exceeds maxBytes, never splits an entry, at every boundary and with multibyte text', async () => {
+  const e = createExplorerMemory({ query: async () => [] }, { agent: 'a', run: 'r' });
+  const id = i => `00000000-0000-4000-8000-${String(i).padStart(12, '0')}`;
+  const node = (i, body) => ({ id: id(i), kind: 'k', depth: 1, title: 't', body, provenance: { declared_by: { agent: 'a', run: 'r' } } });
+  // Codex's reproduction: a 737-character first body and two large bodies, graph truncated, maxBytes 1024.
+  const crafted = { items: [node(1, 'x'.repeat(737)), node(2, 'y'.repeat(5000)), node(3, 'z'.repeat(5000))], links: [], stances: {}, truncated: true };
+  assert.ok(Buffer.byteLength(e.render(crafted, { maxBytes: 1024 })) <= 1024);
+  const bodies = ['plain', '€'.repeat(300), '🍄'.repeat(200), 'é'.repeat(911), 'x'.repeat(737)];
+  const big = { items: Array.from({ length: 60 }, (_, i) => node(i, bodies[i % bodies.length].repeat(1 + (i % 3)))),
+    links: [{ id: id(900), source_id: id(1), target_id: id(2), relation: 'r' }], stances: {}, truncated: true, omittedLinks: 3 };
+  for (let cap = 1024; cap <= 24576; cap += 97) {
+    const out = e.render(big, { maxBytes: cap });
+    assert.ok(Buffer.byteLength(out, 'utf8') <= cap, `over budget at ${cap}`);
+    assert.ok(out.startsWith('<<<MYCELIUM MEMORY') && out.endsWith('>>>END MYCELIUM MEMORY'));
+    for (const block of out.split('[node ').slice(1)) assert.match(block, /\n  body: "[^\n]*"\n/);   // every kept entry complete
+    assert.match(out, /\(truncated: \d+ entries omitted; recall was also cut at its limits\)/);
+  }
+  const small = { items: [node(1, 'short')], links: [], stances: {}, truncated: false };
+  assert.doesNotMatch(e.render(small), /truncated/);                                 // no false truncation note
 });
 
 test('render: recalled memory becomes a bounded, fenced data block that says when it was cut', async () => {

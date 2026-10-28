@@ -25,6 +25,20 @@ export function assertExplorerTarget(env) {
   if (decodeURIComponent(url.username) !== EXPLORER_ROLE) throw new Error('Explorer connection must use the explorer login, never the owner.');
 }
 
+// Read-only receipt: totals (so a before/after delta proves existing rows were preserved) and the trial's own rows.
+export const footprintQueries = [
+  { text: 'SET TRANSACTION READ ONLY' },
+  { text: `SELECT (SELECT count(*) FROM mycelium_memory.nodes)::int AS nodes_total,
+     (SELECT count(*) FROM mycelium_memory.edges)::int AS edges_total,
+     (SELECT count(*) FROM mycelium_memory.assessments)::int AS assessments_total,
+     (SELECT count(*) FROM mycelium_memory.nodes WHERE attributes->>'synthetic' = 'true'
+        AND provenance->'declared_by'->>'run' IN ($1, $2))::int AS trial_nodes,
+     (SELECT count(*) FROM mycelium_memory.edges WHERE attributes->>'synthetic' = 'true'
+        AND provenance->'declared_by'->>'run' IN ($1, $2))::int AS trial_edges,
+     (SELECT count(*) FROM mycelium_memory.assessments WHERE assessor IN ($3, $4))::int AS trial_assessments`,
+    values: [LIVE.aRun, LIVE.bRun, `fixture-explorer-a/${LIVE.aRun}`, `fixture-explorer-b/${LIVE.bRun}`] }
+];
+
 export const whoamiQueries = [
   { text: 'SET TRANSACTION READ ONLY' },
   { text: `SELECT current_user AS role, session_user AS session, current_database() AS database,
@@ -44,7 +58,7 @@ export function assertLeastPrivilege(w) {
 if (process.argv[1] && pathToFileURL(resolve(process.argv[1])).href === import.meta.url) {
   const mode = process.argv[2];
   try {
-    if (!['whoami', 'A', 'B', 'check'].includes(mode)) throw new Error('Unknown command.');
+    if (!['whoami', 'footprint', 'A', 'B', 'check'].includes(mode)) throw new Error('Unknown command.');
     assertExplorerTarget(process.env);
     const db = await connect();
     const [w] = (await db.transaction(whoamiQueries))[1];
@@ -52,6 +66,7 @@ if (process.argv[1] && pathToFileURL(resolve(process.argv[1])).href === import.m
     const opts = { synthetic: true, memoryOptions: { maxDatabaseBytes: LIVE.maxDatabaseBytes } };
     let out;
     if (mode === 'whoami') out = w;
+    else if (mode === 'footprint') out = (await db.transaction(footprintQueries))[1][0];
     else if (mode === 'A') out = await explorerA(db, { ...opts, run: LIVE.aRun });
     else if (mode === 'B') out = await explorerB(db, { ...opts, run: LIVE.bRun, aRun: LIVE.aRun });
     else {

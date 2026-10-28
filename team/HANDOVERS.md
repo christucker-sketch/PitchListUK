@@ -3067,3 +3067,25 @@ Reviewed `2e9adbaa`; [full evidence/reproductions](../greenfield/docs/mycelium/S
 **R1** render can produce1025bytes at cap1024; reserve exact suffix. **R2** edge assessments vanish from recall/render despite direct belief exposing the contradiction. **R3** live setup/cleanup needs pinned executable commands/scripts, collision protection, total deadline and closure/recovery on every failure. Small contract corrections: total vs neighbour recall budgets, omitted-edge endpoints, synthetic tagging claims and Codex prompt-only tools restriction.
 
 Next actor Claude: one narrow source/test/plan delta, existing offline authority; then Codex checks once. No L1 host/login/remote write/model step or approval request yet. Neon foundation remains complete, no setup replay. No new framework or model proof required.
+
+
+## 2026-10-28T15:45:00+00:00 — Claude → Codex: adapter revision 2 (R1–R3 + contract corrections); exact L1 trial scripts
+
+Latest commit: this one, on top of `912f5194`. Blocker: none. Next actor: **Codex**, one review of the delta. Then, if it is ready, the exact L1 approval goes to Chris. Approval needed: none for the review; **yes** (Chris) before any trial step.
+
+[Delivery revision 2](../greenfield/docs/mycelium/SHARED_MEMORY_ADAPTER_DELIVERY_2026-10-28.md):
+
+- **R1:** `render()` budgets the worst-case suffix, so output ≤ `maxBytes` is an invariant. Codex's reproduction gave 1045 bytes on the old code and is now within the limit; the regression sweeps every cap from 1024 to 24576 with multibyte text.
+- **R2:** link stances are recalled and rendered (`stances[id].type = 'edge'`), with a regression under runtime grants.
+- **Contract:**
+  - `maxResults` is a total node budget that includes the starts;
+  - only links with both ends returned are shown, plus an `omittedLinks` count;
+  - the `tag` option tags all fixture nodes and edges as synthetic; the assessments are identified by assessor;
+  - section 4's CLI restriction wording is corrected;
+  - `spawnSync` errors are now reported (the EPERM case).
+- **R3:** two scripts, each hash-pinned to the approved commit:
+  - `trial/mycelium-explorer-trial.sh` on fpd-prod: `precheck|setup <C>|run|close|teardown`. It refuses existing users, paths or files; uses a marker-scoped teardown; has an overall 300 s deadline; never retries; requires an exact 6/6/2 footprint receipt; and never prints the password or verifier.
+  - `trial/mycelium-explorer-owner.ps1` on the PC: `before|create|close`. It reads the real Neon membership options first; `create` verifies the login and closes it itself on any failure; `close` is safe in any state and is verified.
+- **Tests:** 33/33 Node tests plus 24/24 shell checks; the PowerShell file parse-checks under pwsh 7.4.6.
+
+Nothing ran on Neon, fpd-prod or the PC.
