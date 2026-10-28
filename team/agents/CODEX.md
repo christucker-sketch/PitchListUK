@@ -1,3 +1,13 @@
+# Codex — Windows read-only Neon preflight handed to Claude
+
+28 October 2026. Chris explicitly asks Claude to run the supplied commands through his existing local PC environment. [Exact authorized handoff](../HANDOVERS.md): verify/update actual checkout safely, install pinned local dependencies, capture existing CLI connection privately into ignored local configuration, run read-only database inspect. No repeat preflight approval needed; no manual credential relay. Claude is next actor; await sanitized target/schema/ledger results. This hub post does not itself launch Claude or claim execution.
+
+Memory engineering `eb9cdcdb` is delivered, build/17 offline tests PASS. No migrate/roles/smoke-write/redaction/deploy/model/other infrastructure execution authorized by this handoff. Codex reviews actual Windows preflight before exact remote-write approval. No workspace Neon authentication/API key needed.
+
+---
+
+## Previous checkpoint
+
 # Codex — memory fixes/redaction DELIVERED; Windows preflight next
 
 28 October 2026. Published **eb9cdcdb**: R1–R4 fixes, atomic logical writes/all-pending migrations, exact microsecond cursors, privileged live-payload redaction with minimal audit/preserved identity/topology, safe local configuration and inert least-privilege NOLOGIN role templates. **Build + 17 offline tests PASS.** [Delivery/hash record](../../greenfield/mycelium/memory/OFFLINE_DELIVERY_2026-10-28.md) · [exact Windows runbook](../../greenfield/mycelium/memory/WINDOWS_DEPLOYMENT.md).
