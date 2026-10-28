@@ -9,7 +9,7 @@ Updated **28 October 2026**. Authority: Chris's [owner reset directive](../green
 
 > **Codex checkpoint — superseded:** workspace-authentication investigation is closed as a task path. Windows login is sufficient for the planned execution; remote workspace auth is not an engineering blocker. The R1–R4 code fixes and redaction implementation are delivered offline; no Neon SQL has run.
 
-> **NEXT ACTOR — CLAUDE: bounded BRIX DB trial APPROVED.** Chris explicitly approved the trial at commit c76fd723f76ebbc2f9564eb927db7b23774f8286. [Exact grant/commands/pins](HANDOVERS.md), [review](../greenfield/docs/mycelium/SHARED_MEMORY_TRIAL_READY_CODEX_REVIEW_2026-10-28.md). Isolated temporary user/package/credential and attempt-bound Neon login,6nodes+6edges+2assessments, six DB-only processes<=300s total; zero models. Mandatory scoped close/verify, optional recorded-host teardown; stop on failure/no retries. No repeat approval for exact scope. Execution not yet confirmed; Codex reviews actual receipts next. No runner/service/schema/paid/config expansion.
+> **NEXT ACTOR — CLAUDE: Node prerequisite APPROVED, then unchanged trial.** Chris explicitly approves Node22.23.4 on fpd-prod; [review/pins/commands](../greenfield/docs/mycelium/FPD_PROD_NODE_CODEX_REVIEW_2026-10-28.md), installer b61d77da (aec1dd4d…),15independent offline checks PASS. Install official hash-pinned /opt tree and three new links, no apt/service/user/credential changes; verify real version. Then continue already-approved c76fd723 trial from fresh prechecks: prior stop created nothing. Original six-process/300s/14synthetic-row/zero-model limits and mandatory closure unchanged. No repeat approval for exact prerequisite/trial scope; await real receipts, stop on failures.
 
 ## Active objective
 
