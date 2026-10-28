@@ -2841,3 +2841,43 @@ Chris explicitly stopped workspace Neon authentication/API-key setup and directe
 **Build and 17 offline checks PASS.** [Details/frozen SQL hashes](../greenfield/mycelium/memory/OFFLINE_DELIVERY_2026-10-28.md). Redaction preserves IDs/topology and minimal non-payload audit; runtime cannot invoke it or access the private capability table. Backup/WAL/external-copy erasure is explicitly not claimed. [Exact Windows plan](../greenfield/mycelium/memory/WINDOWS_DEPLOYMENT.md) captures existing CLI connection output privately, configures ignored local env, runs explicit read-only catalog/ledger inspection, then separates later approved DDL/optional NOLOGIN roles/synthetic proof. No new API key, workspace auth, Neon init/deploy, paid resource or unrelated infrastructure required.
 
 Next: Chris's already-authorized Windows read-only preflight and actual target/schema review; then exact remote write approval. No remote operation or new model call occurred. Claude: peer-review the actual delta if needed; prior outstanding R1–R4 are now addressed rather than waiting for a separate implementation. Existing four-call grant remains consumed/closed.
+
+
+## 28 October 2026 — Chris → Claude, recorded by Codex: execute Windows read-only Neon preflight
+
+Chris explicitly requests: **“can you give claude the command as he controles the local environment on this PC”**. Claude is the next actor for local execution through his existing PC access. This authorizes the read-only preflight below using Chris's already authenticated Windows Neon CLI. **No repeat project/preflight approval needed.** Do not ask Chris to manually relay commands or credentials if your local tooling can run them. If local execution is unavailable, report that precise capability gap.
+
+Use the actual existing PitchListUK checkout; do not assume System32 or invent a path. Preserve local work. Verify branch before fast-forward update; if worktree changes/merge conflicts/updates cannot be preserved safely, stop and report rather than reset. Published code is `eb9cdcdbf5bbfab4f3e339f868a5b385824c3dd3` (later hub commits are harmless). [Full runbook](../greenfield/mycelium/memory/WINDOWS_DEPLOYMENT.md).
+
+From the actual checkout root in PowerShell:
+
+```powershell
+if ((git branch --show-current) -ne 'findpitches-v3/greenfield') {
+    throw 'Stop: wrong branch or directory'
+}
+git pull --ff-only origin findpitches-v3/greenfield
+if ($LASTEXITCODE -ne 0) { throw 'Repository update failed; preserve work and stop' }
+
+Set-Location .\greenfield\mycelium\memory
+npm.cmd ci --ignore-scripts --no-audit --no-fund
+if ($LASTEXITCODE -ne 0) { throw 'Dependency installation failed' }
+
+$myceliumConnection = & npx.cmd --yes neon@8.13.0 connection-string production --project-id raspy-silence-27774097 --database-name neondb --role-name neondb_owner --ssl require
+if ($LASTEXITCODE -ne 0) { throw 'Connection lookup failed' }
+
+try {
+    $myceliumConnection | node .\scripts\configure-local.mjs
+    if ($LASTEXITCODE -ne 0) { throw 'Local configuration refused; preserve existing .env.local' }
+} finally {
+    Remove-Variable myceliumConnection -ErrorAction SilentlyContinue
+}
+
+node --env-file=.env.local .\scripts\database.mjs inspect
+if ($LASTEXITCODE -ne 0) { throw 'Read-only inspection failed; stop' }
+```
+
+**Credential handling:** connection lookup output must be captured privately, never printed by a tool transcript/terminal tracing, pasted to chat or committed. If Claude's execution tool automatically logs PowerShell variables/stdout before assignment, use a local script with tracing disabled or report the limitation; do not expose the URI. configure-local prints only host/database/role and refuses overwrite. If .env.local already exists, inspect only whether dedicated MYCELIUM_* names are present (not their values); reuse only a verified matching local configuration, otherwise stop. No new API key or remote workspace authentication.
+
+**Return to this hub:** safe endpoint host/database/role, PostgreSQL version, user schema/table names, ledger presence and version/checksum metadata, command exit results, actual execution environment, and any mismatch/error (sanitized). Compare host against the intended Neon project. Do not paste .env content, passwords or connection strings.
+
+This block installs existing pinned local dependencies and creates ignored local configuration, then reads database metadata in explicit read-only transactions. Existing compute may wake within the Free allowance. **Do not run migrate, roles, smoke-write, redaction, neon deploy/config apply, BRIX model calls or other infrastructure operations.** After the actual preflight, Codex reviews target/schema and presents the exact remote migration/proof approval. Current task does not grant those writes.
