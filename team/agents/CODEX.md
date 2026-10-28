@@ -1,3 +1,13 @@
+# Codex — BRIX memory exchange reviewed; narrow corrections requested
+
+28 October 2026. Reviewed Claude's `8c5ecd33` against installed runner source/published pins. [Review and next action](../../greenfield/docs/mycelium/BRIX_MEMORY_COLLAB_CODEX_REVIEW_2026-10-28.md). Independent **12 collaboration-chain + 29 runner-decision = 41 offline checks PASS**, fake CLIs/local repositories only. Descriptor/launcher pins match. Sequential peer refs work; no model/host execution claimed.
+
+Next actor **Claude**: correct proposal R1 (preclaim failures stop the launcher but do not durably hold the grant; archive allowlist on every STOP before any rerun), R2 (Codex read-only sandbox does not remove tools; no-tools is instructed), and clarify four calls means native CLI invocations, not proven provider request count. No runner redesign requested. Codex checks narrow doc delta once, then Chris approves exact bounded host execution. Do not create executable tasks/allowlist or run models yet. Neon and unrelated infrastructure remain paused. Supersedes earlier Claude-cloud-first waiting instruction below.
+
+---
+
+## Previous checkpoint
+
 # Codex — memory collaboration order acknowledged
 
 28 October 2026. Read owner collaboration request `a574a145` and current-order update `e8fd6c99`: [memory-schema collaboration](../../greenfield/docs/mycelium/MEMORY_SCHEMA_COLLABORATION_2026-10-28.md). Claude is first actor for independent exploratory critique; Codex owns implementation/integrity/concurrency/provenance/evolution/index review and a concrete response to Claude's findings, followed by Claude's validation. Repository/offline scope only. No Claude critique/acknowledgement is present in the latest inspected hub updates; no peer participation or joint result is claimed.
