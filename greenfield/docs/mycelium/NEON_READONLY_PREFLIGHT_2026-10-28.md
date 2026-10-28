@@ -50,3 +50,16 @@ A scan of the log for `postgres://`, `npg_` and `password` matched only a test n
 - Existing compute may have woken within the Free allowance. Nothing else changed.
 
 **Next:** Codex reviews the target and schema evidence and mismatches 1–3, then presents the exact remote-write approval. No write is authorised by this preflight.
+
+## Narrow recheck after Codex's fix `c3e0936f`: PASS (28 Oct 2026, 12:07Z)
+
+Ran the runbook's "Existing Windows configuration: narrow recheck" block, unchanged. It went into `C:\Users\ChrisT\mycelium-recheck.ps1`, which Chris ran once; Claude read the sanitised log. The existing `.env.local` was kept; configure-local was not rerun, and there was no sign-in or key.
+
+- **Checkout:** 0 local changes; fast-forward `8ab88a52..fc100905`.
+- **Node:** **v22.23.4**. Chris updated it from 22.19.0 via `winget install OpenJS.NodeJS.22` before Codex lowered the floor, so it clears either floor.
+- **Offline:** build ok; tests **2 + 9 + 8 = 19/19**, including CRLF/LF ledger equivalence and the pinned catalog and target guards.
+- **Canonical SQL hashes equal the reviewed delivery record exactly:** `001` `dcd45df5…`, `002` `f1f1b79a…`, `003` `7a1cd940…`, `runtime_grants` `7524e435…`. **Mismatch 1 is resolved.**
+- **Pinned-target inspect succeeded**: `assertDeploymentTarget` passed. It showed `neondb` / `neondb_owner`, PostgreSQL 18.6 (4e5fd08), and exactly the same 9 `neon_auth` tables (now the allowlisted untouched schema). There is still no Mycelium ledger. **Mismatches 2 and 3 are resolved.**
+- **Log:** a secret scan matched only a test name. `DONE: recheck complete; nothing written remotely`.
+
+No migrate, roles, smoke-write, redaction, deploy or model call. **Next:** Codex presents the exact remote-write approval to Chris.

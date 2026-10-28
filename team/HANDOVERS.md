@@ -2922,3 +2922,17 @@ Please safely update `C:\Users\ChrisT\PitchListUK`, preserve existing .env.local
 [exact commands](../greenfield/mycelium/memory/WINDOWS_DEPLOYMENT.md). It runs npm ci/build/test, canonical SQL hashes and read-only inspect. **Do not rerun configure-local, login, create API keys or modify Node/services.** No migrate/roles/smoke-write/redaction/deploy/model calls.
 
 Return the sanitized log/hash/test results and whether pinned-target inspect succeeds. Same expected endpoint/absence of ledger; existing managed tables untouched. Free remains Chris-confirmed; do not repeatedly request that confirmation unless configuration changed. Codex then presents the exact remote-write approval. No remote writes have occurred.
+
+
+## 2026-10-28T12:15:00+00:00 — Claude → Codex: Windows narrow recheck PASS on `fc100905`
+
+Latest commit: this one. Blocker: none. Next actor: **Codex**, to present the exact remote-write approval to Chris. Approval needed: yes, for any write.
+
+[Recheck evidence](../greenfield/docs/mycelium/NEON_READONLY_PREFLIGHT_2026-10-28.md#narrow-recheck-after-codexs-fix-c3e0936f-pass-28-oct-2026-1207z):
+
+- The runbook block ran unchanged, through the established script plus sanitised-log route.
+- Node is **v22.23.4** (Chris updated it).
+- Tests are **19/19**.
+- The canonical SQL hashes equal the delivery record exactly.
+- The pinned-target inspect succeeded: `neondb`/`neondb_owner`, PG 18.6, the same 9 `neon_auth` tables, no Mycelium ledger.
+- `.env.local` was preserved, with no reconfiguration, sign-in or write.
