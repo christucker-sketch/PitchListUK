@@ -3130,3 +3130,30 @@ Reviewed `aab98936`; [acceptance and exact grant](../greenfield/docs/mycelium/SH
 Next actor **Chris**: approve/defer **“approved: bounded BRIX shared-memory database trial”**. Exact scope: existing production/neondb target; new isolated mycmem user/group/package/credential+receipt on fpd-prod; one temporary least-privilege attempt-bound Neon login; six database-only processes<=90s each/300s total, exactly6nodes+6edges+2assessments; mandatory scoped close/verify and optional receipt-scoped host teardown. No model calls/runner integration, paid resources, configuration or existing service change. Preserve all prior records/resources; stop on collisions/failures, no retries.
 
 No live trial authority yet. After approval Claude uses the existing host/Windows script+Chris-command/log route and posts receipts; Codex checks outcome. Do not redo accepted adapter engineering or prior setup proofs.
+
+
+## 28 October2026 — Chris APPROVES bounded BRIX shared-memory database trial
+
+Chris explicitly replied **“approved: bounded BRIX shared-memory database trial”** after the [Codex PASS/exact scope](../greenfield/docs/mycelium/SHARED_MEMORY_TRIAL_READY_CODEX_REVIEW_2026-10-28.md).
+
+**Next actor Claude:** coordinate execution through the established fpd-prod/Windows script + Chris-command + sanitized-log route. No repeat approval for this exact scope. No direct PC shell/automatic dispatch is inferred.
+
+**Approved commit `<C>`: `c76fd723f76ebbc2f9564eb927db7b23774f8286`.** Use this FULL SHA in every `-Commit <C>` / `setup <C>` argument in [delivery section5](../greenfield/docs/mycelium/SHARED_MEMORY_ADAPTER_DELIVERY_2026-10-28.md). It contains Claude revision3 plus only the independently passing snapshot-test portability correction. Later hub-only commits do not alter the package. Stop on any package/script discrepancy; no silent source expansion.
+
+Pinned executable SHA256:
+- fpd-prod trial script: `7fee97712b93e1379d917eb7c23cc3b3b2d55962b276c42b9b52296ec8c5af9c`
+- Windows owner script: `55c91a3bc909c1ab4749b23812d4e6e849e1233b06c04af75d838b1904d40416`
+
+**Exact authorized sequence and limits:**
+1. Existing target project raspy-silence-27774097 / production / ep-little-thunder-zahn9b42.c-2.eu-west-2.aws.neon.tech / neondb. Owner stays on the Windows PC. Read-only actual memberships and absence checks, host prerequisite/collision checks. Missing Node>=22.19 is STOP, not an install grant.
+2. Create only the isolated system user/group mycmem (no home), root-owned /opt/mycelium-memory from the pinned archive/dependencies, new /etc/mycelium and protected credential, root-owned /var/lib/mycelium-explorer-trial receipt, protected verifier at the reviewed path. Refuse existing users/groups/paths/symlinks; preserve all pre-existing state.
+3. Secure verifier transfer; create one attempt-bound LOGIN mycelium_explorer_fpd from Windows; inherit only mycelium_memory_runtime, SET/ADMIN false, connection limit2; inspect and verify. Never print/copy owner credentials/passwords/verifiers into hub/chat.
+4. Exactly six fresh database-only processes on fpd-prod: whoami, footprint, A, B, check, footprint. <=90s each, <=300s overall; no automatic retry. Exactly6synthetic nodes+6edges+2assessments. Preserve existing rows. **Zero AI/Claude/Codex CLI/model calls.**
+5. ALWAYS perform attempt-bound owner close/verify (NOLOGIN, runtime membership revoked), archive PC receipt, and host close removing only recorded credential/verifier. Optional reviewed teardown of only recorded trial-created host resources is included. The14synthetic rows and disabled DB role remain.
+6. On any STOP/failure/uncertain outcome, stop subsequent trial steps and perform only scoped closure/read-only reconciliation. No rerun/new attempt without fresh approval. If closure cannot be verified, explicitly report uncertainty and follow the reviewed owner-side recovery; never claim success or mutate a foreign role/path.
+
+No runner/service/timer/notifier/Neon Auth/other infrastructure changes, schema migrations, real redaction, paid resource/plan/compute change or new orchestration framework. The future actual CLI-memory bridge remains separate and unapproved.
+
+**Evidence:** exact code/hash/prechecks, actual membership-option checks, created-attempt binding/least-privilege receipt, six process results and timing, exact6/6/2 delta on preserved baseline, owner verified-closed receipt, host CLOSE OK, optional teardown receipt and write-flag removal. Logs sanitized. Codex then reviews actual results once.
+
+This is the authorization handoff, not evidence that execution has begun or succeeded.
