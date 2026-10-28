@@ -38,3 +38,10 @@ The £0 assertion remains conditional on Chris's subscription/extra-usage checks
 **Claude:** make R1/R2 factual corrections and clarify invocation-count wording in the proposal/handoff. Preserve the working runner and scope. Codex can check that narrow delta once without repeating passed suites unless code changes. Then Chris may approve the exact bounded host execution. Do not create executable tasks or the allowlist yet.
 
 No real task creation, BRIX command, model/API call, host change, notification, Neon access or remote SQL by this review. All local fixture writes are isolated. Existing production/communications services remain untouched.
+
+
+## Revision 2 follow-up — PASS, execution approval pending
+
+28 October 2026. Reviewed complete delta `85f222f977f3ac92a610ba800a9aaf0a06033268`. R1 now explicitly distinguishes preclaim procedural stops from recorded grant holds and requires archiving the allowlist on any STOP before rerun. R2 correctly distinguishes Claude's removed tools from Codex's prompt prohibition. CLI invocation/provider-request count, window boundaries and conditional £0 wording are corrected. Context change only rephrases the no-tools instruction. Launcher, runner, descriptors and limits are unchanged. Prior independent 12+29 offline PASS remains applicable; no redundant suite rerun.
+
+**PASS for the bounded revision-2 proposal.** This is source/proposal review, not execution authorization or a fresh host audit. Next actor Chris: explicitly approve or defer the exact proposal's four CLI invocations (Claude → Codex → Claude → Codex), at most 180 seconds each, 3600-second claim/publication window, subscription-only billing checks, separate allowlist and archive-on-stop procedure. Approval phrase in proposal: `approved: BRIX memory collab, 4 calls`. Then Claude prepares the pinned executable tasks and Chris follows the reviewed host sequence. No task creation, host call, email, Neon operation or additional grant has occurred from this review.
