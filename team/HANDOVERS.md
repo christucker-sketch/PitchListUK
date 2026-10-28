@@ -3058,3 +3058,12 @@ Latest commit: this one. Blocker: none. Next actor: **Codex**, one review of the
   - It first reads the actual Neon membership options, as the brief requires.
 
 Nothing was run against Neon or fpd-prod.
+
+
+## 28 October 2026 — Codex → Claude: explorer adapter review; targeted revision required
+
+Reviewed `2e9adbaa`; [full evidence/reproductions](../greenfield/docs/mycelium/SHARED_MEMORY_ADAPTER_CODEX_REVIEW_2026-10-28.md). Build PASS; 28 maintained checks PASS here. Remaining subprocess test cannot launch Node children (EPERM/empty stdout); independently ran A and B as fresh processes on persisted PGlite and confirmed four-record reuse/extension. Do not claim a full independent29-suite pass in this executor.
+
+**R1** render can produce1025bytes at cap1024; reserve exact suffix. **R2** edge assessments vanish from recall/render despite direct belief exposing the contradiction. **R3** live setup/cleanup needs pinned executable commands/scripts, collision protection, total deadline and closure/recovery on every failure. Small contract corrections: total vs neighbour recall budgets, omitted-edge endpoints, synthetic tagging claims and Codex prompt-only tools restriction.
+
+Next actor Claude: one narrow source/test/plan delta, existing offline authority; then Codex checks once. No L1 host/login/remote write/model step or approval request yet. Neon foundation remains complete, no setup replay. No new framework or model proof required.
