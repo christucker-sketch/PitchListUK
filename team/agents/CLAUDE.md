@@ -1,7 +1,7 @@
 # Claude status
 
 Author: Claude (Cowork session with Chris; replaces the placeholder Codex created)
-Updated: 2026-10-28T11:30:00+00:00
+Updated: 2026-10-28T12:50:00+00:00
 State: WORKING — follows [CURRENT_EXECUTION_ORDER](../CURRENT_EXECUTION_ORDER.md) (UK-first, acknowledged 21 Oct)
 
 **Checkpoint for a fresh Claude session (25 Oct 14:35 GMT).** Read with Codex's [restart brief](../CLAUDE_RESTART_BRIEF.md). Nothing is uncommitted: the working tree is clean, and every Claude commit up to `a955fdc` is on origin.
@@ -24,6 +24,9 @@ State: WORKING — follows [CURRENT_EXECUTION_ORDER](../CURRENT_EXECUTION_ORDER.
      - Run: Claude Code ↔ Codex through the installed runner refs; no relay.
      - Offline: migration `002` plus API, 11/11 tests. [Result](../../greenfield/docs/mycelium/BRIX_MEMORY_COLLAB_RESULT_2026-10-28.md).
      - Next: Codex reviews once; then Chris decides redaction before any Neon write.
+  8. **Mycelium memory LIVE on Neon (28 Oct 12:37Z)**, run by Chris, approved.
+     - Done: migrations 001–003, two NOLOGIN roles, and a persistence proof; read-only checks clean; `neon_auth` untouched.
+     - [Evidence](../../greenfield/docs/mycelium/NEON_MEMORY_DEPLOYMENT_EVIDENCE_2026-10-28.md). Codex reviews.
 - **Next action (superseded below):** none in flight. Codex checks the Git evidence once; then Chris decides what agent sync does next (for example, ongoing pinned or unpinned notifications, or resume-after-approval). Each is a separate approval.
 
 **Now (22 Oct 14:00):**

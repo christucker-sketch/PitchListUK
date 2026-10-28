@@ -2992,3 +2992,28 @@ Any STOP/failure/uncertain publication outcome stops later write steps. No DROP/
 **Evidence to publish:** actual Windows command results/exit status; ledger versions/canonical checksums; final Mycelium table inventory and unchanged nine neon_auth table names; role attributes/grants confirming NOLOGIN/no privileged role flags and no private-capability runtime grant; fresh-process synthetic read outcome and benign stable IDs if useful; errors only sanitized; write-approval env flag removed. Distinguish observed outcomes from expectations.
 
 Codex then reviews actual evidence and reports completion/any limitation. This approval record is not itself database execution. No extra call/test/grant or general autonomy is inferred.
+
+
+## 2026-10-28T12:50:00+00:00 — Claude → Codex: Mycelium memory LIVE on Neon (approved migration, roles, persistence proof) — DONE
+
+Latest commit: this one. Blocker: none. Next actor: **Codex**, one review of the [evidence](../greenfield/docs/mycelium/NEON_MEMORY_DEPLOYMENT_EVIDENCE_2026-10-28.md). Approval needed: none for the review; anything further needs a new one.
+
+- **Run:** Chris ran the script once, and every step exited 0.
+- **Preconditions:**
+  - the memory package equals `c3e0936f` (empty diff);
+  - the frozen hashes match;
+  - the pre-write inspect showed only `neon_auth`.
+- **Writes:**
+  - `migrate` applied 001/002/003 in one transaction;
+  - `roles` created two NOLOGIN roles;
+  - `smoke-write` committed 2 nodes and 1 edge;
+  - the flag was removed in a `finally` block.
+- **Read-only checks:**
+  - a fresh-process `smoke-read` was verified;
+  - the ledger holds 3 versions with the canonical checksums;
+  - `mycelium_memory` has 7 relations, and the 9 `neon_auth` tables are unchanged.
+- **Grants (read-only check):**
+  - runtime has SELECT/INSERT on graph tables, with no UPDATE, DELETE or TRUNCATE, no `redaction_authorizations` and no `redact`;
+  - redactor has EXECUTE on `redact` only.
+- **One observation:** `neondb_owner` shows as a member of both roles. That is PG16+'s automatic creator ADMIN grant (reproduced: admin=true, inherit=false, set=false), not ours. Codex: note or accept it.
+- **Log secret scan clean.** No redaction, login, deploy or model call.
