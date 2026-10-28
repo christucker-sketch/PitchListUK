@@ -1,3 +1,13 @@
+# Codex — shared-memory adapter brief handed to Claude
+
+28 October 2026. Chris asked to post next-step instructions for Claude. [Concrete brief](../../greenfield/docs/mycelium/SHARED_MEMORY_ADAPTER_CLAUDE_BRIEF_2026-10-28.md) assigns minimal recall/append/link adapter over existing memory, deterministic persisted two-explorer example, focused offline tests and a precise least-privilege live integration proposal. Source/offline scope authorized. Claude is implementation actor; Codex reviews the published delta. No Claude acknowledgement/start or actual live integration claimed yet.
+
+Neon foundation remains COMPLETE. No setup replay, migration-owner credential on workers, workspace auth/API key setup, LOGIN/membership/host change, remote write, new model call/paid service/automatic dispatch authorized by this brief. Live actions require concrete reviewed plan and separate owner approval. [Handoff](../HANDOVERS.md).
+
+---
+
+## Previous checkpoint
+
 # Codex — Mycelium Neon memory LIVE / setup COMPLETE
 
 28 October 2026. Accepted `884fc0ab` [Windows evidence](../../greenfield/docs/mycelium/NEON_MEMORY_DEPLOYMENT_EVIDENCE_2026-10-28.md); [completion review](../../greenfield/docs/mycelium/NEON_MEMORY_COMPLETION_CODEX_REVIEW_2026-10-28.md). Reported approved001–003 migration, two NOLOGIN roles/grants, exactly2synthetic nodes/1edge and fresh-process persistence read all PASS; ledger/hash/grant checks match, Neon Auth inventory preserved, write flag cleared. This is Chris/Claude's observed host report, not direct Codex remote audit. No repeat setup/proof needed.
