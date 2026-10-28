@@ -3035,3 +3035,26 @@ Chris asked for the next instructions to be posted for Claude. [Concrete impleme
 Source/offline work authorized; no repeated project approval. Neon foundation/setup and BRIX proofs remain complete/closed. No owner credentials on workers, workspace auth/API keys, remote writes or LOGIN/membership creation, host/service install, new model call, automatic dispatch, paid resources or unrelated services authorized. Future live plan must name actual runner limits, least-privilege credential/grants, host commands and bounded records/calls/time with rollback. Present it only after concrete offline engineering is reviewable.
 
 **Next actor Claude.** No acknowledgement or execution is inferred from this handoff alone. Update your own status, publish measured offline results and hand the delta to Codex through the hub.
+
+
+## 2026-10-28T14:30:00+00:00 — Claude → Codex: shared explorer memory adapter delivered offline (29/29) + exact L1 live plan
+
+Latest commit: this one. Blocker: none. Next actor: **Codex**, one review of the [delivery and plan](../greenfield/docs/mycelium/SHARED_MEMORY_ADAPTER_DELIVERY_2026-10-28.md). Approval needed: none for the review; **yes** (Chris) before any L1 host, credential or Neon step.
+
+- **Adapter:** `src/explorer.mjs` provides `recall`, `search`, `contribute` and `render`. `contribute` makes one atomic contribution with evidence, links (either direction) and stances, with ids derived from (agent, run, key). The memory API gained only `appendAll`; the SQL is unchanged.
+- **Offline demo:** fake explorer A and B, as separate processes on one persisted PGlite. B found A's records by phrase only, recalled 4 of them, and recorded a cross-branch result that `recombines` A's finding and `contradicts` A's failure. This is not CLI collaboration.
+- **Tests:** 29/29 (previous 19 plus 10 new), including:
+  - runtime-grant operation, with `redact`, UPDATE and DDL refused;
+  - full rollback with no orphans;
+  - SCRAM against RFC 7677;
+  - the exact live footprint of 6 nodes, 6 edges and 2 stances, with reruns writing nothing.
+  - One retry bug was found and fixed.
+- **Runner check (source):** `myc-gate` commits only task files, and CLIs see only GitHub refs, so **no installed path links Neon and the CLIs**. L2 is described with three options but not requested.
+- **L1 plan (database only, no model):**
+  - a new `mycmem` Unix user, separate from `myc`;
+  - one `mycelium_explorer_fpd` login: runtime privileges only, `INHERIT TRUE, SET FALSE, ADMIN FALSE`, connection limit 2;
+  - the password is generated on fpd-prod, and only a SCRAM verifier goes to the PC for `CREATE ROLE`;
+  - 4 fresh processes; it closes by disabling the login.
+  - It first reads the actual Neon membership options, as the brief requires.
+
+Nothing was run against Neon or fpd-prod.

@@ -83,6 +83,13 @@ export function createMemory(db, { maxDatabaseBytes = 900 * 1024 * 1024 } = {}) 
     async appendNode(node) { return insert(nodeInsert(node)); },          // async: validation errors become rejections
     async appendEdge(edge) { return insert(edgeInsert(edge)); },
     async appendAssessment(a) { return insert(assessmentInsert(a)); },
+    // Several prepared inserts (nodeInsert/edgeInsert/assessmentInsert) as ONE transaction: all commit, or none do.
+    // Identical retries are no-ops; a conflicting payload under any supplied id rolls the whole append back.
+    async appendAll(queries) {
+      if (!Array.isArray(queries) || queries.length === 0) throw new Error('appendAll needs at least one prepared insert.');
+      await admit();
+      return insertMany(queries);
+    },
     async getNode(id) { return (await db.query('SELECT * FROM mycelium_memory.nodes WHERE id=$1', [id]))[0] ?? null; },
 
     // C10: relation filter and keyset paging. Pass the last row's {recorded_at, id} as `after` for the next page.
