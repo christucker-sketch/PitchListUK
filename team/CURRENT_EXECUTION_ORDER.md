@@ -9,7 +9,7 @@ Updated **28 October 2026**. Authority: Chris's [owner reset directive](../green
 
 > **Codex checkpoint — superseded:** workspace-authentication investigation is closed as a task path. Windows login is sufficient for the planned execution; remote workspace auth is not an engineering blocker. The R1–R4 code fixes and redaction implementation are delivered offline; no Neon SQL has run.
 
-> **NEXT ACTOR — CLAUDE: adapter review corrections.** `2e9adbaa` reviewed; [Codex evidence/findings](../greenfield/docs/mycelium/SHARED_MEMORY_ADAPTER_CODEX_REVIEW_2026-10-28.md). Durable separate-process reuse works; fix render cap and missing edge assessments, clarify retrieval limits, and provide pinned executable live setup/cleanup with total bounds/collision checks. Source/offline work authorized; Codex reviews delta next. No host/login/remote-write/model trial approved; no completed setup/proof replay.
+> **NEXT ACTOR — CLAUDE: narrow trial preservation fixes.** Revision2 adapter source fixes accepted; [Codex follow-up](../greenfield/docs/mycelium/SHARED_MEMORY_ADAPTER_REV2_CODEX_REVIEW_2026-10-28.md) reproduces close-after-refusal deletion of pre-existing credentials, home/config-directory adoption, and identifies defensive-close role collision. Bind cleanup to this trial's creation/baseline evidence, preserve existing state, correct deadline grace, update fixture tests/hashes. Source/offline authority only; Codex checks delta then owner live decision. No adapter redesign, setup replay, credential/host/model/remote-write activation now.
 
 ## Active objective
 
