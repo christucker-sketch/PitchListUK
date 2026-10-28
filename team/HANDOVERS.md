@@ -3301,3 +3301,16 @@ Latest commit: this one. Blocker: none. Next actor: **Chris**, running the bridg
 - `MYC-20261028-005` (Claude, `1edf40f3…`) and `006` (Codex, `f22d5ae8…`) run via `bridge-launch.sh` (`31a6d72a…`), with 2 calls at most.
 - An append-only ingest of their validated contribution blocks follows, with Codex able to link to Claude's.
 - Offline: bridge 4/4 and end-to-end chain 7/7.
+
+
+## 2026-10-28T18:10:00+00:00 — Claude → Chris / Codex: L2 BRIDGE WORKS — real CLIs read Neon memory and wrote linked contributions back
+
+Latest commit: this one. Blocker: none. Next actor: **Chris**, for next direction; Codex may review the real evidence.
+
+[Evidence](../greenfield/docs/mycelium/SHARED_MEMORY_ADAPTER_DELIVERY_2026-10-28.md#l2-bridge-executed-28-oct-2026-17511754z-pc-1800z-fpd-prod-bridge-ok):
+
+- **Snapshot:** 6 nodes, read-only, pushed as `ec840c76`.
+- **Claude Code** (005, 18 s) challenged explorer B's result, noting the missing abiotic control and the scope difference, and proposed a factorial probe.
+- **Codex** (006, 17 s) refined Claude's proposal with an interaction contrast and corrected two of its over-statements.
+- **Ingest:** both became memory nodes (`462e08a4…`, `7362c4bb…`). Codex's links **`refines…` → Claude's**. Verified: 6 nodes, 7 links, 0 missing.
+- **Bounds:** 2 calls; the grant was archived. No runner, schema or login change; no human relay.

@@ -425,3 +425,43 @@ The installed runner is unchanged. Memory reaches the CLIs as a task ref, and th
   - a rerun makes no call;
   - the real ingest links Codex's contribution `refines` → Claude's.
 - **Full suite:** 40 Node tests, 30 trial checks and 15 owner checks. The SQL is unchanged.
+
+### L2 bridge, executed 28 Oct 2026 (17:51–17:54Z PC; ~18:00Z fpd-prod): **BRIDGE OK**
+
+| Step | Result |
+|---|---|
+| PC `snapshot` (17:51:56Z) | Read-only: **6 nodes, 2637 bytes**. Pushed as `ec840c76` (only that file) |
+| fpd-prod launcher | sha256 `31a6d72a…64a3` (matches); allowlist of 2 lines; grant claims 0/2 |
+| `MYC-20261028-005`, Claude Code | Claim `aa373b18` → **1 call, 18 s** → completed `434f8fd3`, result sha256 `1a205ef0…7001` |
+| `MYC-20261028-006`, Codex | Claim `e67b2a05` → **1 call, 17 s** → completed `2c218335`, result sha256 `d87456c5…3227` |
+| fpd-prod close | Allowlist archived to `/root/bridge-20261028/`; grant 2/2 consumed |
+| PC `ingest` (17:54:20Z) | **`INGESTED MYC-20261028-005 (claude-cli) as 462e08a4-4701-801c-8bd2-68c38b01a73e`** with 4 links and 1 stance. **`INGESTED MYC-20261028-006 (codex-cli) as 7362c4bb-749c-8faa-9db9-734758c2da10`** with 3 links, including **`refines_proposed_factorial_interpretation → 462e08a4…` (Claude's contribution)**. Then `VERIFY`: recall reaches 6 nodes and 7 links, 0 missing → **BRIDGE OK**; write flag removed; the log scans clean |
+
+**What the CLIs did with the memory** (their unedited answers are in `tasks/MYC-20261028-00{5,6}/result.md`):
+
+- **Claude Code** read the recalled graph, including the earlier explorer B's "cofactor M overturns the 10 C failure" result. It **challenged** that result:
+  - Plate 9 has no sterile+M control, so the 9% loss could be abiotic.
+  - The "contradiction" is really a difference of scope.
+
+  It proposed a K7 × M × temperature factorial probe. In memory, its contribution is linked to four earlier records, with relations it chose: `identifies_missing_control_in`, `challenges_causal_claim_of`, `narrows_scope_of` and `proposes_factorial_extension_of`. It also holds a **neutral** stance (0.4) on the cross-branch claim.
+- **Codex** read the same memory **and Claude's answer**. It agreed and then **corrected Claude twice**:
+  - "K7 alone is inactive at 10 C" overstates the evidence.
+  - An abiotic 9% would not exclude a biological effect.
+
+  It contributed an explicit interaction-contrast criterion, I = [L(K7+M) − L(K7)] − [L(sterile+M) − L(sterile)]. In memory, its contribution is linked **`refines_proposed_factorial_interpretation` → Claude's contribution**, plus two earlier records.
+
+**Proven:**
+- The installed CLIs read shared memory **from the live Neon database**, through a read-only snapshot used as their task reference.
+- They extended it in directions nobody prescribed: a challenge, then a refinement of that challenge.
+- Their validated contributions were written back, append-only, linked to the prior graph **and to each other**, with declared provenance (agent `claude-cli`/`codex-cli`, the BRIX run ids, the task keys).
+- **No human edited or relayed content.**
+
+**Totals:**
+- 2 model calls.
+- Memory gained 2 contribution nodes, 7 edges and 1 assessment, tagged `bridge: l2-proof-2026-10-28` and `model_written: true`.
+- No schema, runner, login or service change.
+
+**Known limits:**
+- The turns are still fixed and sequential (the runner's design).
+- The snapshot and ingest steps run from Chris's PC under the owner credential.
+- The ids the CLIs cite are validated against the snapshot, but their scientific claims are the models' reasoning about **synthetic fixture data**, not facts.
