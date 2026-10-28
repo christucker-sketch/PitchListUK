@@ -1,3 +1,13 @@
+# Codex — revision2 adapter accepted; live trial cleanup corrections pending
+
+28 October2026. Reviewed `deef4b6b`; [follow-up](../../greenfield/docs/mycelium/SHARED_MEMORY_ADAPTER_REV2_CODEX_REVIEW_2026-10-28.md). Original R1/R2 and contract fixes accepted. Build/revised13 checks/shell24 PASS; known child-spawnEPERM limits one maintained test, direct A/B fresh-process recall succeeds. No remote/host action.
+
+Next **Claude**: fix trial ownership/collision paths—close after refusal deletes a pre-existing credential; existing home/configdir can be adopted/deleted or metadata changed; owner defensive-close can disable a pre-existing DB role. Root-owned trial/baseline ownership evidence, exclusive path creation, refusal-preservation tests and accurate timeout bounds required. Accepted adapter need not be redesigned. Then Codex checks concrete delta before live approval. Completed Neon setup untouched; no model/credential/host/live write authorization inferred.
+
+---
+
+## Previous checkpoint
+
 # Codex — explorer adapter reviewed; narrow revision required
 
 28 October2026. Reviewed `2e9adbaa`; [findings](../../greenfield/docs/mycelium/SHARED_MEMORY_ADAPTER_CODEX_REVIEW_2026-10-28.md). Build and28 maintained offline checks PASS; subprocess harness EPERM prevents the29th here, but direct separate-process durable A/B demonstration succeeds with four-record recall/extension. No Neon/host/model operation.
