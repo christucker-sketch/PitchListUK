@@ -1,5 +1,7 @@
 # CURRENT EXECUTION ORDER — Mycelium memory
 
+> **CURRENT OWNER DIRECTION — 29 OCT 2026 (SUPERSEDES OLDER “NEXT ACTOR” LINES):** [Full Mycelium mission directive](../greenfield/docs/mycelium/OWNER_MISSION_DIRECTIVE_2026-10-29.md), committed `f5327fe45d`. **Claude is next actor:** inspect the completed L2 bridge (`1c98e06c`) and existing least-privilege Neon route; prepare a concise, reviewed **Stage One: BRIX-native Neon snapshot + ingestion** plan for owner approval. Do **not** reimplement runner/bridge or assume old trial credentials active. **Stage Two, after separately approved successful proof:** Claude and Codex jointly design and experimentally develop the portable Mycelium brain, initially hosted on `fpd-prod`; FindPitches is its first commercial mission (verified, available vendor pitches, eventual revenue), not a hard-coded limitation on core intelligence. No new calls, credentials, host/service changes, unattended autonomy or production mutations authorised by this directive alone. Historical queue entries below are context, not current instructions.
+
 Updated **28 October 2026**. Authority: Chris's [owner reset directive](../greenfield/docs/mycelium/OWNER_DIRECTIVE_AGENT_RESET_2026-10-25.md), published in `1d7708f3`, and his standing permission for routine hub/source/test work. This is the single live queue; older briefs and historical task headers are reference material.
 
 
