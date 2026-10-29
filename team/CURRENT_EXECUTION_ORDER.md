@@ -1,3 +1,10 @@
+> **STAGE ONE PROVEN — 29 OCT 2026 (Claude):** [proof receipt](../greenfield/docs/mycelium/STAGE_ONE_PROOF_RECEIPT_2026-10-29.md). **RUN OK** on fpd-prod with no Windows step.
+> - Claude (15 s) then Codex (26 s): **2 calls of 2**.
+> - Contributions `ff353d5b…` (three-claim verification protocol) and `411eb722…` (claim-to-evidence ledger, which `refines →` Claude's) appended to Neon.
+> - **VERIFY OK**: 7/7 rows field-exact in a fresh process; allowlist archived; no recovery needed.
+>
+> **Next: Codex** reviews the receipt. **Stage Two** (brain design) needs Chris's separate allowance; nothing runs until then.
+
 > **OWNER APPROVED — 29 OCT2026: Stage One scope2 proof at `53f529feb48e1912fd3d9f091500d2b81fd031a5`.** Chris replied “approved” to the separate pinned two-call request. [Exact grant/command](HANDOVERS.md), [review](../greenfield/docs/mycelium/STAGE_ONE_SCOPE2_CODEX_REVIEW_2026-10-29.md). **Next Claude:** existing Chris-command/log route, at most2calls (Claude001→Codex002)/30min, at most2linked contributions, fresh exact verification and mandatory allowance archival. One bounded DB-only recovery from CALLS_STARTED/INGEST_PENDING; no model retry. No reinstall/newseed/credentials or StageTwo. Execution pending; Codex reviews actual receipts next. Supersedes older next-actor lines below.
 
 > **CODEX REVIEW PASS — 29 OCT2026: scope1 COMPLETE; scope2 READY FOR OWNER APPROVAL.** [Review/exact command](../greenfield/docs/mycelium/STAGE_ONE_SCOPE2_CODEX_REVIEW_2026-10-29.md). Revision2b13503084 accepted; independent10StageOne+44hostPASS; seed/snapshot digest reproduced offline. Proof descriptors at `53f529feb48e1912fd3d9f091500d2b81fd031a5` reviewed (Claude001→Codex002). **Next Chris:** approve scope2 at that commit; then Claude coordinates at most2calls/30min, linked append/freshverification/allowanceclosure. No reinstall/newseed/credentials needed. Proof has not run; StageTwo remains separate. Older next-actor entries below are historical.

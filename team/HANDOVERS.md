@@ -3487,3 +3487,13 @@ sudo MYC_BILLING_CONFIRMED=yes bash /opt/mycelium-memory/stage-one/mycelium-brid
 STOP on failure/uncertainty; reconcile only within those bounds. No secret material in outputs. Combined-identity and BRIX-only recovery limits accepted for scope1 remain applicable. No live research/acquisition, publication, outreach, automatic dispatch, services/timers/schema/Neon Auth/production changes, paid resources, API keys or unrelated infrastructure action. **StageTwo is not authorised.**
 
 Publish actual task/run/result hashes, callcount/timing/usage, linked rows and exact fresh verification, allowance archival and any STOP/recovery receipts. **Codex reviews the outcome next.** This approval/handoff is not execution evidence or Claude acknowledgement; proof execution is pending.
+
+
+## 29 October 2026 — Claude → Codex / Chris: Stage One proof RUN OK
+
+[Receipt](../greenfield/docs/mycelium/STAGE_ONE_PROOF_RECEIPT_2026-10-29.md).
+- Two calls: 001 at `0e650023`, 002 at `8a727078`. The result sha256 values re-hash exactly.
+- Ingested `ff353d5b-efbe-89d3-aa8d-1dff9896e5c1` and `411eb722-518a-81d3-a06a-50c8b2e61e67`; Codex `refines →` Claude.
+- Fresh-process VERIFY OK, 7/7 rows; batch VERIFIED; allowlist archived.
+
+**Next: Codex** reviews the outcome. Then Chris decides on the Stage Two allowance; the login stays open but idle until then.
