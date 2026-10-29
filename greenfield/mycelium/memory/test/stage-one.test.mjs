@@ -9,7 +9,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { PGlite } from '@electric-sql/pglite';
 import { adapter, world, counts } from './helpers.mjs';
-import { parseManifest, seed, seedId, snapshot, planBatch, ingestBatch, verifyPlanned, contributionId, sha256, runCli } from '../scripts/bridge.mjs';
+import { parseManifest, seed, seedId, snapshot, planBatch, ingestBatch, verifyPlanned, contributionId, sha256, runCli, bridgeGuard } from '../scripts/bridge.mjs';
 import { readPrivileges, principalProblems, assertPrincipal } from '../scripts/privileges.mjs';
 import { createLoginStatements, rotateLoginStatements, disableLoginStatements, membershipQueries, assertBridgeLogin, assertBridgeClosed,
   ownership, validUntil, BRIDGE_ROLE } from '../scripts/bridge-provision.mjs';
@@ -85,13 +85,13 @@ test('happy path + exact verification; the exact-batch replay is a no-op; a chan
   const { pg, db, snap, answers, batch, seedNode } = await prepared();
   try {
     const planned = planBatch(MANIFEST, batch, snap.text, answers);
-    assert.equal((await verifyPlanned(db, planned)).problems.length, 2);   // before ingest: both nodes reported missing
+    assert.equal((await verifyPlanned(db, planned)).problems.filter(x => / missing$/.test(x)).length, 6);   // every row missing before ingest
     const before = await counts(db);
     const made = await ingestBatch(db, MANIFEST, batch, snap.text, answers);
     assert.deepEqual(made.map(m => m.id), [contributionId('claude', RUN1, 'MYC-20261029-001'), contributionId('codex', RUN2, 'MYC-20261029-002')]);
     assert.deepEqual(made[1].links, [`refines->${made[0].id}`, `tests->${seedNode}`]);
     const v = await verifyPlanned(adapter(pg, { readOnly: true }), planned);
-    assert.deepEqual(v, { problems: [], nodes: 2, links: 3, stances: 1 });
+    assert.deepEqual(v, { problems: [], redacted: [], rows: 6, nodes: 2, links: 3, stances: 1 });
     const after = await counts(db); assert.deepEqual(after, { n: before.n + 2, e: before.e + 3, a: before.a + 1 });
     await ingestBatch(db, MANIFEST, batch, snap.text, answers); assert.deepEqual(await counts(db), after);
     const [node] = await db.query('SELECT attributes, provenance FROM mycelium_memory.nodes WHERE id = $1', [made[0].id]);
@@ -119,7 +119,7 @@ test('recovery: death between contributions, lost acknowledgement after commit, 
     const final = { n: base.n + 2, e: base.e + 3, a: base.a + 1 }, second = planned[1].id;
     await assert.rejects(ingestBatch(faulty(db, { id: second, after: false }), MANIFEST, batch, snap.text, answers), /before commit/);
     assert.deepEqual(await counts(db), { n: base.n + 1, e: base.e + 1, a: base.a + 1 });              // died between: first only
-    assert.equal((await verifyPlanned(db, planned)).problems.length, 1);                                // verify names what is missing
+    assert.equal((await verifyPlanned(db, planned)).problems.length, 3);                                // verify names every missing row
     await assert.rejects(ingestBatch(faulty(db, { id: second, after: true }), MANIFEST, batch, snap.text, answers), /after commit/);
     assert.deepEqual(await counts(db), final);                                                          // the commit landed; ack lost
     await Promise.all([ingestBatch(db, MANIFEST, batch, snap.text, answers), ingestBatch(db, MANIFEST, batch, snap.text, answers)]);
@@ -164,9 +164,10 @@ test('privileges: the bridge login passes ONLY with exactly the runtime capabili
   const { pg, db } = await world();
   try {
     const asBridge = async fn => { await pg.query(`SET SESSION AUTHORIZATION ${BRIDGE_ROLE}`); try { return await fn(); } finally { await pg.query('SET SESSION AUTHORIZATION postgres'); } };   // PGlite: RESET does not restore
-    const check = () => asBridge(async () => principalProblems(await readPrivileges(adapter(pg, { readOnly: true })), BRIDGE_ROLE));
+    const NOW = Date.parse('2026-10-29T12:00:00Z');
+    const check = () => asBridge(async () => principalProblems(await readPrivileges(adapter(pg, { readOnly: true })), BRIDGE_ROLE, { now: NOW }));
     assert.deepEqual(await check(), []);
-    const ok = await asBridge(async () => assertPrincipal(await readPrivileges(db), BRIDGE_ROLE));
+    const ok = await asBridge(async () => assertPrincipal(await readPrivileges(db), BRIDGE_ROLE, { now: NOW }));
     assert.equal(ok.connlimit, 20); assert.ok(ok.valid_until);
     await asBridge(async () => {   // what the login can and cannot do, for real
       await pg.query(`INSERT INTO mycelium_memory.nodes(id, kind, title) VALUES ('33333333-3333-4333-8333-333333333333', 'probe', 'x')`);
@@ -186,6 +187,16 @@ test('privileges: the bridge login passes ONLY with exactly the runtime capabili
     await drift('ALTER ROLE mycelium_bridge_fpd CREATEDB', 'ALTER ROLE mycelium_bridge_fpd NOCREATEDB', /createdb/);
     await drift('GRANT SELECT ON mycelium_memory.redaction_authorizations TO mycelium_bridge_fpd', 'REVOKE SELECT ON mycelium_memory.redaction_authorizations FROM mycelium_bridge_fpd', /redaction_authorizations/);
     await drift('ALTER TABLE mycelium_memory.schema_migrations OWNER TO mycelium_bridge_fpd', 'ALTER TABLE mycelium_memory.schema_migrations OWNER TO postgres', /owns/);
+    // login-level drift after setup (Codex R5): limit, expiry, membership options, grants of this login to others
+    await drift('ALTER ROLE mycelium_bridge_fpd CONNECTION LIMIT -1', 'ALTER ROLE mycelium_bridge_fpd CONNECTION LIMIT 20', /connection limit/);
+    await drift("ALTER ROLE mycelium_bridge_fpd VALID UNTIL 'infinity'", "ALTER ROLE mycelium_bridge_fpd VALID UNTIL '2026-12-31T23:59:59Z'", /no finite password expiry/);
+    await drift("ALTER ROLE mycelium_bridge_fpd VALID UNTIL '2027-06-01T00:00:00Z'", "ALTER ROLE mycelium_bridge_fpd VALID UNTIL '2026-12-31T23:59:59Z'", /beyond the approved ceiling/);
+    await drift("ALTER ROLE mycelium_bridge_fpd VALID UNTIL '2026-10-01T00:00:00Z'", "ALTER ROLE mycelium_bridge_fpd VALID UNTIL '2026-12-31T23:59:59Z'", /expiry has passed/);
+    await pg.query('CREATE ROLE helper NOLOGIN');
+    await drift('GRANT mycelium_bridge_fpd TO helper', 'REVOKE mycelium_bridge_fpd FROM helper', /granted to other roles: helper/);
+    await pg.query('REVOKE mycelium_memory_runtime FROM mycelium_bridge_fpd');
+    await pg.query('GRANT mycelium_memory_runtime TO mycelium_bridge_fpd WITH INHERIT TRUE, SET FALSE, ADMIN TRUE');
+    assert.ok((await check()).some(x => /membership mycelium_memory_runtime\.admin=true/.test(x)));
     await pg.query('REVOKE mycelium_memory_runtime FROM mycelium_bridge_fpd');
     await pg.query('GRANT mycelium_memory_runtime TO mycelium_bridge_fpd WITH INHERIT TRUE, SET TRUE');
     assert.ok((await check()).some(x => /settable/.test(x)));
@@ -194,10 +205,11 @@ test('privileges: the bridge login passes ONLY with exactly the runtime capabili
     assert.deepEqual(await check(), []);                                           // a schema it cannot reach is not reported at all
     await pg.query('GRANT USAGE ON SCHEMA neon_auth TO PUBLIC');
     assert.deepEqual(await check(), []);                                           // bare USAGE, no grants: allowed, but reported
-    assert.deepEqual((await asBridge(async () => assertPrincipal(await readPrivileges(db), BRIDGE_ROLE))).other_schema_usage.sort(), ['neon_auth', 'public']);
+    assert.deepEqual((await asBridge(async () => assertPrincipal(await readPrivileges(db), BRIDGE_ROLE, { now: NOW }))).other_schema_usage.sort(), ['neon_auth', 'public']);
     await pg.query('GRANT SELECT ON neon_auth."user" TO PUBLIC');
     assert.ok((await check()).some(x => /neon_auth/.test(x)));
-    assert.deepEqual(principalProblems({ identity: { role: BRIDGE_ROLE, session: BRIDGE_ROLE } }, BRIDGE_ROLE).filter(x => /missing/.test(x)).length > 5, true);   // absent fields fail
+    assert.deepEqual(principalProblems({ identity: { role: BRIDGE_ROLE, session: BRIDGE_ROLE } }, BRIDGE_ROLE, { now: NOW }).filter(x => /missing/.test(x)).length > 5, true);   // absent fields fail
+    await assert.rejects(bridgeGuard(db), /not exactly least-privilege/);   // the production guard refuses a superuser session
   } finally { await pg.close(); }
 });
 
@@ -221,5 +233,41 @@ test('bridge provisioning: create bound to a grant with expiry ceiling; rotate o
     const closed = await read(); assertBridgeClosed(closed, G); assert.throws(() => assertBridgeLogin(closed, G, NOW));
     assert.ok(new Date(closed.roles.find(r => r.rolname === BRIDGE_ROLE).rolvaliduntil).getTime() < NOW);
     await assert.rejects(db.transaction(rotateLoginStatements(PW, G, U)), /closed; rotation does not reopen/);
+  } finally { await pg.close(); }
+});
+
+test('R3: a second answer that fails the append API payload validation (credential pattern) writes NOTHING', async () => {
+  const { pg, db, snap, answers, batch, seedNode } = await prepared();
+  try {
+    const before = await counts(db);
+    const bad = block({ kind: 'hypothesis', title: 'leaks', body: 'token ghp_' + 'A'.repeat(36), links: [{ to: seedNode, relation: 'tests' }], stances: [] });
+    const b = { ...batch, items: [batch.items[0], { ...batch.items[1], result_sha256: sha256(bad) }] };
+    assert.throws(() => planBatch(MANIFEST, b, snap.text, [answers[0], bad]), /credential pattern/);   // refused while planning
+    await assert.rejects(ingestBatch(db, MANIFEST, b, snap.text, [answers[0], bad]), /credential pattern/);
+    assert.deepEqual(await counts(db), before);
+    const big = block({ kind: 'k'.repeat(81), title: 't', body: 'b', links: [{ to: seedNode, relation: 'r' }] });
+    assert.throws(() => planBatch(MANIFEST, { ...batch, items: [batch.items[0], { ...batch.items[1], result_sha256: sha256(big) }] }, snap.text, [answers[0], big]), /kind/);
+  } finally { await pg.close(); }
+});
+
+test('R4: verification compares EVERY persisted field with the pinned payload; redaction is reported, never exact', async () => {
+  const { pg, db, snap, answers, batch } = await prepared();
+  try {
+    await ingestBatch(db, MANIFEST, batch, snap.text, answers);
+    const ro = adapter(pg, { readOnly: true });
+    assert.deepEqual((await verifyPlanned(ro, planBatch(MANIFEST, batch, snap.text, answers))).problems, []);
+    const otherBody = answers[0].replace('Check the official page.', 'A different body.');
+    const b1 = { ...batch, items: [{ ...batch.items[0], result_sha256: sha256(otherBody) }, batch.items[1]] };
+    assert.ok((await verifyPlanned(ro, planBatch(MANIFEST, b1, snap.text, [otherBody, answers[1]]))).problems.some(x => /node .* differs/.test(x)));       // body
+    const b2 = { ...batch, commit: 'f'.repeat(40) };
+    const p2 = (await verifyPlanned(ro, planBatch(MANIFEST, b2, snap.text, answers))).problems;
+    assert.ok(p2.some(x => /node .* differs/.test(x)) && p2.some(x => /edge .* differs/.test(x)) === false);   // binding attributes are on nodes
+    const otherRel = answers[1].replace('"tests"', '"probes"');
+    const b3 = { ...batch, items: [batch.items[0], { ...batch.items[1], result_sha256: sha256(otherRel) }] };
+    assert.ok((await verifyPlanned(ro, planBatch(MANIFEST, b3, snap.text, [answers[0], otherRel]))).problems.some(x => /edge .* differs/.test(x)));       // edge relation
+    const planned = planBatch(MANIFEST, batch, snap.text, answers);
+    await db.query(`SELECT mycelium_memory.redact('node', $1, 'owner_request', '55555555-5555-4555-8555-555555555555')`, [planned[0].id]);
+    const v = await verifyPlanned(ro, planned);
+    assert.deepEqual(v.redacted, [`node ${planned[0].id}`]); assert.ok(v.problems.some(x => /redacted \(not exact/.test(x)));
   } finally { await pg.close(); }
 });

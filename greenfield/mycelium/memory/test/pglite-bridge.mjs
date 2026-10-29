@@ -7,7 +7,7 @@
 import { readFile, rm } from 'node:fs/promises';
 import { PGlite } from '@electric-sql/pglite';
 import { adapter } from './helpers.mjs';
-import { runCli } from '../scripts/bridge.mjs';
+import { runCli, bridgeGuard } from '../scripts/bridge.mjs';
 const [mode, ...args] = process.argv.slice(2);
 if (['seed', 'ingest'].includes(mode) && process.env.MYCELIUM_REMOTE_WRITES_APPROVED !== 'yes') {
   console.error(`BRIDGE STOP: ${mode} writes to memory: requires MYCELIUM_REMOTE_WRITES_APPROVED=yes`); process.exit(1);
@@ -22,6 +22,6 @@ try {
     return { ...db, transaction: async ss => { const r = await db.transaction(ss);
       if (inject && JSON.stringify(ss).includes(inject)) { inject = null; await rm(process.env.T_INJECT_ONCE); throw new Error('fetch failed (injected after commit)'); }
       return r; } };
-  });
+  }, { guard: bridgeGuard });   // the same capability preflight as production, on every process
 } catch (e) { console.error(`BRIDGE STOP: ${String(e?.message ?? e).slice(0, 300)}`); process.exitCode = 1; }
 finally { await pg.close(); }

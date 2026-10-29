@@ -10,6 +10,8 @@
 //     functions  EXECUTE on require_identical_retry only; no SECURITY DEFINER function executable anywhere (redact incl.)
 //     schemas    USAGE on mycelium_memory; CREATE nowhere; USAGE elsewhere is reported (and allowed only with zero grants)
 //     database   no CREATE; owns no object of any kind
+//     login      connection limit exactly the approved one; finite password expiry, in the future, within the ceiling;
+//                direct membership exactly runtime (no ADMIN, INHERIT, no SET); granted to no other role
 export const RUNTIME_ROLE = 'mycelium_memory_runtime';
 const SYS = `n.nspname NOT IN ('pg_catalog', 'information_schema') AND n.nspname NOT LIKE 'pg\\_%'`;
 
@@ -47,12 +49,16 @@ export const privilegeQueries = [
      FROM pg_proc p JOIN pg_namespace n ON n.oid = p.pronamespace
      WHERE ${SYS} AND has_function_privilege(p.oid, 'EXECUTE') ORDER BY 1, 2, 3` },
   { text: `SELECT n.nspname AS schema, has_schema_privilege(n.oid, 'USAGE') AS usage, has_schema_privilege(n.oid, 'CREATE') AS create
-     FROM pg_namespace n WHERE ${SYS} AND (has_schema_privilege(n.oid, 'USAGE') OR has_schema_privilege(n.oid, 'CREATE')) ORDER BY 1` }
+     FROM pg_namespace n WHERE ${SYS} AND (has_schema_privilege(n.oid, 'USAGE') OR has_schema_privilege(n.oid, 'CREATE')) ORDER BY 1` },
+  { text: `SELECT r.rolname AS role, a.admin_option AS admin, a.inherit_option AS inherit, a.set_option AS settable
+     FROM pg_auth_members a JOIN pg_roles r ON r.oid = a.roleid WHERE a.member = (SELECT oid FROM pg_roles WHERE rolname = current_user) ORDER BY 1` },
+  { text: `SELECT m.rolname AS member FROM pg_auth_members a JOIN pg_roles m ON m.oid = a.member
+     WHERE a.roleid = (SELECT oid FROM pg_roles WHERE rolname = current_user) ORDER BY 1` }
 ];
 
 export const readPrivileges = async db => {
   const r = await db.transaction(privilegeQueries);
-  return { identity: r[1][0], roles: r[2], relations: r[3], functions: r[4], schemas: r[5] };
+  return { identity: r[1][0], roles: r[2], relations: r[3], functions: r[4], schemas: r[5], direct: r[6], members: r[7] };
 };
 
 const EXPECTED_RELATIONS = {
@@ -63,7 +69,9 @@ const REL_FLAGS = ['sel', 'ins', 'upd', 'del', 'trunc', 'refs', 'trig'];
 const COL_FLAGS = { col_sel: 'sel', col_ins: 'ins', col_upd: 'upd', col_refs: 'refs' };
 
 // Returns a list of problems (empty = exactly the expected capability). Never throws on shape: shape errors are problems.
-export function principalProblems(p, principal) {
+// expect: { connLimit, maxValidUntil, now } -- the approved connection limit and the password-expiry ceiling; the expiry
+// must be finite, in the future and not beyond the ceiling.
+export function principalProblems(p, principal, { connLimit = 20, maxValidUntil = '2026-12-31T23:59:59Z', now = Date.now() } = {}) {
   const bad = [];
   const bool = (o, k, want, where) => { if (typeof o?.[k] !== 'boolean') bad.push(`${where}.${k} missing`); else if (o[k] !== want) bad.push(`${where}.${k}=${o[k]}`); };
   const id = p?.identity;
@@ -72,6 +80,15 @@ export function principalProblems(p, principal) {
   for (const k of ['superuser', 'createrole', 'createdb', 'replication', 'bypassrls', 'db_create']) bool(id, k, false, 'identity');
   bool(id, 'login', true, 'identity'); bool(id, 'inherit', true, 'identity');
   if (id.owned_objects !== 0) bad.push(`owns ${id.owned_objects} object(s)`);
+  if (id.connlimit !== connLimit) bad.push(`connection limit ${id.connlimit} is not ${connLimit}`);
+  const until = id.valid_until == null ? NaN : new Date(id.valid_until).getTime();
+  if (!Number.isFinite(until)) bad.push('no finite password expiry (VALID UNTIL)');
+  else if (until <= now) bad.push('password expiry has passed');
+  else if (until > Date.parse(maxValidUntil)) bad.push(`password expiry is beyond the approved ceiling ${maxValidUntil}`);
+  const direct = p.direct;
+  if (!Array.isArray(direct) || direct.length !== 1 || direct[0].role !== RUNTIME_ROLE) bad.push('direct memberships are not exactly the runtime template');
+  for (const d of direct ?? []) { bool(d, 'admin', false, `membership ${d.role}`); bool(d, 'inherit', true, `membership ${d.role}`); bool(d, 'settable', false, `membership ${d.role}`); }
+  if (!Array.isArray(p.members)) bad.push('members missing'); else if (p.members.length) bad.push(`granted to other roles: ${p.members.map(m => m.member).join(', ')}`);
   const roles = p.roles ?? [];
   if (roles.length !== 1 || roles[0].role !== RUNTIME_ROLE) bad.push(`reachable roles [${roles.map(r => r.role).join(', ')}] are not exactly ${RUNTIME_ROLE}`);
   for (const r of roles) { bool(r, 'inherited', true, `role ${r.role}`); bool(r, 'settable', false, `role ${r.role}`); }
@@ -98,8 +115,8 @@ export function principalProblems(p, principal) {
   return bad;
 }
 
-export function assertPrincipal(p, principal) {
-  const bad = principalProblems(p, principal);
+export function assertPrincipal(p, principal, expect) {
+  const bad = principalProblems(p, principal, expect);
   if (bad.length) throw new Error(`${principal} is not exactly least-privilege: ${bad.slice(0, 8).join('; ')}${bad.length > 8 ? '; ...' : ''}`);
   return { principal, other_schema_usage: (p.schemas ?? []).filter(s => s.usage && s.schema !== 'mycelium_memory').map(s => s.schema),
     valid_until: p.identity.valid_until ?? null, connlimit: p.identity.connlimit };

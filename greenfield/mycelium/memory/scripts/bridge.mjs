@@ -19,7 +19,7 @@ import { createHash } from 'node:crypto';
 import { pathToFileURL } from 'node:url';
 import { resolve } from 'node:path';
 import { createExplorerMemory } from '../src/explorer.mjs';
-import { derivedId } from '../src/memory.mjs';
+import { derivedId, createMemory } from '../src/memory.mjs';
 
 export const BRIDGE = { maxLinks: 4, maxStances: 3, maxItems: 4 };
 export const L2_SELECTION = { search: 'polymer P', limit: 20, maxDepth: 2, maxResults: 60 };   // the 28 Oct proof, for tests
@@ -104,10 +104,12 @@ export function parseContribution(answer, { allowed, refs = {} }) {
 
 export const contributionId = (cli, run, task) => derivedId('explorer', `${cli}-cli`, run, task);
 
-// Everything is checked and parsed BEFORE the first write; a later turn's "@<task>" resolves to the earlier turn's
-// deterministic id, so the plan is identical whether nothing, part or all of the batch was already written.
-// items: [{ task, cli, run, answer, attributes? }] in order.
-export function plan(snapshotText, items) {
+// Everything is checked, parsed AND prepared BEFORE the first write: each contribution goes through the explorer's own
+// pure prepare (the same field, limit, id and credential checks the append applies) and keeps its exact prepared inserts.
+// A later turn's "@<task>" resolves to the earlier turn's deterministic id, so the plan is identical whether nothing,
+// part or all of the batch was already written. items: [{ task, cli, run, answer, attributes? }] in order.
+const NO_DB = Object.freeze({});   // prepare never touches the database
+export function plan(snapshotText, items, tag) {
   const allowed = new Set(snapshotIds(snapshotText));
   if (!allowed.size) throw new Error('the snapshot lists no node ids');
   if (!Array.isArray(items) || items.length < 1 || items.length > BRIDGE.maxItems) throw new Error(`a batch has 1-${BRIDGE.maxItems} items`);
@@ -117,30 +119,31 @@ export function plan(snapshotText, items) {
       throw new Error(`bad item ${String(it.task).slice(0, 40)}`);
     const c = parseContribution(it.answer, { allowed, refs });
     const id = contributionId(it.cli, it.run, it.task);
-    out.push({ ...it, id, c });
+    const prepared = createExplorerMemory(NO_DB, { agent: `${it.cli}-cli`, run: it.run }).prepare({
+      key: it.task, kind: c.kind, title: c.title, body: c.body, tag,
+      attributes: { source_task: it.task, source_run: it.run, model_written: true, ...(it.attributes ?? {}) },
+      sources: [...new Set(c.links.map(l => l.to).filter(x => allowed.has(x)))].sort(),
+      links: c.links.map(l => ({ to: l.to, relation: l.relation })),
+      stances: c.stances.map(st => ({ node: st.node, stance: st.stance, weight: st.weight, independenceKey: `${it.cli}-cli/${it.task}` })) });
+    if (prepared.made.id !== id) throw new Error('contribution id mismatch');
+    out.push({ ...it, id, c, prepared });
     refs[it.task] = id;
   }
   return out;
 }
 
-async function write(db, planned) {
-  const made = [];
-  for (const p of planned) {
-    const me = createExplorerMemory(db, { agent: `${p.cli}-cli`, run: p.run });
-    const r = await me.contribute({ key: p.task, kind: p.c.kind, title: p.c.title, body: p.c.body, tag: p.tag,
-      attributes: { source_task: p.task, source_run: p.run, model_written: true, ...(p.attributes ?? {}) },
-      sources: [...new Set(p.c.links.map(l => l.to).filter(id => !planned.some(q => q.id === id)))].sort(),
-      links: p.c.links.map(l => ({ to: l.to, relation: l.relation })),
-      stances: p.c.stances.map(s => ({ node: s.node, stance: s.stance, weight: s.weight, independenceKey: `${p.cli}-cli/${p.task}` })) });
-    if (r.id !== p.id) throw new Error('contribution id mismatch');
-    made.push({ task: p.task, cli: p.cli, id: r.id, links: p.c.links.map(l => `${l.relation}->${l.to}`), stances: p.c.stances.length });
+async function write(db, planned, memoryOptions) {
+  const memory = createMemory(db, memoryOptions), made = [];
+  for (const p of planned) {   // one atomic append per contribution; an exact replay is a no-op, a changed one is refused
+    await memory.appendAll(p.prepared.queries);
+    made.push({ task: p.task, cli: p.cli, id: p.id, links: p.c.links.map(l => `${l.relation}->${l.to}`), stances: p.c.stances.length });
   }
   return made;
 }
 
 // v1 interface (the 28 Oct L2 proof), now all-or-nothing on validation and with exact run ids.
 export async function ingest(db, snapshotText, items, tag = { bridge: 'l2-proof-2026-10-28' }) {
-  return write(db, plan(snapshotText, items).map(p => ({ ...p, tag })));
+  return write(db, plan(snapshotText, items, tag));
 }
 
 // Stage One: the batch the wrapper built from GitHub at a pinned commit, bound to the manifest, snapshot and results.
@@ -160,39 +163,47 @@ export function planBatch(manifest, batch, snapshotText, answers) {
     return { task: b.task, cli: b.agent, run: b.run, answer: answers[i],
       attributes: { batch: m.batch, snapshot_sha256: batch.snapshot_sha256, result_sha256: b.result_sha256, result_blob: b.result_blob, hub_commit: batch.commit } };
   });
-  return plan(snapshotText, items).map(p => ({ ...p, tag: { bridge: m.batch } }));
+  return plan(snapshotText, items, { bridge: m.batch });
 }
 export const ingestBatch = async (db, manifest, batch, snapshotText, answers) => write(db, planBatch(manifest, batch, snapshotText, answers));
 
-// Fresh-process verification: exact ids, exact edges, exact stances; anything missing or different fails.
+// Fresh-process verification with the SAME comparisons identical-retry uses: every prepared node, edge and assessment
+// must exist with every persisted field equal (server timestamps aside). A row changed by the sanctioned redaction path
+// is reported as `redacted`, never counted as exact.
 export async function verifyPlanned(db, planned) {
-  const problems = [];
-  for (const p of planned) {
-    const [n] = await db.query(`SELECT kind, title, attributes FROM mycelium_memory.nodes WHERE id = $1`, [p.id]);
-    if (!n) { problems.push(`${p.task}: node ${p.id} missing`); continue; }
-    if (n.kind !== p.c.kind || n.title !== p.c.title || n.attributes?.source_run !== p.run) problems.push(`${p.task}: node ${p.id} differs`);
-    for (const [i, l] of p.c.links.entries()) {
-      const [e] = await db.query(`SELECT source_id, target_id, relation FROM mycelium_memory.edges WHERE id = $1`, [derivedId('link', p.id, String(i))]);
-      if (!e || e.source_id !== p.id || e.target_id !== l.to || e.relation !== l.relation) problems.push(`${p.task}: link ${i} missing or different`);
-    }
-    for (const [i, s] of p.c.stances.entries()) {
-      const [a] = await db.query(`SELECT node_id, stance, weight, basis_id FROM mycelium_memory.assessments WHERE id = $1`, [derivedId('stance', p.id, String(i))]);
-      if (!a || a.node_id !== s.node || a.stance !== s.stance || Math.abs(a.weight - s.weight) > 1e-6 || a.basis_id !== p.id) problems.push(`${p.task}: stance ${i} missing or different`);
-    }
+  const problems = [], redacted = []; let rows = 0;
+  for (const p of planned) for (const q of p.prepared.queries) {
+    rows++;
+    const [r] = await db.query(q.same, q.values), id = q.values[0];
+    if (r?.same === true) continue;
+    const what = /mycelium_memory\.nodes/.test(q.text) ? 'node' : /mycelium_memory\.edges/.test(q.text) ? 'edge' : 'assessment';
+    if (!r) { problems.push(`${p.task}: ${what} ${id} missing`); continue; }
+    const [x] = await db.query(`SELECT count(*)::int AS n FROM mycelium_memory.redactions WHERE subject_id = $1`, [id]);
+    if (x?.n > 0) { redacted.push(`${what} ${id}`); problems.push(`${p.task}: ${what} ${id} redacted (not exact; reconcile with Chris)`); }
+    else problems.push(`${p.task}: ${what} ${id} differs from the pinned payload`);
   }
-  return { problems, nodes: planned.length, links: planned.reduce((k, p) => k + p.c.links.length, 0), stances: planned.reduce((k, p) => k + p.c.stances.length, 0) };
+  return { problems, redacted, rows, nodes: planned.length, links: planned.reduce((k, p) => k + p.c.links.length, 0), stances: planned.reduce((k, p) => k + p.c.stances.length, 0) };
 }
 
 const redactMsg = e => String(e?.message ?? e).replace(/postgres(?:ql)?:\/\/\S+/gi, '<url>').replace(/[A-Za-z0-9_+\/=-]{40,}/g, m => (HEX64.test(m) || HEX40.test(m)) ? m : '<redacted>').slice(0, 300);
 
-// The CLI, against any db adapter (Neon in production; PGlite in the offline rehearsal).
-export async function runCli(mode, args, open) {
+// The production capability preflight: the exact effective-privilege check of the bridge login, run on the FIRST
+// connection of every bridge process (whoami, seed, snapshot, ingest, verify), so drift after setup is caught each time.
+export async function bridgeGuard(db) {
+  const { readPrivileges, assertPrincipal } = await import('./privileges.mjs');
+  const { BRIDGE_ROLE, BRIDGE_CONN_LIMIT, BRIDGE_MAX_VALID_UNTIL } = await import('./bridge-provision.mjs');
+  return assertPrincipal(await readPrivileges(db), BRIDGE_ROLE, { connLimit: BRIDGE_CONN_LIMIT, maxValidUntil: BRIDGE_MAX_VALID_UNTIL });
+}
+
+// The CLI, against any db adapter (Neon in production; PGlite in the offline rehearsal). `guard` (production and the
+// rehearsal always pass bridgeGuard) runs once, read-only, before the first connection is handed out.
+export async function runCli(mode, args, openDb, { guard = null } = {}) {
+  let checked = null;
+  const open = async opts => { if (guard && !checked) checked = await guard(await openDb({ readOnly: true })); return openDb(opts); };
   const readJson = async f => JSON.parse(await readFile(f, 'utf8'));
   if (mode === 'whoami') {
-    const { readPrivileges, assertPrincipal } = await import('./privileges.mjs');
-    const { BRIDGE_ROLE } = await import('./bridge-provision.mjs');
-    const r = assertPrincipal(await readPrivileges(await open({ readOnly: true })), BRIDGE_ROLE);
-    console.log(`WHOAMI OK: ${JSON.stringify(r)}`); return;
+    if (!guard) throw new Error('whoami needs the capability guard');
+    await open({ readOnly: true }); console.log(`WHOAMI OK: ${JSON.stringify(checked)}`); return;
   }
   const manifestText = await readFile(args[0], 'utf8'), manifest = parseManifest(JSON.parse(manifestText));
   if (mode === 'seed') {
@@ -209,14 +220,14 @@ export async function runCli(mode, args, open) {
     const batch = await readJson(batchFile), snap = await readFile(snapFile, 'utf8');
     if (batch.manifest_sha256 !== sha256(manifestText)) throw new Error('manifest bytes do not match the batch');
     const answers = await Promise.all(resultFiles.map(f => readFile(f, 'utf8')));
-    const planned = planBatch(manifest, batch, snap, answers);   // everything validated before any connection is used
+    const planned = planBatch(manifest, batch, snap, answers);   // everything validated and prepared before any connection
     if (mode === 'ingest') {
       for (const m of await write(await open({ readOnly: false }), planned)) console.log(`INGESTED ${m.task} (${m.cli}-cli) as ${m.id}: ${m.links.join(', ')}; ${m.stances} stance(s)`);
       console.log(`INGEST OK: ${planned.length} contribution(s) written or already present`); return;
     }
     const v = await verifyPlanned(await open({ readOnly: true }), planned);
     if (v.problems.length) throw new Error(`verification failed: ${v.problems.join('; ')}`);
-    console.log(`VERIFY OK: ${v.nodes} node(s), ${v.links} link(s), ${v.stances} stance(s) present exactly; ids ${planned.map(p => p.id).join(' ')}`); return;
+    console.log(`VERIFY OK: ${v.nodes} node(s), ${v.links} link(s), ${v.stances} stance(s); all ${v.rows} rows identical to the pinned payload; ids ${planned.map(p => p.id).join(' ')}`); return;
   }
   throw new Error('usage: bridge.mjs whoami | seed <manifest> | snapshot <manifest> <out.md> | ingest|verify <manifest> <batch> <snapshot> <result.md>...');
 }
@@ -231,7 +242,7 @@ if (process.argv[1] && pathToFileURL(resolve(process.argv[1])).href === import.m
     const url = new URL(connectionSettings(process.env).connectionString);   // the bridge login on the pinned target, or nothing
     if (url.hostname !== target.endpointHost || decodeURIComponent(url.pathname.slice(1)) !== target.database) throw new Error('connection is not the inspected target');
     if (decodeURIComponent(url.username) !== BRIDGE_ROLE) throw new Error(`connection must use the bridge login ${BRIDGE_ROLE}, never the owner or another role`);
-    await runCli(mode, args, opts => connect(process.env, opts));
+    await runCli(mode, args, opts => connect(process.env, opts), { guard: bridgeGuard });
   } catch (e) {
     console.error(`BRIDGE STOP: ${redactMsg(e)}`);
     process.exitCode = 1;

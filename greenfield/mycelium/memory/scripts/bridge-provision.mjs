@@ -11,8 +11,10 @@
 // <grant> is the owner-approval UUID, written as the role comment in the creating transaction; every later change acts only
 // on a role carrying exactly that comment. The login inherits only mycelium_memory_runtime (INHERIT TRUE, SET FALSE, no
 // ADMIN), CONNECTION LIMIT 20 (Neon's proxy holds idle sessions), and a password expiry (VALID UNTIL) no later than the
-// approved ceiling below: authority lapses by itself unless the owner rotates it. Disable = NOLOGIN (no new sessions) +
-// REVOKE runtime (an already-open session loses every graph privilege at its next statement) + expiry in the past.
+// approved ceiling below. The expiry only stops NEW password authentication after that time: it does not revoke the
+// runtime membership or end a session already open, so closure is always the explicit disable below. Disable = NOLOGIN
+// (no new sessions) + REVOKE runtime (in PostgreSQL semantics an open session loses graph privileges at its next
+// statement; on Neon this is verified only under approval) + expiry in the past.
 import { readFile } from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
 import { resolve } from 'node:path';

@@ -147,6 +147,40 @@ chmod u+w "$ST/snapshots/$H2.md"; echo x >> "$ST/snapshots/$H2.md"
 run verify s1-recover; [[ $? != 0 ]] && grep -q "snapshot bytes do not match" "$T/out" && ok "a tampered sealed snapshot is refused" || { bad "tampered snapshot"; cat "$T/out"; }
 unset T_INJECT_ONCE
 
+echo "6b. interrupted orchestration (SIGKILL/power loss: no EXIT trap ran): ingest reconciles from CALLS_STARTED, database-only"
+emulate_run() {  # batch commit turns... : exactly what `run` leaves durable before it is killed (allowance still in place)
+  local b=$1 c=$2; shift 2; local bd=$ST/batches/$b t a
+  : > "$bd/allowed"; while read -r t a; do echo "$t $a $(git --git-dir="$T/remote.git" rev-parse "$c:$TD/$t/task.json")" >> "$bd/allowed"; done < <(jq -r '.tasks[] | "\(.task) \(.agent)"' "$bd/manifest.json")
+  printf '%s CALLS_STARTED turns=2 window=1800s commit=%s\n' "$(date -u +%FT%TZ)" "$c" >> "$bd/receipt"
+  cp "$bd/allowed" "$R/etc/myc-stageb/$b.allowed"
+  for t in "$@"; do MYC_ALLOW="$R/etc/myc-stageb/$b.allowed" MYC_AS_HUBSYNC="env HOME=$T/hs MYC_ALLOW=$R/etc/myc-stageb/$b.allowed MYC_MAX_CALLS=2" \
+    MYC_WINDOW_S=1800 bash "$SB/myc-stageb" "$t" > /dev/null 2>&1; done
+}
+crash_batch() {  # batch t1 t2 -> prepared, descriptors pinned; prints the commit
+  manifest "$1" "$2" "$3"; local c; c=$(push "manifest $1"); hsfetch; run prepare "$1" "$c" || { echo "prepare $1 failed" >&2; cat "$T/out" >&2; }
+  local h; h=$(cat "$ST/batches/$1/snapshot.sha256")
+  task "$2" claude $'Turn 1.\nmemref: sha256:'"$h"; task "$3" codex $'Turn 2.\nmemref: sha256:'"$h"$'\nref: '"$TD/$2/result.md"
+  push "tasks $1"; }
+C5=$(crash_batch s1-crash MYC-20261029-005 MYC-20261029-006 | tail -1); hsfetch
+emulate_run s1-crash "$C5" MYC-20261029-005 MYC-20261029-006
+n2=$(nodes); c0=$(calls)
+[[ -e $R/etc/myc-stageb/s1-crash.allowed && $(tail -1 "$ST/batches/s1-crash/receipt" | cut -d' ' -f2) == CALLS_STARTED ]] && ok "killed after the final completion: CALLS_STARTED, allowance still open" || bad "crash setup"
+run run s1-crash "$C5"; [[ $? != 0 && $(calls) == "$c0" ]] && grep -q "not PREPARED" "$T/out" && ok "run refuses to start the turns again" || bad "crash rerun"
+run ingest s1-crash && [[ $(calls) == "$c0" && $(nodes) == $((n2 + 2)) && ! -e $R/etc/myc-stageb/s1-crash.allowed ]] && grep -q "reconciled: every turn completed" "$ST/batches/s1-crash/receipt" \
+  && [[ $(tail -1 "$ST/batches/s1-crash/receipt" | cut -d' ' -f2) == VERIFIED ]] && ok "ingest: allowance closed first, completion verified on GitHub, ingested + VERIFIED; no call" || { bad "crash reconcile"; cat "$T/out"; }
+C7=$(crash_batch s1-half MYC-20261029-007 MYC-20261029-008 | tail -1); hsfetch
+emulate_run s1-half "$C7" MYC-20261029-007
+n3=$(nodes); c0=$(calls)
+run ingest s1-half; [[ $? != 0 && $(calls) == "$c0" && $(nodes) == "$n3" && ! -e $R/etc/myc-stageb/s1-half.allowed ]] && grep -q "is HELD: MYC-20261029-008 pending" "$T/out" \
+  && ok "killed after turn 1 only: HELD, allowance closed, nothing ingested, no call" || { bad "half"; cat "$T/out"; }
+run ingest s1-half; [[ $? != 0 && $(calls) == "$c0" ]] && grep -q "HELD" "$T/out" && ok "a held batch stays held (no new call, ever)" || bad "half rerun"
+cp "$ST/batches/s1-half/allowed" "$R/etc/myc-stageb/s1-half.allowed"; echo "MYC-20261029-999 claude x" >> "$R/etc/myc-stageb/s1-half.allowed"
+run ingest s1-half; [[ $? != 0 && -e $R/etc/myc-stageb/s1-half.allowed ]] && grep -q "not the allowance this batch recorded" "$T/out" && ok "a foreign allowlist is left alone" || bad "foreign allowance"
+rm -f "$R/etc/myc-stageb/s1-half.allowed"
+( exec 9>>"$ST/lock"; flock 9; sleep 4 ) & sleep 0.5
+run verify s1-proof; [[ $? != 0 ]] && grep -q "holds the lock" "$T/out" && ok "verify takes the run lock (cannot race an ingest)" || bad "verify lock"
+wait; run verify s1-proof && [[ -z $(ls -d "$ST/batches/s1-proof"/verify.* 2>/dev/null) ]] && ok "verify uses an isolated collection folder and removes it" || bad "verify isolation"
+
 echo "7. rotation, close and teardown (memory evidence kept)"
 old=$(sha256sum "$E"); run credential && [[ -f $V && $(sha256sum "$E") != "$old" ]] && ok "credential: new password + one PC copy" || { bad credential; cat "$T/out"; }
 run credential; [[ $? != 0 ]] && grep -q "not collected" "$T/out" && ok "a second rotation before the PC step is refused" || bad "double rotate"

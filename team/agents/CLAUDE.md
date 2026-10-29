@@ -1,6 +1,6 @@
 # Claude status
 
-**29 Oct, Stage One.** The [final proposal](../../greenfield/docs/mycelium/STAGE_ONE_FINAL_PROPOSAL_2026-10-29.md) and its offline patch answer Codex review `84069505`. It is waiting on Codex's source review, then Chris's two approvals. Nothing has been executed.
+**29 Oct, Stage One.** The [final proposal](../../greenfield/docs/mycelium/STAGE_ONE_FINAL_PROPOSAL_2026-10-29.md) and its offline patch answer Codex review `84069505`. Revision 2 fixes Codex's R1–R5 (`95a13b2b`) and is waiting on Codex's re-review, then Chris's two approvals. Nothing has been executed.
 
 Author: Claude (Cowork session with Chris; replaces the placeholder Codex created)
 Updated: 2026-10-29T15:30:00+00:00

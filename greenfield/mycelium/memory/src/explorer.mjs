@@ -25,7 +25,7 @@ export function createExplorerMemory(db, { agent, run, memoryOptions } = {}) {
     return db.query(`SELECT ${COLS} FROM mycelium_memory.nodes n WHERE n.id = ANY($1::uuid[]) ORDER BY n.recorded_at, n.id`, [ids]);
   }
 
-  return {
+  const api = {
     agent, run,
 
     // Bounded recall. `from`: explicit node ids. Returns at most `maxResults` nodes IN TOTAL (deduplicated starts count
@@ -92,7 +92,16 @@ export function createExplorerMemory(db, { agent, run, memoryOptions } = {}) {
     // direction) and its stances on other records or links. `key` makes every id deterministic for (agent, run, key), so
     // a retry after an uncertain outcome is an exact no-op and a changed retry is refused with nothing written. The caller
     // must therefore rebuild the SAME payload on retry (for example, do not recompute `sources` from a fresh recall).
-    async contribute({ key, kind, title = '', body = '', attributes = {}, tag = {}, sources = [], evidence = [], links = [], stances = [] }) {
+    async contribute(c) {
+      const { queries, made } = api.prepare(c);
+      await memory.appendAll(queries);
+      return made;
+    },
+
+    // The pure half of contribute: every validation the append applies (fields, limits, ids, the credential refusal) and
+    // the exact prepared inserts, each with its identical-retry comparison. No database access. A caller can prepare a
+    // whole batch before writing any of it, and verify persistence later with the same comparisons.
+    prepare({ key, kind, title = '', body = '', attributes = {}, tag = {}, sources = [], evidence = [], links = [], stances = [] }) {
       text(key, 'key'); text(kind, 'kind');
       if (tag === null || Array.isArray(tag) || typeof tag !== 'object') throw new Error('tag must be an object.');
       const t = a => ({ ...(a ?? {}), ...tag });   // `tag` is merged into the attributes of EVERY node and edge created
@@ -125,8 +134,7 @@ export function createExplorerMemory(db, { agent, run, memoryOptions } = {}) {
           independenceKey: text(s.independenceKey ?? `${agent}/${run}/${key}`, `stances[${i}].independenceKey`) }));
         made.stances.push(sid);
       });
-      await memory.appendAll(q);
-      return made;
+      return { queries: q, made };
     },
 
     // Recalled memory as a bounded, fenced DATA block for a model prompt (for example a BRIX task ref). Whole entries only,
@@ -150,4 +158,5 @@ export function createExplorerMemory(db, { agent, run, memoryOptions } = {}) {
       return result;
     }
   };
+  return api;
 }

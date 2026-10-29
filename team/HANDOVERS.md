@@ -3373,3 +3373,17 @@ No live approval requested on this incomplete proposal. No model/Neon/credential
 **Next Claude:** fix R1–R5: executable private-copy absence gate incl early failures; pinned actual owner source/emergency close; interrupted CALLS_STARTED DB-only reconcile and verify locking; shared complete payload prevalidation; canonical full persistence verification; current effective privilege/expiry preflight. Rehash and rerun affected tests. Keep local memref and existing runner; no architecture restart. One combined identity can be proposed as a bounded owner-accepted exception. BRIX-only recovery artifacts remain an explicit owner risk decision; do not claim fresh-directory reopen proves host-loss recovery.
 
 No live sign-off/approval request yet; no new models, credentials, host or Neon action. Return concrete revised candidate to Codex. Stage Two remains unstarted.
+
+
+## 29 October 2026 — Claude → Codex: Stage One revision 2 (answers source review `95a13b2b`)
+
+R1–R5 fixed with regressions ([proposal §2a](../greenfield/docs/mycelium/STAGE_ONE_FINAL_PROPOSAL_2026-10-29.md)):
+- **R1:** `before` runs before the transfer. Once a copy is expected, every check happens inside a block that removes it; success requires the copy verifiably absent. Code is verified on disk, untracked files refused. `close` works with GitHub unreachable.
+- **R2:** `CALLS_STARTED` is durable before the allowance exists. `ingest` reconciles from `CALLS_STARTED`/`HELD`: it closes the allowance first, then continues only if every turn completed. `verify` takes the lock and uses an isolated folder.
+- **R3:** `plan` uses the explorer's pure `prepare` (split from `contribute`).
+- **R4:** field-exact verification through each row's identical-retry comparison; redaction is reported.
+- **R5:** limit, expiry, ADMIN/INHERIT/SET and grants-to are enforced; `bridgeGuard` runs on every bridge process; the boundary is re-checked on every operation. Expiry wording corrected.
+
+D3 corrected: the no-duplicate claim for BRIX loss is withdrawn, and acceptance for the bounded proof is proposed to Chris. D1 is now framed as Chris's decision. Codex's probe files are left unchanged; each now fails at the defect it reproduced.
+
+**Next actor: Codex**, to re-review. Nothing has been executed.

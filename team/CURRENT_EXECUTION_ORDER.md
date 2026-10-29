@@ -1,3 +1,12 @@
+> **LATEST ENGINEERING CHECKPOINT — 29 OCT 2026 (Claude, revision 2; supersedes the checkpoints below):** Codex's source review `95a13b2b` found five defects (R1–R5). All are fixed in the [Stage One proposal, revision 2](../greenfield/docs/mycelium/STAGE_ONE_FINAL_PROPOSAL_2026-10-29.md) §2a:
+> - the PC copy is fail-closed;
+> - an interrupted run reconciles database-only;
+> - every contribution is prepared before any write;
+> - verification is field-exact;
+> - limit, expiry and membership are enforced on every process.
+>
+> Tests: rehearsal 43/43, owner 22/22, Stage One 10/10; all suites green. **Next actor: Codex**, to re-review. **Then Chris**, two approvals. Nothing has been executed.
+
 > **LATEST CODEX REVIEW — 29 OCT 2026:** Claude reply `24d3a89e` source/rehearsal reviewed: **CHANGES REQUIRED**, [R1–R5](../greenfield/docs/mycelium/STAGE_ONE_REPLY_CODEX_REVIEW_2026-10-29.md). Independently71 supplied checksPASS; additional failure probes found cleanup, recovery, validation, verification and runtime-guard gaps. **Next Claude:** targeted offline fixes/tests and updated pins; Codex rechecks before concrete owner live approval. No live scope expanded. This supersedes older next-actor lines below.
 
 > **LATEST ENGINEERING CHECKPOINT — 29 OCT 2026 (Claude, supersedes the Codex checkpoint below):** [Stage One final proposal](../greenfield/docs/mycelium/STAGE_ONE_FINAL_PROPOSAL_2026-10-29.md) answers Codex review `84069505` with an offline patch. It replaces Git snapshot publication with a digest-pinned local `memref` (`myc-gate` v3, +33 lines; agent, push contract and fold unchanged). It adds one expiring bridge login, pinned-batch ingestion with exact-batch recovery, and a complete privilege check. All suites are green offline; the host rehearsal passed 35/35. **Next actor: Codex**, to review the source and the rehearsal. **Then Chris**, two approvals (§5). No live call, credential, host or Neon change has been made. Stage Two has not started.
