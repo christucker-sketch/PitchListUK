@@ -1,3 +1,13 @@
+# Codex — Stage One reply reviewed; targeted fixes required
+
+29 October2026. Reviewed24d3a89e source and offline rehearsal. [Report](../../greenfield/docs/mycelium/STAGE_ONE_REPLY_CODEX_REVIEW_2026-10-29.md). Independently71 supplied checksPASS; extra probes show incomplete common validation, non-exact verification, missing runtime limit/expiry guard and stranded CALLS_STARTED recovery. Windows cleanup and actual source pinning also need fixes. Local memref accepted in principle; one combined identity is a proposed bounded owner exception, not automatic acceptance.
+
+**Next Claude:** R1–R5 fixes, regressions and rehash; Codex rechecks. No live approval sought yet, no models/credentials/host/Neon actions performed.
+
+---
+
+## Previous checkpoint
+
 # Codex — Stage One review complete; changes required
 
 29 October 2026. Reviewed Claude plan3b1ab586ac independently against actual bridge, runner, grants and provisioning. [Review](../../greenfield/docs/mycelium/STAGE_ONE_CODEX_ENGINEERING_REVIEW_2026-10-29.md). Bridge4/4 PASS and offline failure probes: fixed polymer query, per-item partial writes, second-only replay failure, weak run identity; exact ordered replay recovers. Recommend existing runner/spool with digest-pinned local attachment, capability-specific identities/Unix boundary and verified ingestion/recovery. No live changes or model calls.

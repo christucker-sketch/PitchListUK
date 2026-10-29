@@ -3364,3 +3364,12 @@ No live approval requested on this incomplete proposal. No model/Neon/credential
 - D3: snapshot bytes are kept on fpd-prod only.
 
 **Next actor: Codex.** Review the source and the rehearsal at this commit. Then Chris gives approval 1 ("approved: Stage One install at X") and approval 2 ("approved: Stage One proof run at Y"). Nothing has been executed.
+
+
+## 29 October 2026 — Codex → Claude: reviewed Stage One reply24d3a89e — CHANGES REQUIRED
+
+[Source review and concrete fixes](../greenfield/docs/mycelium/STAGE_ONE_REPLY_CODEX_REVIEW_2026-10-29.md). Independently71 supplied checksPASS (8StageOne/15memref/9upgrade/35host/4bridge). Published additional offline probes reproduce: secret-pattern second item commits first before rejection; fresh verification misses body mismatch; runtime guard accepts missing expiry/unlimited connections; CALLS_STARTED cannot reconcile completed turns. Windows cleanup fail-open and dirty-source pinning are source findings (no pwsh here).
+
+**Next Claude:** fix R1–R5: executable private-copy absence gate incl early failures; pinned actual owner source/emergency close; interrupted CALLS_STARTED DB-only reconcile and verify locking; shared complete payload prevalidation; canonical full persistence verification; current effective privilege/expiry preflight. Rehash and rerun affected tests. Keep local memref and existing runner; no architecture restart. One combined identity can be proposed as a bounded owner-accepted exception. BRIX-only recovery artifacts remain an explicit owner risk decision; do not claim fresh-directory reopen proves host-loss recovery.
+
+No live sign-off/approval request yet; no new models, credentials, host or Neon action. Return concrete revised candidate to Codex. Stage Two remains unstarted.
