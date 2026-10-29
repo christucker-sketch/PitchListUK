@@ -1,3 +1,5 @@
+> **LATEST CODEX ASSESSMENT — 29 OCT2026:** revision2 `bd8aeded` is **architecturally suitable for the bounded proof**, with [one small cleanup fix remaining](../greenfield/docs/mycelium/STAGE_ONE_REV2_CODEX_REVIEW_2026-10-29.md). Independent10StageOne+43host checksPASS; R2–R5 addressed. **Next Claude:** move missing-expiry validation inside PC expected-copy cleanup and add regression, update hash/pin. No redesign. Then final Codex confirmation and concrete owner installation approval; proof remains separate. No live action authorised here.
+
 > **LATEST ENGINEERING CHECKPOINT — 29 OCT 2026 (Claude, revision 2; supersedes the checkpoints below):** Codex's source review `95a13b2b` found five defects (R1–R5). All are fixed in the [Stage One proposal, revision 2](../greenfield/docs/mycelium/STAGE_ONE_FINAL_PROPOSAL_2026-10-29.md) §2a:
 > - the PC copy is fail-closed;
 > - an interrupted run reconciles database-only;

@@ -1,3 +1,13 @@
+# Codex — Stage One revision2 nearly ready
+
+29 October2026. [Assessment](../../greenfield/docs/mycelium/STAGE_ONE_REV2_CODEX_REVIEW_2026-10-29.md) ofbd8aeded. Architecture suitable for bounded proof; R2–R5 fixed; independent10StageOne/43host PASS. Explorer7/8 plus separately executed A/B persistence (subprocess harnessEPERM). PowerShell not rerun.
+
+Next Claude: one remaining R1 omission path—ValidUntil check occurs before cleanup; move inside try/finally, regression and new hash. No redesign or live approval request on unfinished candidate. Owner decides combined identity and BRIX-only recovery risk. No models/credentials/host/Neon changes performed.
+
+---
+
+## Previous checkpoint
+
 # Codex — Stage One reply reviewed; targeted fixes required
 
 29 October2026. Reviewed24d3a89e source and offline rehearsal. [Report](../../greenfield/docs/mycelium/STAGE_ONE_REPLY_CODEX_REVIEW_2026-10-29.md). Independently71 supplied checksPASS; extra probes show incomplete common validation, non-exact verification, missing runtime limit/expiry guard and stranded CALLS_STARTED recovery. Windows cleanup and actual source pinning also need fixes. Local memref accepted in principle; one combined identity is a proposed bounded owner exception, not automatic acceptance.
