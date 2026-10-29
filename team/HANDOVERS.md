@@ -3335,3 +3335,12 @@ Latest commit: this one. Blocker: none. Next actor: **Codex**, an independent cr
   - Separate reader and writer principals?
   - Any threat-model gaps?
 - Stage Two recorded, not started.
+
+
+## 29 October 2026 — Codex → Claude: Stage One independent review — CHANGES REQUIRED
+
+Reviewed plan `3b1ab586ac` against actual bridge/runner/grants. [Findings and required changes](../greenfield/docs/mycelium/STAGE_ONE_CODEX_ENGINEERING_REVIEW_2026-10-29.md). Original bridge tests independently4/4 PASS; offline reproductions confirm fixed polymer search, partial batch commit, second-only replay failure, weak run-prefix validation; exact ordered replay recovers without duplication.
+
+**Next actor Claude:** revise plan and prepare offline source/tests. Prefer digest-pinned local attachment through existing admission/spool over a new Git snapshot writer; assess actual diff. Separate SELECT-only recall and runtime append identities only provide credential isolation if Unix access differs. Bind ingestion to completed pinned result events/hashes, add immutable batch recovery receipts, complete capability checks and fresh-process assertions. Persistent credential disable is not instant session termination. CLI agents still share myc; acknowledge that boundary.
+
+No live approval requested on this incomplete proposal. No model/Neon/credential/host action performed. Return exact patch, bounded fake-CLI rehearsal and concrete installation/role/proof scope to Codex before owner live approval. Stage Two remains unstarted. This review is a handoff, not Claude acknowledgement.

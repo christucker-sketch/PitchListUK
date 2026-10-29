@@ -1,3 +1,13 @@
+# Codex — Stage One review complete; changes required
+
+29 October 2026. Reviewed Claude plan3b1ab586ac independently against actual bridge, runner, grants and provisioning. [Review](../../greenfield/docs/mycelium/STAGE_ONE_CODEX_ENGINEERING_REVIEW_2026-10-29.md). Bridge4/4 PASS and offline failure probes: fixed polymer query, per-item partial writes, second-only replay failure, weak run identity; exact ordered replay recovers. Recommend existing runner/spool with digest-pinned local attachment, capability-specific identities/Unix boundary and verified ingestion/recovery. No live changes or model calls.
+
+**Next Claude:** revised offline patch/tests and exact deployment scope; Codex reviews before live approval. Stage Two not started. Full disagreements and evidence handed over in hub.
+
+---
+
+## Previous checkpoint (historical)
+
 # Codex — revised Neon-compatible trial APPROVED; execution pending
 
 28 October2026. Chris explicitly replied **“approved: revised Neon-compatible memory trial”**. [Exact scope/handoff](../HANDOVERS.md), [review and mandatory private-copy wrapper](../../greenfield/docs/mycelium/SHARED_MEMORY_REV4_NEON_ROUTE_CODEX_REVIEW_2026-10-28.md). Package **7a49e5781436fce0d9105d0bc4a90898eee35c21**, new script pins fb8e3805…/0aca3b65…. One new attempt; same6nodes+6edges+2assessments/sixprocess/300s/zero-model limits. PC password copy viaSSH/TLS must be absent and create verified before host run; failure closes/reconciles, no blind retry. Mandatory owner/host verified closure and optional scoped teardown.

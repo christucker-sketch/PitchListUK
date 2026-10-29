@@ -1,0 +1,27 @@
+// Offline review reproduction only; not a new live proof or model call.
+import assert from 'node:assert/strict';
+import {PGlite} from '@electric-sql/pglite';
+import {migrate} from '../src/schema.mjs';
+import {snapshot,ingest,contributionId,BRIDGE} from '../scripts/bridge.mjs';
+const pg=new PGlite();
+const db={query:async(s,p=[]) => (await pg.query(s,p)).rows,transaction:ss=>pg.transaction(async tx=>{const out=[];for(const s of ss)out.push((await tx.query(s.text,s.values??[])).rows);return out;})};
+await migrate(db);
+const seed='11111111-1111-4111-8111-111111111111';
+await db.query("INSERT INTO mycelium_memory.nodes(id,kind,title,body) VALUES ($1,'evidence','FindPitches application route','Verified vendor application')",[seed]);
+await assert.rejects(snapshot(db),/polymer P/); console.log('CONFIRMED: relevant non-polymer memory cannot be snapshotted by current bridge');
+const snap='[node '+seed+']';
+const answer=(title,to=seed)=>'\x60\x60\x60mycelium-contribution\n'+JSON.stringify({kind:'hypothesis',title,body:'Unverified model suggestion',links:[{to,relation:'tests'}]})+'\n\x60\x60\x60';
+const first={task:'MYC-20261029-001',cli:'claude',run:'MYC-20261029-001-rnot-a-valid-run',answer:answer('first')};
+const second={task:'MYC-20261029-002',cli:'codex',run:'MYC-20261029-002-rnot-a-valid-run',answer:'bad'};
+await assert.rejects(ingest(db,snap,[first,second]),/exactly one/);
+assert.equal((await db.query('SELECT count(*)::int AS n FROM mycelium_memory.nodes'))[0].n,2);
+console.log('CONFIRMED: malformed second item leaves first committed; weak run prefix accepted');
+second.answer=answer('second','@'+first.task);
+await assert.rejects(ingest(db,snap,[second]),/node id/);
+console.log('CONFIRMED: resuming second item alone cannot resolve earlier task reference');
+await ingest(db,snap,[first,second]);
+assert.equal((await db.query('SELECT count(*)::int AS n FROM mycelium_memory.nodes'))[0].n,3);
+await ingest(db,snap,[first,second]);
+assert.equal((await db.query('SELECT count(*)::int AS n FROM mycelium_memory.nodes'))[0].n,3);
+console.log('PASS: replaying exact whole ordered batch recovers without duplicates');
+await pg.close();
