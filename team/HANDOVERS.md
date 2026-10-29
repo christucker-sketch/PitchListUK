@@ -3406,3 +3406,21 @@ R2–R5 addressed. **Next Claude:** move missing-ValidUntil validation (owner.ps
 [Sign-off and exact next approval](../greenfield/docs/mycelium/STAGE_ONE_FINAL_CODEX_SIGNOFF_2026-10-29.md). Reviewed revision2a **d2d28c06547dcd137b398f0155df46b86b4137a8**; final R1 missing/malformed expiry now enters expected-copy cleanup, regression added and owner-script SHA verified9e1122de…. R2–R5 unchanged/accepted. Independent10StageOne+43host PASS retained; owner25/25 Claude-reported (no pwsh here).
 
 **Next Chris:** scope1 installation/setup approval at that exact commit, explicitly including combined identity and BRIX-only recovery limits. Then Claude executes established Chris-command/log route: gate upgrade, isolated install/login, privilege checks and one seed question+snapshot. **No model calls in scope1.** Scope2 two-call proof requires separately reviewed digest-bound tasks/commitY and approval. No further engineering blocker; no live action occurred or is authorised by this sign-off alone.
+
+
+## 29 October 2026 — Chris APPROVES Stage One installation/setup scope1
+
+Chris replied **“approved”** directly to Codex's final sign-off and explicit installation/setup request at **`d2d28c06547dcd137b398f0155df46b86b4137a8`**. This is approval of that concrete scope, including the stated **combined database identity** and **BRIX-only snapshot/recovery artifact** limitations. No repeated exact-scope approval is needed.
+
+**Next actor Claude:** coordinate execution through the existing Chris-command/sanitized-log route, using the pinned package and [proposal §5](../greenfield/docs/mycelium/STAGE_ONE_FINAL_PROPOSAL_2026-10-29.md) / [final Codex sign-off](../greenfield/docs/mycelium/STAGE_ONE_FINAL_CODEX_SIGNOFF_2026-10-29.md):
+1. Checked myc-gate upgrade (local memref only), with reviewed rollback and unchanged-service checks.
+2. Receipt-scoped persistent mycmem/package/config/snapshot store on fpd-prod. Node is already installed; do not reinstall it.
+3. New `mycelium_bridge_fpd` login: only runtime inheritance, SET/ADMIN false, connection limit20, password expiry no later than2026-12-31T23:59:59Z. Owner provisioning stays in the authenticated Windows environment; no owner credentials/workspace auth/API keys on BRIX or here. Use before → private transfer → create and enforced copy-absence gate; no secrets in outputs.
+4. Unix/effective-privilege checks and `prepare stage-one-proof-1` at the pinned commit: exactly the approved **one seed question node**, followed by read-only snapshot sealing.
+5. Preserve sanitized installation/hash/privilege/copy-absence/seed/snapshot receipts. On failure STOP, perform only approved receipt/grant-scoped reconciliation/close/rollback, preserve unrelated work; no fallback privilege expansion or retry of uncertain writes.
+
+**Zero model calls.** No timer, dispatch, paid resource, production/FindPitches/Neon Auth/schema change or unrelated service change. Scope1 approval is not permission for rotation later or other future execution windows.
+
+After snapshot output exists, Claude publishes the exact digest-pinned two task descriptors at commitY for Codex review; **Chris separately approves scope2** (two calls/30minutes, linked ingestion, fresh verification and bounded DB-only recovery). StageTwo remains unstarted.
+
+This records owner authorisation and handoff, **not execution evidence**. Codex reviews actual scope1 receipts next; no direct Claude acknowledgement or host execution is claimed.

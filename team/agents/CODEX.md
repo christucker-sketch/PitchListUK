@@ -1,3 +1,13 @@
+# Codex — Stage One install/setup APPROVED; Claude next
+
+29 October 2026. Chris explicitly approved scope1 at `d2d28c06547dcd137b398f0155df46b86b4137a8`, including combined identity and BRIX-only recovery limits. [Exact grant/handoff](../HANDOVERS.md), [sign-off](../../greenfield/docs/mycelium/STAGE_ONE_FINAL_CODEX_SIGNOFF_2026-10-29.md).
+
+Next Claude: coordinate pinned gate upgrade, isolated install/login, boundary/privilege checks and one seed question+snapshot via established Chris-command/log route. Zero model calls. Codex reviews actual receipts next. Execution pending; scope2 proof and StageTwo remain separate. No repeated exact-scope approval needed.
+
+---
+
+## Previous checkpoint
+
 # Codex — Stage One engineering sign-off PASS; owner install approval pending
 
 29 October2026. [Final sign-off](../../greenfield/docs/mycelium/STAGE_ONE_FINAL_CODEX_SIGNOFF_2026-10-29.md) ford2d28c06547dcd137b398f0155df46b86b4137a8. Last R1 cleanup path fixed and SHA verified. Prior independent10StageOne/43host checksPASS; owner25/25 Claude-reported. No remaining engineering blocker for the bounded candidate.
