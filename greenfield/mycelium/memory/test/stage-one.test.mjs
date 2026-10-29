@@ -165,6 +165,7 @@ test('privileges: the bridge login passes ONLY with exactly the runtime capabili
   try {
     const asBridge = async fn => { await pg.query(`SET SESSION AUTHORIZATION ${BRIDGE_ROLE}`); try { return await fn(); } finally { await pg.query('SET SESSION AUTHORIZATION postgres'); } };   // PGlite: RESET does not restore
     const NOW = Date.parse('2026-10-29T12:00:00Z');
+    const ownerQ = async q => { await pg.query('SET SESSION AUTHORIZATION neondb_owner'); try { await pg.query(q); } finally { await pg.query('SET SESSION AUTHORIZATION postgres'); } };   // memberships are the owner's grants, as on Neon
     const check = () => asBridge(async () => principalProblems(await readPrivileges(adapter(pg, { readOnly: true })), BRIDGE_ROLE, { now: NOW }));
     assert.deepEqual(await check(), []);
     const ok = await asBridge(async () => assertPrincipal(await readPrivileges(db), BRIDGE_ROLE, { now: NOW }));
@@ -180,27 +181,30 @@ test('privileges: the bridge login passes ONLY with exactly the runtime capabili
     const drift = async (grant, revoke, re) => { await pg.query(grant); try { const p = await check(); assert.ok(p.some(x => re.test(x)), `${grant}: ${p}`); } finally { await pg.query(revoke); } };
     await drift('GRANT UPDATE ON mycelium_memory.edges TO mycelium_memory_runtime', 'REVOKE UPDATE ON mycelium_memory.edges FROM mycelium_memory_runtime', /edges\.upd/);
     await drift('GRANT UPDATE (title) ON mycelium_memory.nodes TO mycelium_memory_runtime', 'REVOKE UPDATE (title) ON mycelium_memory.nodes FROM mycelium_memory_runtime', /col_upd/);
-    await drift('GRANT TRUNCATE ON mycelium_memory.nodes TO mycelium_bridge_fpd', 'REVOKE TRUNCATE ON mycelium_memory.nodes FROM mycelium_bridge_fpd', /trunc/);
-    await drift('GRANT mycelium_memory_redactor TO mycelium_bridge_fpd', 'REVOKE mycelium_memory_redactor FROM mycelium_bridge_fpd', /reachable roles|SECURITY DEFINER/);
+    await drift('GRANT TRUNCATE ON mycelium_memory.nodes TO mycelium_bridge_fpd_r2', 'REVOKE TRUNCATE ON mycelium_memory.nodes FROM mycelium_bridge_fpd_r2', /trunc/);
+    await drift('GRANT mycelium_memory_redactor TO mycelium_bridge_fpd_r2', 'REVOKE mycelium_memory_redactor FROM mycelium_bridge_fpd_r2', /reachable roles|SECURITY DEFINER/);
     await drift('GRANT EXECUTE ON FUNCTION mycelium_memory.redact(text,uuid,text,uuid) TO mycelium_memory_runtime', 'REVOKE EXECUTE ON FUNCTION mycelium_memory.redact(text,uuid,text,uuid) FROM mycelium_memory_runtime', /SECURITY DEFINER/);
-    await drift('GRANT CREATE ON SCHEMA public TO mycelium_bridge_fpd', 'REVOKE CREATE ON SCHEMA public FROM mycelium_bridge_fpd', /public\.create/);
-    await drift('ALTER ROLE mycelium_bridge_fpd CREATEDB', 'ALTER ROLE mycelium_bridge_fpd NOCREATEDB', /createdb/);
-    await drift('GRANT SELECT ON mycelium_memory.redaction_authorizations TO mycelium_bridge_fpd', 'REVOKE SELECT ON mycelium_memory.redaction_authorizations FROM mycelium_bridge_fpd', /redaction_authorizations/);
-    await drift('ALTER TABLE mycelium_memory.schema_migrations OWNER TO mycelium_bridge_fpd', 'ALTER TABLE mycelium_memory.schema_migrations OWNER TO postgres', /owns/);
+    await drift('GRANT CREATE ON SCHEMA public TO mycelium_bridge_fpd_r2', 'REVOKE CREATE ON SCHEMA public FROM mycelium_bridge_fpd_r2', /public\.create/);
+    await drift('ALTER ROLE mycelium_bridge_fpd_r2 CREATEDB', 'ALTER ROLE mycelium_bridge_fpd_r2 NOCREATEDB', /createdb/);
+    await drift('GRANT SELECT ON mycelium_memory.redaction_authorizations TO mycelium_bridge_fpd_r2', 'REVOKE SELECT ON mycelium_memory.redaction_authorizations FROM mycelium_bridge_fpd_r2', /redaction_authorizations/);
+    await drift('ALTER TABLE mycelium_memory.schema_migrations OWNER TO mycelium_bridge_fpd_r2', 'ALTER TABLE mycelium_memory.schema_migrations OWNER TO postgres', /owns/);
     // login-level drift after setup (Codex R5): limit, expiry, membership options, grants of this login to others
-    await drift('ALTER ROLE mycelium_bridge_fpd CONNECTION LIMIT -1', 'ALTER ROLE mycelium_bridge_fpd CONNECTION LIMIT 20', /connection limit/);
-    await drift("ALTER ROLE mycelium_bridge_fpd VALID UNTIL 'infinity'", "ALTER ROLE mycelium_bridge_fpd VALID UNTIL '2026-12-31T23:59:59Z'", /no finite password expiry/);
-    await drift("ALTER ROLE mycelium_bridge_fpd VALID UNTIL '2027-06-01T00:00:00Z'", "ALTER ROLE mycelium_bridge_fpd VALID UNTIL '2026-12-31T23:59:59Z'", /beyond the approved ceiling/);
-    await drift("ALTER ROLE mycelium_bridge_fpd VALID UNTIL '2026-10-01T00:00:00Z'", "ALTER ROLE mycelium_bridge_fpd VALID UNTIL '2026-12-31T23:59:59Z'", /expiry has passed/);
+    await drift('ALTER ROLE mycelium_bridge_fpd_r2 CONNECTION LIMIT -1', 'ALTER ROLE mycelium_bridge_fpd_r2 CONNECTION LIMIT 20', /connection limit/);
+    await drift("ALTER ROLE mycelium_bridge_fpd_r2 VALID UNTIL 'infinity'", "ALTER ROLE mycelium_bridge_fpd_r2 VALID UNTIL '2026-12-31T23:59:59Z'", /no finite password expiry/);
+    await drift("ALTER ROLE mycelium_bridge_fpd_r2 VALID UNTIL '2027-06-01T00:00:00Z'", "ALTER ROLE mycelium_bridge_fpd_r2 VALID UNTIL '2026-12-31T23:59:59Z'", /beyond the approved ceiling/);
+    await drift("ALTER ROLE mycelium_bridge_fpd_r2 VALID UNTIL '2026-10-01T00:00:00Z'", "ALTER ROLE mycelium_bridge_fpd_r2 VALID UNTIL '2026-12-31T23:59:59Z'", /expiry has passed/);
     await pg.query('CREATE ROLE helper NOLOGIN');
-    await drift('GRANT mycelium_bridge_fpd TO helper', 'REVOKE mycelium_bridge_fpd FROM helper', /granted to other roles: helper/);
-    await pg.query('REVOKE mycelium_memory_runtime FROM mycelium_bridge_fpd');
-    await pg.query('GRANT mycelium_memory_runtime TO mycelium_bridge_fpd WITH INHERIT TRUE, SET FALSE, ADMIN TRUE');
+    await drift('GRANT mycelium_bridge_fpd_r2 TO helper', 'REVOKE mycelium_bridge_fpd_r2 FROM helper', /granted to other roles: .*helper/);
+    // the creator's automatic grant is accepted ONLY as ADMIN-only (Neon, 29 Oct): with INHERIT or SET it fails
+    await drift('GRANT mycelium_bridge_fpd_r2 TO neondb_owner WITH INHERIT TRUE', 'GRANT mycelium_bridge_fpd_r2 TO neondb_owner WITH INHERIT FALSE', /granted to other roles: neondb_owner\(admin=true,inherit=true/);
+    await drift('GRANT mycelium_bridge_fpd_r2 TO neondb_owner WITH SET TRUE', 'GRANT mycelium_bridge_fpd_r2 TO neondb_owner WITH SET FALSE', /set=true/);
+    await ownerQ('REVOKE mycelium_memory_runtime FROM mycelium_bridge_fpd_r2');
+    await ownerQ('GRANT mycelium_memory_runtime TO mycelium_bridge_fpd_r2 WITH INHERIT TRUE, SET FALSE, ADMIN TRUE');
     assert.ok((await check()).some(x => /membership mycelium_memory_runtime\.admin=true/.test(x)));
-    await pg.query('REVOKE mycelium_memory_runtime FROM mycelium_bridge_fpd');
-    await pg.query('GRANT mycelium_memory_runtime TO mycelium_bridge_fpd WITH INHERIT TRUE, SET TRUE');
+    await ownerQ('REVOKE mycelium_memory_runtime FROM mycelium_bridge_fpd_r2');
+    await ownerQ('GRANT mycelium_memory_runtime TO mycelium_bridge_fpd_r2 WITH INHERIT TRUE, SET TRUE');
     assert.ok((await check()).some(x => /settable/.test(x)));
-    await pg.query('REVOKE mycelium_memory_runtime FROM mycelium_bridge_fpd'); await pg.query('GRANT mycelium_memory_runtime TO mycelium_bridge_fpd WITH INHERIT TRUE, SET FALSE');
+    await ownerQ('REVOKE mycelium_memory_runtime FROM mycelium_bridge_fpd_r2'); await ownerQ('GRANT mycelium_memory_runtime TO mycelium_bridge_fpd_r2 WITH INHERIT TRUE, SET FALSE');
     await pg.query('CREATE SCHEMA neon_auth'); await pg.query('CREATE TABLE neon_auth."user" (id int)');
     assert.deepEqual(await check(), []);                                           // a schema it cannot reach is not reported at all
     await pg.query('GRANT USAGE ON SCHEMA neon_auth TO PUBLIC');
@@ -218,21 +222,32 @@ test('bridge provisioning: create bound to a grant with expiry ceiling; rotate o
   const PW = 'Qx7_vR2k-Lm9pT4wZb8nYc3dHf6gJs1aEu5oKi0q', PW2 = 'Zm3_kQ8v-Rt5nWx2Lb7pYc4dHf9gJs6aEu1oKi0q';
   const G = '6f1c2b8e-3d4a-4e5f-9a0b-1c2d3e4f5a6b', OTHER = '7a2d3c9f-4e5b-4f60-8b1c-2d3e4f5a6b7c', U = '2026-12-31T23:59:59Z', NOW = Date.parse('2026-10-29T12:00:00Z');
   try {
+    const asOwner = async ss => { await pg.query('SET SESSION AUTHORIZATION neondb_owner'); try { return await db.transaction(ss); } finally { await pg.query('SET SESSION AUTHORIZATION postgres'); } };   // as on Neon
     const read = async () => { const rs = await db.transaction(membershipQueries); return { roles: rs[1], memberships: rs[2] }; };
     assert.throws(() => validUntil('2027-01-31T00:00:00Z', NOW), /ceiling/); assert.throws(() => validUntil('2026-01-01T00:00:00Z', NOW), /past/);
     assert.throws(() => createLoginStatements("x'; DROP", G, U), /valid generated/);
-    await db.transaction(createLoginStatements(PW, G, U));
-    assertBridgeLogin(await read(), G, NOW); assert.equal(ownership(await read(), OTHER), 'foreign');
-    await assert.rejects(db.transaction(createLoginStatements(PW, G, U)), /already exists/);
-    await assert.rejects(db.transaction(rotateLoginStatements(PW2, OTHER, U)), /not created under this grant/);
-    await assert.rejects(db.transaction(disableLoginStatements(OTHER)), /not created under this grant/);
-    await db.transaction(rotateLoginStatements(PW2, G, '2026-12-01T00:00:00Z'));
+    // created AS neondb_owner (CREATEROLE, not superuser), exactly as on Neon: PostgreSQL adds the creator's ADMIN-only grant
+    await asOwner(createLoginStatements(PW, G, U));
+    const st = await read();
+    assert.deepEqual(st.memberships.filter(m => m.role === BRIDGE_ROLE).map(m => [m.member, m.admin_option, m.inherit_option, m.set_option]), [['neondb_owner', true, false, false]]);
+    assertBridgeLogin(st, G, NOW); assert.equal(ownership(st, OTHER), 'foreign');   // the 29 Oct live refusal, now accepted
+    await pg.query('CREATE ROLE helper2 NOLOGIN'); await pg.query(`GRANT ${BRIDGE_ROLE} TO helper2`);
+    assert.throws(() => assertBridgeLogin(Object.freeze({ ...st, memberships: [...st.memberships, { role: BRIDGE_ROLE, member: 'helper2', admin_option: false, inherit_option: true, set_option: false }] }), G, NOW), /not in the approved/);
+    await pg.query(`REVOKE ${BRIDGE_ROLE} FROM helper2`);
+    await pg.query(`GRANT ${BRIDGE_ROLE} TO neondb_owner WITH INHERIT TRUE`);
+    assert.throws(() => assertBridgeLogin(Promise.resolve() && st && { ...st, memberships: st.memberships.map(m => m.role === BRIDGE_ROLE ? { ...m, inherit_option: true } : m) }, G, NOW), /not in the approved/);
+    await pg.query(`GRANT ${BRIDGE_ROLE} TO neondb_owner WITH INHERIT FALSE`);
+    assertBridgeLogin(await read(), G, NOW);
+    await assert.rejects(asOwner(createLoginStatements(PW, G, U)), /already exists/);
+    await assert.rejects(asOwner(rotateLoginStatements(PW2, OTHER, U)), /not created under this grant/);
+    await assert.rejects(asOwner(disableLoginStatements(OTHER)), /not created under this grant/);
+    await asOwner(rotateLoginStatements(PW2, G, '2026-12-01T00:00:00Z'));
     assertBridgeLogin(await read(), G, NOW);
     assert.equal(new Date((await read()).roles.find(r => r.rolname === BRIDGE_ROLE).rolvaliduntil).toISOString(), '2026-12-01T00:00:00.000Z');
-    await db.transaction(disableLoginStatements(G)); await db.transaction(disableLoginStatements(G));   // idempotent
+    await asOwner(disableLoginStatements(G)); await asOwner(disableLoginStatements(G));   // idempotent
     const closed = await read(); assertBridgeClosed(closed, G); assert.throws(() => assertBridgeLogin(closed, G, NOW));
     assert.ok(new Date(closed.roles.find(r => r.rolname === BRIDGE_ROLE).rolvaliduntil).getTime() < NOW);
-    await assert.rejects(db.transaction(rotateLoginStatements(PW, G, U)), /closed; rotation does not reopen/);
+    await assert.rejects(asOwner(rotateLoginStatements(PW, G, U)), /closed; rotation does not reopen/);
   } finally { await pg.close(); }
 });
 

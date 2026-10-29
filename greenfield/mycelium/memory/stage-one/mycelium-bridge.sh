@@ -18,7 +18,7 @@
 # re-checks the database capability (bridgeGuard) before its first query. Stops at the first failure; never retries; never calls a model outside `run`.
 set -euo pipefail
 umask 077
-HOST=ep-little-thunder-zahn9b42.c-2.eu-west-2.aws.neon.tech DBNAME=neondb ROLE=mycelium_bridge_fpd U=mycmem
+HOST=ep-little-thunder-zahn9b42.c-2.eu-west-2.aws.neon.tech DBNAME=neondb ROLE=mycelium_bridge_fpd_r2 U=mycmem
 RC=/var/lib/mycelium-bridge PKG=/opt/mycelium-memory ETC=/etc/mycelium STORE=/var/lib/mycelium-memory VER=/home/ct_admin/mycelium-bridge.pw
 ALLOWD=/etc/myc-stageb ARCH=/root REPO=/var/lib/hubsync/repo BRANCH=origin/findpitches-v3/greenfield SUB=greenfield/mycelium/memory
 RUNS=greenfield/mycelium/runs TASKS=greenfield/mycelium/tasks STEP_S=90 GRACE_S=5 NODE_MIN=22.19.0 TEST=0 MAX_TURNS=4 WINDOW_S=1800
@@ -309,7 +309,11 @@ teardown)
   if recorded dir "$ETC" && [[ -d $ETC && ! -L $ETC ]]; then
     if [[ -z $(ls -A "$ETC") ]]; then rmdir "$ETC"; say "removed empty $ETC"; else say "$ETC holds files this script did not create; left in place"; fi
   fi
-  recorded dir "$STORE" && say "kept $STORE: snapshots and batch receipts are evidence (retention: until Chris decides)"
+  if recorded dir "$STORE" && [[ -d $STORE && ! -L $STORE ]]; then
+    if [[ -z $(ls -A "$SNAPS" 2>/dev/null) && -z $(ls -A "$BATCHES" 2>/dev/null) && -z $(ls -A "$STORE/work" 2>/dev/null) ]]; then
+      rm -rf --one-file-system "$STORE"; say "removed $STORE (it held no snapshot or batch)"
+    else say "kept $STORE: snapshots and batch receipts are evidence (retention: until Chris decides)"; fi
+  fi
   if recorded user "$U" && user_exists; then
     if [[ $TEST == 1 ]]; then rm -f "$T_ROOT/users/$U" "$T_ROOT/groups/$U"; else userdel "$U"; fi; say "removed user and group $U"
   fi

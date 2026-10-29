@@ -84,13 +84,19 @@ for what in user group etc store pkg pwcopy; do
   rm -rf "$R/users/mycmem" "$R/groups/mycmem" "$R/etc/mycelium" "$ST" "$R/opt/mycelium-memory" "$V"
 done
 
+echo "1b. a setup that is closed and torn down before any batch leaves nothing behind, so setup can run again (29 Oct live case)"
+run setup "$C0" || { bad "setup 1b"; cat "$T/out"; }
+run close && run teardown && [[ ! -e $ST && ! -e $R/opt/mycelium-memory && ! -e $R/etc/mycelium && ! -e $R/users/mycmem && ! -e $V ]] \
+  && ok "close + teardown with no batch: package, config, user, PC copy and the empty store all removed" || { bad "teardown empty"; cat "$T/out"; }
+rm -f "$R"/root/mycelium-bridge-receipt-*.txt
+
 echo "2. setup (persistent install), whoami (PC copy shredded, exact privileges as the bridge role)"
 run precheck && grep -q "PRECHECK OK" "$T/out" && ok "precheck on a clean host" || { bad precheck; cat "$T/out"; }
 run setup "$C0" && [[ -f $E && $(stat -c %a "$E") == 640 && -f $V && $(stat -c %a "$V") == 600 && -f $R/opt/mycelium-memory/scripts/bridge.mjs ]] \
-  && grep -q '^MYCELIUM_DATABASE_URL=postgresql://mycelium_bridge_fpd:' "$E" && ! grep -q "$(cat "$V")" "$T/out" && ok "setup: package, store, credential 0640, one PC copy 0600; password never printed" || { bad setup; cat "$T/out"; }
+  && grep -q '^MYCELIUM_DATABASE_URL=postgresql://mycelium_bridge_fpd_r2:' "$E" && ! grep -q "$(cat "$V")" "$T/out" && ok "setup: package, store, credential 0640, one PC copy 0600; password never printed" || { bad setup; cat "$T/out"; }
 [[ $(stat -c %a "$ST/snapshots") == 750 && $(stat -c %a "$ST/batches") == 700 ]] && ok "snapshot store 0750, batch receipts 0700" || bad "store modes"
 run setup "$C0"; [[ $? != 0 ]] && grep -q "one-time" "$T/out" && ok "a second setup is refused" || bad "re-setup"
-run whoami && [[ ! -e $V ]] && grep -q "WHOAMI OK" "$T/out" && ok "whoami: PC copy shredded; exact least-privilege check passed AS mycelium_bridge_fpd" || { bad whoami; cat "$T/out"; }
+run whoami && [[ ! -e $V ]] && grep -q "WHOAMI OK" "$T/out" && ok "whoami: PC copy shredded; exact least-privilege check passed AS mycelium_bridge_fpd_r2" || { bad whoami; cat "$T/out"; }
 
 echo "3. prepare: manifest at a pinned commit -> seed -> READ ONLY snapshot -> sealed local copy (never in Git)"
 manifest s1-proof MYC-20261029-001 MYC-20261029-002; C1=$(push "manifest s1-proof"); hsfetch

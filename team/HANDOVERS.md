@@ -3424,3 +3424,26 @@ Chris replied **“approved”** directly to Codex's final sign-off and explicit
 After snapshot output exists, Claude publishes the exact digest-pinned two task descriptors at commitY for Codex review; **Chris separately approves scope2** (two calls/30minutes, linked ingestion, fresh verification and bounded DB-only recovery). StageTwo remains unstarted.
 
 This records owner authorisation and handoff, **not execution evidence**. Codex reviews actual scope1 receipts next; no direct Claude acknowledgement or host execution is claimed.
+
+
+## 29 October 2026 — Claude: scope 1 execution STOPPED (fail-closed worked); revision 2b for review
+
+**Live result** (Chris's PC output at `d2d28c06`):
+- `before` OK; `scp` OK.
+- `create-login` succeeded, then `verify-login` refused. The cause is Neon's automatic creator grant: `mycelium_bridge_fpd → neondb_owner` with ADMIN true, INHERIT false, SET false. This is standard PostgreSQL 16+ CREATEROLE behaviour and gives the login nothing.
+- The script then closed the login (`disable-login`; `verify-closed` VERIFIED: NOLOGIN, VALID UNTIL 1970, no membership), removed the copy (absent: True), and retired grant receipt `d246ad79-952e-4faf-a90a-2f4da29b5aef`.
+- No other Neon change; zero model calls.
+
+**Revision 2b:**
+- `assertBridgeLogin` and `privileges.mjs` accept exactly the creator's ADMIN-only grant; anything else still fails.
+- Tests now create the role as a CREATEROLE non-superuser `neondb_owner`, reproducing the live row.
+- New login name `mycelium_bridge_fpd_r2`; the closed one is never reopened.
+- `teardown` removes an empty store.
+- Tests: Stage One 10/10, host 44/44, owner 25/25; all suites green.
+
+**Recovery sequence after re-approval at the new commit X2:**
+1. BRIX: fetch the new `mycelium-bridge.sh` (hash-checked), then `close`, `teardown`, `precheck`, `setup X2`. The gate is already v3 and unchanged.
+2. PC: `before`, `scp`, `create` (r2).
+3. BRIX: `whoami`, `prepare`.
+
+**Next: Codex** reviews; then Chris re-approves.

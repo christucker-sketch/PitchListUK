@@ -11,7 +11,8 @@
 //     schemas    USAGE on mycelium_memory; CREATE nowhere; USAGE elsewhere is reported (and allowed only with zero grants)
 //     database   no CREATE; owns no object of any kind
 //     login      connection limit exactly the approved one; finite password expiry, in the future, within the ceiling;
-//                direct membership exactly runtime (no ADMIN, INHERIT, no SET); granted to no other role
+//                direct membership exactly runtime (no ADMIN, INHERIT, no SET); granted to no role except its creator's
+//                automatic ADMIN-only grant (INHERIT and SET false), which gives the login nothing
 export const RUNTIME_ROLE = 'mycelium_memory_runtime';
 const SYS = `n.nspname NOT IN ('pg_catalog', 'information_schema') AND n.nspname NOT LIKE 'pg\\_%'`;
 
@@ -52,7 +53,7 @@ export const privilegeQueries = [
      FROM pg_namespace n WHERE ${SYS} AND (has_schema_privilege(n.oid, 'USAGE') OR has_schema_privilege(n.oid, 'CREATE')) ORDER BY 1` },
   { text: `SELECT r.rolname AS role, a.admin_option AS admin, a.inherit_option AS inherit, a.set_option AS settable
      FROM pg_auth_members a JOIN pg_roles r ON r.oid = a.roleid WHERE a.member = (SELECT oid FROM pg_roles WHERE rolname = current_user) ORDER BY 1` },
-  { text: `SELECT m.rolname AS member FROM pg_auth_members a JOIN pg_roles m ON m.oid = a.member
+  { text: `SELECT m.rolname AS member, a.admin_option AS admin, a.inherit_option AS inherit, a.set_option AS settable FROM pg_auth_members a JOIN pg_roles m ON m.oid = a.member
      WHERE a.roleid = (SELECT oid FROM pg_roles WHERE rolname = current_user) ORDER BY 1` }
 ];
 
@@ -71,7 +72,7 @@ const COL_FLAGS = { col_sel: 'sel', col_ins: 'ins', col_upd: 'upd', col_refs: 'r
 // Returns a list of problems (empty = exactly the expected capability). Never throws on shape: shape errors are problems.
 // expect: { connLimit, maxValidUntil, now } -- the approved connection limit and the password-expiry ceiling; the expiry
 // must be finite, in the future and not beyond the ceiling.
-export function principalProblems(p, principal, { connLimit = 20, maxValidUntil = '2026-12-31T23:59:59Z', now = Date.now() } = {}) {
+export function principalProblems(p, principal, { connLimit = 20, maxValidUntil = '2026-12-31T23:59:59Z', now = Date.now(), creatorRole = 'neondb_owner' } = {}) {
   const bad = [];
   const bool = (o, k, want, where) => { if (typeof o?.[k] !== 'boolean') bad.push(`${where}.${k} missing`); else if (o[k] !== want) bad.push(`${where}.${k}=${o[k]}`); };
   const id = p?.identity;
@@ -88,7 +89,10 @@ export function principalProblems(p, principal, { connLimit = 20, maxValidUntil 
   const direct = p.direct;
   if (!Array.isArray(direct) || direct.length !== 1 || direct[0].role !== RUNTIME_ROLE) bad.push('direct memberships are not exactly the runtime template');
   for (const d of direct ?? []) { bool(d, 'admin', false, `membership ${d.role}`); bool(d, 'inherit', true, `membership ${d.role}`); bool(d, 'settable', false, `membership ${d.role}`); }
-  if (!Array.isArray(p.members)) bad.push('members missing'); else if (p.members.length) bad.push(`granted to other roles: ${p.members.map(m => m.member).join(', ')}`);
+  // the only accepted grant OF this login: its creator's automatic ADMIN-only grant (PostgreSQL 16+ CREATEROLE; Neon)
+  const creatorOnly = g => g.length <= 1 && g.every(x => x.member === creatorRole && x.admin === true && x.inherit === false && x.settable === false);
+  if (!Array.isArray(p.members)) bad.push('members missing');
+  else if (!creatorOnly(p.members)) bad.push(`granted to other roles: ${p.members.map(m => `${m.member}(admin=${m.admin},inherit=${m.inherit},set=${m.settable})`).join(', ')}`);
   const roles = p.roles ?? [];
   if (roles.length !== 1 || roles[0].role !== RUNTIME_ROLE) bad.push(`reachable roles [${roles.map(r => r.role).join(', ')}] are not exactly ${RUNTIME_ROLE}`);
   for (const r of roles) { bool(r, 'inherited', true, `role ${r.role}`); bool(r, 'settable', false, `role ${r.role}`); }

@@ -1,5 +1,5 @@
 // OFFLINE REHEARSAL ONLY: the real bridge CLI (runCli) against a PGlite data dir, connected AS the restricted
-// mycelium_bridge_fpd role, so the real grants are enforced. Used by stage-one/test-bridge-host.sh in place of
+// mycelium_bridge_fpd_r2 role, so the real grants are enforced. Used by stage-one/test-bridge-host.sh in place of
 // `node --env-file=/etc/mycelium/bridge.env scripts/bridge.mjs`. Never used on a host.
 //   T_PGDATA=<dir> node test/pglite-bridge.mjs <mode> <args...>
 //   T_INJECT_ONCE=<file holding a contribution id>: the first transaction writing that id fails AFTER it committed
@@ -15,7 +15,7 @@ if (['seed', 'ingest'].includes(mode) && process.env.MYCELIUM_REMOTE_WRITES_APPR
 const pg = new PGlite(process.env.T_PGDATA);
 let inject = null; try { inject = (await readFile(process.env.T_INJECT_ONCE ?? '/nonexistent', 'utf8')).trim(); } catch {}
 try {
-  await pg.query('SET SESSION AUTHORIZATION mycelium_bridge_fpd');
+  await pg.query('SET SESSION AUTHORIZATION mycelium_bridge_fpd_r2');
   await runCli(mode, args, async ({ readOnly }) => {
     const db = adapter(pg, { readOnly });
     if (!inject || readOnly) return db;

@@ -15,6 +15,25 @@ Codex asked to review the source and the fake-CLI rehearsal before Chris approve
 
 The architecture is unchanged.
 
+**Revision 2b (29 Oct, a live finding during the approved setup at `d2d28c06`).**
+
+The PC `create` step created the login, then **refused it and closed it**. Its own verification rejected one membership row: `mycelium_bridge_fpd → member neondb_owner (ADMIN, INHERIT false, SET false)`.
+
+That row is standard PostgreSQL 16+ behaviour, not a privilege for the login. When a CREATEROLE non-superuser creates a role, the new role is granted back to its creator, ADMIN only. My offline tests created roles as a superuser, which gets no such grant, so they missed it.
+
+What the fail-closed path did:
+- the first login `mycelium_bridge_fpd` was closed and verified closed (NOLOGIN, expired 1970, no membership);
+- the password copy was removed from the PC;
+- grant receipt `d246ad79…` was retired.
+
+**Fix:**
+- The PC verification (`assertBridgeLogin`) and the runtime privilege check (`privileges.mjs`) now accept **exactly** the creator's ADMIN-only grant. Any other grant of the login, or that grant with INHERIT or SET, still fails.
+- The offline world now creates the bridge **as a CREATEROLE `neondb_owner`**, as Neon does, so the tests reproduce the live row.
+- A closed login is never reopened, so the new login is **`mycelium_bridge_fpd_r2`**. The closed one stays as an audit trail, as with the trial logins.
+- `teardown` now removes the store when it holds no snapshot or batch, so the BRIX install can be closed and set up again at the new commit.
+
+Tests: Stage One 10/10 (creator grant reproduced, with INHERIT, SET and foreign-grant drift detected); host rehearsal 44/44; owner 25/25.
+
 **Revision 2a (answers Codex [`ae32a110`](STAGE_ONE_REV2_CODEX_REVIEW_2026-10-29.md), which found R2–R5 addressed and the architecture suitable).** It completes R1:
 - A missing or malformed `-ValidUntil` is now checked **inside** the cleanup block, so it STOPs, sends nothing and removes the expected copy (regressions for create and rotate).
 - A command line that PowerShell itself rejects (a mistyped `-Mode` or `-Commit`) never starts the script. That case is documented, and `BEFORE OK` tells you to delete the copy by hand if it happens.
@@ -49,7 +68,7 @@ What replaces it:
 
 ### Q2. Should recall and ingestion use separate database identities?
 
-**Not for Stage One.** There is one principal, `mycelium_bridge_fpd` (runtime capability), and one Unix identity, `mycmem`. This is **proposed as a bounded Stage One exception for Chris to accept** (only Chris can accept the risk): the recall process holds a credential that can write. Codex agrees it need not block the proof.
+**Not for Stage One.** There is one principal, `mycelium_bridge_fpd_r2` (runtime capability), and one Unix identity, `mycmem`. This is **proposed as a bounded Stage One exception for Chris to accept** (only Chris can accept the risk): the recall process holds a credential that can write. Codex agrees it need not block the proof.
 
 Codex is right that two passwords readable by one Unix user are not isolation. Real separation would need:
 - a reader template and grant migration;
@@ -173,7 +192,7 @@ fpd-prod (root wrapper stage-one/mycelium-bridge.sh; one lock; stop at first fai
   run:     descriptors at <commit> must pin <sha> ──► allowlist created from them ──► INSTALLED myc-stageb per turn
            (myc-gate v3 verifies + embeds the sealed bytes; myc-agent v6 unchanged; CLIs as myc, no credential)
            ──► allowlist archived ──► collect + pin batch from GitHub ──► mycmem: ingest ──► mycmem: fresh verify ──► VERIFIED
-Neon: one login mycelium_bridge_fpd (runtime capability, limit 20, expires ≤ 2026-12-31) — the owner stays on the PC
+Neon: one login mycelium_bridge_fpd_r2 (runtime capability, limit 20, expires ≤ 2026-12-31) — the owner stays on the PC
 ```
 
 ## 4. Exact files and components
@@ -182,12 +201,12 @@ Neon: one login mycelium_bridge_fpd (runtime capability, limit 20, expires ≤ 2
 |---|---|---|---|
 | Gate | `greenfield/mycelium/stageb/myc-gate` | v2 → v3: `memref` in claim and admit only (+33 lines; nothing removed) | `bca72724623b69439d2876eb4dd9aa3bb11e8b16f75a09f6238dab7e9d962dc1` |
 | Gate install | `greenfield/mycelium/stageb/upgrade-gate.sh` | new: check / install / rollback, with byte-verified restore. Takes both the Stage B and hub locks. Asserts every other command unchanged | `4cca25457c66ce66de01e172462fbe0033b444e168431f2175f10e56ac573a8e` |
-| Host | `greenfield/mycelium/memory/stage-one/mycelium-bridge.sh` | new: precheck, setup, whoami, prepare, run, ingest, verify, credential, close, teardown | `ce56a10e709e3d2defc34bd7eaf7527d7ede681d627405aa7dedb938db33f7e4` |
-| PC owner | `greenfield/mycelium/memory/stage-one/mycelium-bridge-owner.ps1` | new: before, create, rotate, close. The migration owner never leaves the PC | `9e1122de6243db3bd117d6e13a1ba40148fae587134ec245c19152ee9ecc871d` |
+| Host | `greenfield/mycelium/memory/stage-one/mycelium-bridge.sh` | new: precheck, setup, whoami, prepare, run, ingest, verify, credential, close, teardown | `08f959ec4ab19b29e4ca9752710dca84185c72e0eca8ad259900a7acbae25333` |
+| PC owner | `greenfield/mycelium/memory/stage-one/mycelium-bridge-owner.ps1` | new: before, create, rotate, close. The migration owner never leaves the PC | `b87199428459b1b1f1131e3b42c7a9939edcef859e850dabe1e3a7f91766f809` |
 | Explorer | `greenfield/mycelium/memory/src/explorer.mjs` | `contribute` split into a pure `prepare` + append (same validation, same inserts); behaviour unchanged | `0d747a44e7680e7b3ad0cc5672ae9e4537b00b2eb01e05c7231530f73e43a471` |
 | Bridge | `greenfield/mycelium/memory/scripts/bridge.mjs` | v2: manifest selection, seed, READ ONLY snapshot, pinned batch, prepare-all-then-write, field-exact verify, capability guard on every process. The v1 L2 API is kept, now all-or-nothing | `0b07c64d1ca776b75103611fc3df56cb77003bc0481426f0209bc8a4c39c4fb9` |
-| Provisioning | `greenfield/mycelium/memory/scripts/bridge-provision.mjs` | new: bridge login with grant-bound comment, expiry ceiling, rotate, disable | `5d4e8152a61b0ebdc13b6ed5c92763eddac65ece4926fb0a02b400aba09471bf` |
-| Privileges | `greenfield/mycelium/memory/scripts/privileges.mjs` | new: complete effective-privilege check | `1bf2bbd33e22a87669d29dc352388b7205ac7c86e5b2eac289806891d0139e02` |
+| Provisioning | `greenfield/mycelium/memory/scripts/bridge-provision.mjs` | new: bridge login with grant-bound comment, expiry ceiling, rotate, disable | `c9070895fb843272a86bd03b14b526238c1a25b8a1166178b4e11a49d0efca52` |
+| Privileges | `greenfield/mycelium/memory/scripts/privileges.mjs` | new: complete effective-privilege check | `159d43f59166550167a10387ee22f02401f0cb53358807990a7e1aeac816cd50` |
 | Connection | `greenfield/mycelium/memory/src/connection.mjs` | `readOnly` option | `4888eb135e00a3d0338a617986fea41500d5b20c28ed6c2c96f214424c088224` |
 | Manifest | `greenfield/mycelium/runs/stage-one-proof-1.json` | new: the FindPitches-relevant proof manifest | `434d7b09cab3e5d2aaf4a90b79d7c233e4c9bc30402a9d87c3ac1313af96845a` |
 | Tests | `stageb/test-memref.sh`, `stageb/test-upgrade-gate.sh`, `memory/test/stage-one.test.mjs`, `memory/test/{helpers,pglite-bridge,pglite-init}.mjs`, `memory/stage-one/test-bridge-{host,owner}.sh` | new | — |
@@ -215,7 +234,7 @@ Full hashes are in `stageb/SHA256SUMS` and in the final verification log of this
    - `/etc/mycelium/bridge.env` (root:mycmem 0640);
    - `/var/lib/mycelium-memory`;
    - one PC password copy.
-4. On the PC: `mycelium-bridge-owner.ps1 -Mode before -Commit X` **first**, then `scp` the copy, then `-Mode create -Commit X -ValidUntil 2026-12-31T23:59:59Z`. This creates the Neon role **`mycelium_bridge_fpd`**:
+4. On the PC: `mycelium-bridge-owner.ps1 -Mode before -Commit X` **first**, then `scp` the copy, then `-Mode create -Commit X -ValidUntil 2026-12-31T23:59:59Z`. This creates the Neon role **`mycelium_bridge_fpd_r2`**:
    - LOGIN, CONNECTION LIMIT 20;
    - inherits only `mycelium_memory_runtime`, SET FALSE, no ADMIN;
    - expires at 2026-12-31T23:59:59Z;
@@ -278,7 +297,7 @@ Neither is a graph capability.
 - 50 node tests, including Stage One **10/10** and the L2 bridge 4/4;
 - trial 30/30;
 - trial owner 15/15 (pwsh 7.4.6);
-- **Stage One host rehearsal 43/43**: the real runner with fake CLIs, and PGlite as the bridge role, every process through the guard;
+- **Stage One host rehearsal 44/44**: the real runner with fake CLIs, and PGlite as the bridge role, every process through the guard;
 - **Stage One owner 25/25** (run here under pwsh 7.4.6; Codex has no PowerShell, so this one is Claude-reported).
 
 **Runner suites:**

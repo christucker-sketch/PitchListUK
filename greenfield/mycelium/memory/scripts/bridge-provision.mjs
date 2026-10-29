@@ -20,7 +20,15 @@ import { pathToFileURL } from 'node:url';
 import { resolve } from 'node:path';
 import { assertTrialPassword as assertGeneratedPassword, describeError } from './explorer-provision.mjs';
 
-export const BRIDGE_ROLE = 'mycelium_bridge_fpd';
+// r2: the first creation (`mycelium_bridge_fpd`, grant d246ad79…) was closed by the fail-closed path on 29 Oct and stays
+// closed (NOLOGIN, expired, no membership); a closed login is never reopened. See CREATOR_GRANT below for the cause.
+export const BRIDGE_ROLE = 'mycelium_bridge_fpd_r2';
+// PostgreSQL 16+ (and so Neon): when a non-superuser with CREATEROLE creates a role, the new role is automatically granted
+// to its creator WITH ADMIN, INHERIT FALSE, SET FALSE (createrole_self_grant unset). It gives the login NOTHING; it lets
+// the owner administer it. Exactly that one grant is accepted; any other grant of the login to a role fails.
+export const CREATOR_ROLE = 'neondb_owner';
+export const creatorGrantOnly = grants => grants.length <= 1 && grants.every(g => g.member === CREATOR_ROLE
+  && (g.admin_option ?? g.admin) === true && (g.inherit_option ?? g.inherit) === false && (g.set_option ?? g.settable) === false);
 export const BRIDGE_CONN_LIMIT = 20;
 export const BRIDGE_MAX_VALID_UNTIL = '2026-12-31T23:59:59Z';   // owner-approved ceiling; moving it is a reviewed change
 const GRANT_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
@@ -99,7 +107,7 @@ export function assertBridgeLogin(state, grant, now = Date.now()) {
     && r.rolcreaterole === false && r.rolreplication === false && r.rolbypassrls === false && r.rolinherit === true
     && r.rolconnlimit === BRIDGE_CONN_LIMIT && until > now && until <= Date.parse(BRIDGE_MAX_VALID_UNTIL)
     && m.length === 1 && m[0].role === 'mycelium_memory_runtime' && m[0].inherit_option === true && m[0].set_option === false && m[0].admin_option === false
-    && !memberships.some(x => x.role === BRIDGE_ROLE);
+    && creatorGrantOnly(memberships.filter(x => x.role === BRIDGE_ROLE));
   if (!ok) throw new Error('Bridge login is not in the approved least-privilege state for this grant.');
 }
 export function assertBridgeClosed(state, grant) {

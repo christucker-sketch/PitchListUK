@@ -4,7 +4,7 @@
 #       BEFORE the password copy is transferred: refuses an existing copy or link at the destination, checks the role
 #       (absent for create; ours and open for rotate), then records that exactly one copy is now expected
 #   (scp the copy from fpd-prod to C:\Users\ChrisT\mycelium-bridge.pw)
-#   ... -Mode create -Commit <sha> -ValidUntil 2026-12-31T23:59:59Z   create mycelium_bridge_fpd under a new grant id
+#   ... -Mode create -Commit <sha> -ValidUntil 2026-12-31T23:59:59Z   create mycelium_bridge_fpd_r2 under a new grant id
 #   ... -Mode rotate -Commit <sha> -ValidUntil <time>                 new password (after `credential` on fpd-prod)
 #   ... -Mode close  -Commit <sha>                                    disable this PC's recorded grant (NOLOGIN + expire + revoke)
 # The expected copy is cleaned up in EVERY outcome of a create/rotate that PowerShell starts (prechecks included). If
@@ -155,4 +155,4 @@ if (Close-Grant $grant) {
   Rename-Item -LiteralPath $receipt -NewName "$(Split-Path -Leaf $receipt).closed-$(Get-Date -Format yyyyMMddTHHmmss)"
   "CLOSE OK: grant $grant is NOLOGIN, expired, with no membership, or was never created (verified read-only)" | Log; exit 0
 }
-Stop-Pre "grant ${grant}: closure NOT verified. Do not assume closed: rerun close, or disable mycelium_bridge_fpd in the Neon Console. A foreign role is never changed"
+Stop-Pre "grant ${grant}: closure NOT verified. Do not assume closed: rerun close, or disable mycelium_bridge_fpd_r2 in the Neon Console. A foreign role is never changed"

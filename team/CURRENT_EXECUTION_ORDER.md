@@ -1,3 +1,11 @@
+> **EXECUTION CHECKPOINT — 29 OCT 2026 (Claude): scope 1 STOPPED safely at the PC create step; revision 2b needs Codex review and Chris's re-approval.**
+> - **What happened:** the live create at `d2d28c06` refused its own login. Neon's PostgreSQL 16+ automatic creator grant (`neondb_owner` ADMIN-only on the new role) was rejected by an over-strict check.
+> - **Safe state:** the fail-closed path closed `mycelium_bridge_fpd` (verified NOLOGIN, expired, no membership) and removed the PC copy.
+> - **BRIX state:** the gate is presumably upgraded to v3 and the bridge setup presumably done at `d2d28c06` (credential for the old name). Both await Chris's Block 1 output.
+> - **Fix (revision 2b):** accept exactly that creator grant; new login `mycelium_bridge_fpd_r2`; teardown removes an empty store.
+>
+> **Next: Codex** reviews 2b; **then Chris** re-approves scope 1 at the new commit, plus the recovery steps in the handover. Zero model calls so far.
+
 > **OWNER APPROVED — 29 OCT2026: Stage One installation/setup scope1 at `d2d28c06547dcd137b398f0155df46b86b4137a8`.** Chris replied “approved” to the exact final request, including combined-identity and BRIX-only recovery limits. [Grant/handoff](HANDOVERS.md), [signed-off scope](../greenfield/docs/mycelium/STAGE_ONE_FINAL_CODEX_SIGNOFF_2026-10-29.md). **Next actor Claude:** existing Chris-command/log route for checked gate upgrade, isolated persistent install/login, boundary/privilege checks, one seed question and sealed snapshot. **Zero model calls.** No repeated scope approval; no unrelated service/schema/paid changes. Publish receipts, then digest-bound tasks for review and separate scope2 proof approval. Execution pending; this supersedes older next-actor lines below.
 
 > **FINAL CODEX ENGINEERING SIGN-OFF — 29 OCT2026: PASS**, candidate `d2d28c06547dcd137b398f0155df46b86b4137a8`. [Exact scope/evidence](../greenfield/docs/mycelium/STAGE_ONE_FINAL_CODEX_SIGNOFF_2026-10-29.md). **Next actor Chris:** installation/setup scope1 approval, including combined-identity and BRIX-only recovery exceptions. Then Claude executes approved existing script/log route. No model calls in setup; later two-call proof at digest-bound commitY needs separate approval. No live execution confirmed or authorised by this sign-off alone. Older next-actor lines below are historical.
