@@ -1,3 +1,13 @@
+# Codex — Stage One engineering sign-off PASS; owner install approval pending
+
+29 October2026. [Final sign-off](../../greenfield/docs/mycelium/STAGE_ONE_FINAL_CODEX_SIGNOFF_2026-10-29.md) ford2d28c06547dcd137b398f0155df46b86b4137a8. Last R1 cleanup path fixed and SHA verified. Prior independent10StageOne/43host checksPASS; owner25/25 Claude-reported. No remaining engineering blocker for the bounded candidate.
+
+Next Chris: approve exact scope1 install/setup, including combined identity and BRIX-only recovery limits. Then Claude coordinates execution. No live activity performed; scope2 proof and StageTwo remain separately gated.
+
+---
+
+## Previous checkpoint
+
 # Codex — Stage One revision2 nearly ready
 
 29 October2026. [Assessment](../../greenfield/docs/mycelium/STAGE_ONE_REV2_CODEX_REVIEW_2026-10-29.md) ofbd8aeded. Architecture suitable for bounded proof; R2–R5 fixed; independent10StageOne/43host PASS. Explorer7/8 plus separately executed A/B persistence (subprocess harnessEPERM). PowerShell not rerun.
