@@ -15,6 +15,10 @@ Codex asked to review the source and the fake-CLI rehearsal before Chris approve
 
 The architecture is unchanged.
 
+**Revision 2a (answers Codex [`ae32a110`](STAGE_ONE_REV2_CODEX_REVIEW_2026-10-29.md), which found R2–R5 addressed and the architecture suitable).** It completes R1:
+- A missing or malformed `-ValidUntil` is now checked **inside** the cleanup block, so it STOPs, sends nothing and removes the expected copy (regressions for create and rotate).
+- A command line that PowerShell itself rejects (a mistyped `-Mode` or `-Commit`) never starts the script. That case is documented, and `BEFORE OK` tells you to delete the copy by hand if it happens.
+
 ## 1. The four questions, answered
 
 ### Q1. Should memory snapshots be published to GitHub?
@@ -139,7 +143,7 @@ What persists, and is needed by definition:
 | F9 | Recovery receipt; never new snapshot or run id; changed payload fails | **Done** (§1 Q3) | Host rehearsal §6: lost acknowledgement → STOP INGEST_PENDING → `ingest` reconciles with no duplicate and no call |
 | F10 | VERIFY must fail on anything missing | **Done** (made exact in revision 2, R4) | `verifyPlanned` tests |
 | F11 | "disable-login revokes instantly" is overstated | **Corrected.** Disable = NOLOGIN (no new sessions) + `VALID UNTIL` in the past + REVOKE runtime. In PostgreSQL semantics, REVOKE strips an open session's graph privileges at its next statement. No session termination is proposed | Provisioning test |
-| F12 | Persistent credentials need a lifetime, rotation and host-loss response | **Password expiry:** `VALID UNTIL` ≤ **2026-12-31T23:59:59Z**, a ceiling set in code and enforced at every process. It stops only new password logins: membership and open sessions remain until the explicit `close`.<br>**Rotation:** `credential` on fpd-prod, then `before`, `scp` and `rotate` on the PC.<br>**Host loss:** PC `close`; memory is safe in Neon | Owner tests 22/22; host tests |
+| F12 | Persistent credentials need a lifetime, rotation and host-loss response | **Password expiry:** `VALID UNTIL` ≤ **2026-12-31T23:59:59Z**, a ceiling set in code and enforced at every process. It stops only new password logins: membership and open sessions remain until the explicit `close`.<br>**Rotation:** `credential` on fpd-prod, then `before`, `scp` and `rotate` on the PC.<br>**Host loss:** PC `close`; memory is safe in Neon | Owner tests 25/25; host tests |
 | F13 | The CLIs share `myc` | **Acknowledged.** They are not mutually isolated principals. Neither gets a database credential, a database route or the snapshot store | §6 D5 |
 | F14 | Hard-coded "polymer P" | **Done.** Selection comes from a strict, reviewed manifest at a pinned commit. The optional seed is a `question` (it never asserts), tagged `origin: reviewed-manifest` | [`runs/stage-one-proof-1.json`](../../mycelium/runs/stage-one-proof-1.json) |
 | F15 | One run lock; bounded steps; snapshot outside the HubSync clone; always close the allowance | **Done.** One flock covers prepare, run and ingest. Each node step is bounded (90 s, KILL grace). The store is outside the clone. The allowlist is created at `run` from the pinned descriptors and **always** archived, success or STOP | Host rehearsal |
@@ -149,7 +153,7 @@ What persists, and is needed by definition:
 
 | # | Codex finding | Fix | Regression |
 |---|---|---|---|
-| R1 | PC password copy cleanup fails open; early failures leave the copy; `git diff` ignores the working files; `close` needs GitHub | `before` runs **before** the transfer. It refuses any existing file or link at the destination, then records that exactly one copy is expected. From then on, every check happens inside a block that removes the copy in **every** outcome. Success is reported only if the copy is **verifiably absent** and the login is verified; a copy that cannot be removed is a STOP. An unexpected copy is never touched. The code is checked against the commit *on disk* (tracked differences and untracked files both refused). GitHub is contacted only when the commit is missing, so `close` works offline | Owner tests **22/22**, including: deletion denied (immutable file) → STOP, never success; wrong branch, dirty package or untracked code after transfer → copy removed, nothing sent; unexpected copy untouched; dangling link refused; `close` with GitHub unreachable |
+| R1 | PC password copy cleanup fails open; early failures leave the copy; `git diff` ignores the working files; `close` needs GitHub | `before` runs **before** the transfer. It refuses any existing file or link at the destination, then records that exactly one copy is expected. From then on, every check happens inside a block that removes the copy in **every** outcome. Success is reported only if the copy is **verifiably absent** and the login is verified; a copy that cannot be removed is a STOP. An unexpected copy is never touched. The code is checked against the commit *on disk* (tracked differences and untracked files both refused). GitHub is contacted only when the commit is missing, so `close` works offline | Owner tests **25/25**, including: missing or malformed expiry after the transfer → STOP, nothing sent, copy removed; deletion denied (immutable file) → STOP, never success; wrong branch, dirty package or untracked code after transfer → copy removed, nothing sent; unexpected copy untouched; dangling link refused; `close` with GitHub unreachable |
 | R2 | A kill after the final completion strands the batch at `CALLS_STARTED`; `verify` races ingestion | `CALLS_STARTED` is made durable before the allowance exists. `ingest` reconciles from `CALLS_STARTED` or `HELD`: it closes the leftover allowance first (and refuses a foreign one), verifies descriptors and order, then continues only if every turn is completed. Otherwise `HELD`, no call. `verify` takes the run lock and uses an isolated collection folder | Host rehearsal §6b: killed after the final completion → reconciled, VERIFIED, 0 calls; killed after turn 1 → HELD, allowance closed, nothing ingested, stays HELD; foreign allowlist untouched; `verify` refused while the lock is held |
 | R3 | A credential-pattern second answer passes planning; the first contribution commits | `plan` now calls the explorer's pure `prepare` (split out of `contribute`, same code path) for every contribution. The write appends exactly those prepared inserts | `stage-one.test.mjs` R3: counts unchanged; field-limit failure also caught while planning |
 | R4 | `verify` compares only kind, title and run | `verifyPlanned` runs every prepared row's own identical-retry comparison in a READ ONLY process: every field of every node, edge and assessment, provenance and binding attributes included. A row under a redaction is reported as `redacted` | R4: body, binding-attribute and edge-relation mismatches detected; redaction reported, never exact |
@@ -179,7 +183,7 @@ Neon: one login mycelium_bridge_fpd (runtime capability, limit 20, expires ≤ 2
 | Gate | `greenfield/mycelium/stageb/myc-gate` | v2 → v3: `memref` in claim and admit only (+33 lines; nothing removed) | `bca72724623b69439d2876eb4dd9aa3bb11e8b16f75a09f6238dab7e9d962dc1` |
 | Gate install | `greenfield/mycelium/stageb/upgrade-gate.sh` | new: check / install / rollback, with byte-verified restore. Takes both the Stage B and hub locks. Asserts every other command unchanged | `4cca25457c66ce66de01e172462fbe0033b444e168431f2175f10e56ac573a8e` |
 | Host | `greenfield/mycelium/memory/stage-one/mycelium-bridge.sh` | new: precheck, setup, whoami, prepare, run, ingest, verify, credential, close, teardown | `ce56a10e709e3d2defc34bd7eaf7527d7ede681d627405aa7dedb938db33f7e4` |
-| PC owner | `greenfield/mycelium/memory/stage-one/mycelium-bridge-owner.ps1` | new: before, create, rotate, close. The migration owner never leaves the PC | `660e710124644824865bfb4c9d30fd661e7b9d43fa0fefd9f6055b1fd77ce6b7` |
+| PC owner | `greenfield/mycelium/memory/stage-one/mycelium-bridge-owner.ps1` | new: before, create, rotate, close. The migration owner never leaves the PC | `9e1122de6243db3bd117d6e13a1ba40148fae587134ec245c19152ee9ecc871d` |
 | Explorer | `greenfield/mycelium/memory/src/explorer.mjs` | `contribute` split into a pure `prepare` + append (same validation, same inserts); behaviour unchanged | `0d747a44e7680e7b3ad0cc5672ae9e4537b00b2eb01e05c7231530f73e43a471` |
 | Bridge | `greenfield/mycelium/memory/scripts/bridge.mjs` | v2: manifest selection, seed, READ ONLY snapshot, pinned batch, prepare-all-then-write, field-exact verify, capability guard on every process. The v1 L2 API is kept, now all-or-nothing | `0b07c64d1ca776b75103611fc3df56cb77003bc0481426f0209bc8a4c39c4fb9` |
 | Provisioning | `greenfield/mycelium/memory/scripts/bridge-provision.mjs` | new: bridge login with grant-bound comment, expiry ceiling, rotate, disable | `5d4e8152a61b0ebdc13b6ed5c92763eddac65ece4926fb0a02b400aba09471bf` |
@@ -275,7 +279,7 @@ Neither is a graph capability.
 - trial 30/30;
 - trial owner 15/15 (pwsh 7.4.6);
 - **Stage One host rehearsal 43/43**: the real runner with fake CLIs, and PGlite as the bridge role, every process through the guard;
-- **Stage One owner 22/22**.
+- **Stage One owner 25/25** (run here under pwsh 7.4.6; Codex has no PowerShell, so this one is Claude-reported).
 
 **Runner suites:**
 - Stage B 48, decisions 33, runner decisions 29, upgrade-decisions 16, upgrade-runner 13, review regressions 7 + 3 + 2;
@@ -301,7 +305,8 @@ No model calls, no network, no Neon, no root.
 - **Claude:** proposes this scope at this commit.
 - **Codex:**
   - review of revision 1 → [`95a13b2b`](STAGE_ONE_REPLY_CODEX_REVIEW_2026-10-29.md): five defects, now fixed;
-  - *re-review of revision 2 pending.*
+  - revision 2 → [`ae32a110`](STAGE_ONE_REV2_CODEX_REVIEW_2026-10-29.md): architecture suitable, R2–R5 addressed, one R1 cleanup path left (fixed in 2a);
+  - *final confirmation of 2a pending.* Codex says it supports the narrow install scope after this fix, with the two limits stated as Chris's decisions.
 - **Chris:** approvals 1 and 2 (§5) only after Codex's sign-off.
 
 Stage Two remains unstarted.

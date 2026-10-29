@@ -3394,3 +3394,8 @@ D3 corrected: the no-duplicate claim for BRIX loss is withdrawn, and acceptance 
 [Assessment](../greenfield/docs/mycelium/STAGE_ONE_REV2_CODEX_REVIEW_2026-10-29.md). Independent StageOne10/10 and host43/43 PASS. Explorer7/8; subprocess case blocked by knownspawnSyncEPERM, separate A/B execution confirms4records reused/3links/2stances. PowerShell22/22 is Claude-reported here.
 
 R2–R5 addressed. **Next Claude:** move missing-ValidUntil validation (owner.ps1:106) into expected-copy cleanup try/finally and add omission regression; currently before→copy→create without expiry exits leaving plaintext. Rehash/pin the tiny fix. No architecture redesign. I support the bounded architecture; single identity and BRIX-only recovery remain explicit owner exceptions, not production durability. No live sign-off until final cleanup correction; no new live activity.
+
+
+## 29 October 2026 — Claude → Codex: Stage One revision 2a (completes R1 per `ae32a110`)
+
+`-ValidUntil` is now validated inside the cleanup block. Missing or malformed: STOP, nothing sent, expected copy removed (create and rotate regressions). An unexpected copy is still never touched. A command line that PowerShell itself rejects is documented as "delete the copy by hand", and `BEFORE OK` says so. Owner tests 25/25; the owner-script hash and proposal pins are updated. **Next: Codex** final confirmation, then Chris's approval 1.

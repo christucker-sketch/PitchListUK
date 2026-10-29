@@ -7,7 +7,9 @@
 #   ... -Mode create -Commit <sha> -ValidUntil 2026-12-31T23:59:59Z   create mycelium_bridge_fpd under a new grant id
 #   ... -Mode rotate -Commit <sha> -ValidUntil <time>                 new password (after `credential` on fpd-prod)
 #   ... -Mode close  -Commit <sha>                                    disable this PC's recorded grant (NOLOGIN + expire + revoke)
-# The expected copy is cleaned up in EVERY outcome of create/rotate (prechecks included), and success is reported only
+# The expected copy is cleaned up in EVERY outcome of a create/rotate that PowerShell starts (prechecks included). If
+# PowerShell rejects the command line itself (a mistyped -Mode or -Commit), the script never starts: rerun it correctly,
+# or delete the copy by hand (BEFORE OK says where). Success is reported only
 # when the copy is verifiably absent AND the login is verified; a copy that cannot be removed is a STOP. A copy that
 # `before` did not expect is never touched. The code that runs must be the approved commit's: tracked files must match it
 # and no untracked file may sit in the package. `close` needs no network to GitHub when the commit is already present.
@@ -15,7 +17,7 @@
 # existing migration-owner .env.local; never prints a connection string or password. The owner never leaves this PC.
 param([Parameter(Mandatory)][ValidateSet('before','create','rotate','close')][string]$Mode,
       [Parameter(Mandatory)][ValidatePattern('^[0-9a-f]{40}$')][string]$Commit,
-      [ValidatePattern('^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$')][string]$ValidUntil = '')
+      [string]$ValidUntil = '')   # validated INSIDE the cleanup block, so a missing or mistyped expiry still removes the copy
 $ErrorActionPreference = 'Continue'
 Set-PSDebug -Off
 $repo = 'C:\Users\ChrisT\PitchListUK'
@@ -99,16 +101,16 @@ if ($Mode -eq 'before') {
     $purpose = 'create'
   }
   try { New-Item -ItemType File -Path $expect -Value "$purpose`ncommit=$Commit`nat=$(Get-Date -Format o)`n" -ErrorAction Stop | Out-Null } catch { Stop-Pre 'could not record the expected copy exclusively' }
-  "BEFORE OK ($purpose): now copy the password file from fpd-prod to $pwfile, then run -Mode $(($purpose -split ' ')[0])" | Log; exit 0
+  "BEFORE OK ($purpose): now copy the password file from fpd-prod to $pwfile, then run -Mode $(($purpose -split ' ')[0]). If that command line is ever rejected before the script starts, delete $pwfile by hand" | Log; exit 0
 }
 
 if ($Mode -eq 'create' -or $Mode -eq 'rotate') {
-  if (-not $ValidUntil) { Stop-Pre '-ValidUntil is required (at most the approved ceiling)' }
   if (-not (Is-PlainFile $expect)) { Stop-Pre "no expected copy recorded: run -Mode before first. A copy that was not expected is never touched" }
   if (-not (Present $pwfile)) { Stop-Pre "no password copy at $pwfile yet (copy it from fpd-prod first); nothing changed" }
   # from here on the copy is the expected one: it is removed in every outcome
   $fail = $null; $c = $null; $grant = $null
   try {
+    if ($ValidUntil -notmatch '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$') { throw '-ValidUntil is required, as an ISO UTC time like 2026-12-31T23:59:59Z (at most the approved ceiling)' }
     $want = (Get-Content -LiteralPath $expect -TotalCount 1)
     $grant = Read-Grant
     if ($Mode -eq 'create' -and ($want -ne 'create' -or $grant)) { throw "the expected copy was for '$want', not create (or a grant receipt already exists)" }

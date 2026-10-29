@@ -60,7 +60,10 @@ fresh; own before; own before; [[ $? != 0 ]] && grep -q 'already expected' "$T/o
 fresh; echo foreign > "$W/ctl/role"; own before; [[ $? != 0 && ! -f $EX ]] && ok "existing role: STOP, nothing expected" || bad "before role"
 echo "2. create"
 fresh; pwcopy; own create -ValidUntil $U; [[ $? != 0 && -f $PW ]] && ! sent && grep -q 'never touched' "$T/out" && ok "no before: an unexpected copy is refused and NOT touched" || bad "unexpected copy"
-fresh; own before; pwcopy; own create; [[ $? != 0 && -f $PW ]] && grep -q 'ValidUntil is required' "$T/out" && ok "create needs -ValidUntil (checked before anything else)" || bad "no validuntil"
+fresh; own before; pwcopy; own create; [[ $? != 0 && ! -e $PW ]] && ! sent && grep -q 'ValidUntil is required' "$T/out" && ok "create without -ValidUntil: STOP, nothing sent, expected copy removed" || { bad "no validuntil"; cat "$T/out"; }
+fresh; own before; pwcopy; own create -ValidUntil 2026-12-31; [[ $? != 0 && ! -e $PW ]] && ! sent && grep -q 'ValidUntil is required' "$T/out" && ok "create with a malformed -ValidUntil: STOP, nothing sent, copy removed" || bad "bad validuntil"
+created; own before; pwcopy; own rotate; [[ $? != 0 && ! -e $PW ]] && ! grep -q rotate-login "$W/ctl/calls" && grep -q 'ValidUntil is required' "$T/out" && ok "rotate without -ValidUntil: STOP, nothing sent, copy removed" || { bad "rotate no validuntil"; cat "$T/out"; }
+fresh; pwcopy; own create; [[ $? != 0 && -f $PW ]] && ok "without before, even a missing expiry leaves the unexpected copy untouched" || bad "unexpected + no expiry"
 created; rc=$?; g=$(grant)
 [[ $rc == 0 && $(role) == "ours:$g" && ! -e $PW && ! -e $EX ]] && grep -q 'copy verifiably removed' "$T/out" && grep -q "create-login .* $g $U flag=yes" "$W/ctl/calls" && noflag \
   && ok "CREATE OK only with the login verified AND the copy verifiably removed; write flag only on the write" || { bad create; cat "$T/out"; }
