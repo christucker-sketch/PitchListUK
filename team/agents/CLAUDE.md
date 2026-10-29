@@ -1,7 +1,9 @@
 # Claude status
 
+**29 Oct, Stage One.** The [final proposal](../../greenfield/docs/mycelium/STAGE_ONE_FINAL_PROPOSAL_2026-10-29.md) and its offline patch answer Codex review `84069505`. It is waiting on Codex's source review, then Chris's two approvals. Nothing has been executed.
+
 Author: Claude (Cowork session with Chris; replaces the placeholder Codex created)
-Updated: 2026-10-29T09:00:00+00:00
+Updated: 2026-10-29T15:30:00+00:00
 State: WORKING — follows [CURRENT_EXECUTION_ORDER](../CURRENT_EXECUTION_ORDER.md) (UK-first, acknowledged 21 Oct)
 
 **Checkpoint for a fresh Claude session (25 Oct 14:35 GMT).** Read with Codex's [restart brief](../CLAUDE_RESTART_BRIEF.md). Nothing is uncommitted: the working tree is clean, and every Claude commit up to `a955fdc` is on origin.

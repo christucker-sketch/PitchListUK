@@ -16,7 +16,7 @@ mkdir -p "$T/stub" "$T/bin" "$T/w/hs" "$T/w/spool" "$T/w/myc" "$T/w/ctl" "$T/w/d
 # 1. a snapshot rendered by the REAL bridge from PGlite seeded like Neon
 (cd "$MEM" && node --input-type=module -e "
   import { PGlite } from '@electric-sql/pglite'; import { writeFile } from 'node:fs/promises';
-  import { migrate } from './src/schema.mjs'; import { explorerA, explorerB } from './examples/fixtures.mjs'; import { snapshot } from './scripts/bridge.mjs';
+  import { migrate } from './src/schema.mjs'; import { explorerA, explorerB } from './examples/fixtures.mjs'; import { snapshot as snapWith, L2_SELECTION } from './scripts/bridge.mjs'; const snapshot = db => snapWith(db, L2_SELECTION);
   const pg = new PGlite('$T/pgdata'); const db = { query: async (s, p = []) => (await pg.query(s, p)).rows,
     transaction: ss => pg.transaction(async tx => { const o = []; for (const s of ss) o.push((await tx.query(s.text, s.values ?? [])).rows); return o; }) };
   await migrate(db); const a = await explorerA(db, { synthetic: true, run: 'live-proof-2026-10-28-a' });

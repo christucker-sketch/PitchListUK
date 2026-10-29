@@ -1,0 +1,14 @@
+{
+  "batch": "stage-one-proof-1",
+  "purpose": "Stage One live proof: BRIX-native shared memory. Claude then Codex read one sealed FindPitches-relevant snapshot through the existing runner; their validated contributions are appended and verified in a fresh process. Two model calls.",
+  "seed": {
+    "kind": "question",
+    "title": "FindPitches: what evidence shows a UK vendor pitch is real, open to applications now, and actionable for a small trader?",
+    "body": "Mycelium's first mission is finding verified, available vendor pitches (markets, fairs, events) that a small UK trader can act on. This seed asks a question; it asserts nothing. Contributions should propose evidence, tests or failure modes for verifying that a listed pitch exists, is currently accepting applications, and has actionable terms (date, location, fee, how to apply), and should say what would make such a claim wrong."
+  },
+  "selection": { "search": "FindPitches", "limit": 20, "maxDepth": 2, "maxResults": 60 },
+  "tasks": [
+    { "task": "MYC-20261029-001", "agent": "claude" },
+    { "task": "MYC-20261029-002", "agent": "codex" }
+  ]
+}

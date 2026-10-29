@@ -15,6 +15,12 @@
 # Decision requests (26 Oct): a run whose runner leaves out/decision.md (and no result.md) ends in awaiting_approval
 # with that bounded summary, instead of completed. approved/rejected are resting states: an approved task is NOT
 # claimable (claim needs pending); resuming work needs a separately approved change.
+# Local memory references (v3, Stage One, 29 Oct; PROPOSAL until installed by upgrade-gate.sh): a task line
+# `memref: sha256:<64 hex>` attaches ONE root-owned local memory snapshot, $MYC_MEMSNAP/<digest>.md, as a reference. The
+# digest is pinned by the GitHub task descriptor (whose blob the allowlist pins); the bytes never enter Git. At claim and
+# again at admit the file is copied privately and must be root-owned, not group/other-writable (nor its folders), <= 32 KB,
+# clean UTF-8 and EXACTLY that digest. It counts towards the 2-reference limit. Nothing else changes: the push contract,
+# the shared fold block and myc-agent are untouched.
 # Fail closed everywhere; never forces; never retries a rejected push; never calls a model.
 set -euo pipefail
 umask 027
@@ -33,6 +39,7 @@ PUSH_T=120; FETCH_T=60; PUB_END=""          # network bounds; PUB_END (absolute)
 : "${MYC_EMAIL:=hubsync@$(hostname).invalid}"
 REPO=$MYC_HOME/repo; LOCK=$MYC_HOME/lock; B=$MYC_BRANCH
 : "${MYC_DECISIONS:=/var/lib/myc-decisions}"   # owner decision records (root-only writes; see myc-decide)
+: "${MYC_MEMSNAP:=/var/lib/mycelium-memory/snapshots}"   # root-owned local memory snapshots, named <sha256>.md
 FOLD_REV=HEAD FOLD_TASKS=$MYC_TASKS FOLD_DECISIONS=$MYC_DECISIONS FOLD_TEST=${MYC_TEST:-0}
 SECRET_RE='-----BEGIN [A-Z ]*PRIVATE KEY-----|ghp_[A-Za-z0-9]{20,}|gh[ousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|sk-ant-[A-Za-z0-9_-]{10,}|sk-[A-Za-z0-9_-]{32,}|xox[abprs]-[A-Za-z0-9-]{10,}|AKIA[0-9A-Z]{16}|api[_-]?key["'"'"' :=]+[A-Za-z0-9_-]{20,}'
 
@@ -240,6 +247,19 @@ commit_push() {  # message files... -> commits exactly these NEW files and pushe
 }
 event_json() { jq -n --arg at "$(now)" "$@"; }
 
+memref_copy() {  # <sha256 hex> -> path of a private copy whose bytes are exactly that digest; fails closed otherwise
+  local h=$1 f=$MYC_MEMSNAP/$1.md me=0 x tmp
+  [[ $h =~ ^[0-9a-f]{64}$ ]] || return 1
+  [[ ${MYC_TEST:-0} == 1 ]] && me=$(id -u)
+  for x in "$(dirname "$MYC_MEMSNAP")" "$MYC_MEMSNAP" "$f"; do   # no symlink, root-owned, nobody else can write or swap it
+    [[ -e $x && ! -L $x && $(stat -c %u "$x") == "$me" && $(( 0$(stat -c %a "$x") & 022 )) == 0 ]] || return 1
+  done
+  [[ -f $f && $(stat -c %s "$f") -le 32768 ]] || return 1
+  tmp=$(mktemp "$MYC_HOME/.memref.XXXXXX"); head -c 32769 -- "$f" > "$tmp" 2>/dev/null || { rm -f "$tmp"; return 1; }
+  if [[ $(stat -c %s "$tmp") -le 32768 && $(sha256sum "$tmp" | cut -d' ' -f1) == "$h" ]] && clean_text < "$tmp"; then echo "$tmp"
+  else rm -f "$tmp"; return 1; fi
+}
+
 cmd_state() {
   lock; sync; load "$1"; echo "$1 ${STATE}${Q:+: $Q} seq=$SEQ${RUN:+ run=$RUN}${LEASE:+ lease_until=$LEASE}"
   if [[ $STATE == awaiting_approval ]]; then
@@ -262,6 +282,14 @@ cmd_claim() {
   [[ $(jq .claims <<<"$GRANT") -lt $MYC_MAX_CALLS ]] || die "Stage B call cap reached ($(jq .claims <<<"$GRANT") claims of $MYC_MAX_CALLS)"
   load "$t"
   while IFS= read -r line; do
+    if [[ $line =~ ^memref:\ sha256:([0-9a-f]{64})$ ]]; then
+      o=${BASH_REMATCH[1]}
+      [[ $(jq length <<<"$refs") -lt 2 ]] || die "more than 2 refs"
+      p=$(memref_copy "$o") || die "memory snapshot sha256:${o:0:12} is missing, not root-owned and sealed, too large, not clean text or not that digest"
+      rm -f "$p"
+      refs=$(jq -c --arg o "sha256:$o" '. + [{path:"mycelium-memory-snapshot (local; not in git; digest pinned by the task)", blob:$o}]' <<<"$refs")
+      continue
+    fi
     [[ $line =~ ^ref:\ (greenfield/mycelium/[A-Za-z0-9._/-]+)$ ]] || continue
     p=${BASH_REMATCH[1]}; [[ $p != *..* ]] || die "bad ref $p"
     [[ $(jq length <<<"$refs") -lt 2 ]] || die "more than 2 refs"
@@ -303,6 +331,11 @@ cmd_admit() {  # the last gate before inference: everything is re-read from the 
   refs='[]'
   while read -r r; do
     p=$(jq -r .path <<<"$r"); o=$(jq -r .blob <<<"$r")
+    if [[ $o =~ ^sha256:([0-9a-f]{64})$ ]]; then
+      local mc; mc=$(memref_copy "${BASH_REMATCH[1]}") || die "memory snapshot ${o:0:19} is no longer present and intact; not admitted"
+      refs=$(jq -c --arg p "$p" --arg o "$o" --rawfile c "$mc" '. + [{path:$p, blob:$o, content:$c}]' <<<"$refs"); rm -f "$mc"
+      continue
+    fi
     [[ $(blob_of "$p" || true) == "$o" ]] || die "reference $p changed since the claim; not admitted"
     if [[ $p =~ ^$MYC_TASKS/(MYC-[0-9]{8}-[0-9]{3})/result\.md$ ]]; then
       load "${BASH_REMATCH[1]}"; [[ $STATE == completed ]] || die "referenced task is no longer completed; not admitted"; load "$t"

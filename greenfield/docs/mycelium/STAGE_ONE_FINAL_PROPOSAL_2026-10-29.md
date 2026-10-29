@@ -1,0 +1,277 @@
+# Stage One final implementation proposal: BRIX-native shared memory (29 Oct 2026)
+
+**Status: for Chris's review. Nothing has been installed, created, written or called.**
+
+This proposal is Claude's revision of [plan `3b1ab586`](STAGE_ONE_BRIX_NATIVE_MEMORY_PLAN_2026-10-29.md). It takes in Codex's [independent review `84069505`](STAGE_ONE_CODEX_ENGINEERING_REVIEW_2026-10-29.md), and its offline patch is committed alongside it.
+
+Codex asked to review the source and the fake-CLI rehearsal before Chris approves anything live. **Codex's sign-off on this patch is therefore the one remaining review step** (§8). Every Codex finding is listed in §2, with what was done about it. Disagreements are recorded rather than smoothed over.
+
+## 1. The four questions, answered
+
+### Q1. Should memory snapshots be published to GitHub?
+
+**No. Snapshots stay local, sealed and pinned by digest.** Codex was right, and I withdraw `publish-snapshot`.
+
+Why:
+- **It would widen a security boundary.** It changes the single Git writer's push contract.
+- **It conflicts with redaction.** Every recall would land in immutable history, which Neon redaction cannot reach.
+- **A regex is not a sensitivity filter.** It cannot stop proprietary or personal text.
+
+What replaces it:
+- **A new reference form.** The existing runner gets one: a task line `memref: sha256:<digest>`.
+- **The digest lives in the task descriptor.** That descriptor is on GitHub, and the allowlist pins its blob. So Chris approves the exact memory bytes the models will see.
+- **The bytes live on fpd-prod only**, at `/var/lib/mycelium-memory/snapshots/<digest>.md` (root:hubsync 0440).
+- **`myc-gate` checks the file twice, at claim and again at admit.** Each time it copies the file privately and requires:
+  - root ownership, with nothing group- or other-writable, the folders included;
+  - no symlink;
+  - ≤ 32 KB of clean UTF-8;
+  - exactly the pinned digest.
+- **The rest of the runner is untouched.** The push contract, the shared fold block (mycnotify parity), `myc-agent` and `myc-stageb` do not change.
+
+**Audit trail:**
+- GitHub holds the descriptor's digest, the results and the gate's completion events, which pin each result's sha256.
+- Every Neon contribution carries the batch, the snapshot digest, the result sha256, the result blob and the hub commit.
+
+**Limit (accepted, see §6 D3):** the snapshot bytes exist only on fpd-prod.
+
+### Q2. Should recall and ingestion use separate database identities?
+
+**Not for Stage One.** There is one principal, `mycelium_bridge_fpd` (runtime capability), and one Unix identity, `mycmem`. The threat limit is **explicitly accepted**: the recall process holds a credential that can write.
+
+Codex is right that two passwords readable by one Unix user are not isolation. Real separation would need:
+- a reader template and grant migration;
+- a second login, a second Unix user and a second rotation route.
+
+That roughly doubles the persistent footprint, against a small threat. The recall code only selects, and it is not where model output is parsed. Ingestion, which does parse model output, needs to write anyway.
+
+Defences in depth instead:
+- **Every recall query runs in a `READ ONLY` transaction.** On Neon this is the driver's `Neon-Batch-Read-Only` mode, verified offline.
+- **A complete effective-privilege check runs before use** (§2 F6).
+- **Every answer is validated before the first write** (§2 F8).
+
+Revisit when Stage Two introduces recall-only processes (§6 D1).
+
+### Q3. How do interrupted or partial runs recover without duplicates?
+
+**Through one recovery path: re-ingest the exact pinned batch.** Never a model call, never a new snapshot, never a new run id.
+
+**The batch is pinned once and rebuilt identically.** `run` builds `batch.json` from GitHub at one commit, binding:
+- the manifest sha256;
+- the snapshot digest;
+- each turn's task, agent, exact run id, descriptor blob, result blob and result sha256.
+
+Each result's sha256 must equal the one in the gate's own completion event. Recovery rebuilds the batch at the same commit and refuses to continue unless it is byte-identical.
+
+**No write happens until every answer is validated.** The bridge checks every hash, order and agent, and parses every answer, before it writes anything. Ids are deterministic, so a later turn's `@<task>` link resolves to an earlier turn's id before that turn is written.
+
+**Each contribution is atomic.** A replay is an exact no-op; a changed payload under an existing id is refused.
+
+**A receipt on fpd-prod tracks each batch's state:**
+```
+PREPARING → PREPARED → CALLS_STARTED → CALLS_DONE → INGEST_PENDING → INGESTED → VERIFIED
+```
+A batch:
+- runs its turns at most once;
+- is never re-prepared;
+- reaches VERIFIED only after a **fresh process** finds every expected node, link and stance exactly.
+
+**Tested failure cases:**
+- death between contributions;
+- a lost acknowledgement after commit;
+- concurrent duplicate ingestion;
+- restart from a fresh process ("another host");
+- a malformed second answer;
+- a mismatched result or snapshot hash;
+- a tampered pinned batch;
+- a tampered sealed snapshot.
+
+### Q4. Do the install and gateway changes add unnecessary complexity?
+
+**Less than the first plan did.**
+
+Removed:
+- the Git publication route;
+- snapshots in Git;
+- the separate run wrapper (folded into one host script);
+- four ceremonial approvals, now two that follow the natural pause (§5).
+
+Nothing new of these kinds:
+- daemon, timer, service, listener, scheduler or sidecar;
+- transport;
+- GitHub credential;
+- change to `myc-agent`, `myc-stageb`, `hubsync`, `mycnotify` or the push contract;
+- Node reinstall.
+
+What persists, and is needed by definition:
+- one system user;
+- a read-only package at a pinned commit;
+- one expiring credential;
+- a 33-line gate change.
+
+## 2. Codex findings and their resolution
+
+| # | Codex finding | Resolution | Evidence |
+|---|---|---|---|
+| F1 | GitHub snapshot publication enlarges the writer boundary | **Agreed; withdrawn.** Digest-pinned local `memref` | `test-memref.sh` 15/15; snapshot text absent from Git history |
+| F2 | Pin the attachment: no arbitrary path, symlink or TOCTOU; preserve folds/grants | **Agreed.** The path is derived from the digest only; a private copy is checked at claim **and** at admit. A swap between them is refused, recorded as failed with no call | `test-memref.sh` §2–3; fold parity 1/1; all Stage B suites unchanged |
+| F3 | Retain the snapshot bytes; retention policy | **Partly.** Retained on fpd-prod, kept by `teardown`, until Chris decides. Not off-host | §6 D3 |
+| F4 | A SELECT-only reader needs a distinct Unix identity to mean anything | **Agreed on the analysis;** one principal for Stage One, threat limit accepted | §1 Q2, §6 D1 |
+| F5 | Don't rerun `runtime_grants.sql`; don't reuse trial names | **Agreed.** No grant change at all. A new role through new `bridge-provision.mjs`, with its own comment namespace; trial logins stay closed | `stage-one.test.mjs` provisioning test |
+| F6 | `whoami` is incomplete | **Replaced** by `scripts/privileges.mjs`. It checks: identity; transitive and settable roles; every relation's table and column privileges in every non-system schema (`neon_auth` and `public` included); executable SECURITY DEFINER functions; schema CREATE; database CREATE; ownership of any object. A missing field fails | 9 grant-drift cases each detected; 13 **real refusals** executed as the role on PG 18.6 |
+| F7 | Unix boundary: credential modes alone prove nothing | `whoami` now asserts:<br>• `myc` and `hubsync` cannot read the credential and are not in group `mycmem`;<br>• `mycmem` cannot read the deploy key or the CLI sign-ins;<br>• `mycmem` has no supplementary groups, no sudo rules and no ACLs | Host-only checks: they run live in `whoami`, skipped offline |
+| F8 | Bind ingestion to completed, pinned results; validate everything before writing; strict run ids | **Done** (§1 Q3) | `stage-one.test.mjs`: all-or-nothing, binding, strict run id |
+| F9 | Recovery receipt; never new snapshot or run id; changed payload fails | **Done** (§1 Q3) | Host rehearsal §6: lost acknowledgement → STOP INGEST_PENDING → `ingest` reconciles with no duplicate and no call |
+| F10 | VERIFY must fail on anything missing | **Done.** Exact ids, edges and stances; `VERIFIED` only after a fresh-process pass | `verifyPlanned` tests |
+| F11 | "disable-login revokes instantly" is overstated | **Corrected.** Disable = NOLOGIN (no new sessions) + `VALID UNTIL` in the past + REVOKE runtime. In PostgreSQL semantics, REVOKE strips an open session's graph privileges at its next statement. No session termination is proposed | Provisioning test |
+| F12 | Persistent credentials need a lifetime, rotation and host-loss response | **Lifetime:** `VALID UNTIL` ≤ **2026-12-31T23:59:59Z**, a ceiling set in code.<br>**Rotation:** `credential` on fpd-prod, then `rotate` on the PC.<br>**Host loss:** PC `close`; memory is safe in Neon | Owner tests 14/14; host tests |
+| F13 | The CLIs share `myc` | **Acknowledged.** They are not mutually isolated principals. Neither gets a database credential, a database route or the snapshot store | §6 D5 |
+| F14 | Hard-coded "polymer P" | **Done.** Selection comes from a strict, reviewed manifest at a pinned commit. The optional seed is a `question` (it never asserts), tagged `origin: reviewed-manifest` | [`runs/stage-one-proof-1.json`](../../mycelium/runs/stage-one-proof-1.json) |
+| F15 | One run lock; bounded steps; snapshot outside the HubSync clone; always close the allowance | **Done.** One flock covers prepare, run and ingest. Each node step is bounded (90 s, KILL grace). The store is outside the clone. The allowlist is created at `run` from the pinned descriptors and **always** archived, success or STOP | Host rehearsal |
+| F16 | One clear approval for an exact scope, not four phrases | **Agreed in spirit.** Two approvals, because the digest must exist before the task descriptors can pin it | §5 |
+
+Codex's probe file `memory/test/stage-one-review-probes.mjs` is left exactly as committed: it records the behaviour before the fix. It now stops at its first assertion, because the bridge no longer has a hard-coded selection. Each of its four reproductions has an inverted assertion in `test/stage-one.test.mjs`.
+
+## 3. Agreed architecture
+
+```
+fpd-prod (root wrapper stage-one/mycelium-bridge.sh; one lock; stop at first failure; never retry)
+  prepare: hubsync git show <commit>:runs/<batch>.json ──► mycmem: seed (append, idempotent) ──► mycmem: snapshot (READ ONLY)
+           ──► root seals /var/lib/mycelium-memory/snapshots/<sha>.md (root:hubsync 0440) ──► prints "memref: sha256:<sha>"
+  [hub: task descriptors carry that memref line; Codex reviews; Chris approves the run at that commit]
+  run:     descriptors at <commit> must pin <sha> ──► allowlist created from them ──► INSTALLED myc-stageb per turn
+           (myc-gate v3 verifies + embeds the sealed bytes; myc-agent v6 unchanged; CLIs as myc, no credential)
+           ──► allowlist archived ──► collect + pin batch from GitHub ──► mycmem: ingest ──► mycmem: fresh verify ──► VERIFIED
+Neon: one login mycelium_bridge_fpd (runtime capability, limit 20, expires ≤ 2026-12-31) — the owner stays on the PC
+```
+
+## 4. Exact files and components
+
+| Component | File (repo) | Change | sha256 |
+|---|---|---|---|
+| Gate | `greenfield/mycelium/stageb/myc-gate` | v2 → v3: `memref` in claim and admit only (+33 lines; nothing removed) | `bca72724623b69439d2876eb4dd9aa3bb11e8b16f75a09f6238dab7e9d962dc1` |
+| Gate install | `greenfield/mycelium/stageb/upgrade-gate.sh` | new: check / install / rollback, with byte-verified restore. Takes both the Stage B and hub locks. Asserts every other command unchanged | `4cca25457c66ce66de01e172462fbe0033b444e168431f2175f10e56ac573a8e` |
+| Host | `greenfield/mycelium/memory/stage-one/mycelium-bridge.sh` | new: precheck, setup, whoami, prepare, run, ingest, verify, credential, close, teardown | `f5b58b49faadfac677ec86c14c4e893ea561444e11f2d2e6ea46a0d543c095ca` |
+| PC owner | `greenfield/mycelium/memory/stage-one/mycelium-bridge-owner.ps1` | new: before, create, rotate, close. The migration owner never leaves the PC | `2bef8be2db92ffe8c56bfc2329658305bf75800c4802400fe262bf120809cb66` |
+| Bridge | `greenfield/mycelium/memory/scripts/bridge.mjs` | v2: manifest selection, seed, READ ONLY snapshot, pinned batch, validate-all-then-write, exact verify, bridge-login guard. The v1 L2 API is kept, now all-or-nothing | `948ac8b0f3db8b2c7ffd16da9fdb4b0e4017a596aaf21a22791bc5a15dce93fe` |
+| Provisioning | `greenfield/mycelium/memory/scripts/bridge-provision.mjs` | new: bridge login with grant-bound comment, expiry ceiling, rotate, disable | `fc86afcc53f6750db54b26c4bd97453c623adea6c71033d8240c7db53a6ecbee` |
+| Privileges | `greenfield/mycelium/memory/scripts/privileges.mjs` | new: complete effective-privilege check | `41c237fbff279ed9b959a3d2ced5e0ce5de47016effd9838159c16e5607b004f` |
+| Connection | `greenfield/mycelium/memory/src/connection.mjs` | `readOnly` option | `4888eb135e00a3d0338a617986fea41500d5b20c28ed6c2c96f214424c088224` |
+| Manifest | `greenfield/mycelium/runs/stage-one-proof-1.json` | new: the FindPitches-relevant proof manifest | `434d7b09cab3e5d2aaf4a90b79d7c233e4c9bc30402a9d87c3ac1313af96845a` |
+| Tests | `stageb/test-memref.sh`, `stageb/test-upgrade-gate.sh`, `memory/test/stage-one.test.mjs`, `memory/test/{helpers,pglite-bridge,pglite-init}.mjs`, `memory/stage-one/test-bridge-{host,owner}.sh` | new | — |
+| Updated tests | `memory/test/bridge.test.mjs` (a bad second answer now writes nothing), `collab/test-bridge-chain.sh` (selection argument), `memory/package.json`, `stageb/SHA256SUMS` | — | — |
+
+Full hashes are in `stageb/SHA256SUMS` and in the final verification log of this commit.
+
+**Unchanged on fpd-prod:**
+- the commands: `myc-agent` v6, `myc-stageb` v5.1, `myc-decide`, `hubsync`, `mycnotify`;
+- timers, keys, `notify.conf`, Node, every service;
+- FindPitches V1, V2 and V3, the Pi, Hal.
+
+**On Neon:** the schema, migrations and grants are unchanged. One login role is added.
+
+## 5. Deployment order and the approvals required
+
+**Step 0 (no approval needed).** Codex reviews this patch and the fake-CLI rehearsal at commit **X** (this commit or Codex's amended one). Any change is re-tested and re-hashed.
+
+**Approval 1, exact phrase: "approved: Stage One install at X".** It covers, with no model call:
+1. On fpd-prod, copy the three files out of the HubSync clone at X and check them against §4.
+2. `sudo bash upgrade-gate.sh check`, then `install`. This installs `myc-gate` v3; rollback is `upgrade-gate.sh rollback`.
+3. `sudo bash mycelium-bridge.sh precheck`, then `setup X`. This creates:
+   - user `mycmem`;
+   - `/opt/mycelium-memory` at X;
+   - `/etc/mycelium/bridge.env` (root:mycmem 0640);
+   - `/var/lib/mycelium-memory`;
+   - one PC password copy.
+4. On the PC: `scp` the copy. Then run `mycelium-bridge-owner.ps1 -Mode before -Commit X`, then `-Mode create -Commit X -ValidUntil 2026-12-31T23:59:59Z`. This creates the Neon role **`mycelium_bridge_fpd`**:
+   - LOGIN, CONNECTION LIMIT 20;
+   - inherits only `mycelium_memory_runtime`, SET FALSE, no ADMIN;
+   - expires at 2026-12-31T23:59:59Z;
+   - its comment is bound to a new grant id.
+
+   The copy is wiped in every outcome.
+5. `sudo bash mycelium-bridge.sh whoami`. It shreds the host copy, then runs the Unix-boundary checks and the exact privilege check.
+6. `sudo bash mycelium-bridge.sh prepare stage-one-proof-1 X`. Neon writes: **one seed question node**. Then a READ ONLY snapshot, which is sealed. Chris pastes the output, which includes the `memref` line.
+
+**Step 7 (hub, no approval needed).** Claude writes tasks `MYC-20261029-001` (claude) and `-002` (codex), carrying that memref line plus `ref:` to 001's result for Codex. Codex reviews them, and the reviewed commit is **Y**.
+
+**Approval 2, exact phrase: "approved: Stage One proof run at Y".** It covers:
+- `sudo MYC_BILLING_CONFIRMED=yes bash /opt/mycelium-memory/stage-one/mycelium-bridge.sh run stage-one-proof-1 Y`;
+- **2 model calls** (1 Claude, 1 Codex), a 30-minute window, no model retry;
+- ingestion of at most 2 contributions, with fresh-process verification;
+- if and only if the run stops at INGEST_PENDING: **one** `mycelium-bridge.sh ingest stage-one-proof-1`, which is an exact-batch database recovery with no model call.
+
+Chris pastes the output, and Claude publishes the receipt to the hub.
+
+**After the proof:**
+- The login stays valid until the earlier of 2026-12-31 or Chris's `close`.
+- It authorises nothing on its own: every later run needs a new task allowlist from Chris.
+- Stage Two does not start without its own allowance.
+
+## 6. Remaining disagreements and limits (recorded, not smoothed)
+
+**D1. Reader/writer separation.**
+- Codex recommends it for persistent operation.
+- I propose to defer it, with the limit accepted.
+- **Open for Codex and Chris.** A minimal later step would be a SELECT-only template, a reader login and Unix user `mycrecall`.
+
+**D2. Two approvals, not one.**
+- Codex asked for a single clear approval.
+- The snapshot digest has to exist before the descriptors that pin it, so there is a natural pause between them.
+
+**D3. Snapshot bytes stay on fpd-prod.**
+- If fpd-prod is lost mid-batch, that batch cannot be finished elsewhere. A new batch is prepared instead.
+- Nothing is duplicated (deterministic ids), and nothing is lost from Neon or GitHub.
+- Codex's alternative was publishing a reviewed proof snapshot. I decline it, to keep memory out of Git.
+
+**D4. Cosmetic.** The unchanged `myc-agent` labels the attachment "(git blob sha256:…)". I am keeping zero agent diff over a label fix.
+
+**D5. Existing trust boundaries, unchanged.**
+- Claude Code and Codex share `myc`. Codex's tool ban is partly prompt-only.
+- The 900 MiB admission guard is a soft check.
+- Connection limit 20 is not a spend cap.
+
+**D6. Untested on Neon until approval 1:**
+- `VALID UNTIL` in `CREATE ROLE`. If Neon refuses it, create fails atomically and nothing is created; it then needs a reviewed fallback.
+- The live result of the privilege check against `neon_auth` and `public`. A non-empty grant there fails closed.
+
+**D7. Not checked by the privilege query:**
+- database `TEMP` (PUBLIC's default, session-scoped);
+- `CONNECT` to other databases on the endpoint.
+
+Neither is a graph capability.
+
+## 7. Test evidence (offline, all green at this commit)
+
+**Memory package, `npm test`:**
+- 48 node tests, including Stage One 8/8 and the L2 bridge 4/4;
+- trial 30/30;
+- trial owner 15/15 (pwsh 7.4.6);
+- **Stage One host rehearsal 35/35**: the real runner with fake CLIs, and PGlite as the bridge role;
+- **Stage One owner 14/14**.
+
+**Runner suites:**
+- Stage B 48, decisions 33, runner decisions 29, upgrade-decisions 16, upgrade-runner 13, review regressions 7 + 3 + 2;
+- fold parity 1;
+- **memref 15**;
+- **upgrade-gate 9**.
+
+**Other suites:**
+- bridge chain 7, collab chain 12;
+- hubsync 27, mycnotify 31;
+- install-node 15.
+
+No model calls, no network, no Neon, no root.
+
+**Rollback**, each step independent:
+- **gate:** `upgrade-gate.sh rollback`;
+- **credential:** PC `close`, then host `close`;
+- **install:** host `teardown`, which keeps the evidence store;
+- **memory:** append-only. An unwanted contribution goes through the sanctioned redaction path (owner, PC).
+
+## 8. Sign-off
+
+- **Claude:** proposes this scope at this commit.
+- **Codex:** *pending.* A source and rehearsal review of this patch, as Codex requested before owner live approval.
+- **Chris:** approvals 1 and 2 (§5) only after Codex's sign-off.
+
+Stage Two remains unstarted.

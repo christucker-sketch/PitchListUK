@@ -16,13 +16,18 @@ export function connectionSettings(env = process.env) {
   return { connectionString: value };
 }
 
-export async function connect(env = process.env) {
+// readOnly: every query and transaction runs inside a READ ONLY transaction, so even a coding mistake cannot write
+// (defence in depth for recall; the database role is the real boundary).
+export async function connect(env = process.env, { readOnly = false } = {}) {
   const { connectionString } = connectionSettings(env);
   const { neon } = await import('@neondatabase/serverless');
   const sql = neon(connectionString);
+  const opts = () => ({ fetchOptions: { signal: AbortSignal.timeout(15000) }, ...(readOnly ? { readOnly: true } : {}) });
   return {
-    query: (text, values = []) => sql.query(text, values, { fetchOptions: { signal: AbortSignal.timeout(15000) } }),
-    transaction: statements => sql.transaction(statements.map(s => sql.query(s.text, s.values ?? [])),
-      { fetchOptions: { signal: AbortSignal.timeout(15000) } })
+    readOnly,
+    query: readOnly
+      ? async (text, values = []) => (await sql.transaction([sql.query(text, values)], opts()))[0]
+      : (text, values = []) => sql.query(text, values, opts()),
+    transaction: statements => sql.transaction(statements.map(s => sql.query(s.text, s.values ?? [])), opts())
   };
 }

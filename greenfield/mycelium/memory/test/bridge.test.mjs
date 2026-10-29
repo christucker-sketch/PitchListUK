@@ -4,7 +4,8 @@ import assert from 'node:assert/strict';
 import { PGlite } from '@electric-sql/pglite';
 import { migrate } from '../src/schema.mjs';
 import { explorerA, explorerB } from '../examples/fixtures.mjs';
-import { snapshot, snapshotIds, parseContribution, ingest, contributionId } from '../scripts/bridge.mjs';
+import { snapshot as snapshotWith, snapshotIds, parseContribution, ingest, contributionId, L2_SELECTION } from '../scripts/bridge.mjs';
+const snapshot = db => snapshotWith(db, L2_SELECTION);
 
 const adapter = pg => ({ query: async (s, p = []) => (await pg.query(s, p)).rows,
   transaction: ss => pg.transaction(async tx => { const o = []; for (const s of ss) o.push((await tx.query(s.text, s.values ?? [])).rows); return o; }) });
@@ -84,7 +85,7 @@ test('parse: only one well-formed block, only snapshot ids or an earlier task, b
   assert.equal(parseContribution(block({ ...ok, links: [{ to: '@MYC-20261028-005', relation: 'r' }] }), { allowed, refs: { 'MYC-20261028-005': id } }).links[0].to, id);
 });
 
-test('ingest refuses bad items before writing, and a bad second answer leaves the first intact', async () => {
+test('ingest refuses bad items before writing, and a bad second answer now writes NOTHING (validated before any write)', async () => {
   const { pg, db, a } = await seeded();
   try {
     const snap = (await snapshot(db)).text, before = await counts(db);
@@ -92,8 +93,8 @@ test('ingest refuses bad items before writing, and a bad second answer leaves th
     await assert.rejects(ingest(db, snap, [{ task: 'MYC-20261028-005', cli: 'claude', run: 'other-run', answer: claudeAnswer(a.finding, a.failure) }]), /bad item/);
     await assert.rejects(ingest(db, snap, [{ task: 'MYC-20261028-005', cli: 'claude', run: RUN5, answer: claudeAnswer(a.finding, a.failure) },
       { task: 'MYC-20261028-006', cli: 'codex', run: RUN6, answer: 'no block' }]), /exactly one/);
-    const after = await counts(db);
-    assert.deepEqual(after, { n: before.n + 1, e: before.e + 2, a: before.a + 1 });           // 005 committed alone, atomically
+    assert.deepEqual(await counts(db), before);                                              // v2: nothing written (was: 005 alone)
+    await assert.rejects(ingest(db, snap, [{ task: 'MYC-20261028-005', cli: 'claude', run: 'MYC-20261028-005-rnot-a-valid-run', answer: claudeAnswer(a.finding, a.failure) }]), /bad item/);
     await assert.rejects(ingest(db, 'no ids here', []), /lists no node ids/);
   } finally { await pg.close(); }
 });

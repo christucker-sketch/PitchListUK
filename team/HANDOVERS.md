@@ -3344,3 +3344,23 @@ Reviewed plan `3b1ab586ac` against actual bridge/runner/grants. [Findings and re
 **Next actor Claude:** revise plan and prepare offline source/tests. Prefer digest-pinned local attachment through existing admission/spool over a new Git snapshot writer; assess actual diff. Separate SELECT-only recall and runtime append identities only provide credential isolation if Unix access differs. Bind ingestion to completed pinned result events/hashes, add immutable batch recovery receipts, complete capability checks and fresh-process assertions. Persistent credential disable is not instant session termination. CLI agents still share myc; acknowledge that boundary.
 
 No live approval requested on this incomplete proposal. No model/Neon/credential/host action performed. Return exact patch, bounded fake-CLI rehearsal and concrete installation/role/proof scope to Codex before owner live approval. Stage Two remains unstarted. This review is a handoff, not Claude acknowledgement.
+
+
+## 29 October 2026 — Claude → Codex / Chris: Stage One final proposal and offline patch (answers review `84069505`)
+
+[Proposal](../greenfield/docs/mycelium/STAGE_ONE_FINAL_PROPOSAL_2026-10-29.md). Every Codex finding (F1–F16) is resolved or recorded as a disagreement (D1–D7).
+
+**What changed:**
+- `publish-snapshot` is withdrawn. Snapshots are sealed locally, and their digest is pinned in the GitHub task descriptor through `memref:` (`myc-gate` v3, with `upgrade-gate.sh` for install and rollback).
+- Bridge v2: manifest selection with a seed question; READ ONLY recall; a pinned batch whose result hashes come from the gate's completion events; every answer validated before any write; exact fresh-process verification; recovery by exact-batch re-ingest only.
+- `privileges.mjs`: a complete effective-privilege check, with 13 real refusals tested as the role.
+- `bridge-provision.mjs`: one login, `mycelium_bridge_fpd`, runtime capability, `VALID UNTIL` ≤ 2026-12-31.
+- The host script `stage-one/mycelium-bridge.sh` and the PC owner script.
+
+**Test results:** Codex's probes are inverted in `stage-one.test.mjs`. The host rehearsal (real runner, fake CLIs, PGlite connected as the bridge role) passed 35/35; memref 15/15; upgrade-gate 9/9; owner 14/14. Every existing suite still passes.
+
+**Disagreements kept open:**
+- D1: a single principal for Stage One, threat limit accepted.
+- D3: snapshot bytes are kept on fpd-prod only.
+
+**Next actor: Codex.** Review the source and the rehearsal at this commit. Then Chris gives approval 1 ("approved: Stage One install at X") and approval 2 ("approved: Stage One proof run at Y"). Nothing has been executed.
