@@ -1,3 +1,13 @@
+# Codex — Stage One two-call proof APPROVED; execution pending
+
+29 October2026. Chris explicitly approved scope2 at `53f529feb48e1912fd3d9f091500d2b81fd031a5`. [Exact grant/command](../HANDOVERS.md), [review](../../greenfield/docs/mycelium/STAGE_ONE_SCOPE2_CODEX_REVIEW_2026-10-29.md).
+
+Next Claude: coordinate existing command/log route; at most2calls/30min, linked append and fresh exact verification, allowance archival, one bounded DB-only recovery if needed. No reinstall/newseed/credentials/model retry/StageTwo. Codex reviews actual receipts next. Approval recorded, execution not confirmed.
+
+---
+
+## Previous checkpoint
+
 # Codex — scope1 accepted; scope2 proof ready for approval
 
 29 October2026. [Review](../../greenfield/docs/mycelium/STAGE_ONE_SCOPE2_CODEX_REVIEW_2026-10-29.md). Revision2b13503084 and setupreceipt reviewed; independent10StageOne/44hostPASS. Exact seed/842byte snapshot/digest corroborated offline. Two pending descriptors at53f529feb48e1912fd3d9f091500d2b81fd031a5 reviewed.

@@ -3464,3 +3464,26 @@ Chris approved 2b as owner. **Codex: please review 2b (`13503084`) after the fac
 [Review](../greenfield/docs/mycelium/STAGE_ONE_SCOPE2_CODEX_REVIEW_2026-10-29.md). Reviewed2b13503084 after the recorded owner-approved execution; creator ADMIN-only grant correctly points TO neondb_owner, not owner power to bridge. IndependentStageOne10/10 and host44/44PASS. Offline manifest reconstruction exactly matches seedb2339ae1,842bytes,digestb9f19aa53bb3919ffc0c0882c57fc47dd51b1e54523305e78e4ce792969e028f. Receipt's missing PC/reinstall excerpts remain owner-reported, not independently audited.
 
 Both pending proof descriptors at **53f529feb48e1912fd3d9f091500d2b81fd031a5** reviewed: Claude001→Codex002, same memref; Codex references/responds toClaude and must link prior contribution. **Next Chris:** separate scope2 approval at that commit. At most2calls/30minutes, no retries, at most2linked contributions, fresh exact verification, mandatory allowancearchive and one permitted DB-only recovery. No new setup/seed/credential work. StageTwo not started; zero live models confirmed so far. After approval Claude coordinates established command/log route, Codex reviews results.
+
+
+## 29 October 2026 — Chris APPROVES Stage One scope2 proof
+
+Chris replied **“approved”** directly to Codex's exact scope2 request at **`53f529feb48e1912fd3d9f091500d2b81fd031a5`**, following [Codex review](../greenfield/docs/mycelium/STAGE_ONE_SCOPE2_CODEX_REVIEW_2026-10-29.md). This is the separate model-call grant; no repeated exact-scope approval is needed.
+
+**Next actor Claude:** coordinate execution through the established Chris-command/sanitized-log route, using the installed bridge at13503084 and the descriptors at the pinned commit above. No reinstall, prepare/seed replay, credential creation or rotation is authorised or needed.
+
+Approved command on fpd-prod, after the existing subscription/billing check:
+```bash
+sudo MYC_BILLING_CONFIRMED=yes bash /opt/mycelium-memory/stage-one/mycelium-bridge.sh run stage-one-proof-1 53f529feb48e1912fd3d9f091500d2b81fd031a5
+```
+
+**Exact bounds:**
+- At most **2 native CLI/model invocations**: `MYC-20261029-001` Claude, then `MYC-20261029-002` Codex; **30minute window**, existing allowlist/admission and billing guard, no automatic retry or extra turn.
+- Same sealed snapshot SHA256 `b9f19aa53bb3919ffc0c0882c57fc47dd51b1e54523305e78e4ce792969e028f`.
+- At most2 validated append-only contributions with their bounded links/stances; Codex responds to and links Claude's contribution. Verify the exact persisted payloads in a **fresh process**.
+- Archive/close the execution allowance on success or STOP, clear temporary write permission, preserve usage/state/result/ingestion/verification receipts. Existing persistent bridge identity remains under scope1; do not claim login closure unless performed and verified.
+- **One database-only exact-batch recovery** is included only if interrupted at CALLS_STARTED or stopped at INGEST_PENDING. It must use the same pinned manifest/batch/snapshot/results, close any leftover allowance first, make **zero model calls**, and leave incomplete/uncertain turns HELD. No refreshed snapshot/new run/task or additional recovery attempt without owner direction.
+
+STOP on failure/uncertainty; reconcile only within those bounds. No secret material in outputs. Combined-identity and BRIX-only recovery limits accepted for scope1 remain applicable. No live research/acquisition, publication, outreach, automatic dispatch, services/timers/schema/Neon Auth/production changes, paid resources, API keys or unrelated infrastructure action. **StageTwo is not authorised.**
+
+Publish actual task/run/result hashes, callcount/timing/usage, linked rows and exact fresh verification, allowance archival and any STOP/recovery receipts. **Codex reviews the outcome next.** This approval/handoff is not execution evidence or Claude acknowledgement; proof execution is pending.
