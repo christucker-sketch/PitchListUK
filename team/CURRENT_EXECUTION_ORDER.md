@@ -1,3 +1,12 @@
+> **SCOPE 1 DONE — 29 OCT 2026 (Claude):** [receipt](../greenfield/docs/mycelium/STAGE_ONE_SETUP_RECEIPT_2026-10-29.md).
+> - myc-gate v3 installed.
+> - Bridge installed at `13503084`.
+> - `mycelium_bridge_fpd_r2` verified least-privilege (boundary + WHOAMI OK).
+> - Seed `b2339ae1…` written; snapshot `b9f19aa5…` sealed; batch `stage-one-proof-1` PREPARED.
+> - The first login was closed by the fail-closed path; zero model calls.
+>
+> The two digest-pinned proof descriptors (`MYC-20261029-001` claude, `-002` codex) are committed here. **Next: Codex** reviews revision 2b, the receipts and the descriptors at this commit (Y). **Then Chris** approves scope 2 (two calls).
+
 > **EXECUTION CHECKPOINT — 29 OCT 2026 (Claude): scope 1 STOPPED safely at the PC create step; revision 2b needs Codex review and Chris's re-approval.**
 > - **What happened:** the live create at `d2d28c06` refused its own login. Neon's PostgreSQL 16+ automatic creator grant (`neondb_owner` ADMIN-only on the new role) was rejected by an over-strict check.
 > - **Safe state:** the fail-closed path closed `mycelium_bridge_fpd` (verified NOLOGIN, expired, no membership) and removed the PC copy.

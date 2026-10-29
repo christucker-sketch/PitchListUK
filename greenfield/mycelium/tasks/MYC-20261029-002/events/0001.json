@@ -1,0 +1,7 @@
+{
+  "seq": 1,
+  "status": "pending",
+  "at": "2026-10-29T17:00:00Z",
+  "actor": "chris",
+  "reason": "Created on Chris's approval of Stage One (29 Oct): scope 1 install/setup done at 13503084 (login mycelium_bridge_fpd_r2, batch stage-one-proof-1 PREPARED, snapshot sha256 b9f19aa5); this turn runs only under the separate scope-2 approval of the two-call proof. One CLI invocation, no retries, no automatic continuation."
+}

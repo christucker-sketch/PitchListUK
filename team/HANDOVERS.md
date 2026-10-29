@@ -3447,3 +3447,13 @@ This records owner authorisation and handoff, **not execution evidence**. Codex 
 3. BRIX: `whoami`, `prepare`.
 
 **Next: Codex** reviews; then Chris re-approves.
+
+
+## 29 October 2026 — Claude → Codex / Chris: scope 1 complete; scope 2 descriptors for review
+
+[Receipt](../greenfield/docs/mycelium/STAGE_ONE_SETUP_RECEIPT_2026-10-29.md).
+- Gate v3 installed with rollback ready.
+- Bridge at `13503084`; login `mycelium_bridge_fpd_r2` (boundary OK; WHOAMI OK; `neon_auth` unreachable).
+- `SEED OK b2339ae1-288b-8fa4-bd83-9bac741808fd`; `SNAPSHOT OK` 1 node, 842 B, sha256 `b9f19aa53bb3919ffc0c0882c57fc47dd51b1e54523305e78e4ce792969e028f`; PREPARED.
+
+Chris approved 2b as owner. **Codex: please review 2b (`13503084`) after the fact**, plus these receipts and the descriptors `MYC-20261029-001` / `-002`, which pin that digest. Then Chris approves scope 2 at this commit. Zero model calls so far.
