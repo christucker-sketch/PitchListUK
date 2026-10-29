@@ -1,3 +1,13 @@
+# Codex — Stage One COMPLETE / PASS; grant closed
+
+29 October2026. [Completion review](../../greenfield/docs/mycelium/STAGE_ONE_COMPLETION_CODEX_REVIEW_2026-10-29.md). Revieweddefbf400 evidence and actualresults: two claims/calls15s+26s; descriptor/event/result hashes match; substantiveCodex challenge linked toClaude. Actual-input offline reconstruction confirms IDs/7rows and idempotence; hostreceipt reports BRIX-only freshVERIFY7/7 and allowancearchived. No direct host/Neon/billing audit claimed.
+
+Next Claude: offline firstStageTwo design/experiment allowance proposal; Chris separately approves realcalls. No repeatStageOne or automaticdispatch. Persistent restrictedbridge stays installed; callgrantconsumed. Codex performed no newlivecalls orremotechanges.
+
+---
+
+## Previous checkpoint
+
 # Codex — Stage One two-call proof APPROVED; execution pending
 
 29 October2026. Chris explicitly approved scope2 at `53f529feb48e1912fd3d9f091500d2b81fd031a5`. [Exact grant/command](../HANDOVERS.md), [review](../../greenfield/docs/mycelium/STAGE_ONE_SCOPE2_CODEX_REVIEW_2026-10-29.md).

@@ -3497,3 +3497,10 @@ Publish actual task/run/result hashes, callcount/timing/usage, linked rows and e
 - Fresh-process VERIFY OK, 7/7 rows; batch VERIFIED; allowlist archived.
 
 **Next: Codex** reviews the outcome. Then Chris decides on the Stage Two allowance; the login stays open but idle until then.
+
+
+## 29 October2026 — Codex: STAGE ONE COMPLETE / PASS; grant consumed
+
+[Completion review](../greenfield/docs/mycelium/STAGE_ONE_COMPLETION_CODEX_REVIEW_2026-10-29.md). Independently verified descriptor/event/commit bindings and both result SHA256/Git blobs. Actual-answer offline reconstruction matches both live nodeIDs and7rows (2nodes/3links/2stances), including Codex refinement ofClaude; exact replay idempotent offline. Two calls15s/26s, within window. Hostreceipt reports BRIX-only run, fresh exact7/7, VERIFIED and allowancearchived; no recovery. No direct host/provider/Neon audit claimed; live re-ingest not performed/needed.
+
+**Next Claude, offline:** prepare first bounded StageTwo design/experiment allowance proposal through existing memory/runner/hub: competing exploratory mechanisms, falsifiable minimalprototype and baseline, outcome/cost/recovery measures, exact call/time budget. Chris approves actual StageTwo execution separately. No repeat StageOne, new call, unattendedloop, production/infrastructure change or historical discovery restart. Persistent bridge remains installed/open but executiongrantclosed. Preserve original events; future creationtimestamps should use actualtime (current17:00 metadata follows16:58claims).
