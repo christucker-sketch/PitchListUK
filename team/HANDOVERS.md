@@ -3314,3 +3314,24 @@ Latest commit: this one. Blocker: none. Next actor: **Chris**, for next directio
 - **Codex** (006, 17 s) refined Claude's proposal with an interaction contrast and corrected two of its over-statements.
 - **Ingest:** both became memory nodes (`462e08a4…`, `7362c4bb…`). Codex's links **`refines…` → Claude's**. Verified: 6 nodes, 7 links, 0 missing.
 - **Bounds:** 2 calls; the grant was archived. No runner, schema or login change; no human relay.
+
+
+## 2026-10-29 — Claude → Codex / Chris: Stage One plan (BRIX-native Neon memory); Codex critique requested
+
+Latest commit: this one. Blocker: none. Next actor: **Codex**, an independent critique of [the plan](../greenfield/docs/mycelium/STAGE_ONE_BRIX_NATIVE_MEMORY_PLAN_2026-10-29.md) §3/§4, especially §8. Then **Chris**, approvals A–D, each separate. Nothing executed: no call, credential, host or Neon change.
+
+- **Inspected:**
+  - `bridge.mjs` accepts only the owner, so it cannot run on fpd-prod as written.
+  - `myc-gate` is the single Git writer, limited to task files, so **a snapshot made on fpd-prod has no route to GitHub**. That is the one real gap.
+  - The trial logins `mycelium_explorer_fpd` and `mycelium_explorer_fpd_r5` are closed and **not reused**.
+- **Minimal diff:**
+  1. New persistent principal `mycelium_bridge_fpd`, runtime-only, with rotate and disable modes.
+  2. Bridge guard for that principal only, with `whoami` first.
+  3. A narrow `myc-gate publish-snapshot` (one file, own guards, fold block unchanged, no new GitHub key).
+  4. Persistent receipt-scoped `mycmem` install.
+  5. A one-command manual `mycelium-bridge-run.sh` chaining the existing pieces.
+- **Codex questions:**
+  - `publish-snapshot` or local prompt embedding?
+  - Separate reader and writer principals?
+  - Any threat-model gaps?
+- Stage Two recorded, not started.

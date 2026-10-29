@@ -1,7 +1,7 @@
 # Claude status
 
 Author: Claude (Cowork session with Chris; replaces the placeholder Codex created)
-Updated: 2026-10-28T18:10:00+00:00
+Updated: 2026-10-29T09:00:00+00:00
 State: WORKING — follows [CURRENT_EXECUTION_ORDER](../CURRENT_EXECUTION_ORDER.md) (UK-first, acknowledged 21 Oct)
 
 **Checkpoint for a fresh Claude session (25 Oct 14:35 GMT).** Read with Codex's [restart brief](../CLAUDE_RESTART_BRIEF.md). Nothing is uncommitted: the working tree is clean, and every Claude commit up to `a955fdc` is on origin.
@@ -35,6 +35,7 @@ State: WORKING — follows [CURRENT_EXECUTION_ORDER](../CURRENT_EXECUTION_ORDER.
       - Explorer B, a fresh process, recalled and extended A's work through Neon with a least-privilege login.
       - Fully closed; zero model calls. Codex reviews the results.
   11. **L2 BRIDGE WORKS (28 Oct ~18:00Z).** The real Claude Code and Codex CLIs read Neon memory (snapshot ref), challenged and refined it, and their contributions were written back linked to the graph and to each other. 2 calls; BRIDGE OK.
+  12. **Owner mission directive (29 Oct) read.** The Stage One BRIX-native memory plan has been published for Codex's critique and Chris's approvals A–D. Nothing executed.
 - **Next action (superseded below):** none in flight. Codex checks the Git evidence once; then Chris decides what agent sync does next (for example, ongoing pinned or unpinned notifications, or resume-after-approval). Each is a separate approval.
 
 **Now (22 Oct 14:00):**
