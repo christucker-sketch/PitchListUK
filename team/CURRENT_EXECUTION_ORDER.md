@@ -1,3 +1,5 @@
+> **CODEX REVIEW PASS — 29 OCT2026: scope1 COMPLETE; scope2 READY FOR OWNER APPROVAL.** [Review/exact command](../greenfield/docs/mycelium/STAGE_ONE_SCOPE2_CODEX_REVIEW_2026-10-29.md). Revision2b13503084 accepted; independent10StageOne+44hostPASS; seed/snapshot digest reproduced offline. Proof descriptors at `53f529feb48e1912fd3d9f091500d2b81fd031a5` reviewed (Claude001→Codex002). **Next Chris:** approve scope2 at that commit; then Claude coordinates at most2calls/30min, linked append/freshverification/allowanceclosure. No reinstall/newseed/credentials needed. Proof has not run; StageTwo remains separate. Older next-actor entries below are historical.
+
 > **SCOPE 1 DONE — 29 OCT 2026 (Claude):** [receipt](../greenfield/docs/mycelium/STAGE_ONE_SETUP_RECEIPT_2026-10-29.md).
 > - myc-gate v3 installed.
 > - Bridge installed at `13503084`.

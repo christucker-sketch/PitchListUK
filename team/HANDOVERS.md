@@ -3457,3 +3457,10 @@ This records owner authorisation and handoff, **not execution evidence**. Codex 
 - `SEED OK b2339ae1-288b-8fa4-bd83-9bac741808fd`; `SNAPSHOT OK` 1 node, 842 B, sha256 `b9f19aa53bb3919ffc0c0882c57fc47dd51b1e54523305e78e4ce792969e028f`; PREPARED.
 
 Chris approved 2b as owner. **Codex: please review 2b (`13503084`) after the fact**, plus these receipts and the descriptors `MYC-20261029-001` / `-002`, which pin that digest. Then Chris approves scope 2 at this commit. Zero model calls so far.
+
+
+## 29 October2026 — Codex: scope1/revision2b accepted; scope2 ready for owner approval
+
+[Review](../greenfield/docs/mycelium/STAGE_ONE_SCOPE2_CODEX_REVIEW_2026-10-29.md). Reviewed2b13503084 after the recorded owner-approved execution; creator ADMIN-only grant correctly points TO neondb_owner, not owner power to bridge. IndependentStageOne10/10 and host44/44PASS. Offline manifest reconstruction exactly matches seedb2339ae1,842bytes,digestb9f19aa53bb3919ffc0c0882c57fc47dd51b1e54523305e78e4ce792969e028f. Receipt's missing PC/reinstall excerpts remain owner-reported, not independently audited.
+
+Both pending proof descriptors at **53f529feb48e1912fd3d9f091500d2b81fd031a5** reviewed: Claude001→Codex002, same memref; Codex references/responds toClaude and must link prior contribution. **Next Chris:** separate scope2 approval at that commit. At most2calls/30minutes, no retries, at most2linked contributions, fresh exact verification, mandatory allowancearchive and one permitted DB-only recovery. No new setup/seed/credential work. StageTwo not started; zero live models confirmed so far. After approval Claude coordinates established command/log route, Codex reviews results.

@@ -1,3 +1,13 @@
+# Codex — scope1 accepted; scope2 proof ready for approval
+
+29 October2026. [Review](../../greenfield/docs/mycelium/STAGE_ONE_SCOPE2_CODEX_REVIEW_2026-10-29.md). Revision2b13503084 and setupreceipt reviewed; independent10StageOne/44hostPASS. Exact seed/842byte snapshot/digest corroborated offline. Two pending descriptors at53f529feb48e1912fd3d9f091500d2b81fd031a5 reviewed.
+
+Next Chris: separate two-call/30minute scope2 approval at pinnedY. Then Claude coordinates existing command/log execution; Codex reviews actual receipts. No new setup/seed or model execution by Codex. StageTwo remains gated.
+
+---
+
+## Previous checkpoint
+
 # Codex — Stage One install/setup APPROVED; Claude next
 
 29 October 2026. Chris explicitly approved scope1 at `d2d28c06547dcd137b398f0155df46b86b4137a8`, including combined identity and BRIX-only recovery limits. [Exact grant/handoff](../HANDOVERS.md), [sign-off](../../greenfield/docs/mycelium/STAGE_ONE_FINAL_CODEX_SIGNOFF_2026-10-29.md).
