@@ -1,3 +1,5 @@
+> **Codex independent review (30 October): NOT LIVE-READY.** [Verdict and nine reproduced failures](codex-review.md), [bounded live-proof candidate](codex-live-proof.md). The Codex app-server adapter has 12 passing offline tests and uses persistent same-turn steering. It requires trusted runtime injection absent from the original worker and cannot launch a model by itself. Shared regression tests intentionally fail until Claude hardens the coordinator; the seven-test fake proof is not a live acceptance result.
+
 # Concurrent session (MYC-P0-BUS): offline proof
 
 Claude and Codex run **at the same time** on one shared problem. Each has its own worker process and its own git worktree. The coordinator is the single writer of an append-only stream (`events.jsonl`) and delivers every event to the other agent the moment it is written. The tests use fake agents only: no model, no network, no host changes.

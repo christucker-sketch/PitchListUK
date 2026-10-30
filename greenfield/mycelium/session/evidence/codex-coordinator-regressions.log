@@ -1,0 +1,213 @@
+✖ P0-01 bus byte limit must use UTF-8 bytes, not UTF-16 length (6.554594ms)
+✖ P0-02 duplicate ID with changed actor/body must be rejected, not cross-agent aliasing (0.53633ms)
+✖ P0-03 second writer must not allocate duplicate seq numbers (0.310568ms)
+✖ P0-04 recovery must validate persisted session/seq/schema before accepting more writes (0.314112ms)
+✖ P0-05 zero allowance means zero dispatches, not one finished call (166.269797ms)
+✖ P0-06 queued integration must not publish changes after STOP (1135.335934ms)
+✖ P0-07 artifact tests must not write outside their integration sandbox (678.891884ms)
+✖ P0-08 crashed worker lifetime cannot be extended through peer events to fabricate overlap (0.773179ms)
+✖ P0-09 STOP must terminate descendants, not just worker PIDs (1363.252665ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 0
+ℹ fail 9
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3357.680696
+
+✖ failing tests:
+
+test at greenfield/mycelium/session/test/codex-coordinator-regressions.test.mjs:21:1
+✖ P0-01 bus byte limit must use UTF-8 bytes, not UTF-16 length (6.554594ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(Buffer.byteLength(readFileSync(p)) <= 500)
+  
+      at TestContext.<anonymous> (file:///workspace/myc-p0/greenfield/mycelium/session/test/codex-coordinator-regressions.test.mjs:23:100)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at greenfield/mycelium/session/test/codex-coordinator-regressions.test.mjs:25:1
+✖ P0-02 duplicate ID with changed actor/body must be rejected, not cross-agent aliasing (0.53633ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (file:///workspace/myc-p0/greenfield/mycelium/session/test/codex-coordinator-regressions.test.mjs:27:89)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /collision|duplicate|changed/i,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at greenfield/mycelium/session/test/codex-coordinator-regressions.test.mjs:29:1
+✖ P0-03 second writer must not allocate duplicate seq numbers (0.310568ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (file:///workspace/myc-p0/greenfield/mycelium/session/test/codex-coordinator-regressions.test.mjs:31:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /lock|writer|open/i,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at greenfield/mycelium/session/test/codex-coordinator-regressions.test.mjs:33:1
+✖ P0-04 recovery must validate persisted session/seq/schema before accepting more writes (0.314112ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (file:///workspace/myc-p0/greenfield/mycelium/session/test/codex-coordinator-regressions.test.mjs:35:23)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /invalid|session|seq|actor/i,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at greenfield/mycelium/session/test/codex-coordinator-regressions.test.mjs:37:1
+✖ P0-05 zero allowance means zero dispatches, not one finished call (166.269797ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///workspace/myc-p0/greenfield/mycelium/session/test/codex-coordinator-regressions.test.mjs:39:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at greenfield/mycelium/session/test/codex-coordinator-regressions.test.mjs:41:1
+✖ P0-06 queued integration must not publish changes after STOP (1135.335934ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + [
+  +   {
+  +     actor: 'coordinator',
+  +     at: '2026-10-30T14:45:04.307Z',
+  +     body: 'integration 221d151f0e55 now includes claude 45660a712da5; shared tests PASS',
+  +     data: {
+  +       agent: 'claude',
+  +       integration: '221d151f0e55d8ca962b0e8a28cea8301e5495fe',
+  +       sha: '45660a712da55a92bb655662f21dad803b623f4c',
+  +       tests: {
+  +         ok: true,
+  +         tail: ''
+  +       }
+  +     },
+  +     id: '354ccfa3-7a05-4b4f-9f8b-5587c0abe428',
+  +     kind: 'merged',
+  +     refs: [
+  +       4
+  +     ],
+  +     seq: 8,
+  +     session: 'queued'
+  +   }
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (file:///workspace/myc-p0/greenfield/mycelium/session/test/codex-coordinator-regressions.test.mjs:47:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [Array],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at greenfield/mycelium/session/test/codex-coordinator-regressions.test.mjs:50:1
+✖ P0-07 artifact tests must not write outside their integration sandbox (678.891884ms)
+  AssertionError [ERR_ASSERTION]: temporary outside canary was written
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///workspace/myc-p0/greenfield/mycelium/session/test/codex-coordinator-regressions.test.mjs:53:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at greenfield/mycelium/session/test/codex-coordinator-regressions.test.mjs:55:1
+✖ P0-08 crashed worker lifetime cannot be extended through peer events to fabricate overlap (0.773179ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + [
+  +   5
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (file:///workspace/myc-p0/greenfield/mycelium/session/test/codex-coordinator-regressions.test.mjs:58:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [Array],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at greenfield/mycelium/session/test/codex-coordinator-regressions.test.mjs:60:1
+✖ P0-09 STOP must terminate descendants, not just worker PIDs (1363.252665ms)
+  AssertionError [ERR_ASSERTION]: temporary descendant canary written after STOP
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///workspace/myc-p0/greenfield/mycelium/session/test/codex-coordinator-regressions.test.mjs:66:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

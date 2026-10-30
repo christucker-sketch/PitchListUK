@@ -119,3 +119,42 @@ test('transport closes on loss, bad JSON, excessive frame, or timeout; never ret
     assert.equal(sent.trim().split('\n').length, 1);
   }
 });
+test('transport bounds server-request flood instead of accumulating unbounded async work', async () => {
+  const input = new PassThrough(), output = new PassThrough(); output.resume();
+  const rpc = new CodexRpc({ readable: input, writable: output, maxPending: 2 });
+  rpc.onRequest = () => new Promise(() => {});
+  input.write([1, 2, 3].map(id => JSON.stringify({ id, method: 'item/tool/call', params: {} }) + '\n').join(''));
+  assert.match(rpc.closed.message, /inbound work limit/);
+});
+test('wire-level fake app-server publishes and reacts to steering before its one turn completes', async () => {
+  const input = new PassThrough(), output = new PassThrough(), received = [], audit = [];
+  const send = m => input.write(JSON.stringify(m) + '\n');
+  let startRequest;
+  output.on('data', data => {
+    for (const line of data.toString().trim().split('\n')) {
+      const m = JSON.parse(line); received.push(m);
+      if (m.method === 'initialize') send({ id: m.id, result: {} });
+      if (m.method === 'thread/start') send({ id: m.id, result: { thread: { id: 't' } } });
+      if (m.method === 'turn/start') {
+        startRequest = m;
+        send({ method: 'turn/started', params: { threadId: 't', turn: { id: 'u' } } });
+        send({ id: m.id, result: { turn: { id: 'u' } } });
+      }
+      if (m.method === 'turn/steer') {
+        send({ id: m.id, result: { turnId: 'u' } });
+        send({ id: 'tool-7', method: 'item/tool/call', params: { threadId: 't', turnId: 'u', callId: 'publish-7', tool: 'myc_publish', arguments: { kind: 'reply', body: 'The fragment counterexample changes my normalization test.', refIds: ['claude-mid'] } } });
+      }
+      if (m.id === 'tool-7' && m.result) send({ method: 'turn/completed', params: { threadId: 't', turn: { id: 'u', status: 'completed' } } });
+    }
+  });
+  const rpc = new CodexRpc({ readable: input, writable: output });
+  const s = new CodexSession({ rpc, reserve: async () => ({ id: 'offline-permit' }), publish: async e => { audit.push(e); return { seq: audit.length }; }, signal: new AbortController().signal, worktree: '/offline/fixture' });
+  await s.start('Work together on the same artifact.');
+  assert.ok(startRequest); assert.equal(s.completed, undefined);
+  await s.deliver([{ id: 'claude-mid', body: 'A URL fragment duplicates a frontier node.' }]);
+  await s.finished;
+  assert.equal(received.filter(m => m.method === 'turn/start').length, 1);
+  const reply = audit.find(e => e.kind === 'reply'); assert.deepEqual(reply.refIds, ['claude-mid']);
+  assert.ok(audit.indexOf(reply) < audit.findIndex(e => e.body === 'Codex turn completed'));
+  rpc.close();
+});

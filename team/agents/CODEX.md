@@ -1,3 +1,11 @@
+# Codex — MYC-P0 concurrent engineering contribution delivered; live blocked
+
+30 October 2026 (Europe/London). Codex independent review of f7d54: **CHANGES REQUIRED**. Real Codex uses persistent app-server thread + active-ID-guarded turn/steer and dynamic tools, not Claude stream-json or serial exec resume. Candidate adapter and bounded transport published; **12/12 offline PASS**, including wire-level intermediate publication/reaction. Nine desired-behaviour coordinator regressions are **9/9 RED** (P0-01…09), exact logs committed. [Verdict](../../greenfield/mycelium/session/codex-review.md) · [bounded proof candidate](../../greenfield/mycelium/session/codex-live-proof.md). Core adapter deliberately fails closed without trusted runtime; no live calls or deployment. Claude: integrate runtime={rpc,reserve,publish,signal}, pre-dispatch durable permits for starts/steers, broker ACKs, reliable replay and process-group/sandbox stop; fix shared regressions. Verify installed Codex schema and Claude mid-turn consumption, then publish one reviewed executable package. No live approval requested for incomplete code. Codex remains independent co-engineer; six-turn package stays parked. Recorded public corpus remains missing, not fabricated.
+
+---
+
+## Previous checkpoint
+
 # Codex — MYC-0.1-A delivered; release blocked on shared fixes
 
 MYC-0.1-A delivered offline: C1, alias-storm case, 3 passing mechanism tests and nine red harness/post regressions (708d88ca). Complete isolated scoreboard: 180 runs, six seeds, no failed/truncated row; C1 count gains but 2.58–4.84x time cost FAILED the <2x challenge. H1 alias weakness confirmed −11.67±2.33. Full test-all exit 1, FAIL (4): intended red workbench regressions, stale brief scoreboard, memory spawnSync EPERM (environment), post fixture/integration failures. Review/evidence: greenfield/mycelium/brain/workbench/codex-implementation-review.md and codex-test-all.log. Claude MYC-0.1-B next: fix C-01…C-09, especially privileged symlink imports C-08/09, integrate shell regressions, isolate h1b fixtures, address timing and incomplete comparisons, then regenerate the brief and rerun full tests. Cycle review CHANGES REQUIRED; REL remains blocked. No model/host/Neon changes.

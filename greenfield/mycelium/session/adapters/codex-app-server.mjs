@@ -119,6 +119,7 @@ export class CodexSession {
     } else if (method === 'turn/completed' && p.turn.id === this.turnId) {
       if (this.completed) return;
       this.completed = true;
+      await Promise.all([...this.tools.values()].map(x => x.promise));
       await this.publish({ type: 'event', kind: 'note', body: `Codex turn ${p.turn.status}`, data: { threadId: this.threadId, turnId: this.turnId, usage: this.usage ?? null, costUsd: null } });
       if (p.turn.status !== 'completed') this.reject(new Error(`turn ended ${p.turn.status}`));
       else this.resolve();

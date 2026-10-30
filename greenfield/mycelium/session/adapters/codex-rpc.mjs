@@ -5,10 +5,12 @@ export class CodexRpc {
   constructor({ readable, writable, timeoutMs = 5000, maxBytes = 65536, maxPending = 8 }) {
     Object.assign(this, { readable, writable, timeoutMs, maxBytes, maxPending });
     this.pending = new Map(); this.next = 0; this.buffer = ''; this.decoder = new StringDecoder('utf8');
+    this.inbound = 0; this.notifications = Promise.resolve();
     this.onNotification = () => {}; this.onRequest = async () => { throw new Error('unsupported server request'); };
     this.onFailure = () => {};
     readable.on('data', chunk => {
       try {
+        if (chunk.length > maxBytes * maxPending) throw new Error('RPC input burst limit');
         this.buffer += this.decoder.write(Buffer.from(chunk));
         let i;
         while ((i = this.buffer.indexOf('\n')) >= 0) {
@@ -43,12 +45,13 @@ export class CodexRpc {
     if (this.closed) return;
     if (!m || typeof m !== 'object' || Array.isArray(m)) throw new Error('bad RPC envelope');
     if (typeof m.method === 'string') {
+      if (++this.inbound > this.maxPending) throw new Error('RPC inbound work limit');
       if (m.id !== undefined) {
         Promise.resolve().then(() => this.onRequest(m)).then(result => {
           this.write({ id: m.id, result });
-        }).catch(e => { try { this.write({ id: m.id, error: { code: -32603, message: 'session request refused' } }); } catch {} this.fail(e); });
+        }).catch(e => { try { this.write({ id: m.id, error: { code: -32603, message: 'session request refused' } }); } catch {} this.fail(e); }).finally(() => { this.inbound--; });
       } else {
-        Promise.resolve(this.onNotification(m)).catch(e => this.fail(e));
+        this.notifications = this.notifications.then(() => this.onNotification(m)).catch(e => this.fail(e)).finally(() => { this.inbound--; });
       }
     } else {
       const p = this.pending.get(m.id);

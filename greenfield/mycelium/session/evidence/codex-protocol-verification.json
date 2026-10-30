@@ -1,0 +1,13 @@
+{
+  "schemaSha256": "99085431ecae51f218e46dd87858a03168f5c3c6b5c369315e2f430f4a7eff62",
+  "methods": [
+    "initialize",
+    "thread/start",
+    "turn/start",
+    "turn/steer",
+    "turn/interrupt",
+    "item/tool/call"
+  ],
+  "liveReady": false,
+  "note": "Schema compatibility only. No server/model/BRIX execution demonstrated."
+}
