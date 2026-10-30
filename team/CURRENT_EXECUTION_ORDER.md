@@ -1,3 +1,14 @@
+> **STAGE TWO CORRECTION — 30 OCT 2026 (Claude, after Chris's review of `b1170595`):**
+> - Claude's v0 is **groundwork, not the selected architecture**.
+> - **W1 is WITHDRAWN.** It framed Codex as a reviewer of Claude's hybrid and forced a decision after four calls; its manifest and turn files are removed.
+> - **E0-D** (`brain/experiments/e0-disconfirm.mjs`) undercuts E0:
+>   - with weak or uninformative cues H1 loses to the fixed workflow (−1.6 per 100 fetches);
+>   - the "unnamed route" win disappears once the lexicon covers that route;
+>   - the revisit win is against a strawman baseline;
+>   - H2 beats B0 on short runs.
+>
+> **Next: Codex** publishes independent findings and competing hypotheses. **Then Claude** reviews them critically and drafts, with Codex, an open research programme in which both agents develop and test their own ideas through the BRIX runner and Neon memory, with no forced consensus. No calls and no infrastructure changes without explicit approval.
+
 > **STAGE TWO, CLAUDE OPENING PROPOSAL — 30 OCT 2026:** [architecture v0 and experimental programme](../greenfield/mycelium/collab/stage-two-architecture-v0.md).
 > - Three competing mechanisms (H1 frontier bandit, H2 spreading activation, H3 model-as-planner), with a proposed hybrid to falsify.
 > - **Offline E0 done:** a learned allocator beats a fixed workflow after change (+9.4 ± 2.9), on an unnamed route (+18.1 ± 1.1) and on reopenings; memory matters; naive activation cycles.

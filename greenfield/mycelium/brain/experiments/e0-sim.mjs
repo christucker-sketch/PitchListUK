@@ -25,7 +25,11 @@ const FAMILIES = {
 };
 const SHARED = ['events', 'more', 'info', 'contact', 'about', 'page', 'here', 'details', 'summer', 'local', 'market', 'fair'];
 
-export function makeWorld(seed, budget) {
+// World options exist to try to BREAK the headline result (Chris, 30 Oct: seek evidence against the preferred approach):
+//   signal  probability an anchor word carries its family's vocabulary (0.7 default; lower = less informative evidence)
+//   change  whether the world changes mid-run (true default)
+//   lexicon whether the fixed workflow's hand lexicon happens to cover the unnamed route's words (false default)
+export function makeWorld(seed, budget, { signal = 0.7, change = true } = {}) {
   const r = rng(seed), pages = [], byFam = {};
   for (const [f, spec] of Object.entries(FAMILIES)) { byFam[f] = []; for (let i = 0; i < spec.n; i++) { const id = pages.length; pages.push({ id, fam: f, links: [], opp: null }); byFam[f].push(id); } }
   const half = Math.floor(budget / 2);
@@ -35,13 +39,13 @@ export function makeWorld(seed, budget) {
     for (let k = 0; k < spec.out; k++) {
       let x = r(), tf = null; for (const [f, w] of Object.entries(spec.to)) { if ((x -= w) <= 0) { tf = f; break; } } tf ??= Object.keys(spec.to)[0];
       const t = pick(r, byFam[tf]); if (t === p.id) continue;
-      const word = r() < 0.7 ? pick(r, FAMILIES[tf].words) : pick(r, SHARED);   // anchors are a NOISY hint, not a label
+      const word = r() < signal ? pick(r, FAMILIES[tf].words) : pick(r, SHARED);   // anchors are a NOISY hint, not a label
       p.links.push({ to: t, word });
     }
     if (r() < spec.yield) {
       // platform listings close at mid-run (season end); council openings are closed now and REOPEN after mid-run
-      if (p.fam === 'platform') p.opp = { id: oppId++, open: [0, half] };
-      else if (p.fam === 'council' && r() < 0.6) p.opp = { id: oppId++, open: [half, budget] };
+      if (change && p.fam === 'platform') p.opp = { id: oppId++, open: [0, half] };
+      else if (change && p.fam === 'council' && r() < 0.6) p.opp = { id: oppId++, open: [half, budget] };
       else p.opp = { id: oppId++, open: [0, budget] };
       if (p.fam === 'platform' && r() < 0.3) p.dupOf = true;   // platform pages often repeat an organiser's listing
     }
@@ -52,15 +56,15 @@ export function makeWorld(seed, budget) {
 
 // ---- policies: each gets the same observations; none is told families ----
 // Each returns { name, choose(state) -> pageId, learn(obs), session() }.
-const LEX = ['traders', 'stallholders', 'exhibitors', 'apply', 'vendor-application', 'booking'];   // a fixed hand lexicon, as in a classic crawler
+export const LEX = ['traders', 'stallholders', 'exhibitors', 'apply', 'vendor-application', 'booking'];   // a fixed hand lexicon, as in a classic crawler
 export const policies = {
   // B0: a plain fixed workflow: static keyword priority, then FIFO; a fixed revisit schedule; never learns
-  fixed: () => {
+  fixed: ({ lexicon = LEX } = {}) => {
     let t = 0;
     return { name: 'B0 fixed workflow', session() {},
       choose: s => { t++;
         if (t % 400 === 0 && s.yielded.length) return s.yielded[(t / 400) % s.yielded.length | 0];
-        let best = null, bs = -1; for (const [id, w] of s.frontier) { const sc = LEX.includes(w) ? 1 : 0; if (sc > bs) { bs = sc; best = id; } } return best; },
+        let best = null, bs = -1; for (const [id, w] of s.frontier) { const sc = lexicon.includes(w) ? 1 : 0; if (sc > bs) { bs = sc; best = id; } } return best; },
       learn() {} };
   },
   // H1: frontier bandit over EMERGENT contexts (anchor words seen so far) and revisit-arms; Thompson sampling + diversity floor
@@ -136,12 +140,13 @@ export function run(world, policy, { seed = 1, session = 300 } = {}) {
   return { per100: 100 * m.unique / m.fetches, unique: m.unique, afterChange: m.uniqueAfterChange, reopened: m.reopenedCaught, novel: m.novelUnique, revisits: m.revisits, entropy };
 }
 
-export function experiment({ runs = 20, budget = 1500 } = {}) {
-  const make = { 'B0 fixed workflow': () => policies.fixed(), 'B1 bandit, no cross-session memory': () => policies.bandit({ memory: false }),
+export const LEX_WITH_NOVEL = [...LEX, ...FAMILIES.novel.words, ...FAMILIES.council.words];
+export function experiment({ runs = 20, budget = 1500, world = {}, lexicon = LEX } = {}) {
+  const make = { 'B0 fixed workflow': () => policies.fixed({ lexicon }), 'B1 bandit, no cross-session memory': () => policies.bandit({ memory: false }),
     'H1 frontier bandit': () => policies.bandit(), 'H2 spreading activation': () => policies.activation() };
   const out = {}; Object.defineProperty(out, '_rows', { value: {}, enumerable: false });
   for (const [name, f] of Object.entries(make)) {
-    const rows = []; for (let s = 1; s <= runs; s++) rows.push(run(makeWorld(1000 + s, budget), f(), { seed: s }));
+    const rows = []; for (let s = 1; s <= runs; s++) rows.push(run(makeWorld(1000 + s, budget, world), f(), { seed: s }));
     out._rows[name] = rows;
     out[name] = Object.fromEntries(Object.keys(rows[0]).map(k => { const v = rows.map(x => x[k]), mu = v.reduce((a, b) => a + b, 0) / v.length;
       return [k, { mean: mu, sd: Math.sqrt(v.reduce((a, b) => a + (b - mu) ** 2, 0) / Math.max(1, v.length - 1)) }]; }));

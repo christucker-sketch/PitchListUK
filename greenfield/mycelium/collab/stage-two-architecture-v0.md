@@ -1,6 +1,6 @@
 # Stage Two: initial brain architecture and experimental programme (Claude v0, 30 Oct 2026)
 
-**Status: Claude's opening proposal, for Codex's independent critique and competing design.** It is not a final plan. This file lives under `greenfield/mycelium/collab/` because the runner only accepts references there: the W1 turns read it byte-for-byte. It answers [the Stage Two directive](../../docs/mycelium/STAGE_TWO_BRAIN_OWNER_DIRECTIVE_2026-10-30.md) §14 within [the founding vision](../../docs/mycelium/FOUNDING_VISION_OWNER_DIRECTIVE_2026-10-27.md).
+**Status: groundwork from one agent. It is NOT the selected architecture** (Chris, 30 Oct). The architecture has to come out of genuine Claude/Codex research, and Codex is examining this independently. The E0 findings are preliminary, and my own disconfirmation runs (§4b) already undercut part of them. Nothing here should be read as the plan. This file lives under `greenfield/mycelium/collab/` because the runner only accepts references there: the W1 turns read it byte-for-byte. It answers [the Stage Two directive](../../docs/mycelium/STAGE_TWO_BRAIN_OWNER_DIRECTIVE_2026-10-30.md) §14 within [the founding vision](../../docs/mycelium/FOUNDING_VISION_OWNER_DIRECTIVE_2026-10-27.md).
 
 **Nothing has run.** No model call, host change, Neon write or network access. The one experiment so far (E0, §4) is offline and synthetic.
 
@@ -65,12 +65,12 @@ All three use the same openings frontier and the same memory. They differ in **h
 - Most "open-ended".
 - Risk: plausible text without measured adaptation; cost per decision; drift into repeated ideas.
 
-**Proposed hybrid, to be falsified rather than assumed:**
+**Claude's provisional leaning, weakened by §4b and not a recommendation:**
 - **H3 generates** openings, since branching must not be limited to what code anticipates.
 - **H1 allocates** finite attention.
 - **Contradiction and stale-claim detectors** (deterministic graph queries) create revisit openings.
 
-Disagreement is expected here. Codex is asked for a genuinely different design, not edits to this one.
+These three are only the mechanisms one agent thought of. The research has to stay open to mechanisms neither agent has proposed yet.
 
 ## 4. Experiment E0 (done, offline): does attention adapt?
 
@@ -103,6 +103,28 @@ Disagreement is expected here. Codex is asked for a genuinely different design, 
 - The world, the noise and the change were designed by me.
 - E0 shows mechanism behaviour, **not** real-world value.
 - H3 is not simulated, because it needs real reasoning calls.
+
+## 4b. E0-D: trying to break E0 (offline, same 20 paired worlds)
+
+`e0-disconfirm.mjs` removes, one at a time, the assumptions I built into the E0 world. Results are paired differences, mean ± standard error.
+
+| Variant | H1 − B0 yield /100 | H1 − B0 after change | H1 − B0 unnamed route | H1 − B0 reopened | H2 − B0 yield /100 |
+|---|---|---|---|---|---|
+| E0 as published | +0.19 ± 0.16 | +9.4 ± 2.9 | +18.1 ± 1.1 | +11.3 ± 0.6 | −8.0 ± 0.2 |
+| No world change | +1.62 ± 0.23 | +10.7 ± 3.7 | +17.9 ± 1.5 | 0 | −8.4 ± 0.2 |
+| **Weak evidence (anchors 30% informative)** | **−1.62 ± 0.15** | −0.9 ± 1.9 | +5.3 ± 1.1 | +12.6 ± 0.8 | −6.5 ± 0.2 |
+| **Uninformative anchors** | **−1.45 ± 0.22** | −3.0 ± 2.1 | −0.9 ± 1.6 | +5.1 ± 0.7 | −4.9 ± 0.2 |
+| **Fixed lexicon already covers the "unnamed" route** | −0.87 ± 0.21 | +8.5 ± 2.9 | **−2.3 ± 0.4** | +11.1 ± 0.6 | −9.0 ± 0.2 |
+| **Short run (400 fetches)** | +2.49 ± 0.72 | +13.9 ± 2.1 | +46.8 ± 2.5 | +3.8 ± 0.5 | **+2.77 ± 1.09** |
+
+What this does to the E0 claims:
+1. **H1's advantage depends on informative cues, which I designed in.** When the evidence a policy can learn from is weak, the learning allocator does **worse** than the fixed workflow. Nobody knows yet how informative real cues are; only real data (E1) can say.
+2. **The "route nobody named" win was a product of my lexicon.** Give the fixed workflow a lexicon that covers that route and the win disappears. It measured my baseline's blind spot, not discovery.
+3. **The revisit win is against a strawman.** B0's fixed revisit schedule is far weaker than fpd's real watch/revisit system. Any sensible revisit rule might match H1 here.
+4. **H2 is not dead.** It beats B0 on short runs and fails only once it starts cycling. That is a control problem, not proof the mechanism is wrong.
+5. **What survives:** memory across sessions helps H1 in every variant (+1.4 to +1.9 per 100 fetches). Even that is only inside a world I wrote.
+
+**Conclusion:** E0 does not support preferring H1. It supports **testing every mechanism on real data and against real baselines** (fpd's actual policy, with its watch/revisit), and building adversarial worlds Claude did not design.
 
 ## 5. Experimental programme (each stage falsifiable; each live window separately approved)
 
@@ -198,7 +220,18 @@ Never keep HTML in Neon. A bounded local cache with LRU eviction holds raw pages
 - **Engineering:** the hub as now, with Claude implementing, Codex reviewing and building alternatives, and offline tests.
 - **No new collaboration framework.** The runner is not the brain.
 
-## 10. Approval requested now: W1, BRIX design debate (4 calls, no code change)
+## 10. ~~Approval requested now: W1~~ WITHDRAWN (30 Oct)
+
+**Withdrawn.** As drafted, W1 had Codex critiquing my proposal, and its last turn forced a synthesis and a P1 decision after four calls. That anchors the research on one agent's design and manufactures consensus.
+
+A replacement is prepared only after Codex publishes its independent findings, as part of a collaborative research programme:
+- both agents develop and test their own hypotheses;
+- no decision turn and no forced consensus;
+- disagreements are kept in memory.
+
+The original text is kept below for the record.
+
+### Original W1 text (withdrawn)
 
 Exactly the Stage One scope-2 mechanics, on the installed bridge at `13503084`:
 1. **Prepare.**
@@ -236,9 +269,9 @@ Exactly the Stage One scope-2 mechanics, on the installed bridge at `13503084`:
 - A Neon migration for operational tables, if the debate chooses Neon for ops state.
 - A read-only Neon API key for metering.
 
-## 11. W1 turn texts (fixed; only the memref digest is added after prepare)
+## 11. W1 turn texts (withdrawn)
 
-The seed is in [`greenfield/mycelium/runs/stage-two-design-1.json`](../runs/stage-two-design-1.json). The four turn texts are in [`stage-two-design-1.turns.json`](../runs/stage-two-design-1.turns.json), with `{{DIGEST}}` where the memref digest goes. The reviewed commit pins both.
+The manifest and turn files were removed from `greenfield/mycelium/runs/` so they cannot be prepared by mistake. They remain in history at `b1170595`.
 
 ## 12. Risks and honest unknowns
 
@@ -246,4 +279,4 @@ The seed is in [`greenfield/mycelium/runs/stage-two-design-1.json`](../runs/stag
 - **Proxy capture:** "verified actionable" depends on fpd's classifier. E1 and E4 must include **human-labelled samples**, as fpd already does.
 - **Senses on fpd-prod:** fpd's fetcher is Python on the Pi, so importing it on fpd-prod needs Python and dependencies there, a host change. The alternative is running senses on the Pi, which touches a production-adjacent host.
 - **Quinn's access:** unproven. It is designed for, and tested before it is claimed.
-- **E0 bias:** I designed the world. Codex should design an adversarial world where H1 loses.
+- **E0 bias:** I designed the world, and §4b shows how much the headline depended on that. Worlds and baselines need to come from Codex and from real fpd data.

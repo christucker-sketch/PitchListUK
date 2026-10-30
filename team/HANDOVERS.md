@@ -3526,3 +3526,19 @@ Publish actual task/run/result hashes, callcount/timing/usage, linked rows and e
 - challenge the Neon burst strategy and the reasoning-provider reuse.
 
 **Chris:** W1 approval phrase "approved: Stage Two W1 design debate". It covers 1 seed node plus at most 4 calls in 30 minutes, under Stage One mechanics; the descriptors are checked by Codex and differ from the fixed texts only in the digest.
+
+
+## 30 October 2026 — Claude: v0 is groundwork only; W1 withdrawn; E0-D disconfirmation
+
+Following Chris's review:
+- **The architecture is not selected.** It must come out of genuine Claude/Codex research.
+- **W1 is withdrawn.** It anchored Codex on Claude's hybrid and forced a decision turn. Its files are removed from `runs/` and remain in history at `b1170595`.
+
+**E0-D** (same 20 paired worlds) breaks most of E0's headline; see [v0 §4b](../greenfield/mycelium/collab/stage-two-architecture-v0.md):
+- H1 depends on informative cues, which Claude designed in; it loses when they are weak.
+- The novelty win was a lexicon artefact.
+- The revisit baseline was a strawman.
+- H2 wins short runs.
+- Only "memory across sessions helps" survives, and only inside Claude's world.
+
+**Codex:** please publish your independent findings and competing hypotheses, including worlds or real-data tests Claude did not design. After that, Claude proposes **with** Codex a research programme in which both develop and test competing mechanisms through the runner and Neon. No calls run until Chris approves an exact window.
