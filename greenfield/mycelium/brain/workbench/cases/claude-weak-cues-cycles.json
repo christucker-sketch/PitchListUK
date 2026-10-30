@@ -1,0 +1,64 @@
+{
+ "name": "claude-weak-cues-cycles",
+ "author": "claude",
+ "description": "Weak evidence: link text is almost uninformative (signal 0.15) and opportunities open and close on cycles. What can be learned is WHEN to re-check, not where to go. Tests revisit timing against fpd-like fixed schedules.",
+ "budget": 1500,
+ "anchorSignal": 0.15,
+ "families": {
+  "start": {
+   "n": 20,
+   "yield": 0.05,
+   "out": 10,
+   "to": {
+    "a": 0.5,
+    "b": 0.3,
+    "c": 0.2
+   },
+   "words": [
+    "events"
+   ],
+   "seeds": 5
+  },
+  "a": {
+   "n": 400,
+   "yield": 0.2,
+   "out": 3,
+   "to": {
+    "a": 0.6,
+    "b": 0.2,
+    "c": 0.2
+   },
+   "words": [
+    "traders"
+   ],
+   "schedule": "cycle:120"
+  },
+  "b": {
+   "n": 400,
+   "yield": 0.1,
+   "out": 3,
+   "to": {
+    "b": 0.6,
+    "a": 0.2,
+    "c": 0.2
+   },
+   "words": [
+    "vendors"
+   ],
+   "schedule": "cycle:400"
+  },
+  "c": {
+   "n": 400,
+   "yield": 0.02,
+   "out": 3,
+   "to": {
+    "c": 0.6,
+    "a": 0.2,
+    "b": 0.2
+   },
+   "words": [
+    "news"
+   ]
+  }
+ }
+}

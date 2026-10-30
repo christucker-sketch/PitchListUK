@@ -21,7 +21,7 @@ import { resolve } from 'node:path';
 import { createExplorerMemory } from '../src/explorer.mjs';
 import { derivedId, createMemory } from '../src/memory.mjs';
 
-export const BRIDGE = { maxLinks: 4, maxStances: 3, maxItems: 4 };
+export const BRIDGE = { maxLinks: 4, maxStances: 3, maxItems: 6 };
 export const L2_SELECTION = { search: 'polymer P', limit: 20, maxDepth: 2, maxResults: 60 };   // the 28 Oct proof, for tests
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 const TASK = /^MYC-\d{8}-\d{3}$/;
@@ -36,7 +36,10 @@ export function parseManifest(m) {
     for (const k of Object.keys(o)) if (!keys.includes(k)) throw new Error(`${what} has unknown field ${k}`); };
   const str = (v, max, what) => { if (typeof v !== 'string' || !v.trim() || v.length > max) throw new Error(`${what} must be text of 1-${max} characters`); return v; };
   const int = (v, lo, hi, what) => { if (!Number.isInteger(v) || v < lo || v > hi) throw new Error(`${what} must be an integer ${lo}-${hi}`); return v; };
-  only(m, ['batch', 'purpose', 'seed', 'selection', 'tasks'], 'manifest');
+  only(m, ['batch', 'purpose', 'seed', 'selection', 'tasks', 'window_s', 'workbench'], 'manifest');
+  // Stage Two cycles: an approved window up to one hour, and the workbench post-processing hook (myc-post)
+  if (m.window_s !== undefined) int(m.window_s, 600, 3600, 'manifest.window_s');
+  if (m.workbench !== undefined && typeof m.workbench !== 'boolean') throw new Error('manifest.workbench must be true or false');
   if (!BATCH.test(m.batch ?? '')) throw new Error('manifest.batch must match ' + BATCH);
   str(m.purpose, 500, 'manifest.purpose');
   if (m.seed !== undefined) { only(m.seed, ['kind', 'title', 'body'], 'manifest.seed');
@@ -109,7 +112,7 @@ export const contributionId = (cli, run, task) => derivedId('explorer', `${cli}-
 // A later turn's "@<task>" resolves to the earlier turn's deterministic id, so the plan is identical whether nothing,
 // part or all of the batch was already written. items: [{ task, cli, run, answer, attributes? }] in order.
 const NO_DB = Object.freeze({});   // prepare never touches the database
-export function plan(snapshotText, items, tag) {
+export function plan(snapshotText, items, tag, { lenient = false, skipped = [] } = {}) {
   const allowed = new Set(snapshotIds(snapshotText));
   if (!allowed.size) throw new Error('the snapshot lists no node ids');
   if (!Array.isArray(items) || items.length < 1 || items.length > BRIDGE.maxItems) throw new Error(`a batch has 1-${BRIDGE.maxItems} items`);
@@ -117,7 +120,9 @@ export function plan(snapshotText, items, tag) {
   for (const it of items) {
     if (!TASK.test(it.task ?? '') || !['claude', 'codex'].includes(it.cli) || !RUN.test(it.run ?? '') || !it.run.startsWith(it.task + '-r') || refs[it.task])
       throw new Error(`bad item ${String(it.task).slice(0, 40)}`);
-    const c = parseContribution(it.answer, { allowed, refs });
+    let c;
+    try { c = parseContribution(it.answer, { allowed, refs }); }
+    catch (e) { if (!lenient) throw e; skipped.push({ task: it.task, why: String(e.message).slice(0, 160) }); continue; }
     const id = contributionId(it.cli, it.run, it.task);
     const prepared = createExplorerMemory(NO_DB, { agent: `${it.cli}-cli`, run: it.run }).prepare({
       key: it.task, kind: c.kind, title: c.title, body: c.body, tag,
@@ -153,7 +158,8 @@ export function planBatch(manifest, batch, snapshotText, answers) {
   if (!batch || Object.keys(batch).sort().join() !== [...keys].sort().join()) throw new Error('batch has the wrong fields');
   if (batch.batch !== m.batch || !HEX40.test(batch.commit) || !HEX64.test(batch.manifest_sha256) || !HEX64.test(batch.snapshot_sha256)) throw new Error('batch header is malformed or for another manifest');
   if (sha256(snapshotText) !== batch.snapshot_sha256) throw new Error('snapshot bytes do not match the batch digest');
-  if (!Array.isArray(batch.items) || batch.items.length !== m.tasks.length || answers.length !== m.tasks.length) throw new Error('batch items do not match the manifest turns');
+  // A batch is the manifest's turns, or (for a cycle stopped on STALL) a leading prefix of them, in order.
+  if (!Array.isArray(batch.items) || batch.items.length < 1 || batch.items.length > m.tasks.length || answers.length !== batch.items.length) throw new Error('batch items do not match the manifest turns');
   const items = batch.items.map((b, i) => {
     const want = m.tasks[i];
     if (Object.keys(b).sort().join() !== 'agent,descriptor_blob,result_blob,result_sha256,run,task') throw new Error(`batch item ${i} has the wrong fields`);
@@ -163,7 +169,9 @@ export function planBatch(manifest, batch, snapshotText, answers) {
     return { task: b.task, cli: b.agent, run: b.run, answer: answers[i],
       attributes: { batch: m.batch, snapshot_sha256: batch.snapshot_sha256, result_sha256: b.result_sha256, result_blob: b.result_blob, hub_commit: batch.commit } };
   });
-  return plan(snapshotText, items, { bridge: m.batch });
+  const skipped = [], planned = plan(snapshotText, items, { bridge: m.batch }, { lenient: m.workbench === true, skipped });
+  planned.skipped = skipped;   // workbench cycles: an answer whose contribution block is missing or invalid is reported, not fatal
+  return planned;
 }
 export const ingestBatch = async (db, manifest, batch, snapshotText, answers) => write(db, planBatch(manifest, batch, snapshotText, answers));
 
@@ -222,6 +230,7 @@ export async function runCli(mode, args, openDb, { guard = null } = {}) {
     const answers = await Promise.all(resultFiles.map(f => readFile(f, 'utf8')));
     const planned = planBatch(manifest, batch, snap, answers);   // everything validated and prepared before any connection
     if (mode === 'ingest') {
+      for (const sk of planned.skipped ?? []) console.log(`SKIPPED ${sk.task}: ${sk.why}`);
       for (const m of await write(await open({ readOnly: false }), planned)) console.log(`INGESTED ${m.task} (${m.cli}-cli) as ${m.id}: ${m.links.join(', ')}; ${m.stances} stance(s)`);
       console.log(`INGEST OK: ${planned.length} contribution(s) written or already present`); return;
     }

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# myc-stageb — run ONE Mycelium Stage B task by hand (v5.1): grant check -> sign-in pre-flight -> claim -> ADMIT ->
-# one model call -> record. Run by Chris on fpd-prod:
+# myc-stageb — run ONE Mycelium Stage B task by hand (v5.2): grant check -> sign-in pre-flight -> claim -> ADMIT ->
+# one model call -> [workbench post-processing, only if the caller set MYC_POST] -> record. Run by Chris on fpd-prod:
 #     sudo MYC_BILLING_CONFIRMED=yes myc-stageb <task_id>
 # MYC_BILLING_CONFIRMED=yes is Chris's statement that he has just checked: Claude usage credits OFF, no ChatGPT/Codex
 # credit top-up or API key in use. The Stage B budget (2 calls, 30 min from the first claim, hold after any failure)
@@ -42,6 +42,14 @@ note stage admitted
 echo "== 3. one model call (as myc, through the billing guard)"
 $MYC_AS_MYC "$MYC_AGENT" "$RUN" </dev/null || echo "(runner reported a problem; recording it)"
 note stage called
+# v5.2 (Stage Two cycles): optional, root-run, pinned post-processing of the answer before it is recorded. Unset = v5.1.
+if [[ -n ${MYC_POST:-} ]]; then
+  if [[ ${MYC_TEST:-0} == 1 || $MYC_POST == /usr/local/bin/myc-post ]]; then
+    echo "== 3b. workbench post-processing (pinned, sandboxed evaluator; no model call)"
+    timeout -k 10 300 "$MYC_POST" "$RUN" </dev/null || echo "(post-processing reported a problem; the model's answer is recorded as is)"
+    note stage postprocessed
+  else echo "(MYC_POST is not the installed /usr/local/bin/myc-post; skipped)"; fi
+fi
 echo "== 4. record the outcome"
 C=$($MYC_AS_HUBSYNC env MYC_WINDOW_S="$MYC_WINDOW_S" "$MYC_GATE" complete "$RUN") || { echo "STOP: could not record the outcome; the task stays in_progress (myc-gate expire after the lease). Nothing retried."; exit 1; }
 note stage recorded

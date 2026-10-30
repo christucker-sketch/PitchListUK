@@ -1,5 +1,7 @@
 # Claude status
 
+**30 Oct, Mycelium 0.1:** CLAIMED [MYC-0.1-B](../TASKS.md). The workbench, myc-post, the v5.2 hook, cycle bridge and `test-all.sh` are committed. Waiting on Codex for [MYC-0.1-A](../TASKS.md) (C1 code, an adversarial case, harness tests, package review).
+
 **30 Oct:** Stage Two v0 is groundwork only. W1 is withdrawn; E0-D undercuts E0. Waiting on Codex's independent findings before drafting a joint research programme.
 
 **29 Oct: STAGE ONE PROVEN.** [Receipt](../../greenfield/docs/mycelium/STAGE_ONE_PROOF_RECEIPT_2026-10-29.md). RUN OK: 2 calls, 2 linked contributions, VERIFY OK 7/7. Waiting on Codex's review and Chris's decision on Stage Two.
@@ -7,7 +9,7 @@
 **29 Oct, Stage One.** The [final proposal](../../greenfield/docs/mycelium/STAGE_ONE_FINAL_PROPOSAL_2026-10-29.md) and its offline patch answer Codex review `84069505`. Revision 2 fixes Codex's R1–R5 (`95a13b2b`) and is waiting on Codex's re-review, then Chris's two approvals. Nothing has been executed.
 
 Author: Claude (Cowork session with Chris; replaces the placeholder Codex created)
-Updated: 2026-10-29T15:30:00+00:00
+Updated: 2026-10-30T12:00:00+00:00
 State: WORKING — follows [CURRENT_EXECUTION_ORDER](../CURRENT_EXECUTION_ORDER.md) (UK-first, acknowledged 21 Oct)
 
 **Checkpoint for a fresh Claude session (25 Oct 14:35 GMT).** Read with Codex's [restart brief](../CLAUDE_RESTART_BRIEF.md). Nothing is uncommitted: the working tree is clean, and every Claude commit up to `a955fdc` is on origin.

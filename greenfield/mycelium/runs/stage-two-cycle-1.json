@@ -1,0 +1,20 @@
+{
+  "batch": "stage-two-cycle-1",
+  "purpose": "Stage Two cycle 1: Codex and Claude alternate six artifact-producing turns on the pinned inquiry workbench. Each answer's mechanisms, adversarial cases and tests are scored in a sandbox before the other agent reads it; two non-progress turns in a row stop the cycle. At most six calls.",
+  "seed": {
+    "kind": "question",
+    "title": "FindPitches: which mechanism should decide what Mycelium explores next, and what evidence would show it beats a fixed crawl?",
+    "body": "Mycelium must keep finding UK vendor pitches (markets, fairs, events) that are real, open to applications now and actionable, while sources change, reopen, mislead or go quiet. This seed asks a question; it asserts nothing. Candidate mechanisms (a frontier bandit, competing predictive models, learned graph transformations, or something new) are compared on a pinned offline workbench against a fixed crawl with a watch list. Contributions should report what an artifact changed in that evidence and what result would refute the claim."
+  },
+  "selection": { "search": "FindPitches", "limit": 20, "maxDepth": 2, "maxResults": 60 },
+  "window_s": 3600,
+  "workbench": true,
+  "tasks": [
+    { "task": "MYC-20261030-001", "agent": "codex" },
+    { "task": "MYC-20261030-002", "agent": "claude" },
+    { "task": "MYC-20261030-003", "agent": "codex" },
+    { "task": "MYC-20261030-004", "agent": "claude" },
+    { "task": "MYC-20261030-005", "agent": "codex" },
+    { "task": "MYC-20261030-006", "agent": "claude" }
+  ]
+}

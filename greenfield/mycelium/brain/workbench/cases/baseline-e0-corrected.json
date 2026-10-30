@@ -1,0 +1,104 @@
+{
+ "name": "baseline-e0-corrected",
+ "author": "baseline",
+ "description": "E0's world with Codex's corrections: no oracle revisit list, real lifecycle, noisy anchors at 0.7. Kept as a reference point, not as evidence for any mechanism.",
+ "budget": 1500,
+ "anchorSignal": 0.7,
+ "families": {
+  "hub": {
+   "n": 30,
+   "yield": 0.02,
+   "out": 14,
+   "to": {
+    "org": 0.55,
+    "noise": 0.25,
+    "plat": 0.12,
+    "council": 0.08
+   },
+   "words": [
+    "directory",
+    "members",
+    "listings"
+   ],
+   "seeds": 5
+  },
+  "org": {
+   "n": 600,
+   "yield": 0.15,
+   "out": 3,
+   "to": {
+    "org": 0.6,
+    "plat": 0.2,
+    "noise": 0.15,
+    "novel": 0.05
+   },
+   "words": [
+    "stallholders",
+    "traders",
+    "exhibitors"
+   ]
+  },
+  "plat": {
+   "n": 200,
+   "yield": 0.6,
+   "out": 2,
+   "to": {
+    "plat": 0.9,
+    "org": 0.1
+   },
+   "words": [
+    "apply",
+    "vendor-application",
+    "booking"
+   ],
+   "schedule": "closes_mid"
+  },
+  "council": {
+   "n": 300,
+   "yield": 0.25,
+   "out": 4,
+   "to": {
+    "council": 0.8,
+    "novel": 0.15,
+    "noise": 0.05
+   },
+   "words": [
+    "licence",
+    "street-trading",
+    "permit"
+   ],
+   "schedule": "opens_mid"
+  },
+  "noise": {
+   "n": 800,
+   "yield": 0.005,
+   "out": 5,
+   "to": {
+    "noise": 0.7,
+    "org": 0.2,
+    "hub": 0.1
+   },
+   "words": [
+    "news",
+    "photos",
+    "follow"
+   ],
+   "seeds": 5
+  },
+  "novel": {
+   "n": 150,
+   "yield": 0.5,
+   "out": 3,
+   "to": {
+    "novel": 0.8,
+    "council": 0.2
+   },
+   "words": [
+    "programme",
+    "pitch-scheme",
+    "kerbside"
+   ]
+  }
+ },
+ "dupRate": 0.1
+}

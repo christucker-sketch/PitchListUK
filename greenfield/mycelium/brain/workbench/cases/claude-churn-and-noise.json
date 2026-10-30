@@ -1,0 +1,65 @@
+{
+ "name": "claude-churn-and-noise",
+ "author": "claude",
+ "description": "Pages change their links on revisit (churn 0.3) and sources misreport status 15% of the time, with duplicates. Rewards verification by re-observation and discovering routes that appear only later; punishes trusting one observation.",
+ "budget": 1500,
+ "anchorSignal": 0.5,
+ "linkChurn": 0.3,
+ "dupRate": 0.25,
+ "families": {
+  "hub": {
+   "n": 30,
+   "yield": 0,
+   "out": 10,
+   "to": {
+    "org": 0.7,
+    "misc": 0.3
+   },
+   "words": [
+    "directory"
+   ],
+   "seeds": 5
+  },
+  "org": {
+   "n": 700,
+   "yield": 0.25,
+   "out": 3,
+   "to": {
+    "org": 0.5,
+    "misc": 0.3,
+    "late": 0.2
+   },
+   "words": [
+    "stalls",
+    "traders"
+   ],
+   "schedule": "cycle:250",
+   "noise": 0.15
+  },
+  "late": {
+   "n": 200,
+   "yield": 0.5,
+   "out": 3,
+   "to": {
+    "late": 0.8,
+    "org": 0.2
+   },
+   "words": [
+    "programme"
+   ],
+   "noise": 0.15
+  },
+  "misc": {
+   "n": 600,
+   "yield": 0.01,
+   "out": 4,
+   "to": {
+    "misc": 0.7,
+    "org": 0.3
+   },
+   "words": [
+    "photos"
+   ]
+  }
+ }
+}

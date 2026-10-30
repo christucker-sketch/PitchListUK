@@ -1,0 +1,141 @@
+#!/usr/bin/env bash
+# myc-post <run_id>: the workbench step of an approved Stage Two collaboration cycle (PROPOSAL; installed only by
+# install-cycle.sh after Chris's approval). myc-stageb v5.2 runs it as root BETWEEN the model call and `complete`, and only
+# when the batch wrapper set MYC_POST. It never calls a model, never touches Git, Neon or the network.
+#   1. root, pinned code: extract the answer's artifact blocks with the batch's pinned post/apply.mjs (own-namespace
+#      paths only, size/secret/case validation) into a per-turn scratch copy of the workbench;
+#   2. OS SANDBOX (systemd-run as user mycexp: no network, no home, credential/state paths inaccessible, read-only system,
+#      memory/task/time caps): evaluate every mechanism on every case (incremental cache), then, in a SEPARATE unit and
+#      copy, run the workbench tests, so test code cannot touch the scoreboard;
+#   3. root, pinned code: score the answer's predictions, update the batch tree with the accepted files, append one
+#      progress record (artifact? novel? scoreboard moved? tests?) and a STALL flag after two non-progress turns;
+#   4. append a machine-written "Workbench result" section to the answer, within the gate's 16 KB result limit, holding
+#      the scoreboard and the NEXT agent's own current files, so the next turn can build on real state.
+# Any failure appends "Workbench result: NOT RUN (<reason>)" and exits 0: the model's answer is still recorded.
+set -uo pipefail
+umask 022
+TEST=${MYC_TEST:-0}
+sandbox() {  # <rw dir> <seconds> cmd...   the ONE sandbox definition; install-cycle.sh selftest exercises exactly this
+  local rw=$1 lim=$2; shift 2
+  if [[ $TEST == 1 ]]; then if [[ -n ${T_SANDBOX:-} ]]; then chmod -R a+rwX "$rw"; timeout -k 5 "$lim" $T_SANDBOX "$@"; else timeout -k 5 "$lim" "$@"; fi; return; fi
+  chown -R mycexp:mycexp "$rw"
+  systemd-run --quiet --wait --pipe --collect --service-type=exec \
+    -p User=mycexp -p Group=mycexp -p PrivateNetwork=yes -p IPAddressDeny=any -p RestrictAddressFamilies=AF_UNIX \
+    -p ProtectSystem=strict -p ProtectHome=yes -p PrivateTmp=yes -p PrivateDevices=yes -p NoNewPrivileges=yes \
+    -p ProtectKernelTunables=yes -p ProtectKernelModules=yes -p ProtectControlGroups=yes -p LockPersonality=yes \
+    -p "ReadWritePaths=$rw" \
+    -p "InaccessiblePaths=-/etc/mycelium -/etc/myc-stageb -/var/lib/hubsync -/var/lib/mycspool -/var/lib/mycelium-memory -/var/lib/mycelium-bridge -/var/lib/myc-stageb -/var/lib/myc-decisions -/root -/home" \
+    -p MemoryMax=768M -p TasksMax=64 -p "RuntimeMaxSec=$lim" -p CPUQuota=200% -p Environment=HOME=/nonexistent \
+    -- "$@"
+}
+if [[ ${1:-} == --selftest ]]; then   # myc-post --selftest <empty rw dir>: prove the sandbox denies what it must
+  RW=${2:?rw dir}; NODE=/usr/local/bin/node; [[ $TEST == 1 ]] && NODE=$(command -v node)
+  SECRETS=${T_PROBE_SECRETS:-/etc/mycelium/bridge.env /var/lib/hubsync/.ssh /home/myc/.claude.json /home/myc/.codex /var/lib/mycspool /var/lib/mycelium-memory/batches /root}
+  ROW=${T_PROBE_RO:-/opt/mycelium-memory}
+  cat > "$RW/probe.cjs" <<'EOF2'
+const fs = require('fs'), net = require('net'), [rw, ro, ...secrets] = process.argv.slice(2), out = { uid: process.getuid() };
+out.readable = secrets.filter(p => { try { fs.accessSync(p, fs.constants.R_OK); fs.readdirSync(p); return true; } catch (e) { if (e.code === 'ENOTDIR') { try { fs.readFileSync(p); return true; } catch { return false; } } return false; } });
+try { fs.writeFileSync(ro + '/.probe', 'x'); out.wroteReadOnly = true; fs.unlinkSync(ro + '/.probe'); } catch { out.wroteReadOnly = false; }
+try { fs.writeFileSync(rw + '/.probe', 'x'); out.wroteOwn = true; } catch { out.wroteOwn = false; }
+const s = (() => { try { return net.connect({ host: '1.1.1.1', port: 443 }); } catch { return null; } })();
+if (!s) { out.network = false; console.log(JSON.stringify(out)); }
+else { const done = v => { out.network = v; console.log(JSON.stringify(out)); process.exit(0); }; s.on('connect', () => done(true)); s.on('error', () => done(false)); setTimeout(() => done(false), 3000); }
+EOF2
+  R=$(sandbox "$RW" 30 "$NODE" "$RW/probe.cjs" "$RW" "$ROW" $SECRETS 2>/dev/null | tail -1)
+  echo "sandbox probe: $R"
+  jq -e '.uid != 0 and (.readable | length) == 0 and .wroteReadOnly == false and .wroteOwn == true and .network == false' >/dev/null 2>&1 <<<"$R" \
+    && { echo "SANDBOX SELFTEST OK: not root, no credential or state path readable, system read-only, own folder writable, no network"; exit 0; } \
+    || { echo "SANDBOX SELFTEST FAILED"; exit 1; }
+fi
+RUN=${1:-}
+[[ $RUN =~ ^MYC-[0-9]{8}-[0-9]{3}-r[0-9]{10}-[0-9a-f]{8}$ ]] || { echo "myc-post: bad run id" >&2; exit 2; }
+: "${MYC_SPOOL:=/var/lib/mycspool}"
+: "${MYC_WB_ROOT:=/var/lib/mycelium-workbench}"
+B=${MYC_POST_BATCH:-}; [[ $B =~ ^[a-z0-9][a-z0-9-]{2,63}$ ]] || { echo "myc-post: MYC_POST_BATCH missing or bad" >&2; exit 2; }
+NODE=/usr/local/bin/node EVAL_S=150 TEST_S=60 SEEDS=6 RESULT_MAX=16000
+[[ $TEST == 1 ]] && NODE=$(command -v node)
+WB=$MYC_WB_ROOT/$B; J=$MYC_SPOOL/$RUN/job.json; O=$MYC_SPOOL/$RUN/out/result.md
+say() { echo "myc-post: $*" >&2; }
+notrun() { say "NOT RUN: $1"; [[ -f $O && ! -L $O ]] && printf '\n\n## Workbench result: NOT RUN (%s)\nThe answer above is recorded unchanged; no artifact from it entered the workbench.\n' "$1" >> "$O"; exit 0; }
+[[ -f $O && ! -L $O ]] || { say "no result.md (decision or failure): nothing to post-process"; exit 0; }
+[[ -d $WB/tree && ! -L $WB/tree && -f $WB/tree/post/apply.mjs && -f $WB/tree/evaluate.mjs ]] || notrun "no pinned workbench for batch $B"
+[[ -f $J && ! -L $J ]] || notrun "no job packet"
+AG=$(jq -r .agent "$J"); TASK=$(jq -r .task_id "$J")
+[[ $AG == claude || $AG == codex ]] && [[ $TASK =~ ^MYC-[0-9]{8}-[0-9]{3}$ ]] || notrun "bad job packet"
+NEXT=codex; [[ $AG == codex ]] && NEXT=claude
+S=$WB/turns/$TASK; rm -rf --one-file-system "$S"; mkdir -p "$S/eval" "$S/tests"
+head -c 16384 "$O" > "$S/answer.md"
+ANSWER_BYTES=$(stat -c %s "$S/answer.md")
+
+# 1. validate with pinned code (root); nothing is written yet
+"$NODE" "$WB/tree/post/apply.mjs" check "$S/answer.md" "$AG" > "$S/manifest.json" 2> "$S/manifest.err" || notrun "artifact validation failed: $(head -c 200 "$S/manifest.err")"
+FOCUS=$(jq -r '[.accepted[].path | select(test("^(mechanisms|cases)/")) | sub("^(mechanisms|cases)/"; "") | sub("\\.(js|json)$"; "")] | join(",")' "$S/manifest.json")
+
+# 2. sandboxed evaluation, then sandboxed tests in a separate copy
+cp -a "$WB/tree/." "$S/eval/"; [[ -f $WB/cache.json ]] && cp "$WB/cache.json" "$S/eval/.cache.json"
+sandbox "$S/eval" "$EVAL_S" "$NODE" "$S/eval/post/apply.mjs" apply "$S/answer.md" "$AG" "$S/eval" > "$S/eval.log" 2>&1 \
+  && sandbox "$S/eval" "$EVAL_S" "$NODE" "$S/eval/evaluate.mjs" --dir "$S/eval" --seeds "$SEEDS" --cache "$S/eval/.cache.json" \
+       --focus "$FOCUS" --json "$S/eval/.board.json" --md "$S/eval/.board.md" --max-ms $(( (EVAL_S - 30) * 1000 )) >> "$S/eval.log" 2>&1
+EV=$?
+[[ $TEST == 1 ]] || chown -R root:root "$S/eval"
+if [[ $EV == 0 && -f $S/eval/.board.json && ! -L $S/eval/.board.json && $(stat -c %s "$S/eval/.board.json") -le 2000000 ]] && jq -e .cases "$S/eval/.board.json" >/dev/null 2>&1; then
+  cp "$S/eval/.board.json" "$S/board.json"; head -c 12000 "$S/eval/.board.md" > "$S/board.md"
+else EVALNOTE="evaluation did not complete (exit $EV): $(tail -c 300 "$S/eval.log" | tr -cd '[:print:]\n' | tail -3)"; fi
+cp -a "$S/eval/." "$S/tests/"; rm -f "$S/tests/.board.json" "$S/tests/.board.md" "$S/tests/.cache.json"
+sandbox "$S/tests" "$TEST_S" "$NODE" --test --test-reporter=tap "$S/tests/test/*.test.mjs" > "$S/tests.log" 2>&1; TR=$?
+[[ $TEST == 1 ]] || chown -R root:root "$S/tests"
+TPASS=$(grep -c '^ok ' "$S/tests.log" || true); TFAIL=$(grep -c '^not ok ' "$S/tests.log" || true)
+
+# 3. trusted bookkeeping: accepted files into the batch tree, cache, predictions, progress
+declare -A BEFORE=(); while read -r p; do [[ -f $WB/tree/$p ]] && BEFORE[$p]=$(sha256sum "$WB/tree/$p" | cut -c1-64); done < <(jq -r '.accepted[].path' "$S/manifest.json")
+"$NODE" "$WB/tree/post/apply.mjs" apply "$S/answer.md" "$AG" "$WB/tree" > /dev/null 2>&1 || notrun "could not record the accepted files"
+NOVEL=0; NOVTEST=0; while read -r p; do [[ ${BEFORE[$p]:-} != "$(sha256sum "$WB/tree/$p" | cut -c1-64)" ]] && { NOVEL=$((NOVEL + 1)); [[ $p == test/* ]] && NOVTEST=$((NOVTEST + 1)); }; done < <(jq -r '.accepted[].path' "$S/manifest.json")
+if [[ -f $S/board.json ]]; then
+  [[ -f $S/eval/.cache.json && $(stat -c %s "$S/eval/.cache.json") -le 20000000 ]] && jq -e . "$S/eval/.cache.json" >/dev/null 2>&1 && cp "$S/eval/.cache.json" "$WB/cache.json"
+  "$NODE" "$WB/tree/post/apply.mjs" predictions "$S/answer.md" "$S/board.json" > "$S/predictions.json" 2>/dev/null || echo '[]' > "$S/predictions.json"
+else echo '[]' > "$S/predictions.json"; fi
+PREV=$(ls -t "$WB"/turns/*/board.json 2>/dev/null | grep -v "/$TASK/" | head -1)
+MOVED=$("$NODE" -e '
+  const fs = require("fs"); const [a, b] = process.argv.slice(1);
+  if (!fs.existsSync(a)) { console.log("no-board"); process.exit(0); }
+  const now = JSON.parse(fs.readFileSync(a)), before = b && fs.existsSync(b) ? JSON.parse(fs.readFileSync(b)) : null;
+  if (!before) { console.log("first"); process.exit(0); }
+  let moved = false;
+  for (const [c, per] of Object.entries(now.cases)) for (const [m, s] of Object.entries(per)) {
+    const p = before.cases?.[c]?.[m]; if (!s) continue; if (!p) { moved = true; continue; }
+    if (Math.abs(s.verified.mean - p.verified.mean) >= 0.5 || Math.abs(s.precision.mean - p.precision.mean) >= 0.01) moved = true; }
+  console.log(moved ? "moved" : "unchanged");' "$S/board.json" "$PREV")
+ACC=$(jq '.accepted | length' "$S/manifest.json")
+# progress = a new or changed artifact that CHANGED THE EVIDENCE: the scoreboard moved (a new case or mechanism always does;
+# a cosmetic edit does not), or a new or changed test. The workbench's own passing tests never count.
+PROGRESS=false; [[ $NOVEL -gt 0 && ( $MOVED == moved || $MOVED == first || $NOVTEST -gt 0 ) ]] && PROGRESS=true
+LASTP=$(tail -1 "$WB/progress.jsonl" 2>/dev/null | jq -r '.progress' 2>/dev/null)
+STALL=false; [[ $PROGRESS == false && $LASTP == false ]] && STALL=true
+jq -nc --arg t "$TASK" --arg r "$RUN" --arg a "$AG" --argjson acc "$ACC" --argjson nov "$NOVEL" --argjson nt "$NOVTEST" --arg mv "$MOVED" --argjson tp "$TPASS" --argjson tf "$TFAIL" \
+  --argjson pg "$PROGRESS" --argjson st "$STALL" --slurpfile pr "$S/predictions.json" --arg at "$(date -u +%FT%TZ)" \
+  '{at:$at, task:$t, run:$r, agent:$a, accepted:$acc, novel:$nov, novel_tests:$nt, scoreboard:$mv, tests_pass:$tp, tests_fail:$tf, predictions:$pr[0], progress:$pg, stall:$st}' >> "$WB/progress.jsonl"
+
+# 4. the machine-written section the next agent reads
+{
+  printf '\n\n## Workbench result (machine-written by myc-post; pinned workbench of batch %s; no model wrote this section)\n' "$B"
+  printf 'Artifacts: %s accepted (%s new or changed), %s rejected.\n' "$ACC" "$NOVEL" "$(jq '.rejected | length' "$S/manifest.json")"
+  jq -r '.accepted[] | "- accepted \(.path) (\(.bytes) bytes)"' "$S/manifest.json"
+  jq -r '.rejected[] | "- REJECTED \(.path): \(.why | join("; "))"' "$S/manifest.json"
+  printf 'Predictions: '; jq -r 'if length == 0 then "none given" else map("\(.mechanism // "?") on \(.case // "?") \(.metric // "?") \(.op // "") \(.value // "") -> \(.verdict)\(if .observed != null then " (observed \(.observed) ± \(.se))" else "" end)\(if .why then " [\(.why)]" else "" end)") | join("; ") end' "$S/predictions.json"
+  printf 'Tests: %s passed, %s failed%s.\n' "$TPASS" "$TFAIL" "$([[ $TR == 0 ]] || echo " (exit $TR)")"
+  printf 'Progress: %s (scoreboard %s)%s.\n' "$PROGRESS" "$MOVED" "$([[ $STALL == true ]] && echo '; STALL: two turns in a row without progress, the cycle stops after this turn')"
+  if [[ -f $S/board.md ]]; then printf '\n```text\n'; cat "$S/board.md"; printf '```\n'; else printf '\nScoreboard: %s\n' "${EVALNOTE:-unavailable}"; fi
+} > "$S/section.md"
+if (( ANSWER_BYTES > RESULT_MAX - 600 )); then
+  printf '\n\n## Workbench result (machine-written by myc-post): see the batch receipt; the answer left no room in the 16 KB result. %s accepted, progress %s, stall %s.\n' "$ACC" "$PROGRESS" "$STALL" >> "$O"; exit 0
+fi
+LEFT=$(( RESULT_MAX - ANSWER_BYTES - $(stat -c %s "$S/section.md") - 200 ))
+{ printf '\nCurrent files of %s in the workbench (so %s can build on them):\n' "$NEXT" "$NEXT"
+  for f in $(cd "$WB/tree" && ls mechanisms/"$NEXT"-*.js cases/"$NEXT"-*.json test/"$NEXT"-*.test.mjs 2>/dev/null); do
+    sz=$(stat -c %s "$WB/tree/$f"); if (( sz + 60 < LEFT )); then printf '```mycelium-file path=%s\n' "$f"; cat "$WB/tree/$f"; printf '```\n'; LEFT=$(( LEFT - sz - 60 ))
+    else printf -- '- %s (%s bytes, sha256 %s): not shown, over the result size limit\n' "$f" "$sz" "$(sha256sum "$WB/tree/$f" | cut -c1-16)"; fi
+  done; } >> "$S/section.md"
+if (( ANSWER_BYTES + $(stat -c %s "$S/section.md") > RESULT_MAX )); then head -c $(( RESULT_MAX - ANSWER_BYTES - 120 )) "$S/section.md" | iconv -c -f UTF-8 -t UTF-8 > "$S/section.cut"; printf '\n[section truncated at the result size limit]\n' >> "$S/section.cut"; mv "$S/section.cut" "$S/section.md"; fi
+cat "$S/section.md" >> "$O"
+say "posted: $ACC accepted, $NOVEL novel, scoreboard $MOVED, tests $TPASS/$TFAIL, progress $PROGRESS, stall $STALL"
+exit 0

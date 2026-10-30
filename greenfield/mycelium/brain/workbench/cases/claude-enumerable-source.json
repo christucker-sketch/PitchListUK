@@ -1,0 +1,49 @@
+{
+ "name": "claude-enumerable-source",
+ "author": "claude",
+ "description": "Counterexample for learned allocation: one large, sitemap-like source where systematic breadth-first enumeration is near-optimal. Learning should at least not lose to plain enumeration here.",
+ "budget": 1000,
+ "anchorSignal": 0.9,
+ "families": {
+  "index": {
+   "n": 40,
+   "yield": 0,
+   "out": 15,
+   "to": {
+    "listing": 0.95,
+    "other": 0.05
+   },
+   "words": [
+    "page",
+    "next"
+   ],
+   "seeds": 3
+  },
+  "listing": {
+   "n": 900,
+   "yield": 0.55,
+   "out": 2,
+   "to": {
+    "listing": 0.6,
+    "index": 0.4
+   },
+   "words": [
+    "market",
+    "apply"
+   ]
+  },
+  "other": {
+   "n": 300,
+   "yield": 0.03,
+   "out": 4,
+   "to": {
+    "other": 0.8,
+    "listing": 0.2
+   },
+   "words": [
+    "news",
+    "blog"
+   ]
+  }
+ }
+}

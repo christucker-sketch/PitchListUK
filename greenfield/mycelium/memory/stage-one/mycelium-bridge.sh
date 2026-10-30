@@ -8,8 +8,15 @@
 #   sudo MYC_BILLING_CONFIRMED=yes bash mycelium-bridge.sh run <batch> <commit>
 #                                                         the approved turns through the INSTALLED myc-stageb, then ingest+verify
 #   sudo bash mycelium-bridge.sh ingest <batch>           recovery/continuation ONLY: the exact pinned batch; never a model call
+# Stage Two cycles: a manifest with "workbench": true pins the workbench at the run commit into WBR/<batch>/tree and hands
+# MYC_POST=/usr/local/bin/myc-post to the installed myc-stageb v5.2, so each answer's artifacts are scored before the
+# next turn; a STALL record from myc-post (two turns in a row without progress) ends the cycle early, and the completed
+# prefix is ingested. "window_s" (<= 3600) sets the approved window.
 #   sudo bash mycelium-bridge.sh verify <batch>           read-only fresh-process verification
 #   sudo bash mycelium-bridge.sh credential               rotation: new password into the credential + one PC copy
+#   sudo bash mycelium-bridge.sh upgrade-package <commit> replace /opt/mycelium-memory with the package at <commit>; the user,
+#                                                         login, credential, store and receipts are kept; the previous
+#                                                         package is kept for `upgrade-package <previous commit>`
 #   sudo bash mycelium-bridge.sh close                    shred the credential (the PC close step disables the login)
 #   sudo bash mycelium-bridge.sh teardown                 remove the package/config/user it created; memory evidence is kept
 # Ownership and refusals are the proven trial pattern (exclusive receipt, record-after-create, never adopt), in its OWN
@@ -21,15 +28,16 @@ umask 077
 HOST=ep-little-thunder-zahn9b42.c-2.eu-west-2.aws.neon.tech DBNAME=neondb ROLE=mycelium_bridge_fpd_r2 U=mycmem
 RC=/var/lib/mycelium-bridge PKG=/opt/mycelium-memory ETC=/etc/mycelium STORE=/var/lib/mycelium-memory VER=/home/ct_admin/mycelium-bridge.pw
 ALLOWD=/etc/myc-stageb ARCH=/root REPO=/var/lib/hubsync/repo BRANCH=origin/findpitches-v3/greenfield SUB=greenfield/mycelium/memory
-RUNS=greenfield/mycelium/runs TASKS=greenfield/mycelium/tasks STEP_S=90 GRACE_S=5 NODE_MIN=22.19.0 TEST=0 MAX_TURNS=4 WINDOW_S=1800
+RUNS=greenfield/mycelium/runs TASKS=greenfield/mycelium/tasks STEP_S=90 GRACE_S=5 NODE_MIN=22.19.0 TEST=0 MAX_TURNS=6 WINDOW_S=1800 WBR=/var/lib/mycelium-workbench POSTBIN=/usr/local/bin/myc-post
 GATE=/usr/local/bin/myc-gate STAGEB=/usr/local/bin/myc-stageb
 GATE_V3=bca72724623b69439d2876eb4dd9aa3bb11e8b16f75a09f6238dab7e9d962dc1
+SB_V52=7445ad75f10f722676c0c6da580346f000857485615da33004fe851ead4b1f82 POST_V1=b1c849b2ccb9ea9433f88efc9467b2be2859c766a0d23c0e138420e07d513c71   # reviewed cycle hook (install-cycle.sh)
 AS_HS=(runuser -u hubsync -- env -i HOME=/var/lib/hubsync LANG=C.UTF-8 PATH=/usr/local/bin:/usr/bin:/bin)
 AS_U=(runuser -u "$U" -- env -i HOME=/nonexistent LANG=C.UTF-8 PATH=/usr/local/bin:/usr/bin:/bin)
 if [[ ${BRIDGE_TEST:-0} == 1 ]]; then   # offline test harness only: everything under $T_ROOT; users/groups are files
   TEST=1 RC=$T_ROOT/var/lib/mycelium-bridge PKG=$T_ROOT/opt/mycelium-memory ETC=$T_ROOT/etc/mycelium STORE=$T_ROOT/var/lib/mycelium-memory
   VER=$T_ROOT/home/ct_admin/mycelium-bridge.pw ALLOWD=$T_ROOT/etc/myc-stageb ARCH=$T_ROOT/root REPO=$T_REPO BRANCH=$T_BRANCH
-  GATE=$T_GATE STAGEB=$T_STAGEB GATE_V3=$(sha256sum "$T_GATE" | cut -c1-64) STEP_S=${T_STEP:-90} AS_HS=(env HOME=$T_HSHOME) AS_U=(env)
+  GATE=$T_GATE STAGEB=$T_STAGEB GATE_V3=$(sha256sum "$T_GATE" | cut -c1-64) SB_V52=$(sha256sum "$T_STAGEB" | cut -c1-64) POST_V1=${T_POST_V1:-${T_POSTBIN:+$(sha256sum "$T_POSTBIN" | cut -c1-64)}} WBR=${T_WBR:-$T_ROOT/var/lib/mycelium-workbench} POSTBIN=${T_POSTBIN:-} STEP_S=${T_STEP:-90} AS_HS=(env HOME=$T_HSHOME) AS_U=(env)
 fi
 ENV=$ETC/bridge.env RECEIPT=$RC/created LOG=$RC/log SNAPS=$STORE/snapshots BATCHES=$STORE/batches
 BRIDGE=(node --env-file="$ENV" "$PKG/scripts/bridge.mjs"); [[ $TEST == 1 ]] && read -ra BRIDGE <<<"$T_BRIDGE"
@@ -105,7 +113,10 @@ collect() {  # <commit> <out dir> -> <dir>/{batch.json,result-N.md}
   local c=$1 o=$2 i=0 t a desc r ev last run h rb ref; rm -rf "$o"; mkdir -m 0700 "$o"
   local items='[]'
   while read -r t a; do
-    [[ $("${AS_HS[@]}" "$GATE" state "$t" 2>/dev/null | head -1) == "$t completed "* ]] || stop "$t is not completed (validated by myc-gate); nothing ingested"
+    if [[ $("${AS_HS[@]}" "$GATE" state "$t" 2>/dev/null | head -1) != "$t completed "* ]]; then
+      if [[ $i -gt 0 ]] && grep -q ' STALLED ' "$BD/receipt"; then break; fi   # a stalled cycle ingests its completed prefix
+      stop "$t is not completed (validated by myc-gate); nothing ingested"
+    fi
     desc=$(hs_git rev-parse "$c:$TASKS/$t/task.json") || stop "$t has no descriptor at $c"
     grep -qxF "$t $a $desc" "$BD/allowed" || stop "$t descriptor at $c is not the one allowlisted for this batch"
     last=$(hs_git ls-tree --name-only "$c" "$TASKS/$t/events/" | sort | tail -1)
@@ -171,7 +182,7 @@ usage_receipt() {  # call count and timings from the completion events (GitHub, 
 }
 
 MODE=${1:-}
-[[ $MODE =~ ^(precheck|setup|whoami|prepare|run|ingest|verify|credential|close|teardown)$ ]] || { echo "usage: sudo bash mycelium-bridge.sh precheck|setup <commit>|whoami|prepare <batch> <commit>|run <batch> <commit>|ingest <batch>|verify <batch>|credential|close|teardown"; exit 2; }
+[[ $MODE =~ ^(precheck|setup|whoami|prepare|run|ingest|verify|credential|upgrade-package|close|teardown)$ ]] || { echo "usage: sudo bash mycelium-bridge.sh precheck|setup <commit>|whoami|prepare <batch> <commit>|run <batch> <commit>|ingest <batch>|verify <batch>|credential|upgrade-package <commit>|close|teardown"; exit 2; }
 if [[ $TEST != 1 ]]; then [[ $EUID -eq 0 ]] || stop "run with sudo"; [[ $(hostname) == fpd-prod ]] || stop "fpd-prod only"; fi
 recognise || true
 say "$MODE started $(date -u +%FT%TZ)"
@@ -258,6 +269,18 @@ run)
     echo "$t $a $(hs_git rev-parse "$C:$TASKS/$t/task.json")" >> "$BD/allowed"
   done < <(jq -r '.tasks[] | "\(.task) \(.agent)"' "$BD/manifest.json")
   n=$(grep -c . "$BD/allowed")
+  WIN=$(jq -r '.window_s // 1800' "$BD/manifest.json"); [[ $WIN =~ ^[0-9]+$ && $WIN -ge 600 && $WIN -le 3600 ]] || stop "manifest window_s must be 600-3600"; WINDOW_S=$WIN
+  POSTENV=()
+  if [[ $(jq -r '.workbench // false' "$BD/manifest.json") == true ]]; then
+    [[ -n $POSTBIN && -x $POSTBIN ]] || stop "this batch needs the workbench hook, but $POSTBIN is not installed (install-cycle.sh)"
+    [[ $(sha "$POSTBIN") == "$POST_V1" && $(sha "$STAGEB") == "$SB_V52" ]] || stop "installed myc-post / myc-stageb are not the reviewed cycle versions (install-cycle.sh)"
+    WB=$WBR/$BATCH; exists "$WB" && stop "$WB already exists; a batch's workbench is created once"
+    install -d -m 0755 "$WB" "$WB/tree" && hs_git archive "$C" greenfield/mycelium/brain/workbench | tar -x -C "$WB/tree" --strip-components=4 --no-same-owner
+    [[ -f $WB/tree/evaluate.mjs && -f $WB/tree/post/apply.mjs ]] || stop "the workbench is missing at $C"
+    [[ $TEST == 1 ]] || chown -R root:root "$WB"
+    POSTENV=(MYC_POST="$POSTBIN" MYC_POST_BATCH="$BATCH" MYC_WB_ROOT="$WBR")
+    say "workbench pinned at $C into $WB/tree (scored after every turn by $POSTBIN)"
+  fi
   bmark CALLS_STARTED "turns=$n window=${WINDOW_S}s commit=$C"   # durable BEFORE the allowance exists: any crash from here on is reconciled by `ingest`
   install -m 0640 "$BD/allowed" "$ALLOWD/$BATCH.allowed"; own root:hubsync "$ALLOWD/$BATCH.allowed"
   trap 'mv -f "$ALLOWD/$BATCH.allowed" "$BD/allowed.archived" 2>/dev/null && say "allowlist closed and archived (no further claim is possible for $BATCH)"' EXIT
@@ -266,8 +289,11 @@ run)
     s=$("${AH[@]}" "$GATE" state "$t" | head -1) || stop "could not read the state of $t"
     [[ $s == "$t pending "* ]] || stop "$t is not pending ($s); Chris decides"
     say "turn $t: one myc-stageb run"
-    MYC_ALLOW="$ALLOWD/$BATCH.allowed" MYC_AS_HUBSYNC="${AH[*]}" MYC_WINDOW_S=$WINDOW_S "$STAGEB" "$t" || stop "myc-stageb stopped on $t; no further turn"
+    env "${POSTENV[@]}" MYC_ALLOW="$ALLOWD/$BATCH.allowed" MYC_AS_HUBSYNC="${AH[*]}" MYC_WINDOW_S=$WINDOW_S "$STAGEB" "$t" || stop "myc-stageb stopped on $t; no further turn"
     s=$("${AH[@]}" "$GATE" state "$t" | head -1); [[ $s == "$t completed "* ]] || stop "$t ended as: $s; no further turn"
+    if [[ ${#POSTENV[@]} -gt 0 && -f $WB/progress.jsonl && $(tail -1 "$WB/progress.jsonl" | jq -r '.stall') == true ]]; then
+      bmark STALLED "after $t: two turns in a row without progress; remaining turns are not run"; break
+    fi
   done < <(jq -r '.tasks[].task' "$BD/manifest.json")
   mv -f "$ALLOWD/$BATCH.allowed" "$BD/allowed.archived"; trap - EXIT; say "allowlist closed and archived"
   bmark CALLS_DONE
@@ -288,6 +314,20 @@ verify)
   c=$(jq -r .commit "$BD/batch.json"); collect "$c" "$V/collect"; cmp -s "$V/collect/batch.json" "$BD/batch.json" || { rm -rf "$V"; stop "rebuilt batch differs"; }
   db_files "$V/collect"; step verify 0 verify "${ARGS[@]}" || { rm -rf "$WORK"; m=$(head -c 400 "$OUT"); rm -rf "$V"; stop "verification failed: $m"; }; rm -rf "$WORK" "$V"
   say "VERIFY OK: $BATCH" ;;
+
+upgrade-package)
+  need_install; C=${2:-}; pinned "$C"; lock
+  OLD=$(grep '^commit ' "$RECEIPT" | tail -1 | cut -d' ' -f2); [[ $C != "$OLD" ]] || stop "the package is already at $C"
+  NEW=$RC/pkg-$C; rm -rf "$NEW"; mkdir -m 0755 "$NEW"
+  hs_git archive "$C" "$SUB" | tar -x -C "$NEW" --strip-components=3 --no-same-owner
+  [[ -f $NEW/scripts/bridge.mjs && -f $NEW/package-lock.json ]] || { rm -rf "$NEW"; stop "package extraction incomplete; nothing changed"; }
+  if [[ -d $PKG/node_modules ]] && cmp -s "$NEW/package-lock.json" "$PKG/package-lock.json"; then
+    cp -a "$PKG/node_modules" "$NEW/node_modules"; say "dependencies unchanged (identical package-lock.json): reused the installed node_modules; no download"
+  else (cd "$NEW" && npm ci --ignore-scripts --omit=dev --no-audit --no-fund --cache "$RC/npm-cache" >/dev/null) || { rm -rf "$NEW" "$RC/npm-cache"; stop "npm ci failed; nothing changed"; }; fi
+  rm -rf "$RC/npm-cache"; [[ $TEST == 1 ]] || chown -R root:root "$NEW"; chmod -R go-w,o+rX "$NEW"
+  rm -rf "$RC/pkg-$OLD"; mv "$PKG" "$RC/pkg-$OLD"; mv "$NEW" "$PKG"
+  printf 'commit %s\n' "$C" >> "$RECEIPT"
+  say "UPGRADE OK: package $SUB at ${C:0:12} (previous ${OLD:0:12} kept at $RC/pkg-$OLD; roll back with: upgrade-package $OLD)" ;;
 
 credential)
   need_install; write_credential

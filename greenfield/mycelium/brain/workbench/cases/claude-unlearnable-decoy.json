@@ -1,0 +1,52 @@
+{
+ "name": "claude-unlearnable-decoy",
+ "author": "claude",
+ "description": "Counterexample for surprise- or change-driven curiosity (Codex C1, and Claude H1's own status-change reward): a well-linked family whose status flips at random on every visit. Nothing about it can be learned; a good mechanism stops paying for it.",
+ "budget": 1200,
+ "anchorSignal": 0.6,
+ "families": {
+  "hub": {
+   "n": 20,
+   "yield": 0,
+   "out": 12,
+   "to": {
+    "real": 0.5,
+    "decoy": 0.5
+   },
+   "words": [
+    "directory",
+    "list"
+   ],
+   "seeds": 4
+  },
+  "real": {
+   "n": 500,
+   "yield": 0.2,
+   "out": 3,
+   "to": {
+    "real": 0.7,
+    "decoy": 0.3
+   },
+   "words": [
+    "traders",
+    "apply"
+   ],
+   "schedule": "cycle:300",
+   "noise": 0.02
+  },
+  "decoy": {
+   "n": 300,
+   "yield": 1,
+   "out": 3,
+   "to": {
+    "decoy": 0.7,
+    "real": 0.3
+   },
+   "words": [
+    "update",
+    "status"
+   ],
+   "decoy": true
+  }
+ }
+}
