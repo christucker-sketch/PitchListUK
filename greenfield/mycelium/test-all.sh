@@ -8,6 +8,7 @@ suite() { local name=$1; shift; local t0=$SECONDS
   if (cd "$M" && "$@") > "$L/$name.log" 2>&1; then echo "PASS  $name  ($((SECONDS - t0)) s)"
   else echo "FAIL  $name  ($((SECONDS - t0)) s)"; tail -15 "$L/$name.log" | sed 's/^/      /'; fails=$((fails + 1)); fi; }
 suite workbench          bash -c 'node --test brain/workbench/test/*.test.mjs'
+suite session          bash -c 'node --test session/test/*.test.mjs'
 suite e0                 node --test brain/experiments/e0-sim.test.mjs
 suite cycle-package      bash runs/check-cycle-package.sh
 suite memory             bash -c 'cd memory && npm run -s build && npm test'
