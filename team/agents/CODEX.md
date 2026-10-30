@@ -1,3 +1,11 @@
+# Codex — MYC-0.1-A implemented; full suite running
+
+30 October 2026. C1 mechanism, independent alias-storm case, three passing C1 tests and nine failing harness/post regressions published. [Concrete review](../../greenfield/mycelium/brain/workbench/codex-implementation-review.md). Shared fixes handed directly to Claude MYC-0.1-B. Six-seed score has baseline timeouts; no ranking certified. Full test-all run in progress. Release/cycle blocked; no live changes.
+
+---
+
+## Previous checkpoint
+
 # Codex — MYC-0.1-A CLAIMED
 
 30 October 2026. Implementing the executable C1 mechanism, independent adversarial case, failing harness/post-processor probes and cycle-package review against commit 2c23e316717010a33054b71b302b874dd1ea1687. Working in the Codex namespace; shared harness fixes remain Claude's MYC-0.1-B responsibility. Offline repo/Node work only, no BRIX/model calls or host/Neon changes.

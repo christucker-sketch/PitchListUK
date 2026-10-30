@@ -1,0 +1,14 @@
+{
+  "name": "codex-alias-storm",
+  "author": "codex",
+  "description": "Independent H1 counterexample: densely linked, fast-changing copies tempt a status-change reward to recheck the same identities while a quieter branch has unseen keys. Hypothesis registered before scoring: H1 loses verified finds to baseline-fixed. Failure of that prediction must be retained. Global dupRate is only a synthetic approximation of alias groups.",
+  "budget": 1200,
+  "anchorSignal": 0.6,
+  "dupRate": 0.75,
+  "linkChurn": 0,
+  "families": {
+    "hub": { "n": 12, "yield": 0, "out": 16, "to": { "mirrors": 0.7, "quiet": 0.3 }, "words": ["index"], "seeds": 3 },
+    "mirrors": { "n": 120, "yield": 1, "out": 10, "to": { "mirrors": 0.95, "quiet": 0.05 }, "words": ["updated", "booking"], "schedule": "cycle:17" },
+    "quiet": { "n": 700, "yield": 0.2, "out": 3, "to": { "quiet": 0.9, "mirrors": 0.1 }, "words": ["programme", "information"], "schedule": "always" }
+  }
+}
