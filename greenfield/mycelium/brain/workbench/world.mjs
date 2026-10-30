@@ -18,11 +18,12 @@ export function parseCase(c) {
   const fail = m => { throw new Error(`case ${c?.name ?? '?'}: ${m}`); };
   const only = (o, keys, what) => { if (!o || typeof o !== 'object' || Array.isArray(o)) fail(`${what} must be an object`); for (const k of Object.keys(o)) if (!keys.includes(k)) fail(`${what} has unknown field ${k}`); };
   const num = (v, lo, hi, what) => { if (typeof v !== 'number' || !Number.isFinite(v) || v < lo || v > hi) fail(`${what} must be a number ${lo}-${hi}`); return v; };
+  const int = (v, lo, hi, what) => { if (!Number.isInteger(v)) fail(`${what} must be an integer (whole number)`); return num(v, lo, hi, what); };   // C-03: no silent rounding
   only(c, ['name', 'author', 'description', 'budget', 'anchorSignal', 'shared', 'families', 'seeds', 'linkChurn', 'dupRate'], 'case');
   if (!/^[a-z0-9][a-z0-9-]{2,63}$/.test(c.name ?? '')) fail('name must be a lowercase slug');
   if (!['claude', 'codex', 'baseline'].includes(c.author)) fail('author must be claude, codex or baseline');
   if (typeof c.description !== 'string' || c.description.length > 600) fail('description must be text of at most 600 characters');
-  num(c.budget, 50, LIMITS.budget, 'budget'); num(c.anchorSignal ?? 0.7, 0, 1, 'anchorSignal');
+  int(c.budget, 50, LIMITS.budget, 'budget'); num(c.anchorSignal ?? 0.7, 0, 1, 'anchorSignal');
   num(c.linkChurn ?? 0, 0, 1, 'linkChurn'); num(c.dupRate ?? 0, 0, 0.9, 'dupRate');
   if (c.shared !== undefined && (!Array.isArray(c.shared) || c.shared.length < 1 || c.shared.length > 40 || c.shared.some(w => typeof w !== 'string' || w.length > 30))) fail('shared must list 1-40 short words');
   const fams = Object.entries(c.families ?? {});
@@ -31,8 +32,8 @@ export function parseCase(c) {
   for (const [f, s] of fams) {
     if (!/^[a-z][a-z0-9-]{0,30}$/.test(f)) fail(`family name ${f}`);
     only(s, ['n', 'yield', 'out', 'to', 'words', 'noise', 'schedule', 'decoy', 'seeds'], `family ${f}`);
-    pages += num(s.n, 1, LIMITS.pages, `${f}.n`); num(s.yield, 0, 1, `${f}.yield`); num(s.out, 0, LIMITS.out, `${f}.out`);
-    num(s.noise ?? 0, 0, 0.5, `${f}.noise`); seedCount += num(s.seeds ?? 0, 0, 50, `${f}.seeds`);
+    pages += int(s.n, 1, LIMITS.pages, `${f}.n`); num(s.yield, 0, 1, `${f}.yield`); int(s.out, 0, LIMITS.out, `${f}.out`);
+    num(s.noise ?? 0, 0, 0.5, `${f}.noise`); seedCount += int(s.seeds ?? 0, 0, 50, `${f}.seeds`);
     if (!Array.isArray(s.words) || s.words.length < 1 || s.words.length > LIMITS.words || s.words.some(w => typeof w !== 'string' || w.length > 30)) fail(`${f}.words must list 1-${LIMITS.words} short words`);
     only(s.to ?? {}, fams.map(x => x[0]), `${f}.to`);
     const tw = Object.values(s.to ?? {}); if (s.out > 0 && (!tw.length || tw.some(w => typeof w !== 'number' || w < 0) || Math.abs(tw.reduce((a, b) => a + b, 0) - 1) > 1e-6)) fail(`${f}.to weights must sum to 1`);
@@ -41,7 +42,7 @@ export function parseCase(c) {
   }
   if (pages > LIMITS.pages) fail(`at most ${LIMITS.pages} pages in total`);
   if (seedCount < 1) fail('at least one family must give seeds');
-  if (c.seeds !== undefined && (!Array.isArray(c.seeds) || c.seeds.length < 1 || c.seeds.length > 30 || c.seeds.some(s => !Number.isInteger(s) || s < 0))) fail('seeds must list 1-30 non-negative integers');
+  if (c.seeds !== undefined && (!Array.isArray(c.seeds) || c.seeds.length < 1 || c.seeds.length > 30 || c.seeds.some(s => !Number.isInteger(s) || s < 0) || new Set(c.seeds).size !== c.seeds.length)) fail('seeds must list 1-30 distinct non-negative integers (a repeated seed is not an independent world)');
   return c;
 }
 
@@ -90,7 +91,8 @@ export function makeWorld(caseSpec, seed) {
   const truth = {
     trulyOpen: (id, t) => !!(pages[id].opp && !pages[id].opp.decoy && openAt(pages[id], t)),
     keyOf: id => pages[id].opp?.key ?? null,
-    reopenings: () => { const out = []; const seen = new Set(); for (const p of pages) if (p.opp && !p.opp.decoy && !seen.has(p.opp.key)) { seen.add(p.opp.key); p.opp.windows.slice(1).forEach(([a]) => out.push({ key: p.opp.key, at: a })); } return out; },
+    // every reopening with ITS OWN open interval [at, end): a find inside another interval does not detect it (C-01)
+    reopenings: () => { const out = []; const seen = new Set(); for (const p of pages) if (p.opp && !p.opp.decoy && !seen.has(p.opp.key)) { seen.add(p.opp.key); p.opp.windows.slice(1).forEach(([a, b]) => out.push({ key: p.opp.key, at: a, end: b })); } return out; },
     familyOf: id => pages[id].fam,
     pageCount: pages.length
   };

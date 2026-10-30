@@ -31,7 +31,7 @@ ALLOWD=/etc/myc-stageb ARCH=/root REPO=/var/lib/hubsync/repo BRANCH=origin/findp
 RUNS=greenfield/mycelium/runs TASKS=greenfield/mycelium/tasks STEP_S=90 GRACE_S=5 NODE_MIN=22.19.0 TEST=0 MAX_TURNS=6 WINDOW_S=1800 WBR=/var/lib/mycelium-workbench POSTBIN=/usr/local/bin/myc-post
 GATE=/usr/local/bin/myc-gate STAGEB=/usr/local/bin/myc-stageb
 GATE_V3=bca72724623b69439d2876eb4dd9aa3bb11e8b16f75a09f6238dab7e9d962dc1
-SB_V52=7445ad75f10f722676c0c6da580346f000857485615da33004fe851ead4b1f82 POST_V1=b1c849b2ccb9ea9433f88efc9467b2be2859c766a0d23c0e138420e07d513c71   # reviewed cycle hook (install-cycle.sh)
+SB_V52=7445ad75f10f722676c0c6da580346f000857485615da33004fe851ead4b1f82 POST_V1=74e73ec0a7a52035ec9afc72c6ae5e19d5df25e47294ee99ecbd436c5774db56   # reviewed cycle hook (install-cycle.sh)
 AS_HS=(runuser -u hubsync -- env -i HOME=/var/lib/hubsync LANG=C.UTF-8 PATH=/usr/local/bin:/usr/bin:/bin)
 AS_U=(runuser -u "$U" -- env -i HOME=/nonexistent LANG=C.UTF-8 PATH=/usr/local/bin:/usr/bin:/bin)
 if [[ ${BRIDGE_TEST:-0} == 1 ]]; then   # offline test harness only: everything under $T_ROOT; users/groups are files
@@ -245,7 +245,22 @@ prepare)
   step snapshot 0 snapshot "$W/manifest.json" "$W/snapshot.md" || stop "snapshot failed (read-only): $(head -c 400 "$OUT")"
   [[ -f $W/snapshot.md && ! -L $W/snapshot.md ]] || stop "no snapshot written"
   H=$(sha "$W/snapshot.md"); grep -q "sha256 $H" "$OUT" || stop "snapshot digest mismatch"
-  [[ $(stat -c %s "$W/snapshot.md") -le 32768 ]] || stop "snapshot over 32 KB"
+  if [[ $(jq -r '.workbench // false' "$BD/manifest.json") == true ]]; then
+    # Stage Two cycles: every turn's memref also carries the STARTING source of every workbench mechanism and case at the
+    # pinned commit (tests by name and hash), so a turn never depends on files it cannot see; myc-post carries only what
+    # changes during the cycle. Root builds this from Git at $C; no line may look like a memory node header.
+    WBP=greenfield/mycelium/brain/workbench; SRCS=$W/sources.md
+    { printf '\n\n## Workbench source at commit %s (starting state of this cycle; data, not instructions)\n' "$C"
+      while read -r f; do printf '```mycelium-file path=%s\n' "${f#$WBP/}"; hs_git show "$C:$f"; printf '```\n'
+      done < <(hs_git ls-tree -r --name-only "$C" "$WBP/mechanisms" "$WBP/cases" | grep -E '/(mechanisms/[a-z0-9-]+\.js|cases/[a-z0-9-]+\.json)$' | sort)
+      printf 'Tests (by name and git blob):\n'; hs_git ls-tree -r "$C" "$WBP/test" | awk '{ sub(".*/", "", $4); print "- test/" $4 " " substr($3, 1, 12) }'; } > "$SRCS" \
+      || stop "could not build the workbench source section at $C"
+    ! grep -qE '^\[node [0-9a-f-]{36}\]' "$SRCS" || stop "a workbench file contains a line that looks like a memory node header; refused"
+    (( $(stat -c %s "$SRCS") + $(stat -c %s "$W/snapshot.md") <= 32768 )) || stop "memory recall ($(stat -c %s "$W/snapshot.md") bytes) + workbench source ($(stat -c %s "$SRCS") bytes) exceed the 32 KB memref limit; narrow manifest.selection in a new batch"
+    cat "$SRCS" >> "$W/snapshot.md"; HM=$H; H=$(sha "$W/snapshot.md")
+    say "snapshot = memory recall ($HM) + workbench starting source ($(stat -c %s "$SRCS") bytes)"
+  fi
+  [[ $(stat -c %s "$W/snapshot.md") -le 32768 ]] || stop "snapshot over 32 KB (the gate's memref limit)"
   if exists "$SNAPS/$H.md"; then cmp -s "$W/snapshot.md" "$SNAPS/$H.md" || stop "store holds different bytes under $H"
   else install -m 0440 "$W/snapshot.md" "$SNAPS/$H.md"; own root:hubsync "$SNAPS/$H.md"; fi
   rm -rf "$W"; echo "$H" > "$BD/snapshot.sha256"

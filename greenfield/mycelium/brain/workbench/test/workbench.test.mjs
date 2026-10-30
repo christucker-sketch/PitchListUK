@@ -58,7 +58,7 @@ test('scoreboard pairs every mechanism with the fixed baseline seed by seed; fai
   const all = { mechs: { [BASELINE]: mechs[BASELINE], recorder, broken: 'function create(){ throw new Error("boom") }' }, cases: { [tiny.name]: tiny } };
   const run = evaluate(all, { seeds: 3 }), board = scoreboard(run, all);
   assert.equal(board.cases[tiny.name].recorder.verifiedVsBaseline.n, 3);
-  assert.equal(board.cases[tiny.name].broken, null);
+  assert.deepEqual(board.cases[tiny.name].broken, { incomplete: { ok: 0, expected: 3 } });   // C-06: reported, never scored
   assert.ok(board.failures.some(f => /broken/.test(f)));
 });
 

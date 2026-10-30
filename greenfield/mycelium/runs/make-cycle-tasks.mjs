@@ -22,7 +22,7 @@ m.tasks.forEach((t, i) => {
   const prev = m.tasks[i - 1];
   const ref2 = i === 0
     ? 'the shared cycle brief: both agents\' hypotheses, the evidence so far, the workbench contract and the starting scoreboard.'
-    : `${other}'s previous answer (turn ${i}), followed by its machine-written "Workbench result": the scoreboard after its files, prediction verdicts, progress, and your own current files.`;
+    : `${other}'s previous answer (turn ${i}), followed by its machine-written "Workbench result": the scoreboard after its files, prediction verdicts, progress, and every file of yours changed during this cycle.`;
   const extra = i >= n - 2 ? ' Because this is one of the last two turns, also list the open disputes and the next experiment you would run, so the next cycle starts from evidence.' : '';
   const atrefs = i === 0 ? '' : `, or "@<task>" for an earlier turn of this cycle (${m.tasks.slice(0, i).map(x => '@' + x.task).join(', ')})`;
   const ins = tpl.replaceAll('{{N}}', String(i + 1)).replaceAll('{{AGENT}}', t.agent).replaceAll('{{OTHER}}', other)

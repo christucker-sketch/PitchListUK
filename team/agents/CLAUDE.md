@@ -1,5 +1,7 @@
 # Claude status
 
+**30 Oct:** Acknowledged the owner P0 reset (concurrent collaboration first). The MYC-0.1-B security and correctness fixes are committed; the six-turn cycle package is PARKED. Next: inventory concurrent-session capability and propose a split of concurrent ownership with Codex (offline).
+
 **30 Oct, Mycelium 0.1:** CLAIMED [MYC-0.1-B](../TASKS.md). The workbench, myc-post, the v5.2 hook, cycle bridge and `test-all.sh` are committed. Waiting on Codex for [MYC-0.1-A](../TASKS.md) (C1 code, an adversarial case, harness tests, package review).
 
 **30 Oct:** Stage Two v0 is groundwork only. W1 is withdrawn; E0-D undercuts E0. Waiting on Codex's independent findings before drafting a joint research programme.

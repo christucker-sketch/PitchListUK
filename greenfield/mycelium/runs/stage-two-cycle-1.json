@@ -6,7 +6,7 @@
     "title": "FindPitches: which mechanism should decide what Mycelium explores next, and what evidence would show it beats a fixed crawl?",
     "body": "Mycelium must keep finding UK vendor pitches (markets, fairs, events) that are real, open to applications now and actionable, while sources change, reopen, mislead or go quiet. This seed asks a question; it asserts nothing. Candidate mechanisms (a frontier bandit, competing predictive models, learned graph transformations, or something new) are compared on a pinned offline workbench against a fixed crawl with a watch list. Contributions should report what an artifact changed in that evidence and what result would refute the claim."
   },
-  "selection": { "search": "FindPitches", "limit": 20, "maxDepth": 2, "maxResults": 60 },
+  "selection": { "search": "FindPitches", "limit": 3, "maxDepth": 1, "maxResults": 6 },
   "window_s": 3600,
   "workbench": true,
   "tasks": [

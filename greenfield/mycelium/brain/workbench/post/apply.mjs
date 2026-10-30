@@ -7,15 +7,17 @@
 // the world, the baselines or this file:
 //   mechanisms/<agent>-<slug>.js   cases/<agent>-<slug>.json (must validate; author must be the agent)
 //   test/<agent>-<slug>.test.mjs
-// Limits: at most 4 files, 8 KB each, 12 KB in total; clean UTF-8; no credential patterns.
+// Limits: at most 4 files, 6 KB in total per turn (so a turn's changes can always be carried to the next turn within the
+// gate's 16 KB result; see stageb/myc-post); clean UTF-8; no credential patterns.
 // A prediction is a fenced block   ```mycelium-prediction   {"mechanism":..,"case":..,"metric":..,"op":">"|"<",
 // "value":n}   ```   (at most 3), scored against the scoreboard computed AFTER the artifacts are applied.
-import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, lstat, rename, unlink } from 'node:fs/promises';
 import { join, dirname } from 'node:path';
+import { randomBytes } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { parseCase } from '../world.mjs';
 
-export const LIMITS = { files: 4, fileBytes: 8192, totalBytes: 12288, predictions: 3 };
+export const LIMITS = { files: 4, fileBytes: 6144, totalBytes: 6144, predictions: 3 };
 const SECRET_RE = /-----BEGIN [A-Z ]*PRIVATE KEY-----|gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|sk-ant-[A-Za-z0-9_-]{10,}|sk-[A-Za-z0-9_-]{32,}|xox[abprs]-[A-Za-z0-9-]{10,}|AKIA[0-9A-Z]{16}|postgres(ql)?:\/\/[^:\s/]+:[^@\s]+@/;
 const CTRL = /[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]/;
 export const METRICS = ['verified', 'verifiedVsBaseline', 'precision', 'reopenDetected', 'meanReopenDelay', 'wasted', 'cpuMs'];
@@ -46,6 +48,25 @@ export function extract(answer, agent) {
   return { agent, accepted, rejected, blocks: blocks.length };
 }
 
+// C-07: write <root>/<rel> without following any symbolic link: the root, every parent directory and the destination must
+// be real (lstat), and the file is replaced atomically by rename from a fresh, exclusively created temporary file in the
+// same directory. Any symlink, or a non-regular destination, refuses the write.
+export async function safeWrite(root, rel, body) {
+  const st = async p => { try { return await lstat(p); } catch (e) { if (e.code === 'ENOENT') return null; throw e; } };
+  const r = await st(root); if (!r || !r.isDirectory() || r.isSymbolicLink()) throw new Error(`workbench root is not a real directory`);
+  const parts = rel.split('/'); let dir = root;
+  for (const part of parts.slice(0, -1)) {
+    if (!/^[a-z]+$/.test(part)) throw new Error(`bad path component ${part}`);
+    dir = join(dir, part); const s = await st(dir);
+    if (!s) await mkdir(dir); else if (s.isSymbolicLink() || !s.isDirectory()) throw new Error(`${rel}: a parent is not a real directory`);
+  }
+  const dst = join(root, rel), d = await st(dst);
+  if (d && (d.isSymbolicLink() || !d.isFile())) throw new Error(`${rel}: destination is not a regular file (refused, nothing written)`);
+  const tmp = join(dir, `.tmp-${randomBytes(6).toString('hex')}`);
+  await writeFile(tmp, body, { flag: 'wx' });
+  try { await rename(tmp, dst); } catch (e) { await unlink(tmp).catch(() => {}); throw e; }
+}
+
 export function predictions(answer) {
   const out = [];
   for (const [, body] of answer.matchAll(/```mycelium-prediction[ \t]*\r?\n([\s\S]*?)```/g)) {
@@ -63,6 +84,7 @@ export function scorePredictions(preds, board) {
   return preds.map(p => {
     if (p.invalid) return { ...p, verdict: 'UNSCORED' };
     const s = board.cases?.[p.case]?.[p.mechanism]?.[p.metric];
+    if (board.cases?.[p.case]?.[p.mechanism]?.incomplete) return { ...p, verdict: 'UNSCORED', why: 'that comparison is INCOMPLETE (a seed failed or was not run)' };
     if (!s) return { ...p, verdict: 'UNSCORED', why: 'no such mechanism/case/metric in the scoreboard' };
     const held = p.op === '>' ? s.mean > p.value : s.mean < p.value;
     return { ...p, observed: Number(s.mean.toFixed(3)), se: Number(s.se.toFixed(3)), verdict: held ? 'HELD' : 'FAILED' };
@@ -75,7 +97,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
     const answer = await readFile(answerFile, 'utf8');
     if (mode === 'predictions') { console.log(JSON.stringify(scorePredictions(predictions(answer), JSON.parse(await readFile(a2, 'utf8'))))); process.exit(0); }
     const m = extract(answer, a2);
-    if (mode === 'apply') for (const f of m.accepted) { const dst = join(a3, f.path); await mkdir(dirname(dst), { recursive: true }); await writeFile(dst, f.body); }
+    if (mode === 'apply') for (const f of m.accepted) await safeWrite(a3, f.path, f.body);
     else if (mode !== 'check') throw new Error('usage: apply.mjs check|apply|predictions ...');
     console.log(JSON.stringify({ agent: m.agent, blocks: m.blocks, accepted: m.accepted.map(f => ({ path: f.path, bytes: f.bytes })), rejected: m.rejected }));
   } catch (e) { console.error(`apply: ${String(e.message).slice(0, 200)}`); process.exit(1); }

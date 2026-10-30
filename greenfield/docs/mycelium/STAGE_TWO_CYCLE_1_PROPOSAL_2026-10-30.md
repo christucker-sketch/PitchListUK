@@ -17,7 +17,7 @@ turn k answer (files + predictions + contribution)
        ├─ evaluate in an OS sandbox (user mycexp, no network, no home, no state paths): every mechanism × every case × 6 seeds
        ├─ run the workbench tests in a separate sandboxed copy
        ├─ score predictions HELD/FAILED; progress record; STALL after two non-progress turns
-       └─ append "Workbench result" to result.md (≤16 KB): scoreboard, verdicts, progress, the NEXT agent's own current files
+       └─ append "Workbench result" to result.md (≤16 KB): scoreboard, verdicts, progress, every file the NEXT agent changed this cycle (or HANDOFF INCOMPLETE → STALL)
   └─ myc-gate complete: the result is committed to GitHub
 turn k+1 claims: `ref:` turn k's result.md (resolved at claim) + the same sealed memory snapshot (memref)
 end (or STALL): bridge ingests each turn's contribution into Neon and verifies it in a fresh process
@@ -45,18 +45,18 @@ No mechanism beats the fixed baseline everywhere. That is the open problem the c
 
 | Piece | Path under `greenfield/mycelium/` | Offline evidence |
 |---|---|---|
-| Workbench: world, evaluator, baselines, H1, 5 cases | `brain/workbench/{world,evaluate}.mjs`, `mechanisms/`, `cases/` | `node --test brain/workbench/test/*.test.mjs`: **8/8**. Covers the observation-only view, the leak test, the vm boundary, determinism, case validation, pairing, cache and focus |
-| Artifact extraction and prediction scoring | `brain/workbench/post/apply.mjs` | Part of `test-post.sh` |
-| Post-processor (root, sandboxed evaluation) | `stageb/myc-post` | `bash stageb/test-post.sh`: **17/17**. Covers namespace refusal, scoring, the 16 KB rule, files carried to the next turn, repeat/cosmetic/prose = no progress, a new test = progress, STALL, NOT RUN, and the selftest (negative, and positive under an `unshare -n` + `setpriv nobody` stand-in) |
+| Workbench: world, evaluator, trusted import, baselines, H1/H1b (Claude), C1 (Codex), 6 cases | `brain/workbench/{world,evaluate}.mjs`, `post/import.mjs`, `mechanisms/`, `cases/` | `node --test brain/workbench/test/*.test.mjs`: **26/26**. Covers the observation-only view and leak test; the null-prototype realm (Codex C-04 plus Claude's getter, proxy and setter probes); reopen intervals (C-01); horizon precision (C-02); integral cases (C-03); cache identity and version (C-05); incomplete comparisons (C-06); determinism; C1 and H1b behaviour |
+| Artifact extraction and prediction scoring | `brain/workbench/post/apply.mjs` | Part of `test-post.sh`; no-follow atomic writes (Codex C-07) |
+| Post-processor (root, sandboxed evaluation) | `stageb/myc-post` | `bash stageb/test-post.sh`: **21/21**, plus Codex's `stageb/codex-test-post.sh` **3/3** (C-07/08/09). Covers namespace refusal, scoring, the 16 KB rule, the 6 KB changed-file budget, HANDOFF INCOMPLETE → STALL, hostile symlinked sandbox outputs, files carried to the next turn, repeat/cosmetic/prose = no progress, a new test = progress, STALL, NOT RUN, and the selftest (negative, and positive under an `unshare -n` + `setpriv nobody` stand-in) |
 | Runner hook | `stageb/myc-stageb` v5.2 | Existing suites unchanged and green: stageb 48, runner-decisions 29, review-regressions 7, memref 15 |
 | Checked host install and rollback | `stageb/install-cycle.sh` | `bash stageb/test-install-cycle.sh`: **9/9** (install, a failing selftest undoes everything, rollback, refusals) |
-| Bridge: cycles | `memory/scripts/bridge.mjs`, `memory/stage-one/mycelium-bridge.sh` | `bash memory/stage-one/test-cycle-host.sh`: **17/17**. The real runner with fake CLIs and PGlite as the bridge role. It covers `upgrade-package` and its rollback; dependencies are reused, with no npm download, when the lockfile is unchanged; a stall after 4 turns ingests the 4-turn prefix and verifies it; 6 progressing turns are ingested and verified; a wrong hook hash is refused before any allowlist or call |
+| Bridge: cycles | `memory/scripts/bridge.mjs`, `memory/stage-one/mycelium-bridge.sh` | `bash memory/stage-one/test-cycle-host.sh`: **18/18**. The real runner with fake CLIs and PGlite as the bridge role. It covers `upgrade-package` and its rollback; dependencies are reused, with no npm download, when the lockfile is unchanged; a stall after 4 turns ingests the 4-turn prefix and verifies it; 6 progressing turns are ingested and verified; a wrong hook hash is refused before any allowlist or call; every turn's sealed snapshot carries the starting workbench source |
 | Cycle manifest, turn template, descriptor builder | `runs/stage-two-cycle-1.json`, `runs/stage-two-cycle-1.turn.txt`, `runs/make-cycle-tasks.mjs` | `bash runs/check-cycle-package.sh`: the manifest parses under the bridge's rules; all 6 descriptors are within the gate's 4096 bytes, with exactly 1 memref and 1 ref each; the brief's scoreboard equals what the pinned workbench computes now |
 | Brief, and Claude's response to Codex | `brain/workbench/CYCLE_BRIEF.md`, `collab/stage-two-claude-response-to-codex.md` | — |
 
 The whole memory package passes `npm test`, which now includes the cycle rehearsal. Pinned hashes are in `stageb/SHA256SUMS`:
 - `myc-stageb` v5.2: `7445ad75…`;
-- `myc-post`: `b1c849b2…`;
+- `myc-post`: `74e73ec0…`;
 - `myc-gate` v3 and `myc-agent` v6 are unchanged (`bca72724…`, `d173813b…`).
 
 The bridge's `run` refuses a workbench batch unless the installed `myc-post` and `myc-stageb` have exactly the reviewed hashes.
@@ -138,9 +138,9 @@ Chris pastes the output, and Claude publishes the receipt and the results summar
 
 | Resource | Expected |
 |---|---|
-| Model calls | ≤ 6 (Stage One calls took 15–40 s each). An answer that carries ≈12 KB of code is ≈4–6k output tokens, ≈60–120 s |
+| Model calls | ≤ 6 (Stage One calls took 15–40 s each). An answer is held to ≤ 7 KB (≤ 6 KB of files), ≈2–3k output tokens, ≈30–90 s |
 | Tokens per call (input) | ≈ 8–15k: prompt, snapshot, brief or previous result (≤16 KB) |
-| BRIX CPU per turn | Sandboxed evaluation ≤ 150 s plus tests ≤ 60 s, at `CPUQuota=200%` and `MemoryMax=768M`. The first turn's uncached evaluation is ≈ 40–60 s; later turns use the cache |
+| BRIX CPU per turn | Sandboxed evaluation ≤ 200 s plus tests ≤ 60 s, at `CPUQuota=200%` and `MemoryMax=768M`. The first turn's uncached evaluation is ≈ 125–160 s on 2 vCPUs (5 mechanisms × 6 cases × 6 seeds, plus the turn's new files); later turns use the cache |
 | Disk | Workbench tree, cache and per-turn copies: < 50 MB under `/var/lib/mycelium-workbench/stage-two-cycle-1` |
 | Neon | 1 seed node in `prepare`, then ≤ 6 contribution nodes with their links, a few KB in total. Short bursts within the free plan's 100 CU-h/month; the endpoint scales to zero afterwards |
 | Money | None. Subscription CLIs only; no API keys, credits or paid services |
@@ -162,7 +162,7 @@ Chris pastes the output, and Claude publishes the receipt and the results summar
 1. **The node `vm` is a fairness boundary, not a security boundary.** Security comes from the OS sandbox: systemd `User=mycexp`, `PrivateNetwork`, `IPAddressDeny=any`, `ProtectSystem=strict`, `ProtectHome`, `InaccessiblePaths` and resource limits. That sandbox can only be proven on fpd-prod, which is why the install selftest must pass.
 2. **Agents write code blind.** The CLIs cannot run code, so feedback arrives one turn later. Code that fails to load is reported as a failure for that mechanism and costs the agent a turn.
 3. **`myc-agent` still says "at most 400 words"** (zero agent diff, as in Stage One D4). The task says this applies to prose only. A model may still shorten code.
-4. **The memory snapshot is sealed at `prepare`.** Within cycle 1, continuity comes through the chain of results, which includes each agent's own current files. Contributions reach Neon at the end and are available to the next cycle's snapshot.
+4. **The memory snapshot is sealed at `prepare`.** It also holds the starting source of every mechanism and case. Within cycle 1, continuity comes through the chain of results, which carries every file the next agent changed; a turn whose answer leaves no room for them stops the cycle (HANDOFF INCOMPLETE), so no turn silently works on code it cannot see. Contributions reach Neon at the end and are available to the next cycle's snapshot.
 5. **The progress rule can be gamed weakly:** a trivial new case or test still counts. Every artifact is listed per turn, so reviewers and the other agent can call it out; cycle 2 can tighten the rule with evidence.
 6. **`cpuMs` is measured, not deterministic.** Predictions about it are noisier than those about `verified`, which is deterministic per seed.
 7. **Unchanged trust boundaries (Stage One D5):** both CLIs run as `myc`; Codex's tool ban is partly prompt-only; the admission guard is soft.

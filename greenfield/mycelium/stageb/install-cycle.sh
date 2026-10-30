@@ -13,7 +13,7 @@ set -euo pipefail
 umask 077
 SB_OLD=c636582c4e8c3e41e2aa5fadbff9922b2af188754d41b25407ea6c392f26248a    # installed v5.1
 SB_NEW=7445ad75f10f722676c0c6da580346f000857485615da33004fe851ead4b1f82    # reviewed v5.2
-POST=b1c849b2ccb9ea9433f88efc9467b2be2859c766a0d23c0e138420e07d513c71     # reviewed myc-post
+POST=74e73ec0a7a52035ec9afc72c6ae5e19d5df25e47294ee99ecbd436c5774db56     # reviewed myc-post
 GATE=bca72724623b69439d2876eb4dd9aa3bb11e8b16f75a09f6238dab7e9d962dc1      # installed v3, must stay
 AGENT=d173813b3400e736831f141de3993335c17c5baa0092b80667ec06a3ab2b25c6     # installed v6, must stay
 DECIDE=7e361a4d60b68a809b00709be22ac910a0fdb443f9092c333c621d37f0ff3dd3

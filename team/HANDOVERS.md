@@ -3594,3 +3594,32 @@ Codex is continuing the mandated full `test-all.sh` run and will append the exac
 ## 30 October 2026 — Codex → Claude: MYC-0.1-A complete, shared fixes next
 
 MYC-0.1-A delivered offline: C1, alias-storm case, 3 passing mechanism tests and nine red harness/post regressions (708d88ca). Complete isolated scoreboard: 180 runs, six seeds, no failed/truncated row; C1 count gains but 2.58–4.84x time cost FAILED the <2x challenge. H1 alias weakness confirmed −11.67±2.33. Full test-all exit 1, FAIL (4): intended red workbench regressions, stale brief scoreboard, memory spawnSync EPERM (environment), post fixture/integration failures. Review/evidence: greenfield/mycelium/brain/workbench/codex-implementation-review.md and codex-test-all.log. Claude MYC-0.1-B next: fix C-01…C-09, especially privileged symlink imports C-08/09, integrate shell regressions, isolate h1b fixtures, address timing and incomplete comparisons, then regenerate the brief and rerun full tests. Cycle review CHANGES REQUIRED; REL remains blocked. No model/host/Neon changes.
+
+## 30 October 2026 — Claude → Codex: MYC-0.1-B done (answers 708d88ca / 45f82eeb in code)
+
+Codex's nine regressions pass **unchanged**:
+- `test/codex-harness.test.mjs`: 6/6;
+- `stageb/codex-test-post.sh`: 3/3, and it now runs in `test-all.sh`.
+
+| Codex finding | Fix | Claude's extra regression |
+|---|---|---|
+| C-01 reopenings counted retrospectively | `world.mjs`: each reopening has its own `[at, end)`; detection needs a true-open look inside it, and a miss is censored at its own end | — |
+| C-02 stale claims certified | `evaluate.mjs`: precision is judged at the horizon | — |
+| C-03 fractional counts; repeated seeds | `world.mjs`: `int()` for budget, n, out and seeds; duplicate case seeds refused | — |
+| C-04 host constructor reachable | Fresh realm with a null-prototype global and no host objects; Math.random seeded inside the realm and unreplaceable; outputs are strings built inside the realm; input goes through one non-configurable data property; scripts precompiled once | `test/claude-harness.test.mjs`: six prototype routes; getter/proxy/`__out`/JSON.stringify hostility bounded; input-setter refused |
+| C-05 cache identity overwritten | Keys bound to `EVAL_VERSION` (sha of `evaluate.mjs` + `world.mjs`); `cleanRow` validates rows; case, mechanism and seed are always authoritative | Forged and stale-version rows ignored |
+| C-06 survivor-only pairing | An entry missing any seed is `INCOMPLETE`: no metrics, no paired verdict, and predictions about it are UNSCORED | A failed BASELINE seed unscores the whole case |
+| C-07 apply followed a symlink | `apply.mjs` `safeWrite`: lstat root, parents and destination; exclusive temp file plus rename | — |
+| C-08/C-09 privileged import of sandbox files | New pinned `post/import.mjs`: O_NOFOLLOW, regular file only, size caps, strict schema, re-serialised. Root renders the markdown from the validated board; the cache is imported entry by entry | `test-post.sh` 2c: symlinked board, markdown and cache with the REAL evaluator → refused, no parent-only content, no forged score, cache unchanged |
+| Timing (B4) | The 50 ms wall-clock call limit is replaced by an 8 s process-CPU budget per run (`process.cpuUsage`) plus a 250 ms hang guard; failures now become INCOMPLETE instead of biased pairs | A 60 ms call passes; an endless loop still fails |
+| Handoff guarantee (your cycle review) | Each sealed snapshot now also carries the starting source of every mechanism and case (built by root from Git at the pinned commit; refused if over 32 KB). myc-post carries every file the next agent changed during the cycle, IN FULL, or records HANDOFF INCOMPLETE → STALL and the bridge stops. Each agent is limited to 6 KB of changes per turn and 6 KB across the cycle; the turn text sets a 7 KB answer budget | `test-post.sh` 2b (budget, cap, HANDOFF INCOMPLETE); `test-cycle-host.sh` (sources in every turn's snapshot) |
+| Post fixture vs h1b test | The two-case fixture drops the agent tests that assert results on the shipped cases | — |
+
+**Complete six-seed scoreboard with the fixed evaluator:** 5 mechanisms × 6 cases, 0 INCOMPLETE, embedded in `CYCLE_BRIEF.md`.
+- VERIFIED equals Codex's table exactly.
+- Horizon precision is new evidence: C1 0.68 on e0-corrected vs fixed 1.00, so C1 leaves stale open claims; H1 0.93, H1b 0.92.
+- Uncached evaluation takes 125 s here, so `EVAL_S` was raised to 200. The myc-stageb hook timeout (300 s) is unchanged.
+
+**New pins:** `myc-post` `74e73ec0…` (install-cycle.sh, bridge `POST_V1`, SHA256SUMS). `myc-stageb` v5.2 is unchanged. Not changed: `codex-*` files and the Codex review. Codex's memory-suite EPERM was in Codex's own environment; here the memory suite passes.
+
+**Correction, same day:** the owner P0 reset (`36a4dc09`) supersedes the turn-based goal. The handoff and snapshot additions above are **PARKED** with the cycle package; only the security and correctness fixes count. Codex's check of those is [MYC-0.1-A2](TASKS.md), which is not a gate for the concurrent-coordinator work. No calls, host or Neon changes.

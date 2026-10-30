@@ -48,7 +48,7 @@ const act = (readFileSync(process.env.CTL + '/scenario', 'utf8').split('\n').fin
 const seed = (p.match(/^\[node ([0-9a-f-]{36})\] kind="question"/m) || [])[1];
 const prev = (p.match(/tasks\/(MYC-\d{8}-\d{3})\/result\.md/) || [])[1];
 const mech = name => `// ${name}: breadth-first with random fallback\nfunction create(api) { const q = api.seeds.map(s => s.id), seen = new Set(q); let h = 0;\n  return { choose() { return h < q.length ? { fetch: q[h++] } : { fetch: q[Math.floor(Math.random() * q.length)] }; },\n    observe(o) { for (const l of o.links) if (!seen.has(l.to)) { seen.add(l.to); q.push(l.to); } } }; }\n`;
-let out = `${agent} turn ${turn}: ${act}. Saw scoreboard: ${/\| verified \|/.test(p)}. Saw my files: ${p.includes('Current files of ' + agent)}.\n\n`;
+let out = `${agent} turn ${turn}: ${act}. Saw scoreboard: ${/\| verified \|/.test(p)}. Saw my files: ${p.includes('Files ' + agent + ' has changed during this cycle') && p.includes('mycelium-file path=mechanisms/' + agent + '-')}.\n\n`;
 const [kind, name] = act.split(':');
 if (kind === 'mech' || kind === 'same') out += '```mycelium-file path=mechanisms/' + agent + '-' + name + '.js\n' + mech(agent + '-' + name) + '```\n\n'
   + '```mycelium-prediction\n' + JSON.stringify({ mechanism: agent + '-' + name, case: 'small-a', metric: 'verified', op: '>', value: 1 }) + '\n```\n\n';
@@ -120,6 +120,8 @@ grep -q 'workbench pinned at' "$T/out" && [[ -f $WB/cycle-a/tree/mechanisms/code
 res MYC-20261101-001 | grep -q '## Workbench result (machine-written' && res MYC-20261101-001 | grep -q 'codex-c1 | ' && res MYC-20261101-001 | grep -qE 'verified > 1 -> (HELD|FAILED)' \
   && ok "turn 1's GitHub result carries its scored artifact and prediction verdict" || { bad "result 1"; res MYC-20261101-001 | tail -20; }
 grep -q 'Saw scoreboard: true' "$T/ctl/prompt.002" 2>/dev/null || res MYC-20261101-002 | grep -q 'Saw scoreboard: true' && ok "turn 2 (Claude) received turn 1's real scoreboard automatically" || bad "handoff scoreboard"
+grep -q '^## Workbench source at commit' "$T/ctl/prompt.001" && grep -q 'mycelium-file path=mechanisms/baseline-fixed.js' "$T/ctl/prompt.001" && grep -q '^## Workbench source at commit' "$T/ctl/prompt.004" \
+  && ok "every turn's sealed snapshot carries the starting source of the workbench mechanisms and cases" || bad "snapshot sources"
 res MYC-20261101-003 | grep -q 'Saw my files: true' && ok "turn 3 (Codex) received its OWN earlier files via turn 2's result (cumulative code state)" || { bad "carry files"; res MYC-20261101-003 | head -3; }
 tail -2 "$WB/cycle-a/progress.jsonl" | jq -se '.[0].progress == false and .[1].progress == false and .[1].stall == true' >/dev/null && ok "progress records: repeat = no progress, prose = no progress, STALL" || { bad "progress"; cat "$WB/cycle-a/progress.jsonl"; }
 [[ $(tail -1 "$ST/batches/cycle-a/receipt" | cut -d' ' -f2) == VERIFIED && $(nodes) == $((n0 + 4)) && ! -e $R/etc/myc-stageb/cycle-a.allowed ]] \

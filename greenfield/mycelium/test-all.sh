@@ -12,4 +12,5 @@ suite e0                 node --test brain/experiments/e0-sim.test.mjs
 suite cycle-package      bash runs/check-cycle-package.sh
 suite memory             bash -c 'cd memory && npm run -s build && npm test'
 for t in stageb runner-decisions review-regressions memref upgrade-gate post install-cycle; do suite "stageb-$t" bash "stageb/test-$t.sh"; done
+suite stageb-codex-post   bash stageb/codex-test-post.sh
 [[ $fails == 0 ]] && echo "MYCELIUM 0.1 OFFLINE SUITES: PASS" || echo "MYCELIUM 0.1 OFFLINE SUITES: FAIL ($fails)"; [[ $fails == 0 ]]
