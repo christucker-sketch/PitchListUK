@@ -79,7 +79,7 @@ export async function* agentRun({ agent, config, worktree, inbox, runtime }) {
       d.mode = d.openTurn === null ? 'new-turn' : d.midTurn ? 'mid-turn' : 'queued';   // sent while idle / taken in during the turn / held until it ended
       if (d.midTurn) {   // folded into the running turn: its own turn record closes now (the grant stays consumed)
         const t = turns.find(x => x.viaDelivery === m.uuid); t.endedAt = d.consumedAt; t.merged = true;
-        runtime.publish({ type: 'call', permit: t.permit, startedAt: t.startedAt, endedAt: t.endedAt, ms: Date.parse(t.endedAt) - Date.parse(t.startedAt), model: null, inputTokens: null, outputTokens: null, costUsd: null }).catch(() => {});
+        runtime.publish({ type: 'call', permit: t.permit, interval: 'stdin-ack', startedAt: t.startedAt, endedAt: t.endedAt, ms: Date.parse(t.endedAt) - Date.parse(t.startedAt), model: null, inputTokens: null, outputTokens: null, costUsd: null }).catch(() => {});
       }
       const label = { 'mid-turn': 'MID-TURN', queued: 'only after the running turn ended (QUEUED)', 'new-turn': 'as a NEW TURN (sent while idle)' }[d.mode];
       runtime.publish({ type: 'event', kind: 'note', body: `stdin delivery ${m.uuid.slice(0, 8)} consumed ${label}`, data: { delivery: m.uuid, sentAt: d.sentAt, consumedAt: d.consumedAt, mode: d.mode, midTurn: d.midTurn, ids: d.ids } }).catch(() => {});
@@ -87,7 +87,7 @@ export async function* agentRun({ agent, config, worktree, inbox, runtime }) {
       const t = turns.find(x => !x.endedAt && !(x.viaDelivery && !deliveries.get(x.viaDelivery).consumedAt)) ?? turns.find(x => !x.endedAt); if (!t) return;
       t.endedAt = new Date().toISOString(); turnActive = turns.some(x => !x.endedAt); if (!turnActive) idleSince = Date.now();
       const u = m.usage ?? {};
-      runtime.publish({ type: 'call', permit: t.permit, startedAt: t.startedAt, endedAt: t.endedAt, ms: Date.parse(t.endedAt) - Date.parse(t.startedAt), model: m.model ?? null,
+      runtime.publish({ type: 'call', permit: t.permit, interval: 'active-turn', startedAt: t.startedAt, endedAt: t.endedAt, ms: Date.parse(t.endedAt) - Date.parse(t.startedAt), model: m.model ?? null,
         inputTokens: u.input_tokens ?? null, outputTokens: u.output_tokens ?? null, costUsd: null }).catch(() => {});
       if (typeof m.total_cost_usd === 'number') runtime.publish({ type: 'event', kind: 'note', body: `Claude turn result (${m.subtype ?? 'result'}); API-equivalent ${m.total_cost_usd} USD, not billed under subscription`, data: { apiEquivalentUsd: m.total_cost_usd, permit: t.permit } }).catch(() => {});
     }
@@ -121,3 +121,4 @@ export async function* agentRun({ agent, config, worktree, inbox, runtime }) {
   const count = mode => [...deliveries.values()].filter(d => d.mode === mode).length, never = [...deliveries.values()].filter(d => !d.consumedAt).length;
   yield { type: 'done', body: `Claude session ended: ${turns.length} turn record(s); stdin deliveries consumed mid-turn ${count('mid-turn')}, queued ${count('queued')}, as new turns ${count('new-turn')}, never consumed ${never}` };
 }
+

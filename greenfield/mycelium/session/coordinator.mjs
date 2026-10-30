@@ -61,6 +61,12 @@ export async function runSession(opts) {
   for (const a of AGENTS) if (!/^[a-z0-9-]{1,40}$/.test(agents?.[a]?.adapter ?? '')) throw new Error(`agents.${a}.adapter must name a module in adapters/`);
   mkdirSync(dir, { recursive: true });
   const bus = openBus(join(dir, 'events.jsonl'), { session: id, maxEvents, maxBytes });
+  if (existsSync(join(dir, 'STOP'))) {
+    bus.append({ actor: 'coordinator', kind: 'stop', body: 'pre-existing STOP: no workers or dispatches started' });
+    bus.append({ actor: 'coordinator', kind: 'done', body: `session ${id} refused before startup` });
+    const events = bus.all(); bus.close();
+    return { id, events, report: analyze(events), worktrees: {} };
+  }
   const wt = {}, branch = a => `session/${id}/${a}`;
   for (const a of [...AGENTS, 'integration']) { wt[a] = join(dir, 'wt-' + a); await git(repo, 'worktree', 'add', '-q', '-b', branch(a), wt[a], baseRef); }
   for (const a of [...AGENTS, 'integration']) { await git(wt[a], 'config', 'user.name', a === 'integration' ? 'session-coordinator' : `${a}-agent`); await git(wt[a], 'config', 'user.email', `${a}@mycelium.invalid`); }
@@ -142,6 +148,7 @@ export async function runSession(opts) {
 
   async function handle(a, m) {
     if (m.op === 'reserve') {
+      if (existsSync(join(dir, 'STOP'))) { stop('STOP file'); throw new Error('session stopping'); }
       if (stopping) throw new Error('session stopping');
       if (calls[a] >= maxCallsPerAgent) {
         if (!limited.has(a)) { limited.add(a); append('coordinator', 'limit', `${a} has used its ${maxCallsPerAgent}-dispatch allowance; no further turn or steer`, { data: { agent: a } }); }
@@ -179,7 +186,7 @@ export async function runSession(opts) {
         const p = permits.get(out.permit);
         if (!p || p.agent !== a || p.used) throw new Error('a call record needs an unused grant of this agent');
         p.used = true;
-        const ev = append(a, 'call', `${a} model dispatch under ${out.permit}: ${out.ms ?? '?'} ms`, { refs: [bus.byId(out.permit).seq], data: { permit: out.permit, startedAt: out.startedAt ?? null, endedAt: out.endedAt ?? null, ms: out.ms ?? null, model: out.model ?? null, inputTokens: out.inputTokens ?? null, outputTokens: out.outputTokens ?? null, costUsd: out.costUsd ?? null } });
+        const ev = append(a, 'call', `${a} model dispatch under ${out.permit}: ${out.ms ?? '?'} ms`, { refs: [bus.byId(out.permit).seq], data: { permit: out.permit, startedAt: out.startedAt ?? null, endedAt: out.endedAt ?? null, ms: out.ms ?? null, model: out.model ?? null, inputTokens: out.inputTokens ?? null, outputTokens: out.outputTokens ?? null, costUsd: out.costUsd ?? null, interval: out.interval ?? (agents[a].adapter === 'fake' ? 'simulated' : 'unknown'), outcome: out.outcome ?? null, method: out.method ?? null, threadId: out.threadId ?? null, turnId: out.turnId ?? null } });
         return { seq: ev?.seq ?? null };
       }
       throw new Error('unknown publication type');
@@ -247,15 +254,17 @@ export function analyze(events) {
   const changedBy = events.filter(e => e.kind === 'commit' && caused(e));
   const ledger = events.filter(e => e.kind === 'call').map(e => ({ agent: e.actor, ...e.data }));
   let callOverlapMs = 0;
-  for (const x of ledger.filter(c => c.agent === 'claude' && c.startedAt)) for (const y of ledger.filter(c => c.agent === 'codex' && c.startedAt))
+  const activeCall = c => c.startedAt && (c.interval === 'active-turn' || c.interval === 'simulated');
+  for (const x of ledger.filter(c => c.agent === 'claude' && activeCall(c))) for (const y of ledger.filter(c => c.agent === 'codex' && activeCall(c)))
     callOverlapMs += Math.max(0, Math.min(Date.parse(x.endedAt), Date.parse(y.endedAt)) - Math.max(Date.parse(x.startedAt), Date.parse(y.startedAt)));
   const tested = events.filter(e => e.kind === 'tested');
   const lastTest = tested.at(-1);
   const dir = { claudeToCodex: midSession.some(e => e.actor === 'claude'), codexToClaude: midSession.some(e => e.actor === 'codex') };
   const criteria = { overlappingCalls: callOverlapMs > 0, reactionEachDirection: dir.claudeToCodex && dir.codexToClaude, changedByOther: changedBy.length > 0,
-    sharedTestsPass: lastTest?.data?.ok === true, noStop: !events.some(e => e.kind === 'stop'), noWorkerFailure: !events.some(e => e.kind === 'exit' && e.data?.code) };
+    sharedTestsPass: lastTest?.data?.ok === true, noStop: !events.some(e => e.kind === 'stop'), noWorkerFailure: !events.some(e => e.kind === 'exit' && (e.data?.code !== 0 || e.data?.signal)) };
   return { span, overlapMs, callOverlapMs, crossReactions: crossRefs.map(e => e.seq), midSessionReactions: midSession.map(e => e.seq), commitsCausedByOther: changedBy.map(e => e.seq),
     integrationTests: tested.map(e => ({ seq: e.seq, agent: e.data.agent, ok: e.data.ok })), calls: ledger, grants: events.filter(e => e.kind === 'grant').length,
     stopped: events.some(e => e.kind === 'stop'), events: events.length,
     pass: { mechanical: Object.values(criteria).every(Boolean), criteria, requiresManualReview: 'references prove linkage, not substance: review the linked events, diffs and tests by hand' } };
 }
+

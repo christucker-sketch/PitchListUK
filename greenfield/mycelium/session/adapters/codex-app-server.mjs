@@ -17,7 +17,7 @@ export class CodexSession {
   constructor({ rpc, reserve, publish, signal, worktree, maxContextBytes = 24000, maxDeliveries = 16 }) {
     if (!rpc || typeof reserve !== 'function' || typeof publish !== 'function' || !signal || !worktree) throw new Error('trusted session capabilities required');
     Object.assign(this, { rpc, reserve, publish, signal, worktree, maxContextBytes, maxDeliveries });
-    this.seen = new Set(); this.tools = new Map(); this.contextBytes = 0; this.deliveries = 0; this.n = 0; this.deliveryQueue = Promise.resolve();
+    this.seen = new Set(); this.tools = new Map(); this.contextBytes = 0; this.deliveries = 0; this.n = 0; this.deliveryQueue = Promise.resolve(); this.dispatches = [];
     this.finished = new Promise((resolve, reject) => { this.resolve = resolve; this.reject = reject; });
     // A terminal promise may reject before the worker begins awaiting it.
     this.finished.catch(() => {});
@@ -34,7 +34,27 @@ export class CodexSession {
     const permit = await this.reserve(intent); this.check();
     if (!permit?.id) throw new Error('allowance refused');
     await this.publish({ type: 'event', kind: 'note', body: `dispatch reserved: ${method}`, data: { ...intent, permit: permit.id } });
-    this.check(); return dispatch();
+    this.check();
+    const d = { permit: permit.id, method, startedAt: new Date().toISOString() };
+    this.dispatches.push(d);
+    try {
+      const result = await dispatch();
+      if (method === 'turn/steer') await this.record(d, 'steer-ack', 'accepted');
+      return result;
+    } catch (e) {
+      await this.record(d, 'unknown', 'unknown');
+      throw e;
+    }
+  }
+  async record(d, interval, outcome) {
+    if (d.recorded) return;
+    d.recorded = true;
+    const endedAt = new Date().toISOString(), active = interval === 'active-turn';
+    await this.publish({ type: 'call', permit: d.permit, method: d.method, interval, outcome,
+      threadId: this.threadId, turnId: this.turnId, startedAt: d.startedAt, endedAt,
+      ms: Date.parse(endedAt) - Date.parse(d.startedAt), model: null,
+      inputTokens: active ? this.usage?.inputTokens ?? null : null,
+      outputTokens: active ? this.usage?.outputTokens ?? null : null, costUsd: null });
   }
   async start(prompt) {
     this.check();
@@ -120,6 +140,7 @@ export class CodexSession {
       if (this.completed) return;
       this.completed = true;
       await Promise.all([...this.tools.values()].map(x => x.promise));
+      for (const d of this.dispatches) if (d.method === 'turn/start') await this.record(d, 'active-turn', p.turn.status);
       await this.publish({ type: 'event', kind: 'note', body: `Codex turn ${p.turn.status}`, data: { threadId: this.threadId, turnId: this.turnId, usage: this.usage ?? null, costUsd: null } });
       if (p.turn.status !== 'completed') this.reject(new Error(`turn ended ${p.turn.status}`));
       else this.resolve();
@@ -131,6 +152,7 @@ export class CodexSession {
     if (this.threadId && this.turnId && !this.completed) {
       try { await this.rpc.request('turn/interrupt', { threadId: this.threadId, turnId: this.turnId }); } catch {} // transport timeout remains bounded; launcher must kill process group
     }
+    for (const d of this.dispatches) await this.record(d, 'unknown', 'interrupted-or-unknown');
   }
 }
 

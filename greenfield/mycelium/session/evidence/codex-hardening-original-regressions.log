@@ -1,0 +1,17 @@
+✔ P0-01 bus byte limit must use UTF-8 bytes, not UTF-16 length (2.491068ms)
+✔ P0-02 duplicate ID with changed actor/body must be rejected, not cross-agent aliasing (0.947024ms)
+✔ P0-03 second writer must not allocate duplicate seq numbers (0.38737ms)
+✔ P0-04 recovery must validate persisted session/seq/schema before accepting more writes (0.467609ms)
+✔ P0-05 zero allowance means zero dispatches, not one finished call (150.259132ms)
+✔ P0-06 queued integration must not publish changes after STOP (255.55572ms)
+✔ P0-07 artifact tests must not write outside their integration sandbox (669.018262ms)
+✔ P0-08 crashed worker lifetime cannot be extended through peer events to fabricate overlap (0.512004ms)
+✔ P0-09 STOP must terminate descendants, not just worker PIDs (1301.757096ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2389.581458

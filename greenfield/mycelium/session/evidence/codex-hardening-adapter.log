@@ -1,0 +1,20 @@
+✔ one persistent thread receives deduplicated same-turn steering before completion (4.55491ms)
+✔ zero allowance prevents dispatch, including steering that may trigger additional inference (1.562308ms)
+✔ concurrent duplicate deliveries are serialized into one same-turn steer (0.657607ms)
+✔ no exec/resume fallback when active turn rejects steering; ambiguity is not retried (0.449081ms)
+✔ context overflow fails explicitly before inference; no silent oldest-event drop (0.749743ms)
+✔ dynamic tool publication happens during active turn, ACKed once and linked to peer event (1.194527ms)
+✔ submit uses broker, never edits worker filesystem; token costs remain unknown (0.867587ms)
+✔ abort sends turn/interrupt; old worker without trusted runtime cannot activate adapter (0.733018ms)
+✔ JSONL transport handles split UTF-8, out-of-order responses and server tool requests (4.429967ms)
+✔ transport closes on loss, bad JSON, excessive frame, or timeout; never retries (22.383348ms)
+✔ transport bounds server-request flood instead of accumulating unbounded async work (0.440127ms)
+✔ wire-level fake app-server publishes and reacts to steering before its one turn completes (2.757677ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 49.917128
