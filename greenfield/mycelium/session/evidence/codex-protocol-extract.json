@@ -1,0 +1,262 @@
+{
+  "sourceVersion": "codex-cli 0.159.0-alpha.3",
+  "sourceSchemaSha256": "99085431ecae51f218e46dd87858a03168f5c3c6b5c369315e2f430f4a7eff62",
+  "definitions": {
+    "InitializeParams": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "properties": {
+        "capabilities": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/InitializeCapabilities"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "clientInfo": {
+          "$ref": "#/definitions/ClientInfo"
+        }
+      },
+      "required": [
+        "clientInfo"
+      ],
+      "title": "InitializeParams",
+      "type": "object"
+    },
+    "InitializeCapabilities": {
+      "description": "Client-declared capabilities negotiated during initialize.",
+      "properties": {
+        "experimentalApi": {
+          "default": false,
+          "description": "Opt into receiving experimental API methods and fields.",
+          "type": "boolean"
+        },
+        "explicitGatewayOauth": {
+          "description": "Use explicit gateway OAuth login instead of automatic browser authorization. Applies to this app-server's gateway runtime; later connections cannot undo it.",
+          "type": "boolean"
+        },
+        "extensions": {
+          "additionalProperties": true,
+          "description": "MCP extension settings declared by the app-server client.",
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "mcpServerOpenaiFormElicitation": {
+          "description": "Legacy opt-in for the `openai/form` MCP extension.\n\nNew clients should declare `openai/form` in [`Self::extensions`].",
+          "type": "boolean"
+        },
+        "optOutNotificationMethods": {
+          "description": "Exact notification method names that should be suppressed for this connection (for example `thread/started`).",
+          "items": {
+            "type": "string"
+          },
+          "type": [
+            "array",
+            "null"
+          ]
+        },
+        "requestAttestation": {
+          "default": false,
+          "description": "Opt into `attestation/generate` requests for upstream `x-oai-attestation`.",
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "DynamicToolCallParams": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "properties": {
+        "arguments": true,
+        "callId": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "threadId": {
+          "type": "string"
+        },
+        "tool": {
+          "type": "string"
+        },
+        "turnId": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "arguments",
+        "callId",
+        "threadId",
+        "tool",
+        "turnId"
+      ],
+      "title": "DynamicToolCallParams",
+      "type": "object"
+    },
+    "DynamicToolCallResponse": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "properties": {
+        "contentItems": {
+          "items": {
+            "$ref": "#/definitions/v2/DynamicToolCallOutputContentItem"
+          },
+          "type": "array"
+        },
+        "success": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "contentItems",
+        "success"
+      ],
+      "title": "DynamicToolCallResponse",
+      "type": "object"
+    }
+  },
+  "v2": {
+    "TurnSteerParams": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "properties": {
+        "additionalContext": {
+          "additionalProperties": {
+            "$ref": "#/definitions/v2/AdditionalContextEntry"
+          },
+          "description": "Optional client-provided context fragments keyed by an opaque source identifier.",
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "clientUserMessageId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "expectedTurnId": {
+          "description": "Required active turn id precondition. The request fails when it does not match the currently active turn.",
+          "type": "string"
+        },
+        "input": {
+          "items": {
+            "$ref": "#/definitions/v2/UserInput"
+          },
+          "type": "array"
+        },
+        "responsesapiClientMetadata": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Optional metadata to enrich Codex's ResponsesAPI turn metadata.\n\nEntries are flattened into the JSON string sent as `client_metadata[\"x-codex-turn-metadata\"]` on ResponsesAPI HTTP and websocket requests.\n\nThey are not sent as top-level ResponsesAPI `client_metadata` keys, and reserved keys such as `session_id`, `thread_id`, `turn_id`, and `window_id` cannot be overridden.",
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "threadId": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "expectedTurnId",
+        "input",
+        "threadId"
+      ],
+      "title": "TurnSteerParams",
+      "type": "object"
+    },
+    "TurnSteerResponse": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "properties": {
+        "turnId": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "turnId"
+      ],
+      "title": "TurnSteerResponse",
+      "type": "object"
+    },
+    "TurnInterruptParams": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "properties": {
+        "threadId": {
+          "type": "string"
+        },
+        "turnId": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "threadId",
+        "turnId"
+      ],
+      "title": "TurnInterruptParams",
+      "type": "object"
+    },
+    "TurnStartedNotification": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "properties": {
+        "threadId": {
+          "type": "string"
+        },
+        "turn": {
+          "$ref": "#/definitions/v2/Turn"
+        }
+      },
+      "required": [
+        "threadId",
+        "turn"
+      ],
+      "title": "TurnStartedNotification",
+      "type": "object"
+    },
+    "TurnCompletedNotification": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "properties": {
+        "threadId": {
+          "type": "string"
+        },
+        "turn": {
+          "$ref": "#/definitions/v2/Turn"
+        }
+      },
+      "required": [
+        "threadId",
+        "turn"
+      ],
+      "title": "TurnCompletedNotification",
+      "type": "object"
+    },
+    "ThreadTokenUsageUpdatedNotification": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "properties": {
+        "threadId": {
+          "type": "string"
+        },
+        "tokenUsage": {
+          "$ref": "#/definitions/v2/ThreadTokenUsage"
+        },
+        "turnId": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "threadId",
+        "tokenUsage",
+        "turnId"
+      ],
+      "title": "ThreadTokenUsageUpdatedNotification",
+      "type": "object"
+    }
+  }
+}
