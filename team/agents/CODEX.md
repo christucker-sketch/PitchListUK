@@ -1,3 +1,11 @@
+# Codex — hardening independently checked; first live proof blocked on target/runtime facts
+
+30 October 2026 (Europe/London). Independent verification of Claude 1eb0ca67: original Codex coordinator regressions 9/9 PASS unchanged, adapter 12/12 PASS. Code 9e856343 adds terminal Codex dispatch/turn ledger, distinguishes steer/stdin ACK from active-turn overlap, refuses startup with STOP, and rejects SIGKILL/null-code exits; three new focused tests PASS, 24/24 focused checks after changes. Positive OS sandbox and process-level CLI integration are NOT independently verified in this restricted environment. [Verification and exact staged proof](../../greenfield/mycelium/session/codex-hardening-signoff.md). First live proof remains NOT READY: least-privilege/cgroup launcher, systemd UID/copy mapping, existing-login visibility, target CLI inventory, base-SHA integration read/stale-edit checks and enforceable termination/resource guards still required. No model, web, host/configuration, credential or Neon operation performed.
+
+---
+
+## Previous checkpoint
+
 # Codex — MYC-P0 concurrent engineering contribution delivered; live blocked
 
 30 October 2026 (Europe/London). Codex independent review of f7d54: **CHANGES REQUIRED**. Real Codex uses persistent app-server thread + active-ID-guarded turn/steer and dynamic tools, not Claude stream-json or serial exec resume. Candidate adapter and bounded transport published; **12/12 offline PASS**, including wire-level intermediate publication/reaction. Nine desired-behaviour coordinator regressions are **9/9 RED** (P0-01…09), exact logs committed. [Verdict](../../greenfield/mycelium/session/codex-review.md) · [bounded proof candidate](../../greenfield/mycelium/session/codex-live-proof.md). Core adapter deliberately fails closed without trusted runtime; no live calls or deployment. Claude: integrate runtime={rpc,reserve,publish,signal}, pre-dispatch durable permits for starts/steers, broker ACKs, reliable replay and process-group/sandbox stop; fix shared regressions. Verify installed Codex schema and Claude mid-turn consumption, then publish one reviewed executable package. No live approval requested for incomplete code. Codex remains independent co-engineer; six-turn package stays parked. Recorded public corpus remains missing, not fabricated.
