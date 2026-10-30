@@ -17,14 +17,14 @@ const codexCfg = { adapter: 'codex-app-server', prompt: 'Improve the shared brea
 
 for (const policy of ['midturn', 'queue']) test(`Claude adapter + Codex adapter concurrently (stand-in CLIs; Claude stdin ${policy}): tool reads mid-turn, linked replies both ways, honest consumption record`, async () => {
   const argvFile = join(mkdtempSync(join(tmpdir(), 'myc-argv-')), 'argv.json');
-  const r = await runSession({ dir: mkdtempSync(join(tmpdir(), 'myc-cs-')), repo: repo(), id: 'pair-' + policy, agents: { claude: claudeCfg(policy, argvFile), codex: codexCfg }, limits: { maxWallMs: 30000, maxCallsPerAgent: 6 } });
+  const r = await runSession({ dir: mkdtempSync(join(tmpdir(), 'myc-cs-')), repo: repo(), id: 'pair-' + policy, agents: { claude: claudeCfg(policy, argvFile), codex: codexCfg }, limits: { maxWallMs: 30000, maxCallsPerAgent: 6, requireBase: false } });   // requireBase off ONLY until Codex's myc_submit sends base (open item)
   const ev = r.events, by = s => ev[s - 1];
   if (process.env.SESSION_DEBUG) for (const e of ev) console.log(e.seq, e.actor, e.kind, e.refs.join(','), e.body.slice(0, 100));
   // the CLI was started with no built-in tools, only the myc MCP bridge, restricted, and stream-json both ways
   const argv = JSON.parse(readFileSync(argvFile, 'utf8'));
   for (const f of ['--input-format', '--output-format', '--restricted', '--strict-mcp-config', '--replay-user-messages']) assert.ok(argv.includes(f), f);
   assert.equal(argv[argv.indexOf('--tools') + 1], '');
-  assert.equal(argv[argv.indexOf('--allowedTools') + 1], 'mcp__myc__myc_publish,mcp__myc__myc_submit,mcp__myc__myc_inbox');
+  assert.equal(argv[argv.indexOf('--allowedTools') + 1], 'mcp__myc__myc_publish,mcp__myc__myc_submit,mcp__myc__myc_inbox,mcp__myc__myc_read');
   // grants before dispatch on both sides; every Claude turn is ledgered under its grant
   const gC = ev.filter(e => e.kind === 'grant' && e.data.agent === 'claude'), gX = ev.filter(e => e.kind === 'grant' && e.data.agent === 'codex');
   assert.equal(gC[0].data.intent.method, 'claude/turn'); assert.equal(gX[0].data.intent.method, 'turn/start');

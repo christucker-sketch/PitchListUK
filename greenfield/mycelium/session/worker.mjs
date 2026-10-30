@@ -2,6 +2,7 @@
 // gives it the trusted runtime the coordinator controls:
 //   runtime.reserve(intent) -> { id } | null    a durable grant BEFORE any model dispatch (turn start or steer); null = refused
 //   runtime.publish(out)    -> receipt           resolves after the coordinator durably recorded / integrated it; throws if refused
+//   runtime.read({paths?, headOnly?}) -> { integration, paths, files, truncated }   the current shared state and its commit
 //   runtime.signal          AbortSignal          aborted when the coordinator says stop
 //   runtime.rpc             (optional)           a bounded JSON-lines connection to a CLI process this worker launched in
 //                                                its own process group (config.launch = { command: [...] }), for the Codex
@@ -45,6 +46,8 @@ const inbox = {
 const runtime = {
   async reserve(intent) { if (stopped) return null; const r = await request('reserve', { intent }); return r.permit; },
   publish(out) { return request('publish', { out }); },
+  // the current integration commit (the base a submission must name) and its allowlisted files, within a byte budget
+  read({ paths, headOnly } = {}) { return request('read', { paths, headOnly }); },
   signal: ac.signal, rpc: null
 };
 process.on('message', async m => {

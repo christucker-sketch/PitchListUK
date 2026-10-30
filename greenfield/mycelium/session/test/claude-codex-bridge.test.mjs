@@ -18,7 +18,7 @@ test('Codex adapter under the shared runtime: granted start and steer, mid-turn 
   const codex = { adapter: 'codex-app-server', prompt: 'Improve the shared breadcrumb frontier.', launch: { command: [process.execPath, join(HERE, 'fixtures', 'fake-codex-app-server.mjs')] } };
   const claude = { adapter: 'fake', script: [{ call: 300 }, { emit: 'finding', body: 'Claude: relative links must be resolved against the page URL before dedupe', label: 'f' },
     { await: { actor: 'codex', kind: 'reply' }, label: 'r', timeoutMs: 8000 }, { emit: 'note', body: 'Claude: saw the Codex reply', refs: ['r'] }, { call: 200 }, { done: 'claude done' }] };
-  const r = await runSession({ dir: mkdtempSync(join(tmpdir(), 'myc-bridge-')), repo: repo(), id: 'bridge', agents: { claude, codex }, limits: { maxWallMs: 20000, maxCallsPerAgent: 4 } });
+  const r = await runSession({ dir: mkdtempSync(join(tmpdir(), 'myc-bridge-')), repo: repo(), id: 'bridge', agents: { claude, codex }, limits: { maxWallMs: 20000, maxCallsPerAgent: 4, requireBase: false } });   // until Codex's myc_submit sends base (open item)
   const ev = r.events, by = s => ev[s - 1];
   const grants = ev.filter(e => e.kind === 'grant' && e.data.agent === 'codex').map(e => e.data.intent.method);
   assert.deepEqual(grants.slice(0, 2), ['turn/start', 'turn/steer'], 'each dispatch was granted before it was sent');

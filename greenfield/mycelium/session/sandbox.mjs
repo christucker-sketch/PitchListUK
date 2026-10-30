@@ -4,8 +4,10 @@
 //   backend 'unshare' (root; offline and CI): new mount + network + PID namespace; private tmpfs on /tmp, /var/tmp and
 //     /dev/shm; runs as nobody (65534) with no new privileges, a clean environment (PATH and HOME=/nonexistent only),
 //     rlimits on CPU time, file size, open files and processes; killing it ends the whole PID namespace.
-//   backend 'systemd' (fpd-prod): systemd-run as mycexp with the myc-post property set (PrivateNetwork, ProtectSystem=
-//     strict, ProtectHome, PrivateTmp, NoNewPrivileges, MemoryMax, TasksMax, RuntimeMaxSec, CPUQuota). Not exercised here.
+//   backend 'systemd' (fpd-prod): systemd-run with DynamicUser=yes (a fresh transient UID per run: no account to create,
+//     nothing shared with other services), PrivateNetwork, IPAddressDeny=any, ProtectSystem=strict, ProtectHome,
+//     PrivateTmp, NoNewPrivileges, MemoryMax=512M, TasksMax=64, RuntimeMaxSec, CPUQuota=200%. The copy is made writable
+//     to that UID (mode a+rwX inside a 0711 box with a random name). Not exercised offline (no systemd here).
 import { spawn, execFileSync } from 'node:child_process';
 import { mkdirSync, mkdtempSync, chmodSync, rmSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
@@ -32,14 +34,15 @@ export function runSandboxed(cmd, { repoDir, commit, backend = 'unshare', timeou
   const box = mkdtempSync(join(SANDBOX_ROOT, 't-')), work = join(box, 'work');
   mkdirSync(work);
   execFileSync('bash', ['-c', 'git -C "$1" archive "$2" | tar -x -C "$3"', '_', repoDir, commit, work]);
-  execFileSync('chown', ['-R', `${NOBODY}:${NOBODY}`, work]); chmodSync(box, 0o711);
+  if (backend === 'systemd') execFileSync('chmod', ['-R', 'a+rwX', work]); else execFileSync('chown', ['-R', `${NOBODY}:${NOBODY}`, work]);
+  chmodSync(box, 0o711);
   const path = [dirname(process.execPath), '/usr/local/bin', '/usr/bin', '/bin'].join(':');
   const t0 = Date.now();
   return new Promise(resolve => {
     let out = '';
     const argv = backend === 'unshare'
       ? ['unshare', '--mount', '--net', '--pid', '--fork', '--kill-child', '--', 'sh', '-c', INNER, 'sbx', ...cmd]
-      : ['systemd-run', '--quiet', '--wait', '--pipe', '--collect', '--service-type=exec', '-p', 'User=mycexp', '-p', 'Group=mycexp', '-p', 'PrivateNetwork=yes',
+      : ['systemd-run', '--quiet', '--wait', '--pipe', '--collect', '--service-type=exec', '-p', 'DynamicUser=yes', '-p', 'PrivateNetwork=yes',
          '-p', 'IPAddressDeny=any', '-p', 'ProtectSystem=strict', '-p', 'ProtectHome=yes', '-p', 'PrivateTmp=yes', '-p', 'NoNewPrivileges=yes', '-p', `ReadWritePaths=${work}`,
          '-p', 'MemoryMax=512M', '-p', 'TasksMax=64', '-p', `RuntimeMaxSec=${Math.ceil(timeoutMs / 1000)}`, '-p', 'CPUQuota=200%', '-p', `WorkingDirectory=${work}`,
          '-p', 'Environment=HOME=/nonexistent', '-p', `Environment=PATH=${path}`, '--', ...cmd];

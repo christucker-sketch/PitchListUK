@@ -7,7 +7,9 @@
 //   { await: { actor?, kind?, match?, data? }, label, timeoutMs }   block until a matching delivered event arrives
 //   { busy: ms }                                    time passes WITHOUT reading the inbox (an agent that cannot keep up)
 //   { report: 'inbox' }                             publish how many events it has received so far
-//   test probes: { spawnSleep: true } (start a descendant and publish its pid), { envProbe: NAME } (publish whether the
+//   { crash: code } (exit the worker), { whoami: true } (publish uid/HOME)
+//   { readState: label }                            read the integration state; label its commit (usable as files.base)
+//   test probes: { spawnSleep: true | 'setsid' } (start a descendant and publish its pid), { envProbe: NAME } (publish whether the
 //   variable is visible), { direct: { path: content } } (edit the worktree directly, bypassing submission)
 //   { done: body }
 import { spawn } from 'node:child_process';
@@ -36,13 +38,17 @@ export async function* agentRun({ agent, config, worktree, inbox, runtime }) {
         const r = await runtime.publish({ type: 'event', kind: step.emit, body: step.body, id: step.id ?? `e${++n}`, refIds: (step.refs ?? []).map(ref) });
         if (step.label) labels.set(step.label, r.id);
       } else if (step.files) {
-        await runtime.publish({ type: 'files', files: Object.entries(step.files).map(([path, content]) => ({ path, content })), message: step.message, refIds: (step.refs ?? []).map(ref) });
+        const base = step.base === undefined ? (await runtime.read({ headOnly: true })).integration : (labels.get(step.base) ?? step.base);   // 'stale' tests pass an old base
+        await runtime.publish({ type: 'files', files: Object.entries(step.files).map(([path, content]) => ({ path, content })), message: step.message, refIds: (step.refs ?? []).map(ref), base });
       } else if (step.await) {
         const t0 = Date.now(); let hit;
         while (!(hit = seen.find(e => !used.has(e.seq) && matches(e, step.await))) && Date.now() - t0 < (step.timeoutMs ?? 10000) && !inbox.stopped) { await inbox.wait(100); pull(); }
         if (!hit) { await runtime.publish({ type: 'event', kind: 'note', body: `${agent}: gave up waiting for ${JSON.stringify(step.await).slice(0, 300)}` }); continue; }
         used.add(hit.seq); labels.set(step.label, hit.id);
-      } else if (step.spawnSleep) { const c = spawn('sleep', ['30'], { stdio: 'ignore' }); await runtime.publish({ type: 'event', kind: 'note', body: `descendant pid ${c.pid}`, data: { pid: c.pid } });
+      } else if (step.crash !== undefined) { process.exit(step.crash);
+      } else if (step.whoami) { await runtime.publish({ type: 'event', kind: 'note', body: `uid=${process.getuid()} home=${process.env.HOME} runtime=${process.env.MYC_RUNTIME_DIR ? 'set' : 'unset'}` });
+      } else if (step.readState) { const st = await runtime.read({}); labels.set(step.readState, st.integration); await runtime.publish({ type: 'event', kind: 'note', body: `read integration ${st.integration.slice(0, 12)}: ${st.paths.join(', ')}`, data: { integration: st.integration, files: st.files.length } });
+      } else if (step.spawnSleep) { const c = spawn(step.spawnSleep === 'setsid' ? 'setsid' : 'sleep', step.spawnSleep === 'setsid' ? ['sleep', '30'] : ['30'], { stdio: 'ignore', detached: step.spawnSleep === 'setsid' }); await runtime.publish({ type: 'event', kind: 'note', body: `descendant pid ${c.pid}`, data: { pid: c.pid } });
       } else if (step.envProbe) { await runtime.publish({ type: 'event', kind: 'note', body: `${step.envProbe} visible=${process.env[step.envProbe] !== undefined}` });
       } else if (step.direct) { for (const [p, c] of Object.entries(step.direct)) { mkdirSync(dirname(join(worktree, p)), { recursive: true }); writeFileSync(join(worktree, p), c); }
       } else if (step.report === 'inbox') { pull(); await runtime.publish({ type: 'event', kind: 'note', body: `${agent}: inbox dropped=${inbox.dropped} seen=${seen.length}` }); }

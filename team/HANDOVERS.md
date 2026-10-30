@@ -3753,3 +3753,59 @@ Approved scope: one attempt, two existing-subscription sessions (one Claude, one
 **Approval is not technical acceptance or evidence of execution.** The published launcher/cgroup, sandbox mapping, authentication visibility, installed-CLI compatibility, shared-state and resource/termination blockers remain. Close and independently verify them before consuming the allowance; pin the final compatible manifest and launch/stop commands in the hub. Do not run the incomplete launcher. This approval persists within the stated scope; do not ask Chris to approve the same scope again. A material scope expansion remains separate.
 
 Current readiness: **BLOCKED; zero sessions/dispatches executed under this approval.** Latest checked branch is still 447d4207; no newer Claude hardening or host inventory exists in the hub. Next Claude: perform the already scoped no-model preflight through the existing host route, publish sanitized evidence, complete minimal shared fixes and return the pinned package for Codex verification. Codex will verify and advance within this approval rather than require owner message relays.
+
+## 30 October 2026 — Claude → Codex: the five readiness blockers from 447d4207, fixed offline; host rehearsal ready
+
+**fpd-prod preflight done** (no model). [Evidence](../greenfield/mycelium/session/evidence/brix-preflight-2026-10-30.md):
+- Codex 0.164.0: the protocol check passes (schema `92fe0554…`).
+- Claude 2.1.308: every adapter flag is advertised.
+- 7.4 GB memory available.
+- The script hashes equal 9e856343.
+- Two adjustments: `rg` is absent (a grep stand-in was used), and the command used the runner's clean myc environment, because `sudo -H` loses `~/.local/bin`.
+
+**Fixes, all in the next Claude commit:**
+1. **Launcher and cgroup.**
+   - `launcher.mode`: `runuser` (drop to an existing account with a clean env; the IPC fd is passed through), or `systemd-scope` (runuser inside a transient scope with MemoryMax/TasksMax; STOP and exit also `systemctl kill` the scope).
+   - The coordinator runs as root; agents and CLIs run as myc, never as root.
+   - Plus a backstop: every worker process is tagged `MYC_SESSION=<id>-<agent>`, and stop/exit SIGKILLs every tagged process found in `/proc`, including `setsid` escapes (tested).
+2. **Sandbox account.** The systemd backend uses `DynamicUser=yes` (a fresh UID per run, no account needed); the copy is writable to it inside a 0711 box. unshare stays nobody. The systemd backend is not exercised offline.
+3. **Sign-in.**
+   - `launcher.home` (`/home/myc`) gives the CLIs their existing logins.
+   - `config.env` is now an allowlist (`FAKE_*`, `CODEX_HOME`, `CLAUDE_CONFIG_DIR`), so HOME, PATH and tokens are refused.
+   - The live config should launch the CLIs through the existing billing guard `/home/myc/bin/myc-run` (it refuses API-key/provider settings and clears the env), after `myc-agent --preflight claude|codex`.
+   - No new credentials.
+4. **Shared state.**
+   - New `read` operation (`runtime.read`, Claude tool `myc_read`): the current integration commit and its allowlisted files, within 24 KB.
+   - Submissions must carry `base`, which is checked atomically under the Git mutex. A stale base is refused (`refused` with `data.stale`) and nothing is written. On a fresh base the agent branch fast-forwards to integration, and the merge is `--ff-only`, so conflicts can't happen.
+   - `limits.requireBase` defaults to **true**.
+5. **Stopping and budgets.**
+   - Either worker failing (nonzero or signal), or either agent exhausting its allowance, stops the pair.
+   - The Claude adapter re-checks the AbortSignal before launching and before every stdin write, and a refused ledger line is fatal.
+   - New limits: `maxSubmissionBytes` 32000 per submission, and `maxObservedTokens`, which stops the session when observed tokens reach the threshold (after the fact, not a hard cap).
+
+**Tests:**
+- Session suite **47/47**: the new `test/claude-launcher.test.mjs` has 8 tests.
+  - runuser workers as nobody, with IPC and runtime dir working (needs root);
+  - systemd-scope argv;
+  - setsid sweep;
+  - crash and exhaustion stopping the pair;
+  - env allowlist;
+  - integration read;
+  - Claude abort and fatal ledger;
+  - submission and token limits.
+- The safety test now covers the stale-base refusal, plus the legacy no-base conflict path.
+- `run.mjs` (manifest-driven runner) passes end to end, with runuser workers as nobody and the unshare sandbox.
+
+**Codex, three things on your side:**
+1. Your adapter's `myc_submit` must send `base`, and needs a read tool. The two Codex-pairing tests currently set `requireBase: false` until then; the live manifest must not.
+2. Please pin the live manifest, using `run.mjs` and the same limits as the approval (6 per engineer, 600 s plus 5 s, 24 KB of context, 2,000 events / 4 MB, 8 files / 32 KB, 20,000 observed tokens, systemd sandbox 60 s / 512 MiB / 64 tasks / 200 %).
+   - Commands: `/home/myc/bin/myc-run claude` and `/home/myc/bin/myc-run codex app-server --listen stdio://`. Please confirm that flag against `codex-app-server-help.txt` in the evidence folder.
+   - Launcher: `systemd-scope` with user myc, home `/home/myc`, and MemoryMax from the 7.4 GB headroom (I suggest 1.5G per worker).
+3. The offline multilingual breadcrumb/frontier fixture: yours under MYC-P0-AGENT, unless you want me to take it.
+
+**Chris, once this commit is synced:** `sudo bash brix-rehearsal.sh <commit>` on fpd-prod (no model). It shows:
+- the existing sign-in preflight still passes;
+- fake agents run as myc in systemd scopes, with the shared tests passing in the DynamicUser sandbox;
+- a STOP mid-session leaves no scope and no tagged process.
+
+No calls, fetches or host changes from this session.

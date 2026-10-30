@@ -72,18 +72,27 @@ test('limits: the per-agent call limit stops that agent; the wall-clock limit st
   assert.match(r2.events.find(e => e.kind === 'stop').body, /wall-clock limit/);
 });
 
-test('safety: paths outside the allowlist, traversal and symlinks are refused; a merge conflict leaves integration unchanged', async () => {
+test('safety: paths outside the allowlist, traversal and dotfiles are refused; a STALE submission is refused atomically (base check); without bases, a conflict leaves integration unchanged', async () => {
   const dir = mkdtempSync(join(tmpdir(), 'myc-session-'));
   const claude = { adapter: 'fake', script: [{ files: { '../escape.js': 'x', 'notes/x.md': 'x', 'artifact/.hidden': 'x', 'artifact/ok.mjs': 'x' }, message: 'mixed' },
     { files: { 'artifact/same.mjs': 'export const v = "claude";\n' }, message: 'same file' }, { call: 600 }, { done: 'c' }] };
-  const codex = { adapter: 'fake', script: [{ call: 300 }, { files: { 'artifact/same.mjs': 'export const v = "codex";\n' }, message: 'same file' }, { call: 600 }, { done: 'x' }] };
+  // Codex reads the state FIRST, then submits against that (by then old) commit
+  const codex = { adapter: 'fake', script: [{ readState: 'b0' }, { call: 400 }, { files: { 'artifact/same.mjs': 'export const v = "codex";\n' }, message: 'same file', base: 'b0' }, { call: 600 }, { done: 'x' }] };
   const r = await runSession({ dir, repo: repo(), id: 'safe', agents: { claude, codex }, limits: { maxWallMs: 20000 } });
   const refused = r.events.find(e => e.kind === 'refused');
   assert.ok(refused && /\.\.\/escape\.js/.test(refused.body) && /notes\/x\.md/.test(refused.body) && /\.hidden/.test(refused.body));
   assert.ok(!existsSync(join(dir, 'escape.js')) && !existsSync(join(dir, 'wt-claude', 'notes')) && !existsSync(join(dir, 'wt-claude', 'artifact', 'ok.mjs')), 'a refused submission writes nothing, not even its valid files');
-  assert.ok(r.events.some(e => e.kind === 'conflict' && e.data.agent === 'codex'));
+  const stale = r.events.find(e => e.kind === 'refused' && e.data?.stale);
+  assert.ok(stale && stale.data.agent === 'codex', 'Codex wrote against an old integration commit and was told to read again');
+  assert.ok(!r.events.some(e => e.kind === 'commit' && e.actor === 'codex'), 'nothing of the stale submission was committed');
   const shared = execFileSync('git', ['show', 'session/safe/integration:artifact/same.mjs'], { cwd: r.worktrees.integration, encoding: 'utf8' });
   assert.match(shared, /claude/);
+  // legacy no-base mode (only for adapters that cannot send a base yet): the merge conflict path still protects integration
+  const codex2 = { adapter: 'fake', script: [{ call: 300 }, { files: { 'artifact/same.mjs': 'export const v = "codex";\n' }, message: 'same file', base: null }, { call: 600 }, { done: 'x' }] };
+  const claude2 = { adapter: 'fake', script: [{ files: { 'artifact/same.mjs': 'export const v = "claude";\n' }, message: 'same file', base: null }, { call: 600 }, { done: 'c' }] };
+  const r2 = await runSession({ dir: mkdtempSync(join(tmpdir(), 'myc-session-')), repo: repo(), id: 'safe2', agents: { claude: claude2, codex: codex2 }, limits: { maxWallMs: 20000, requireBase: false } });
+  assert.ok(r2.events.some(e => e.kind === 'conflict' && e.data.agent === 'codex'));
+  assert.match(execFileSync('git', ['show', 'session/safe2/integration:artifact/same.mjs'], { cwd: r2.worktrees.integration, encoding: 'utf8' }), /claude/);
 });
 
 test('replayed inbox: an agent that falls behind loses NOTHING; it reads the backlog from its cursor later', async () => {

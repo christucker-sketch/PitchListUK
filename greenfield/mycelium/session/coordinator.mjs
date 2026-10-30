@@ -16,9 +16,9 @@
 // signalled, then their WHOLE process groups are killed after the grace period and again at the end (P0-09). A worker's
 // exit is a trusted 'exit' record that ends its live span (P0-08). Workers get a clean environment (no inherited secrets).
 // It never calls a model itself.
-import { fork, execFile } from 'node:child_process';
+import { fork, spawn, execFile, execFileSync } from 'node:child_process';
 import { promisify } from 'node:util';
-import { existsSync, mkdirSync, lstatSync, writeFileSync, renameSync } from 'node:fs';
+import { existsSync, mkdirSync, lstatSync, writeFileSync, renameSync, readdirSync, readFileSync, chmodSync, chownSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { randomBytes } from 'node:crypto';
@@ -29,6 +29,7 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 const run = promisify(execFile);
 export const AGENTS = ['claude', 'codex'];
 const GIT_ENV = { PATH: process.env.PATH, HOME: '/nonexistent', GIT_TERMINAL_PROMPT: '0', GIT_CONFIG_NOSYSTEM: '1', GIT_CONFIG_GLOBAL: '/dev/null', LANG: 'C' };
+const execFileSyncSafe = (cmd, args) => execFileSync(cmd, args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], timeout: 10000 }).trim();
 const git = (cwd, ...args) => run('git', ['-c', 'core.hooksPath=/dev/null', '-c', 'commit.gpgsign=false', ...args], { cwd, maxBuffer: 4 << 20, env: GIT_ENV });
 
 export function checkPath(p, allow) {
@@ -55,10 +56,41 @@ function safeWrite(root, rel, content) {
 export const relevantTo = (a, e) => e.actor !== a && ((AGENTS.includes(e.actor) && ['finding', 'question', 'challenge', 'reply', 'commit'].includes(e.kind))
   || (e.actor === 'coordinator' && ['tested', 'conflict', 'refused', 'stop', 'limit'].includes(e.kind)));
 
+// config.env may carry only these (test switches and CLI config-dir pointers); nothing else reaches a worker
+const ENV_OK = /^(FAKE_[A-Z0-9_]+|CODEX_HOME|CLAUDE_CONFIG_DIR)$/;
+// Kill every process that carries this session's tag in its environment, wherever it went (setsid, double fork). Needs
+// the coordinator to be able to read /proc/<pid>/environ (root, or the same user). On fpd-prod the systemd scope's
+// cgroup kill is the primary mechanism; this sweep is the backstop that also works offline.
+export function sweepSession(tag) {
+  let killed = 0;
+  for (const d of readdirSync('/proc')) {
+    if (!/^\d+$/.test(d) || Number(d) === process.pid) continue;
+    let env; try { env = readFileSync(`/proc/${d}/environ`, 'latin1'); } catch { continue; }
+    if (env.split('\0').includes(`MYC_SESSION=${tag}`)) { try { process.kill(Number(d), 'SIGKILL'); killed++; } catch {} }
+  }
+  return killed;
+}
+// How a worker is started. 'local': a forked child (offline tests). 'runuser': drop to an existing account (e.g. myc)
+// with a clean environment; the IPC channel is passed through explicitly. 'systemd-scope': the same, inside a transient
+// systemd scope with MemoryMax/TasksMax, so STOP kills the whole cgroup (fpd-prod; not exercised offline).
+export function workerCommand({ mode = 'local', user, unit, memoryMax = '2G', tasksMax = 256 }, env, workerPath) {
+  if (mode === 'local') return null;
+  if (!/^[a-z_][a-z0-9_-]{0,31}$/.test(user ?? '')) throw new Error('launcher.user must name an existing account');
+  const pairs = Object.entries({ ...env, NODE_CHANNEL_FD: '3', NODE_CHANNEL_SERIALIZATION_MODE: 'json' }).map(([k, v]) => `${k}=${v}`);
+  const inner = ['runuser', '-u', user, '--', 'env', '-i', ...pairs, process.execPath, workerPath];
+  if (mode === 'runuser') return inner;
+  if (mode === 'systemd-scope') return ['systemd-run', '--scope', '--quiet', '--collect', '--unit', unit, '-p', `MemoryMax=${memoryMax}`, '-p', `TasksMax=${tasksMax}`, '--', ...inner];
+  throw new Error(`unknown launcher mode ${mode}`);
+}
+
 export async function runSession(opts) {
-  const { dir, repo, baseRef = 'HEAD', id = 's' + Date.now().toString(36), agents, allow = ['artifact/'], testCmd = null, sandbox = 'unshare',
-    limits: { maxWallMs = 60000, maxCallsPerAgent = 20, maxEvents = 2000, maxBytes = 4_000_000, maxFileBytes = 64000, maxFiles = 8, pullBytes = 24000, graceMs = 2000, testMs = 60000 } = {} } = opts;
-  for (const a of AGENTS) if (!/^[a-z0-9-]{1,40}$/.test(agents?.[a]?.adapter ?? '')) throw new Error(`agents.${a}.adapter must name a module in adapters/`);
+  const { dir, repo, baseRef = 'HEAD', id = 's' + Date.now().toString(36), agents, allow = ['artifact/'], testCmd = null, sandbox = 'unshare', launcher = { mode: 'local' },
+    limits: { maxWallMs = 60000, maxCallsPerAgent = 20, maxEvents = 2000, maxBytes = 4_000_000, maxFileBytes = 64000, maxFiles = 8, pullBytes = 24000, readBytes = 24000, graceMs = 2000, testMs = 60000, requireBase = true, maxSubmissionBytes = 32000, maxObservedTokens = Infinity } = {} } = opts;
+  if (!/^[a-z0-9][a-z0-9-]{0,40}$/.test(id)) throw new Error('session id must be a short slug');
+  for (const a of AGENTS) {
+    if (!/^[a-z0-9-]{1,40}$/.test(agents?.[a]?.adapter ?? '')) throw new Error(`agents.${a}.adapter must name a module in adapters/`);
+    for (const k of Object.keys(agents[a].env ?? {})) if (!ENV_OK.test(k)) throw new Error(`agents.${a}.env may not set ${k}`);
+  }
   mkdirSync(dir, { recursive: true });
   const bus = openBus(join(dir, 'events.jsonl'), { session: id, maxEvents, maxBytes });
   if (existsSync(join(dir, 'STOP'))) {
@@ -71,6 +103,7 @@ export async function runSession(opts) {
   for (const a of [...AGENTS, 'integration']) { wt[a] = join(dir, 'wt-' + a); await git(repo, 'worktree', 'add', '-q', '-b', branch(a), wt[a], baseRef); }
   for (const a of [...AGENTS, 'integration']) { await git(wt[a], 'config', 'user.name', a === 'integration' ? 'session-coordinator' : `${a}-agent`); await git(wt[a], 'config', 'user.email', `${a}@mycelium.invalid`); }
   const calls = { claude: 0, codex: 0 }, permits = new Map(), workers = {}, limited = new Set();
+  let observedTokens = 0;
   let stopping = false, stopDone = null, mutex = Promise.resolve(), testAbort = new AbortController(), pidCounter = 0;
   const live = new Set();
 
@@ -83,7 +116,11 @@ export async function runSession(opts) {
     } catch (e) { if (/full/.test(e.message)) stop('session stream is full'); else throw e; return null; }
   };
   const send = (a, msg) => { const w = workers[a]; if (!w?.connected) return; try { w.send(msg, () => {}); } catch {} };
-  const killGroup = (a, sig) => { const w = workers[a]; if (w?.pid) try { process.kill(-w.pid, sig); } catch {} };
+  const killGroup = (a, sig) => {
+    const w = workers[a]; if (w?.pid) try { process.kill(-w.pid, sig); } catch {}
+    if (launcher.mode === 'systemd-scope') try { execFileSyncSafe('systemctl', ['kill', `--signal=${sig}`, `myc-session-${id}-${a}.scope`]); } catch {}
+    if (sig === 'SIGKILL') sweepSession(`${id}-${a}`);
+  };
   const mut = fn => { const p = mutex.then(() => (stopping ? Promise.reject(new Error('session stopping: no new changes')) : fn())); mutex = p.catch(() => {}); return p; };
   const resolveRefs = refIds => {
     const refs = [];
@@ -114,11 +151,19 @@ export async function runSession(opts) {
       if (why) bad.push(`${String(f?.path).slice(0, 80)}: ${why}`);
     }
     if (new Set(files.map(f => f.path)).size !== files.length) bad.push('duplicate paths');
+    const total = files.reduce((n, f) => n + Buffer.byteLength(typeof f?.content === 'string' ? f.content : ''), 0);
+    if (total > maxSubmissionBytes) bad.push(`submission is ${total} bytes, over ${maxSubmissionBytes}`);
     if (bad.length) { append('coordinator', 'refused', `refused ${agent}'s submission (nothing written): ${bad.join('; ')}`, { refs, data: { agent } }); throw new Error(`submission refused: ${bad.join('; ')}`); }
     const message = String(out.message || `${agent} change`).slice(0, 200);
+    if (requireBase && !/^[0-9a-f]{40}$/.test(out.base ?? '')) { append('coordinator', 'refused', `refused ${agent}'s submission: no base commit (read the integration state first)`, { refs, data: { agent } }); throw new Error('submission needs base: the integration commit it was written against'); }
     const commit = await mut(async () => {
       const pre = (await git(wt[agent], 'status', '--porcelain', '--untracked-files=all')).stdout;
       if (pre.trim()) { await git(wt[agent], 'reset', '-q', '--hard'); await git(wt[agent], 'clean', '-qfdx'); append('coordinator', 'refused', `${agent}'s worktree had direct edits outside a submission; they were discarded, not committed`, { data: { agent, status: pre.slice(0, 500) } }); }
+      if (out.base) {   // stale-edit check, atomic under the mutex: the change must be written against the CURRENT integration
+        const head = (await git(wt.integration, 'rev-parse', 'HEAD')).stdout.trim();
+        if (out.base !== head) { append('coordinator', 'refused', `refused ${agent}'s submission: written against ${out.base.slice(0, 12)}, integration is now ${head.slice(0, 12)}; read again and resubmit`, { refs, data: { agent, stale: true, base: out.base, head } }); throw new Error(`stale submission: integration is now ${head}`); }
+        await git(wt[agent], 'merge', '-q', '--ff-only', branch('integration'));   // the agent branch catches up to the base
+      }
       for (const f of files) safeWrite(wt[agent], f.path, f.content);
       await git(wt[agent], 'add', '--', ...files.map(f => f.path));
       const raw = (await git(wt[agent], 'diff', '--cached', '--raw', '--no-renames')).stdout.trim().split('\n').filter(Boolean);
@@ -131,7 +176,7 @@ export async function runSession(opts) {
     });
     if (!commit) return { unchanged: true };
     const merged = await mut(async () => {
-      try { await git(wt.integration, 'merge', '-q', '--no-ff', '-m', `merge ${agent} ${commit.data.sha.slice(0, 12)}`, branch(agent)); }
+      try { await git(wt.integration, 'merge', '-q', ...(out.base ? ['--ff-only'] : ['--no-ff', '-m', `merge ${agent} ${commit.data.sha.slice(0, 12)}`]), branch(agent)); }
       catch {
         await git(wt.integration, 'merge', '--abort').catch(() => {});
         return append('coordinator', 'conflict', `merging ${agent} ${commit.data.sha.slice(0, 12)} into integration conflicted; integration unchanged`, { refs: [commit.seq], data: { agent, sha: commit.data.sha } });
@@ -151,7 +196,7 @@ export async function runSession(opts) {
       if (existsSync(join(dir, 'STOP'))) { stop('STOP file'); throw new Error('session stopping'); }
       if (stopping) throw new Error('session stopping');
       if (calls[a] >= maxCallsPerAgent) {
-        if (!limited.has(a)) { limited.add(a); append('coordinator', 'limit', `${a} has used its ${maxCallsPerAgent}-dispatch allowance; no further turn or steer`, { data: { agent: a } }); }
+        if (!limited.has(a)) { limited.add(a); append('coordinator', 'limit', `${a} has used its ${maxCallsPerAgent}-dispatch allowance; no further turn or steer`, { data: { agent: a } }); stop(`${a} exhausted its dispatch allowance`); }
         return { permit: null };
       }
       calls[a]++;
@@ -160,6 +205,18 @@ export async function runSession(opts) {
       if (!g) throw new Error('grant not recorded');
       permits.set(permit, { agent: a, used: false });
       return { permit: { id: permit, seq: g.seq } };
+    }
+    if (m.op === 'read') {   // the CURRENT integration state: its commit (the base for the next submission) and allowlisted files
+      const head = (await git(wt.integration, 'rev-parse', 'HEAD')).stdout.trim();
+      const all = (await git(wt.integration, 'ls-tree', '-r', '--name-only', head, '--', ...allow)).stdout.split('\n').filter(Boolean);
+      const want = m.headOnly ? [] : Array.isArray(m.paths) && m.paths.length ? all.filter(p => m.paths.includes(p)) : all;
+      const files = []; let bytes = 0, truncated = false;
+      for (const p of want) {
+        const content = (await git(wt.integration, 'show', `${head}:${p}`)).stdout;
+        if (bytes + Buffer.byteLength(content) > readBytes) { truncated = true; continue; }
+        files.push({ path: p, content }); bytes += Buffer.byteLength(content);
+      }
+      return { integration: head, paths: all, files, truncated };
     }
     if (m.op === 'pull') {
       const from = Number.isInteger(m.from) && m.from >= 0 ? m.from : 0, out = []; let bytes = 0, next = from;
@@ -187,6 +244,9 @@ export async function runSession(opts) {
         if (!p || p.agent !== a || p.used) throw new Error('a call record needs an unused grant of this agent');
         p.used = true;
         const ev = append(a, 'call', `${a} model dispatch under ${out.permit}: ${out.ms ?? '?'} ms`, { refs: [bus.byId(out.permit).seq], data: { permit: out.permit, startedAt: out.startedAt ?? null, endedAt: out.endedAt ?? null, ms: out.ms ?? null, model: out.model ?? null, inputTokens: out.inputTokens ?? null, outputTokens: out.outputTokens ?? null, costUsd: out.costUsd ?? null, interval: out.interval ?? (agents[a].adapter === 'fake' ? 'simulated' : 'unknown'), outcome: out.outcome ?? null, method: out.method ?? null, threadId: out.threadId ?? null, turnId: out.turnId ?? null } });
+        // observed tokens (as reported, possibly after the fact): past the threshold the session stops. Not a hard cap.
+        observedTokens += (Number.isFinite(out.inputTokens) ? out.inputTokens : 0) + (Number.isFinite(out.outputTokens) ? out.outputTokens : 0);
+        if (observedTokens >= maxObservedTokens && !stopping) stop(`observed tokens ${observedTokens} reached the ${maxObservedTokens} threshold (reported after the fact; in-flight work may overshoot)`);
         return { seq: ev?.seq ?? null };
       }
       throw new Error('unknown publication type');
@@ -196,9 +256,16 @@ export async function runSession(opts) {
 
   append('coordinator', 'start', `session ${id}: ${AGENTS.join(' and ')} run concurrently; limits wall ${maxWallMs} ms, ${maxCallsPerAgent} dispatches per agent, ${maxEvents} events`, { data: { limits: { maxWallMs, maxCallsPerAgent, maxEvents, maxBytes }, sandbox } });
   const exits = AGENTS.map(a => new Promise(res => {
-    const home = join(dir, 'home-' + a); mkdirSync(home, { recursive: true });
-    const env = { PATH: process.env.PATH, LANG: 'C.UTF-8', HOME: home, MYC_SESSION_AGENT: a, ...(agents[a].env ?? {}) };   // clean: nothing inherited but PATH
-    const w = fork(join(HERE, 'worker.mjs'), [], { stdio: ['ignore', 'pipe', 'pipe', 'ipc'], env, detached: true, cwd: wt[a] });
+    const runDir = join(dir, 'run-' + a), home = launcher.home ?? join(dir, 'home-' + a);
+    mkdirSync(runDir, { recursive: true, mode: 0o700 }); if (!launcher.home) mkdirSync(home, { recursive: true });
+    if (launcher.mode && launcher.mode !== 'local') {   // the dropped-privilege worker must reach its worktree and own its runtime dir
+      chmodSync(dir, 0o711); const uid = Number(execFileSyncSafe('id', ['-u', launcher.user])), gid = Number(execFileSyncSafe('id', ['-g', launcher.user]));
+      chownSync(runDir, uid, gid); if (!launcher.home) chownSync(home, uid, gid);
+    }
+    const env = { PATH: launcher.path ?? process.env.PATH, LANG: 'C.UTF-8', HOME: home, MYC_SESSION_AGENT: a, MYC_SESSION: `${id}-${a}`, MYC_RUNTIME_DIR: runDir, ...(agents[a].env ?? {}) };   // clean: nothing inherited but PATH
+    const cmd = workerCommand({ ...launcher, unit: `myc-session-${id}-${a}` }, env, join(HERE, 'worker.mjs'));
+    const w = cmd ? spawn(cmd[0], cmd.slice(1), { stdio: ['ignore', 'pipe', 'pipe', 'ipc'], env: { PATH: process.env.PATH }, detached: true, cwd: wt[a] })
+      : fork(join(HERE, 'worker.mjs'), [], { stdio: ['ignore', 'pipe', 'pipe', 'ipc'], env, detached: true, cwd: wt[a] });
     workers[a] = w; let errTail = '';
     const log = join(dir, `worker-${a}.log`); let logged = 0;
     const keep = d => { errTail = (errTail + d).slice(-800); if (logged < 1 << 20) { logged += d.length; try { writeFileSync(log, d, { flag: 'a' }); } catch {} } };
@@ -215,6 +282,7 @@ export async function runSession(opts) {
       killGroup(a, 'SIGKILL');                     // reap anything the worker left behind in its group
       live.delete(a);
       append('coordinator', 'exit', `${a} worker exited (code ${code}${signal ? ', ' + signal : ''})${code && !stopping ? ': ' + errTail.slice(-200) : ''}`, { data: { agent: a, code, signal } });
+      if ((code !== 0 || signal) && !stopping) stop(`${a} worker failed (code ${code}${signal ? ', ' + signal : ''}): the pair stops together`);
       res();
     });
     send(a, { type: 'init', agent: a, session: id, config: agents[a], worktree: wt[a] });

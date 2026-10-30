@@ -26,7 +26,8 @@ async function react(events) {
   if (peer && !replied) {
     replied = true;
     await call('myc_publish', { kind: 'reply', body: `Claude: agreed with ${peer.id}; fragments are stripped before dedupe now`, refIds: [peer.id] });
-    await call('myc_submit', { files: [{ path: 'artifact/frontier.mjs', content: 'export const normalise = u => { const x = new URL(u); x.hash = ""; return x.href; };\n' }], message: 'strip fragments (from Codex finding)', refIds: [peer.id] });
+    const { integration } = await call('myc_read', {});
+    await call('myc_submit', { base: integration, files: [{ path: 'artifact/frontier.mjs', content: 'export const normalise = u => { const x = new URL(u); x.hash = ""; return x.href; };\n' }], message: 'strip fragments (from Codex finding)', refIds: [peer.id] });
   }
 }
 const consume = m => { out({ type: 'user', uuid: m.uuid, message: m.message }); try { return JSON.parse(m.message.content[0].text).events ?? []; } catch { return []; } };
