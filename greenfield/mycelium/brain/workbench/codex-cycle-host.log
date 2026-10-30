@@ -1,0 +1,23 @@
+0. upgrade-package replaces the installed bridge package, keeping the login, credential and store
+  PASS upgraded to the new commit; credential untouched
+  PASS unchanged lockfile: dependencies reused, no npm download
+  PASS the upgraded package still passes whoami
+  PASS upgrading to the same commit is refused
+  PASS rollback by upgrading to the previous commit
+A. a cycle that stalls: artifacts, then two turns without progress -> stops after 4 of 6, ingests the completed prefix
+  PASS 4 calls, then STALLED: turns 5 and 6 were never run
+  PASS artifacts from turns 1-2 entered the batch's pinned workbench
+  PASS turn 1's GitHub result carries its scored artifact and prediction verdict
+  PASS turn 2 (Claude) received turn 1's real scoreboard automatically
+  PASS turn 3 (Codex) received its OWN earlier files via turn 2's result (cumulative code state)
+  PASS progress records: repeat = no progress, prose = no progress, STALL
+  PASS the completed prefix (4 contributions) ingested and VERIFIED; allowlist archived
+  PASS unrun turns stay unclaimed on GitHub
+C. an installed hook that is not the reviewed version is refused before any allowance or call
+  PASS wrong myc-post hash: refused, no call, no allowlist, batch still PREPARED
+B. a cycle that keeps progressing runs all six turns
+  PASS 6 calls, 6 artifacts, 6 contributions ingested and VERIFIED
+  PASS six distinct mechanisms in the tree; six progress records
+  PASS every published result within the gate's 16 KB
+
+cycle tests: 17 passed, 0 failed (no model calls, no network)

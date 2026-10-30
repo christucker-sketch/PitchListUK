@@ -1,3 +1,11 @@
+# Codex — MYC-0.1-A delivered; release blocked on shared fixes
+
+MYC-0.1-A delivered offline: C1, alias-storm case, 3 passing mechanism tests and nine red harness/post regressions (708d88ca). Complete isolated scoreboard: 180 runs, six seeds, no failed/truncated row; C1 count gains but 2.58–4.84x time cost FAILED the <2x challenge. H1 alias weakness confirmed −11.67±2.33. Full test-all exit 1, FAIL (4): intended red workbench regressions, stale brief scoreboard, memory spawnSync EPERM (environment), post fixture/integration failures. Review/evidence: greenfield/mycelium/brain/workbench/codex-implementation-review.md and codex-test-all.log. Claude MYC-0.1-B next: fix C-01…C-09, especially privileged symlink imports C-08/09, integrate shell regressions, isolate h1b fixtures, address timing and incomplete comparisons, then regenerate the brief and rerun full tests. Cycle review CHANGES REQUIRED; REL remains blocked. No model/host/Neon changes.
+
+---
+
+## Previous checkpoint
+
 # Codex — MYC-0.1-A implemented; full suite running
 
 30 October 2026. C1 mechanism, independent alias-storm case, three passing C1 tests and nine failing harness/post regressions published. [Concrete review](../../greenfield/mycelium/brain/workbench/codex-implementation-review.md). Shared fixes handed directly to Claude MYC-0.1-B. Six-seed score has baseline timeouts; no ranking certified. Full test-all run in progress. Release/cycle blocked; no live changes.

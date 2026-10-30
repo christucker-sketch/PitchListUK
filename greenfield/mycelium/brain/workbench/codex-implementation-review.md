@@ -41,6 +41,19 @@ Executed the requested `node evaluate.mjs --seeds 6`. The first run was not trun
 
 C1's measured CPU/wall-time proxy is roughly 2–3 times baseline in that preliminary run. Thus Claude's proposed <2x cost challenge is NOT established, even where C1 finds more keys. The low decoy precision remains poor; forecasting observations is not authentication of truth. Do not present this implementation as validated intelligent discovery.
 
+A subsequent isolated rerun completed **all six seeds for all six cases and five mechanisms**, with no failed/truncated row. These counts are usable as workbench comparisons, not claims about real discovery. `codex-scoreboard.json` and `.md` preserve that run.
+
+| Case | C1 minus fixed, VERIFIED (mean ± SE, n=6) |
+|---|---:|
+| baseline-e0-corrected | +118.00 ± 5.27 |
+| claude-churn-and-noise | +27.83 ± 1.17 |
+| claude-enumerable-source | +55.00 ± 6.39 |
+| claude-unlearnable-decoy | +27.83 ± 1.90 |
+| claude-weak-cues-cycles | +3.00 ± 1.69 |
+| codex-alias-storm | +2.50 ± 0.76 |
+
+The alias-case prediction HELD: H1 minus fixed is **−11.67 ± 2.33**, n=6. C1's measured `cpuMs` ratio is **2.58–4.84x** baseline across these cases, so the proposed <2x cost condition **FAILED**. C1 does not dominate H1 on enumerable-source: C1 395.2 versus H1 413.0. Decoy precision is only about0.22 under the current historical precision metric; current correctness is unestablished (C-02). No post-result tuning was performed. This is a bounded prototype and a negative cost result, not selection of C1 as the brain.
+
 ## Cycle-package assessment
 
 CHANGES REQUIRED before host/call approval. Existing runner/bridge reuse, pinned artifacts and automatic feedback are useful, but the trusted/sandbox imports and incomplete-score semantics above prevent sign-off. The expanded CYCLE_BRIEF scoreboard must be regenerated only after complete, failure-free runs; adding C1 and the new case necessarily invalidates the old embedded table.
@@ -48,3 +61,17 @@ CHANGES REQUIRED before host/call approval. Existing runner/bridge reuse, pinned
 Also resolve the handoff size guarantee: the hook's 16KB result contains the answer, scoreboard and next agent's code; when those do not fit it sends only names/hashes. Tool-less CLIs then cannot read omitted current files. Specify an enforceable state/context budget or report that the required artifact handoff is incomplete; do not claim all turns receive their current source unconditionally.
 
 No test changes to Claude-owned/shared implementations are made in this delivery. Shared fixes belong to MYC-0.1-B, with regression evidence and updated install/hash pins. MYC-0.1-REL and BRIX cycle 1 remain blocked until fixes, full tests and package review are resolved. No new model, host, credential or Neon operation is authorised or performed.
+
+## Full offline acceptance record
+
+`bash greenfield/mycelium/test-all.sh` completed with exit 1, **FAIL (4)**. Exact output is in `codex-test-all.log`.
+
+- PASS: e0, stageb-stageb, stageb-runner-decisions, stageb-review-regressions, stageb-memref, stageb-upgrade-gate, stageb-install-cycle.
+- FAIL workbench: the intentionally red Codex harness regressions above.
+- FAIL cycle-package: the embedded starting scoreboard lacks the newly added C1 and independent case. Regenerate it after shared correctness fixes, not merely to conceal the mismatch.
+- FAIL memory: this workspace denies the existing explorer test's `spawnSync(node)` with EPERM. This is an environment limitation, not a demonstrated memory implementation regression. The npm chain stops there; later memory suites cannot be claimed tested by this run.
+- FAIL stageb-post: 13 passed, 2 failed. In addition to the red harness regression, the post fixture substitutes small-a/small-b cases while the new shared claude-h1b tests expect the original named cases. Fix fixture isolation and integrate `stageb/codex-test-post.sh` explicitly.
+
+The source snapshot was materialized through the GitHub connector. Executable modes for the stageb programs and notify/mycnotify were restored locally before this final run. An earlier run's runner-decisions failures were caused by the missing local notify executable bit; they are not reported as repository defects. Dependencies were reused locally; no package download, remote database, model or real host operation was used.
+
+Separately ran `bash greenfield/mycelium/memory/stage-one/test-cycle-host.sh` after the memory chain stopped: **17 passed, 0 failed**, offline fake CLI/local Git/PGlite only. It verifies package upgrade/rollback, stalled-prefix ingestion, current-source/scoreboard handoff in its small fixture, hash refusal before calls, and a complete six-turn fixture. This does not resolve hostile imports or prove the 16KB guarantee for larger real state. Exact output: `codex-cycle-host.log`.

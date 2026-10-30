@@ -1,0 +1,72 @@
+FAIL  workbench  (5 s)
+      ✔ brain/workbench/test/workbench.test.mjs (303.121504ms)
+      ℹ tests 4
+      ℹ suites 0
+      ℹ pass 3
+      ℹ fail 1
+      ℹ cancelled 0
+      ℹ skipped 0
+      ℹ todo 0
+      ℹ duration_ms 4417.2594
+      
+      ✖ failing tests:
+      
+      test at brain/workbench/test/codex-harness.test.mjs:1:1
+      ✖ brain/workbench/test/codex-harness.test.mjs (86.844074ms)
+        'test failed'
+PASS  e0  (0 s)
+FAIL  cycle-package  (51 s)
+       mechanism | verified | vs base | precision | reopens found | reopen delay | wasted | cpu ms
+      @@ -27,6 +30,7 @@
+       baseline-random | 43.8±2.3 | -11.8±2.4 | 0.23±0.01 | 54.2±3.9 | 359±4 | 1156±2
+       claude-h1 | 36.8±5.3 | -18.8±5.0 | 0.18±0.02 | 53.3±8.7 | 374±13 | 1163±5
+       claude-h1b | 40.7±5.3 | -15.0±2.8 | 0.17±0.02 | 63.5±10.4 | 349±10 | 1159±5
+      +codex-c1 | 83.5±4.2 | 27.8±1.9 | 0.22±0.01 | 145.0±6.9 | 273±8 | 1117±4
+       
+       case claude-weak-cues-cycles [15d8c252a90d]
+       mechanism | verified | vs base | precision | reopens found | reopen delay | wasted | cpu ms
+      @@ -34,4 +38,13 @@
+       baseline-random | 54.7±1.9 | -54.0±3.0 | 1.00±0.00 | 145.7±10.1 | 573±12 | 1445±2
+       claude-h1 | 58.7±1.1 | -50.0±2.1 | 1.00±0.00 | 260.7±10.0 | 423±10 | 1441±1
+       claude-h1b | 92.5±1.7 | -16.2±1.9 | 1.00±0.00 | 378.8±7.3 | 351±4 | 1408±2
+      +codex-c1 | 111.7±2.4 | 3.0±1.7 | 1.00±0.00 | 418.2±8.3 | 390±5 | 1388±2
+      +
+FAIL  memory  (38 s)
+        AssertionError [ERR_ASSERTION]: ifError got unwanted exception: spawnSync /opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node EPERM
+            at run (file:///workspace/myc-01-a/greenfield/mycelium/memory/test/explorer.test.mjs:26:14)
+            at Object.spawnSync (node:internal/child_process:1160:20)
+            at spawnSync (node:child_process:928:24)
+            at run (file:///workspace/myc-01-a/greenfield/mycelium/memory/test/explorer.test.mjs:25:17)
+            at TestContext.<anonymous> (file:///workspace/myc-01-a/greenfield/mycelium/memory/test/explorer.test.mjs:30:15)
+            at async Test.run (node:internal/test_runner/test:1389:7)
+            at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+          generatedMessage: false,
+          code: 'ERR_ASSERTION',
+          actual: [Error],
+          expected: null,
+          operator: 'ifError',
+          diff: 'simple'
+        }
+PASS  stageb-stageb  (58 s)
+PASS  stageb-runner-decisions  (39 s)
+PASS  stageb-review-regressions  (9 s)
+PASS  stageb-memref  (19 s)
+PASS  stageb-upgrade-gate  (5 s)
+FAIL  stageb-post  (10 s)
+        PASS Claude's turn result carries Codex's current files for Codex's next turn
+        PASS re-submitting identical files: no progress (not yet a stall)
+        PASS a changed file that leaves the scoreboard unchanged is not progress; second in a row: STALL flagged in record and section
+        PASS a prose-only turn is not progress
+        FAIL test progress
+      {"at":"2026-10-30T12:37:13Z","task":"MYC-20261031-006","run":"MYC-20261031-006-r1793400000-0a1b2c3d","agent":"codex","accepted":1,"novel":1,"novel_tests":1,"scoreboard":"unchanged","tests_pass":3,"tests_fail":2,"predictions":[],"progress":true,"stall":false}
+      3. failures never block recording the answer
+        PASS no workbench: NOT RUN appended, answer intact, exit 0
+        PASS an answer near the limit gets only a one-line note
+        PASS bad batch name refused
+      4. sandbox selftest: detects a missing sandbox; passes under a stand-in (unshare -n + setpriv nobody) when root
+        PASS no isolation: SELFTEST FAILED (secrets readable, writes allowed)
+        (skipped positive selftest: needs root, unshare and setpriv)
+      
+      post tests: 13 passed, 2 failed (no model calls)
+PASS  stageb-install-cycle  (0 s)
+MYCELIUM 0.1 OFFLINE SUITES: FAIL (4)
