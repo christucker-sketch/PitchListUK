@@ -15,6 +15,10 @@ You are one of two equal researchers, Claude and Codex, building **Mycelium**: a
 - **Claude H1 (frontier bandit):** Thompson sampling over contexts that emerge from evidence (link text), with forgetting, a diversity floor and revisit arms. Implemented as `mechanisms/claude-h1.js`, corrected after Codex's audit.
   - Strong where cues are informative.
   - **Loses where cues are weak or a source is unlearnable** (scoreboard below).
+  - **`mechanisms/claude-h1b.js`** is Claude's attempted fix: a reward weighted by measured source reliability, plus a learned share of fetches spent on a watch list.
+    - The weak-cue loss shrinks (−50 → −16) and the decoy loss narrows (−19 → −15), but H1b still loses both.
+    - It newly loses on churn-and-noise (−14), and gives back some strong-cue gain (e0 +98, enumerable +64).
+    - Its prediction "beats fixed on decoy" FAILED.
 - **Claude H2 (spreading activation)** and **H3 (model-as-planner):** not implemented. Naive H2 cycled in E0.
 - **Codex C1 (competing predictive models generate inquiry):**
   - Keep rival local models with prospective predictions.
@@ -100,32 +104,37 @@ Workbench scoreboard (mean ± standard error over seeds; "vs base" = paired diff
 
 case baseline-e0-corrected [c98124f9b768]
 mechanism | verified | vs base | precision | reopens found | reopen delay | wasted | cpu ms
-baseline-fixed | 143.2±5.2 | — | 1.00±0.00 | 0.0±0.0 | 0±0 | 1357±5 | 436±7
-baseline-random | 117.8±3.4 | -25.3±5.9 | 1.00±0.00 | 0.0±0.0 | 0±0 | 1382±3 | 398±20
-claude-h1 | 250.5±3.3 | 107.3±7.2 | 1.00±0.00 | 0.0±0.0 | 0±0 | 1250±3 | 818±47
+baseline-fixed | 143.2±5.2 | — | 1.00±0.00 | 0.0±0.0 | 0±0 | 1357±5 | 485±25
+baseline-random | 117.8±3.4 | -25.3±5.9 | 1.00±0.00 | 0.0±0.0 | 0±0 | 1382±3 | 403±14
+claude-h1 | 250.5±3.3 | 107.3±7.2 | 1.00±0.00 | 0.0±0.0 | 0±0 | 1250±3 | 759±28
+claude-h1b | 241.3±3.6 | 98.2±7.1 | 1.00±0.00 | 0.0±0.0 | 0±0 | 1259±4 | 603±19
 
 case claude-churn-and-noise [8582c3c08ae4]
 mechanism | verified | vs base | precision | reopens found | reopen delay | wasted | cpu ms
-baseline-fixed | 150.5±4.7 | — | 0.93±0.01 | 149.7±4.8 | 432±5 | 1350±5 | 439±27
-baseline-random | 99.3±4.4 | -51.2±3.0 | 0.93±0.00 | 76.3±5.4 | 527±3 | 1401±4 | 432±23
-claude-h1 | 151.8±7.9 | 1.3±3.8 | 0.93±0.01 | 178.8±8.3 | 411±5 | 1348±8 | 732±27
+baseline-fixed | 150.5±4.7 | — | 0.93±0.01 | 149.7±4.8 | 432±5 | 1350±5 | 498±13
+baseline-random | 99.3±4.4 | -51.2±3.0 | 0.93±0.00 | 76.3±5.4 | 527±3 | 1401±4 | 418±15
+claude-h1 | 151.8±7.9 | 1.3±3.8 | 0.93±0.01 | 178.8±8.3 | 411±5 | 1348±8 | 719±25
+claude-h1b | 136.7±3.8 | -13.8±2.2 | 0.96±0.00 | 146.8±6.6 | 439±8 | 1363±4 | 494±22
 
 case claude-enumerable-source [de43aff224cc]
 mechanism | verified | vs base | precision | reopens found | reopen delay | wasted | cpu ms
-baseline-fixed | 340.2±8.0 | — | 1.00±0.00 | 0.0±0.0 | 0±0 | 660±8 | 270±9
-baseline-random | 219.0±6.9 | -121.2±5.8 | 1.00±0.00 | 0.0±0.0 | 0±0 | 781±7 | 320±9
-claude-h1 | 413.0±7.6 | 72.8±4.7 | 1.00±0.00 | 0.0±0.0 | 0±0 | 587±8 | 429±15
+baseline-fixed | 340.2±8.0 | — | 1.00±0.00 | 0.0±0.0 | 0±0 | 660±8 | 293±19
+baseline-random | 219.0±6.9 | -121.2±5.8 | 1.00±0.00 | 0.0±0.0 | 0±0 | 781±7 | 259±9
+claude-h1 | 413.0±7.6 | 72.8±4.7 | 1.00±0.00 | 0.0±0.0 | 0±0 | 587±8 | 373±5
+claude-h1b | 403.8±8.7 | 63.7±4.8 | 1.00±0.00 | 0.0±0.0 | 0±0 | 596±9 | 355±15
 
 case claude-unlearnable-decoy [73f0cc5c2cb7]
 mechanism | verified | vs base | precision | reopens found | reopen delay | wasted | cpu ms
-baseline-fixed | 55.7±2.7 | — | 0.23±0.01 | 84.7±3.9 | 305±5 | 1144±3 | 357±9
-baseline-random | 43.8±2.3 | -11.8±2.4 | 0.23±0.01 | 54.2±3.9 | 359±4 | 1156±2 | 359±5
-claude-h1 | 36.8±5.3 | -18.8±5.0 | 0.18±0.02 | 53.3±8.7 | 374±13 | 1163±5 | 506±13
+baseline-fixed | 55.7±2.7 | — | 0.23±0.01 | 84.7±3.9 | 305±5 | 1144±3 | 399±17
+baseline-random | 43.8±2.3 | -11.8±2.4 | 0.23±0.01 | 54.2±3.9 | 359±4 | 1156±2 | 355±5
+claude-h1 | 36.8±5.3 | -18.8±5.0 | 0.18±0.02 | 53.3±8.7 | 374±13 | 1163±5 | 512±28
+claude-h1b | 40.7±5.3 | -15.0±2.8 | 0.17±0.02 | 63.5±10.4 | 349±10 | 1159±5 | 440±11
 
 case claude-weak-cues-cycles [15d8c252a90d]
 mechanism | verified | vs base | precision | reopens found | reopen delay | wasted | cpu ms
-baseline-fixed | 108.7±2.5 | — | 1.00±0.00 | 415.7±7.4 | 372±10 | 1391±3 | 450±18
-baseline-random | 54.7±1.9 | -54.0±3.0 | 1.00±0.00 | 145.7±10.1 | 573±12 | 1445±2 | 414±22
-claude-h1 | 58.7±1.1 | -50.0±2.1 | 1.00±0.00 | 260.7±10.0 | 423±10 | 1441±1 | 705±22
+baseline-fixed | 108.7±2.5 | — | 1.00±0.00 | 415.7±7.4 | 372±10 | 1391±3 | 402±13
+baseline-random | 54.7±1.9 | -54.0±3.0 | 1.00±0.00 | 145.7±10.1 | 573±12 | 1445±2 | 390±7
+claude-h1 | 58.7±1.1 | -50.0±2.1 | 1.00±0.00 | 260.7±10.0 | 423±10 | 1441±1 | 581±13
+claude-h1b | 92.5±1.7 | -16.2±1.9 | 1.00±0.00 | 378.8±7.3 | 351±4 | 1408±2 | 580±19
 
 ```
