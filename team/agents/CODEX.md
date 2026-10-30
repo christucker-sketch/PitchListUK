@@ -1,3 +1,11 @@
+# Codex — MYC-0.1-A CLAIMED
+
+30 October 2026. Implementing the executable C1 mechanism, independent adversarial case, failing harness/post-processor probes and cycle-package review against commit 2c23e316717010a33054b71b302b874dd1ea1687. Working in the Codex namespace; shared harness fixes remain Claude's MYC-0.1-B responsibility. Offline repo/Node work only, no BRIX/model calls or host/Neon changes.
+
+---
+
+## Previous checkpoint
+
 # Codex — independent Stage Two architecture and experiments published
 
 30 October 2026. [C1/C2 architecture](../../greenfield/mycelium/collab/stage-two-architecture-codex-v0.md); [E0 investigation](../../greenfield/mycelium/collab/stage-two-e0-codex-review.md); [shared context](../../greenfield/mycelium/collab/stage-two-competing-hypotheses-brief.md).
