@@ -1,0 +1,1314 @@
+{
+  "experiment": "Codex independent E0 diagnostics",
+  "reviewed_commit": "b1170595f9093783a334601afff8e70c4a258476",
+  "datasets": [
+    {
+      "sourceSha256": "b6fc0fd72ee88726a4f1352f9a67df2845c1837ae425a66c6434ca6b66a22ed4",
+      "runs": 20,
+      "budget": 1500,
+      "worldSeedOffset": 1000,
+      "notes": {
+        "intervals": "Student-t quantile expansion times paired-world SE, descriptive approximations; 20 worlds are not a representative population; multiple comparisons exploratory",
+        "policyRandomness": "worlds paired, policy random streams not coupled",
+        "revisitControl": "random28 tuned diagnostically to original approximate revisit frequency; not an unbiased benchmark winner"
+      },
+      "hiddenEligibilityLeak": true,
+      "betaDiagnostics": [
+        {
+          "a": 45,
+          "b": 10,
+          "expectedBetaMean": 0.8181818181818182,
+          "sampleMean": 0.7506732642368718
+        },
+        {
+          "a": 1.2,
+          "b": 2.2,
+          "expectedBetaMean": 0.3529411764705882,
+          "sampleMean": 0.3988982276359565
+        }
+      ],
+      "scenarios": {
+        "original": {
+          "policy_means": {
+            "fixed": {
+              "per100": 15.469999999999999,
+              "afterChange": 76.6,
+              "novel": 51.05,
+              "reopened": 0,
+              "revisits": 3,
+              "entropy": 4.478425193463336
+            },
+            "forget": {
+              "per100": 14.073333333333334,
+              "afterChange": 69.95,
+              "novel": 69.35,
+              "reopened": 11.9,
+              "revisits": 497.05,
+              "entropy": 4.7933884263398365
+            },
+            "bandit": {
+              "per100": 15.66,
+              "afterChange": 85.95,
+              "novel": 69.15,
+              "reopened": 11.25,
+              "revisits": 415.4,
+              "entropy": 4.692520882041321
+            },
+            "activation": {
+              "per100": 7.5,
+              "afterChange": 27,
+              "novel": 47.35,
+              "reopened": 10.95,
+              "revisits": 1032.4,
+              "entropy": 4.5974307526144145
+            },
+            "random": {
+              "per100": 12.52,
+              "afterChange": 91.8,
+              "novel": 48.9,
+              "reopened": 0,
+              "revisits": 0,
+              "entropy": 4.548348526105817
+            },
+            "random28": {
+              "per100": 9.776666666666667,
+              "afterChange": 71.25,
+              "novel": 36.85,
+              "reopened": 6.85,
+              "revisits": 362.3,
+              "entropy": 4.630370215313965
+            }
+          },
+          "bandit_minus_fixed": {
+            "per100": {
+              "mean": 0.18999999999999986,
+              "se": 0.1550155623200572,
+              "ci95_t_approx": [
+                -0.13444936204981087,
+                0.5144493620498106
+              ]
+            },
+            "afterChange": {
+              "mean": 9.35,
+              "se": 2.8592187007900196,
+              "ci95_t_approx": [
+                3.3656222410955916,
+                15.334377758904408
+              ]
+            },
+            "novel": {
+              "mean": 18.1,
+              "se": 1.111897382618416,
+              "ci95_t_approx": [
+                15.772785938030161,
+                20.427214061969842
+              ]
+            },
+            "reopened": {
+              "mean": 11.25,
+              "se": 0.5843349796315916,
+              "ci95_t_approx": [
+                10.026980139752531,
+                12.473019860247469
+              ]
+            },
+            "revisits": {
+              "mean": 412.4,
+              "se": 6.089853511331261,
+              "ci95_t_approx": [
+                399.6538662753825,
+                425.14613372461747
+              ]
+            },
+            "entropy": {
+              "mean": 0.21409568857798553,
+              "se": 0.010318783995032076,
+              "ci95_t_approx": [
+                0.19249835451545075,
+                0.2356930226405203
+              ]
+            }
+          }
+        },
+        "observed_open_only": {
+          "policy_means": {
+            "fixed": {
+              "per100": 15.469999999999999,
+              "afterChange": 76.6,
+              "novel": 51.05,
+              "reopened": 0,
+              "revisits": 3,
+              "entropy": 4.478425193463336
+            },
+            "forget": {
+              "per100": 13.606666666666666,
+              "afterChange": 62.35,
+              "novel": 68.6,
+              "reopened": 0,
+              "revisits": 472.55,
+              "entropy": 4.79589694288706
+            },
+            "bandit": {
+              "per100": 15.463333333333333,
+              "afterChange": 80.15,
+              "novel": 69.85,
+              "reopened": 0,
+              "revisits": 357.55,
+              "entropy": 4.689427723965595
+            },
+            "activation": {
+              "per100": 6.973333333333334,
+              "afterChange": 16.85,
+              "novel": 46.4,
+              "reopened": 0,
+              "revisits": 984.15,
+              "entropy": 4.6059096672794855
+            },
+            "random": {
+              "per100": 12.52,
+              "afterChange": 91.8,
+              "novel": 48.9,
+              "reopened": 0,
+              "revisits": 0,
+              "entropy": 4.548348526105817
+            },
+            "random28": {
+              "per100": 9.353333333333335,
+              "afterChange": 66.25,
+              "novel": 36.7,
+              "reopened": 0,
+              "revisits": 358.4,
+              "entropy": 4.611529625883457
+            }
+          },
+          "bandit_minus_fixed": {
+            "per100": {
+              "mean": -0.006666666666666643,
+              "se": 0.16718515841121323,
+              "ci95_t_approx": [
+                -0.3565871338693086,
+                0.3432538005359753
+              ]
+            },
+            "afterChange": {
+              "mean": 3.55,
+              "se": 2.575670582075359,
+              "ci95_t_approx": [
+                -1.8409082720315268,
+                8.940908272031526
+              ]
+            },
+            "novel": {
+              "mean": 18.8,
+              "se": 1.294929382346064,
+              "ci95_t_approx": [
+                16.089697848953488,
+                21.510302151046513
+              ]
+            },
+            "reopened": {
+              "mean": 0,
+              "se": 0,
+              "ci95_t_approx": [
+                0,
+                0
+              ]
+            },
+            "revisits": {
+              "mean": 354.55,
+              "se": 3.1990747017486827,
+              "ci95_t_approx": [
+                347.8542997064447,
+                361.24570029355533
+              ]
+            },
+            "entropy": {
+              "mean": 0.2110025305022583,
+              "se": 0.011501852713277092,
+              "ci95_t_approx": [
+                0.18692901995040329,
+                0.23507604105411334
+              ]
+            }
+          }
+        },
+        "all_seen_revisitable": {
+          "policy_means": {
+            "fixed": {
+              "per100": 15.469999999999999,
+              "afterChange": 76.6,
+              "novel": 51.05,
+              "reopened": 0,
+              "revisits": 3,
+              "entropy": 4.4768961556622635
+            },
+            "forget": {
+              "per100": 11.993333333333332,
+              "afterChange": 63.6,
+              "novel": 67.35,
+              "reopened": 5.5,
+              "revisits": 639.4,
+              "entropy": 4.91260200115587
+            },
+            "bandit": {
+              "per100": 14.48,
+              "afterChange": 81.15,
+              "novel": 68.3,
+              "reopened": 4.5,
+              "revisits": 489.3,
+              "entropy": 4.836331904111206
+            },
+            "activation": {
+              "per100": 4.956666666666667,
+              "afterChange": 12.25,
+              "novel": 37.2,
+              "reopened": 6.85,
+              "revisits": 1241.75,
+              "entropy": 4.752855584125093
+            },
+            "random": {
+              "per100": 12.48,
+              "afterChange": 93.85,
+              "novel": 48.7,
+              "reopened": 0,
+              "revisits": 0,
+              "entropy": 4.549027630875083
+            },
+            "random28": {
+              "per100": 9.323333333333334,
+              "afterChange": 66.2,
+              "novel": 34.05,
+              "reopened": 2,
+              "revisits": 389.95,
+              "entropy": 4.527050913402399
+            }
+          },
+          "bandit_minus_fixed": {
+            "per100": {
+              "mean": -0.9900000000000002,
+              "se": 0.22453460640552542,
+              "ci95_t_approx": [
+                -1.4599535241240238,
+                -0.5200464758759767
+              ]
+            },
+            "afterChange": {
+              "mean": 4.55,
+              "se": 2.827007903103655,
+              "ci95_t_approx": [
+                -1.3669601873777575,
+                10.466960187377758
+              ]
+            },
+            "novel": {
+              "mean": 17.25,
+              "se": 1.015342825173635,
+              "ci95_t_approx": [
+                15.124875741770513,
+                19.375124258229487
+              ]
+            },
+            "reopened": {
+              "mean": 4.5,
+              "se": 0.5306401298134368,
+              "ci95_t_approx": [
+                3.3893640804880523,
+                5.610635919511948
+              ]
+            },
+            "revisits": {
+              "mean": 486.3,
+              "se": 6.882127883912527,
+              "ci95_t_approx": [
+                471.895626864415,
+                500.704373135585
+              ]
+            },
+            "entropy": {
+              "mean": 0.35943574844894255,
+              "se": 0.011382443184610201,
+              "ci95_t_approx": [
+                0.3356121634195241,
+                0.383259333478361
+              ]
+            }
+          }
+        },
+        "exact_beta": {
+          "policy_means": {
+            "fixed": {
+              "per100": 15.469999999999999,
+              "afterChange": 76.6,
+              "novel": 51.05,
+              "reopened": 0,
+              "revisits": 3,
+              "entropy": 4.478425193463336
+            },
+            "forget": {
+              "per100": 14.250000000000004,
+              "afterChange": 72.2,
+              "novel": 68.7,
+              "reopened": 12.6,
+              "revisits": 495.15,
+              "entropy": 4.790240231373335
+            },
+            "bandit": {
+              "per100": 15.569999999999997,
+              "afterChange": 81.45,
+              "novel": 69.35,
+              "reopened": 10.15,
+              "revisits": 434.3,
+              "entropy": 4.72260929356898
+            },
+            "activation": {
+              "per100": 7.5,
+              "afterChange": 27,
+              "novel": 47.35,
+              "reopened": 10.95,
+              "revisits": 1032.4,
+              "entropy": 4.5974307526144145
+            },
+            "random": {
+              "per100": 12.52,
+              "afterChange": 91.8,
+              "novel": 48.9,
+              "reopened": 0,
+              "revisits": 0,
+              "entropy": 4.548348526105817
+            },
+            "random28": {
+              "per100": 9.776666666666667,
+              "afterChange": 71.25,
+              "novel": 36.85,
+              "reopened": 6.85,
+              "revisits": 362.3,
+              "entropy": 4.630370215313965
+            }
+          },
+          "bandit_minus_fixed": {
+            "per100": {
+              "mean": 0.10000000000000009,
+              "se": 0.1891501461214814,
+              "ci95_t_approx": [
+                -0.29589344013109187,
+                0.49589344013109204
+              ]
+            },
+            "afterChange": {
+              "mean": 4.85,
+              "se": 2.8361157648408755,
+              "ci95_t_approx": [
+                -1.0860230471710075,
+                10.786023047171007
+              ]
+            },
+            "novel": {
+              "mean": 18.3,
+              "se": 1.0159258157748992,
+              "ci95_t_approx": [
+                16.173655535709713,
+                20.42634446429029
+              ]
+            },
+            "reopened": {
+              "mean": 10.15,
+              "se": 0.9010958241000376,
+              "ci95_t_approx": [
+                8.263996034337659,
+                12.036003965662342
+              ]
+            },
+            "revisits": {
+              "mean": 431.3,
+              "se": 6.661792077527678,
+              "ci95_t_approx": [
+                417.35679225160817,
+                445.24320774839185
+              ]
+            },
+            "entropy": {
+              "mean": 0.2441841001056447,
+              "se": 0.00945271615049543,
+              "ci95_t_approx": [
+                0.2243994560430443,
+                0.2639687441682451
+              ]
+            }
+          }
+        },
+        "neutral_anchors": {
+          "policy_means": {
+            "fixed": {
+              "per100": 12.316666666666665,
+              "afterChange": 83.25,
+              "novel": 43.25,
+              "reopened": 0.25,
+              "revisits": 3,
+              "entropy": 4.917196355607481
+            },
+            "forget": {
+              "per100": 9.083333333333334,
+              "afterChange": 58.8,
+              "novel": 32.55,
+              "reopened": 6.85,
+              "revisits": 478.25,
+              "entropy": 4.899378912904017
+            },
+            "bandit": {
+              "per100": 9.889999999999999,
+              "afterChange": 69.85,
+              "novel": 36.6,
+              "reopened": 6,
+              "revisits": 395.45,
+              "entropy": 4.8045725157089425
+            },
+            "activation": {
+              "per100": 7.463333333333333,
+              "afterChange": 24.85,
+              "novel": 48.9,
+              "reopened": 11.85,
+              "revisits": 1076.95,
+              "entropy": 4.87495286684534
+            },
+            "random": {
+              "per100": 12.52,
+              "afterChange": 91.8,
+              "novel": 48.9,
+              "reopened": 0,
+              "revisits": 0,
+              "entropy": 4.917132451816767
+            },
+            "random28": {
+              "per100": 9.776666666666667,
+              "afterChange": 71.25,
+              "novel": 36.85,
+              "reopened": 6.85,
+              "revisits": 362.3,
+              "entropy": 4.901984025468124
+            }
+          },
+          "bandit_minus_fixed": {
+            "per100": {
+              "mean": -2.426666666666666,
+              "se": 0.2227630844930674,
+              "ci95_t_approx": [
+                -2.8929123749704457,
+                -1.960420958362886
+              ]
+            },
+            "afterChange": {
+              "mean": -13.4,
+              "se": 2.3624251589370924,
+              "ci95_t_approx": [
+                -18.344583138852943,
+                -8.455416861147057
+              ]
+            },
+            "novel": {
+              "mean": -6.65,
+              "se": 1.7172116321157636,
+              "ci95_t_approx": [
+                -10.244143776314163,
+                -3.0558562236858378
+              ]
+            },
+            "reopened": {
+              "mean": 5.75,
+              "se": 0.6915847552427761,
+              "ci95_t_approx": [
+                4.302505120881914,
+                7.197494879118086
+              ]
+            },
+            "revisits": {
+              "mean": 392.45,
+              "se": 4.381465147882071,
+              "ci95_t_approx": [
+                383.27954284848676,
+                401.6204571515132
+              ]
+            },
+            "entropy": {
+              "mean": -0.11262383989853789,
+              "se": 0.006709576772719086,
+              "ci95_t_approx": [
+                -0.12666706156578122,
+                -0.09858061823129456
+              ]
+            }
+          }
+        },
+        "stationary": {
+          "policy_means": {
+            "fixed": {
+              "per100": 15.096666666666668,
+              "afterChange": 71,
+              "novel": 51.05,
+              "reopened": 0,
+              "revisits": 3,
+              "entropy": 4.478425193463336
+            },
+            "forget": {
+              "per100": 13.48333333333333,
+              "afterChange": 61.1,
+              "novel": 68.45,
+              "reopened": 0,
+              "revisits": 497.35,
+              "entropy": 4.7970657955196625
+            },
+            "bandit": {
+              "per100": 14.826666666666663,
+              "afterChange": 73.45,
+              "novel": 68.7,
+              "reopened": 0,
+              "revisits": 384.9,
+              "entropy": 4.699462586924482
+            },
+            "activation": {
+              "per100": 6.256666666666666,
+              "afterChange": 8.35,
+              "novel": 42.7,
+              "reopened": 0,
+              "revisits": 1046.25,
+              "entropy": 4.605673095625625
+            },
+            "random": {
+              "per100": 13.279999999999998,
+              "afterChange": 103.2,
+              "novel": 48.9,
+              "reopened": 0,
+              "revisits": 0,
+              "entropy": 4.548348526105817
+            },
+            "random28": {
+              "per100": 10.106666666666666,
+              "afterChange": 76.2,
+              "novel": 36.85,
+              "reopened": 0,
+              "revisits": 362.3,
+              "entropy": 4.630370215313965
+            }
+          },
+          "bandit_minus_fixed": {
+            "per100": {
+              "mean": -0.27000000000000013,
+              "se": 0.12782251949960952,
+              "ci95_t_approx": [
+                -0.5375340094023697,
+                -0.002465990597630474
+              ]
+            },
+            "afterChange": {
+              "mean": 2.45,
+              "se": 3.0987900864692333,
+              "ci95_t_approx": [
+                -4.0358034356924275,
+                8.935803435692428
+              ]
+            },
+            "novel": {
+              "mean": 17.65,
+              "se": 1.1948904376112215,
+              "ci95_t_approx": [
+                15.149080515529512,
+                20.150919484470485
+              ]
+            },
+            "reopened": {
+              "mean": 0,
+              "se": 0,
+              "ci95_t_approx": [
+                0,
+                0
+              ]
+            },
+            "revisits": {
+              "mean": 381.9,
+              "se": 5.704061341664699,
+              "ci95_t_approx": [
+                369.9613337416082,
+                393.83866625839175
+              ]
+            },
+            "entropy": {
+              "mean": 0.22103739346114737,
+              "se": 0.011831940673749179,
+              "ci95_t_approx": [
+                0.1962730049961808,
+                0.24580178192611393
+              ]
+            }
+          }
+        }
+      },
+      "delayed": {
+        "fixed": {
+          "unique": 172,
+          "revisits": 0
+        },
+        "bandit": {
+          "unique": 172,
+          "revisits": 103
+        },
+        "random": {
+          "unique": 172,
+          "revisits": 103
+        }
+      }
+    },
+    {
+      "sourceSha256": "b6fc0fd72ee88726a4f1352f9a67df2845c1837ae425a66c6434ca6b66a22ed4",
+      "runs": 40,
+      "budget": 1500,
+      "worldSeedOffset": 2000,
+      "notes": {
+        "intervals": "Student-t quantile expansion times paired-world SE, descriptive approximations; 20 worlds are not a representative population; multiple comparisons exploratory",
+        "policyRandomness": "worlds paired, policy random streams not coupled",
+        "revisitControl": "random28 tuned diagnostically to original approximate revisit frequency; not an unbiased benchmark winner"
+      },
+      "hiddenEligibilityLeak": true,
+      "betaDiagnostics": [
+        {
+          "a": 45,
+          "b": 10,
+          "expectedBetaMean": 0.8181818181818182,
+          "sampleMean": 0.7506732642368718
+        },
+        {
+          "a": 1.2,
+          "b": 2.2,
+          "expectedBetaMean": 0.3529411764705882,
+          "sampleMean": 0.3988982276359565
+        }
+      ],
+      "scenarios": {
+        "original": {
+          "policy_means": {
+            "fixed": {
+              "per100": 15.428333333333333,
+              "afterChange": 74.825,
+              "novel": 52.825,
+              "reopened": 0,
+              "revisits": 3,
+              "entropy": 4.468359714817437
+            },
+            "forget": {
+              "per100": 14.09,
+              "afterChange": 69.575,
+              "novel": 71.325,
+              "reopened": 12.375,
+              "revisits": 502.925,
+              "entropy": 4.794534243570433
+            },
+            "bandit": {
+              "per100": 15.974999999999994,
+              "afterChange": 89.65,
+              "novel": 71.2,
+              "reopened": 10.65,
+              "revisits": 410.25,
+              "entropy": 4.692618762888329
+            },
+            "activation": {
+              "per100": 7.351666666666668,
+              "afterChange": 23.325,
+              "novel": 47.425,
+              "reopened": 10.8,
+              "revisits": 1052.125,
+              "entropy": 4.586681190401917
+            },
+            "random": {
+              "per100": 12.930000000000001,
+              "afterChange": 93.45,
+              "novel": 52.9,
+              "reopened": 0,
+              "revisits": 0,
+              "entropy": 4.555462427892698
+            },
+            "random28": {
+              "per100": 10.041666666666668,
+              "afterChange": 72.15,
+              "novel": 36.4,
+              "reopened": 8.125,
+              "revisits": 363.3,
+              "entropy": 4.620292317072932
+            }
+          },
+          "bandit_minus_fixed": {
+            "per100": {
+              "mean": 0.5466666666666666,
+              "se": 0.18152880364478396,
+              "ci95_t_approx": [
+                0.17949013004228287,
+                0.9138432032910504
+              ]
+            },
+            "afterChange": {
+              "mean": 14.825,
+              "se": 2.183236688015625,
+              "ci95_t_approx": [
+                10.408988493057523,
+                19.241011506942478
+              ]
+            },
+            "novel": {
+              "mean": 18.375,
+              "se": 0.831038506929733,
+              "ci95_t_approx": [
+                16.69406653572701,
+                20.05593346427299
+              ]
+            },
+            "reopened": {
+              "mean": 10.65,
+              "se": 0.4703381216932652,
+              "ci95_t_approx": [
+                9.698651678971647,
+                11.601348321028354
+              ]
+            },
+            "revisits": {
+              "mean": 407.25,
+              "se": 3.8620026026097003,
+              "ci95_t_approx": [
+                399.4383650881355,
+                415.0616349118645
+              ]
+            },
+            "entropy": {
+              "mean": 0.22425904807089383,
+              "se": 0.006714568700083872,
+              "ci95_t_approx": [
+                0.21067755559850554,
+                0.23784054054328213
+              ]
+            }
+          }
+        },
+        "observed_open_only": {
+          "policy_means": {
+            "fixed": {
+              "per100": 15.428333333333333,
+              "afterChange": 74.825,
+              "novel": 52.825,
+              "reopened": 0,
+              "revisits": 3,
+              "entropy": 4.468359714817437
+            },
+            "forget": {
+              "per100": 13.866666666666665,
+              "afterChange": 63.725,
+              "novel": 72.025,
+              "reopened": 0,
+              "revisits": 474.05,
+              "entropy": 4.794677331779001
+            },
+            "bandit": {
+              "per100": 15.731666666666664,
+              "afterChange": 83.25,
+              "novel": 72.375,
+              "reopened": 0,
+              "revisits": 359.925,
+              "entropy": 4.692462531896909
+            },
+            "activation": {
+              "per100": 7.096666666666667,
+              "afterChange": 15.6,
+              "novel": 48.875,
+              "reopened": 0,
+              "revisits": 993.1,
+              "entropy": 4.601739045487773
+            },
+            "random": {
+              "per100": 12.893333333333334,
+              "afterChange": 93.775,
+              "novel": 52.625,
+              "reopened": 0,
+              "revisits": 0,
+              "entropy": 4.553408714372787
+            },
+            "random28": {
+              "per100": 9.355,
+              "afterChange": 63.225,
+              "novel": 36.375,
+              "reopened": 0,
+              "revisits": 360.05,
+              "entropy": 4.612885515212691
+            }
+          },
+          "bandit_minus_fixed": {
+            "per100": {
+              "mean": 0.3033333333333337,
+              "se": 0.14650632260794264,
+              "ci95_t_approx": [
+                0.006996426745095208,
+                0.5996702399215721
+              ]
+            },
+            "afterChange": {
+              "mean": 8.425,
+              "se": 1.9871018388468966,
+              "ci95_t_approx": [
+                4.405708535183956,
+                12.444291464816045
+              ]
+            },
+            "novel": {
+              "mean": 19.55,
+              "se": 0.6533444530712528,
+              "ci95_t_approx": [
+                18.228486561444665,
+                20.871513438555336
+              ]
+            },
+            "reopened": {
+              "mean": 0,
+              "se": 0,
+              "ci95_t_approx": [
+                0,
+                0
+              ]
+            },
+            "revisits": {
+              "mean": 356.925,
+              "se": 2.875936302386514,
+              "ci95_t_approx": [
+                351.107871754452,
+                362.74212824554803
+              ]
+            },
+            "entropy": {
+              "mean": 0.22410281707947313,
+              "se": 0.00800750848309806,
+              "ci95_t_approx": [
+                0.2079061079469233,
+                0.24029952621202297
+              ]
+            }
+          }
+        },
+        "all_seen_revisitable": {
+          "policy_means": {
+            "fixed": {
+              "per100": 15.428333333333333,
+              "afterChange": 74.825,
+              "novel": 52.825,
+              "reopened": 0,
+              "revisits": 3,
+              "entropy": 4.467117964276609
+            },
+            "forget": {
+              "per100": 11.93,
+              "afterChange": 59.975,
+              "novel": 69.4,
+              "reopened": 5.775,
+              "revisits": 643.375,
+              "entropy": 4.913705762724824
+            },
+            "bandit": {
+              "per100": 14.73166666666667,
+              "afterChange": 85.225,
+              "novel": 70.325,
+              "reopened": 4.375,
+              "revisits": 483.7,
+              "entropy": 4.831013462247147
+            },
+            "activation": {
+              "per100": 5.076666666666667,
+              "afterChange": 13.625,
+              "novel": 37.9,
+              "reopened": 7.7,
+              "revisits": 1241.2,
+              "entropy": 4.72631627687087
+            },
+            "random": {
+              "per100": 12.788333333333332,
+              "afterChange": 95.1,
+              "novel": 52.375,
+              "reopened": 0,
+              "revisits": 0,
+              "entropy": 4.5554809207205595
+            },
+            "random28": {
+              "per100": 9.473333333333333,
+              "afterChange": 65.3,
+              "novel": 36.9,
+              "reopened": 1.975,
+              "revisits": 387.5,
+              "entropy": 4.534925317131181
+            }
+          },
+          "bandit_minus_fixed": {
+            "per100": {
+              "mean": -0.6966666666666663,
+              "se": 0.19531477990122315,
+              "ci95_t_approx": [
+                -1.0917279627021816,
+                -0.3016053706311511
+              ]
+            },
+            "afterChange": {
+              "mean": 10.4,
+              "se": 2.548201980482185,
+              "ci95_t_approx": [
+                5.245776763649548,
+                15.554223236350452
+              ]
+            },
+            "novel": {
+              "mean": 17.5,
+              "se": 0.7467879938056768,
+              "ci95_t_approx": [
+                15.989479225044631,
+                19.01052077495537
+              ]
+            },
+            "reopened": {
+              "mean": 4.375,
+              "se": 0.36635330432486013,
+              "ci95_t_approx": [
+                3.633980752574545,
+                5.116019247425455
+              ]
+            },
+            "revisits": {
+              "mean": 480.7,
+              "se": 5.00847998846674,
+              "ci95_t_approx": [
+                470.56939648698227,
+                490.8306035130177
+              ]
+            },
+            "entropy": {
+              "mean": 0.36389549797054077,
+              "se": 0.007800501544312062,
+              "ci95_t_approx": [
+                0.34811749974950773,
+                0.3796734961915738
+              ]
+            }
+          }
+        },
+        "exact_beta": {
+          "policy_means": {
+            "fixed": {
+              "per100": 15.428333333333333,
+              "afterChange": 74.825,
+              "novel": 52.825,
+              "reopened": 0,
+              "revisits": 3,
+              "entropy": 4.468359714817437
+            },
+            "forget": {
+              "per100": 14.261666666666667,
+              "afterChange": 72.6,
+              "novel": 70.45,
+              "reopened": 12.075,
+              "revisits": 498.6,
+              "entropy": 4.792231631609626
+            },
+            "bandit": {
+              "per100": 15.809999999999997,
+              "afterChange": 86.525,
+              "novel": 71.525,
+              "reopened": 11.4,
+              "revisits": 433.3,
+              "entropy": 4.724819592903969
+            },
+            "activation": {
+              "per100": 7.351666666666668,
+              "afterChange": 23.325,
+              "novel": 47.425,
+              "reopened": 10.8,
+              "revisits": 1052.125,
+              "entropy": 4.586681190401917
+            },
+            "random": {
+              "per100": 12.930000000000001,
+              "afterChange": 93.45,
+              "novel": 52.9,
+              "reopened": 0,
+              "revisits": 0,
+              "entropy": 4.555462427892698
+            },
+            "random28": {
+              "per100": 10.041666666666668,
+              "afterChange": 72.15,
+              "novel": 36.4,
+              "reopened": 8.125,
+              "revisits": 363.3,
+              "entropy": 4.620292317072932
+            }
+          },
+          "bandit_minus_fixed": {
+            "per100": {
+              "mean": 0.38166666666666677,
+              "se": 0.13975940865534708,
+              "ci95_t_approx": [
+                0.09897667697688572,
+                0.6643566563564478
+              ]
+            },
+            "afterChange": {
+              "mean": 11.7,
+              "se": 2.426668075513821,
+              "ci95_t_approx": [
+                6.791602205192378,
+                16.608397794807622
+              ]
+            },
+            "novel": {
+              "mean": 18.7,
+              "se": 0.7747621636711554,
+              "ci95_t_approx": [
+                17.13289614511508,
+                20.26710385488492
+              ]
+            },
+            "reopened": {
+              "mean": 11.4,
+              "se": 0.4801175069843011,
+              "ci95_t_approx": [
+                10.4288710119404,
+                12.371128988059601
+              ]
+            },
+            "revisits": {
+              "mean": 430.3,
+              "se": 3.5791776737838563,
+              "ci95_t_approx": [
+                423.0604323069584,
+                437.53956769304165
+              ]
+            },
+            "entropy": {
+              "mean": 0.256459878086532,
+              "se": 0.007013113459529261,
+              "ci95_t_approx": [
+                0.24227452204759356,
+                0.2706452341254704
+              ]
+            }
+          }
+        },
+        "neutral_anchors": {
+          "policy_means": {
+            "fixed": {
+              "per100": 12.41333333333333,
+              "afterChange": 85.8,
+              "novel": 43.425,
+              "reopened": 0.2,
+              "revisits": 3,
+              "entropy": 4.9181518258530135
+            },
+            "forget": {
+              "per100": 8.991666666666665,
+              "afterChange": 59.85,
+              "novel": 31.775,
+              "reopened": 6.925,
+              "revisits": 472.55,
+              "entropy": 4.90178696837934
+            },
+            "bandit": {
+              "per100": 9.773333333333335,
+              "afterChange": 72.575,
+              "novel": 37.675,
+              "reopened": 5.55,
+              "revisits": 397.875,
+              "entropy": 4.8064123532940535
+            },
+            "activation": {
+              "per100": 7.75,
+              "afterChange": 23.05,
+              "novel": 49.85,
+              "reopened": 10.425,
+              "revisits": 1079.825,
+              "entropy": 4.866892687877075
+            },
+            "random": {
+              "per100": 12.930000000000001,
+              "afterChange": 93.45,
+              "novel": 52.9,
+              "reopened": 0,
+              "revisits": 0,
+              "entropy": 4.916741826907687
+            },
+            "random28": {
+              "per100": 10.041666666666668,
+              "afterChange": 72.15,
+              "novel": 36.4,
+              "reopened": 8.125,
+              "revisits": 363.3,
+              "entropy": 4.901545052923819
+            }
+          },
+          "bandit_minus_fixed": {
+            "per100": {
+              "mean": -2.6400000000000006,
+              "se": 0.17983531561053498,
+              "ci95_t_approx": [
+                -3.0037511349319503,
+                -2.276248865068051
+              ]
+            },
+            "afterChange": {
+              "mean": -13.225,
+              "se": 1.8245081880345526,
+              "ci95_t_approx": [
+                -16.915414876728057,
+                -9.534585123271944
+              ]
+            },
+            "novel": {
+              "mean": -5.75,
+              "se": 1.26529108843046,
+              "ci95_t_approx": [
+                -8.30929191590275,
+                -3.1907080840972504
+              ]
+            },
+            "reopened": {
+              "mean": 5.35,
+              "se": 0.5293319447117354,
+              "ci95_t_approx": [
+                4.279325449837561,
+                6.420674550162438
+              ]
+            },
+            "revisits": {
+              "mean": 394.875,
+              "se": 4.201524067190319,
+              "ci95_t_approx": [
+                386.37661834067006,
+                403.37338165932994
+              ]
+            },
+            "entropy": {
+              "mean": -0.11173947255896192,
+              "se": 0.004736241275446266,
+              "ci95_t_approx": [
+                -0.12131942148838232,
+                -0.10215952362954153
+              ]
+            }
+          }
+        },
+        "stationary": {
+          "policy_means": {
+            "fixed": {
+              "per100": 15.198333333333334,
+              "afterChange": 71.375,
+              "novel": 52.825,
+              "reopened": 0,
+              "revisits": 3,
+              "entropy": 4.468359714817437
+            },
+            "forget": {
+              "per100": 13.523333333333335,
+              "afterChange": 61.075,
+              "novel": 71.4,
+              "reopened": 0,
+              "revisits": 500.925,
+              "entropy": 4.797983560569493
+            },
+            "bandit": {
+              "per100": 15.064999999999998,
+              "afterChange": 76,
+              "novel": 72.4,
+              "reopened": 0,
+              "revisits": 383.225,
+              "entropy": 4.701831518072091
+            },
+            "activation": {
+              "per100": 6.266666666666666,
+              "afterChange": 7.05,
+              "novel": 44.55,
+              "reopened": 0,
+              "revisits": 1060.425,
+              "entropy": 4.5923112968296875
+            },
+            "random": {
+              "per100": 13.673333333333336,
+              "afterChange": 104.6,
+              "novel": 52.9,
+              "reopened": 0,
+              "revisits": 0,
+              "entropy": 4.555462427892698
+            },
+            "random28": {
+              "per100": 10.239999999999998,
+              "afterChange": 75.125,
+              "novel": 36.4,
+              "reopened": 0,
+              "revisits": 363.3,
+              "entropy": 4.620292317072932
+            }
+          },
+          "bandit_minus_fixed": {
+            "per100": {
+              "mean": -0.13333333333333358,
+              "se": 0.1100116543942691,
+              "ci95_t_approx": [
+                -0.3558528312739959,
+                0.08918616460732873
+              ]
+            },
+            "afterChange": {
+              "mean": 4.625,
+              "se": 1.8531634422224454,
+              "ci95_t_approx": [
+                0.8766244207412841,
+                8.373375579258717
+              ]
+            },
+            "novel": {
+              "mean": 19.575,
+              "se": 0.6997137693188258,
+              "ci95_t_approx": [
+                18.159695798747077,
+                20.990304201252922
+              ]
+            },
+            "reopened": {
+              "mean": 0,
+              "se": 0,
+              "ci95_t_approx": [
+                0,
+                0
+              ]
+            },
+            "revisits": {
+              "mean": 380.225,
+              "se": 3.038531928752976,
+              "ci95_t_approx": [
+                374.07899117043,
+                386.37100882957003
+              ]
+            },
+            "entropy": {
+              "mean": 0.23347180325465483,
+              "se": 0.007853048033597723,
+              "ci95_t_approx": [
+                0.2175875197634041,
+                0.24935608674590556
+              ]
+            }
+          }
+        }
+      },
+      "delayed": {
+        "fixed": {
+          "unique": 172,
+          "revisits": 0
+        },
+        "bandit": {
+          "unique": 172,
+          "revisits": 103
+        },
+        "random": {
+          "unique": 172,
+          "revisits": 103
+        }
+      }
+    }
+  ]
+}
