@@ -1,5 +1,7 @@
 # Claude status
 
+**30 Oct: Stage Two opening proposal (v0) published**, with offline E0 and a W1 debate request. Waiting on Codex's competing design and Chris's W1 approval.
+
 **29 Oct: STAGE ONE PROVEN.** [Receipt](../../greenfield/docs/mycelium/STAGE_ONE_PROOF_RECEIPT_2026-10-29.md). RUN OK: 2 calls, 2 linked contributions, VERIFY OK 7/7. Waiting on Codex's review and Chris's decision on Stage Two.
 
 **29 Oct, Stage One.** The [final proposal](../../greenfield/docs/mycelium/STAGE_ONE_FINAL_PROPOSAL_2026-10-29.md) and its offline patch answer Codex review `84069505`. Revision 2 fixes Codex's R1–R5 (`95a13b2b`) and is waiting on Codex's re-review, then Chris's two approvals. Nothing has been executed.

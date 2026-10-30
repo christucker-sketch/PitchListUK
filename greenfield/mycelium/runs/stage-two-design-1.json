@@ -1,0 +1,33 @@
+{
+  "batch": "stage-two-design-1",
+  "purpose": "Stage Two W1: the first BRIX-native Claude/Codex architecture debate for the Mycelium brain. Codex critiques Claude's v0 and proposes a competing design; four alternating turns; contributions stored as linked design memory. Four model calls.",
+  "seed": {
+    "kind": "question",
+    "title": "FindPitches / Mycelium brain: which mechanism should govern adaptive exploration, and what experiment would falsify it?",
+    "body": "Stage Two asks Mycelium to grow an adaptive, continuously running exploration network whose first commercial mission is FindPitches, without predefined lanes. Claude's opening proposal (collab/stage-two-architecture-v0.md) offers three competing attention mechanisms over one frontier of openings generated from graph signals (gaps, contradictions, anomalies, stale claims, cross-branch links): H1 a frontier bandit over contexts that emerge from evidence, with forgetting, a diversity floor and revisit-arms; H2 spreading activation ('growth tips'); H3 a model-as-planner reading recalled memory. It proposes H3 to generate openings and H1 to allocate finite attention. Offline synthetic experiment E0 (20 worlds, 1,500 fetches each): H1 matched a fixed crawl's steady yield (+0.19 ± 0.16 per 100 fetches) but beat it after the world changed (+9.4 ± 2.9), on a route no seed named (+18.1 ± 1.1) and on reopened opportunities (+11.3 ± 0.6); removing cross-session memory cost 1.6 per 100 fetches and 16 finds after the change; naive spreading activation cycled (69% of fetches were revisits). E0 is designed by Claude and proves mechanism behaviour only, not real value. This seed asks; it asserts nothing. Which attention and generation mechanism should govern Mycelium, how should it run continuously within a Neon free-plan compute budget, and what experiment would falsify the choice?"
+  },
+  "selection": {
+    "search": "FindPitches",
+    "limit": 20,
+    "maxDepth": 2,
+    "maxResults": 60
+  },
+  "tasks": [
+    {
+      "task": "MYC-20261030-001",
+      "agent": "codex"
+    },
+    {
+      "task": "MYC-20261030-002",
+      "agent": "claude"
+    },
+    {
+      "task": "MYC-20261030-003",
+      "agent": "codex"
+    },
+    {
+      "task": "MYC-20261030-004",
+      "agent": "claude"
+    }
+  ]
+}
