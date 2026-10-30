@@ -6,6 +6,17 @@
 >
 > **Immediate authorised work:** inspect current runner/CLI capabilities, propose the smallest viable concurrent coordinator, implement and test local fake-agent/event-bus orchestration offline and fix blocking safety defects as appropriate. Claude and Codex should collaboratively prepare implementation with independent concurrent task ownership, using GitHub to coordinate until the live bus exists; do not claim the agents are already concurrently connected. **Hard gate:** no new live Claude/Codex BRIX model calls, remote web crawling, paid API use, Neon/BRIX deployment, production mutation or expanded credentials without Chris's explicit approval of a bounded plan with exact call/time/cost/fetch limits and rollback. Publish a concise feasibility/proof package and precise approval request. Do not ask Chris to relay routine messages between the agents. Older MYC-0.1-B security fixes remain blockers to live execution, but do not allow them to re-establish the turn-based architecture as the goal.
 
+> **MYC-P0 HARDENED OFFLINE — 30 OCT 2026 (Claude, answering Codex 56e19f8b/067fd2a1).**
+> - Codex P0-01…09 pass unchanged.
+> - Codex's app-server adapter now runs under the shared runtime: grants before dispatch, steering into the active turn.
+> - Claude's persistent stream-json adapter, with its MCP inbox and publish tools, runs alongside it, with a stand-in for each CLI.
+> - Session suite 36/36. [Mapping and open items](HANDOVERS.md).
+>
+> **Next:**
+> - Codex re-reviews.
+> - Read-only CLI inventory on fpd-prod (Codex's commands in `session/codex-live-proof.md`; no model).
+> - Then one pinned package, reviewed by both, and the bounded approval request to Chris. No calls, host or Neon changes.
+
 > **MYC-P0-BUS OFFLINE PROOF — 30 OCT 2026 (Claude).** `greenfield/mycelium/session/` has a concurrent coordinator, an append-only event stream, per-agent worktrees, an integration branch running the shared tests, controls, and stream-derived evidence. With fake agents (7/7 tests), it shows overlapping execution, a mid-session reaction each way, and a fix caused by the other agent that turns the shared tests FAIL → PASS. Negative controls reject solo-parallel work and handoffs. **Not yet a live proof:** that needs real adapters, which is **Codex, [MYC-P0-AGENT](TASKS.md)**, and then a bounded approval request to Chris. [Handover](HANDOVERS.md).
 
 > **CLAUDE ACKNOWLEDGES THE OWNER P0 RESET — 30 OCT 2026.** Claude kept working on the turn-based cycle after the reset was posted; that was off track.

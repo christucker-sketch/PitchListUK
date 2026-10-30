@@ -1,60 +1,72 @@
-> **Codex independent review (30 October): NOT LIVE-READY.** [Verdict and nine reproduced failures](codex-review.md), [bounded live-proof candidate](codex-live-proof.md). The Codex app-server adapter has 12 passing offline tests and uses persistent same-turn steering. It requires trusted runtime injection absent from the original worker and cannot launch a model by itself. Shared regression tests intentionally fail until Claude hardens the coordinator; the seven-test fake proof is not a live acceptance result.
+# Concurrent session (MYC-P0-BUS + MYC-P0-AGENT): offline
 
-# Concurrent session (MYC-P0-BUS): offline proof
+Claude and Codex run **at the same time** on one shared problem. The pieces:
+- Each agent has a worker process that leads its own process group, and its own git worktree.
+- The coordinator is the single writer of an append-only stream (`events.jsonl`). It tells workers when new events exist, and they pull them from a cursor; nothing is dropped.
+- Commits from each worktree are merged into an integration branch. The shared tests run on a copy of each merge commit, inside an OS sandbox.
 
-Claude and Codex run **at the same time** on one shared problem. Each has its own worker process and its own git worktree. The coordinator is the single writer of an append-only stream (`events.jsonl`) and delivers every event to the other agent the moment it is written. The tests use fake agents only: no model, no network, no host changes.
+No model, network or host changes are involved: the tests use scripted fake agents, and process-level stand-ins for both CLIs.
 
 ```
-node --test greenfield/mycelium/session/test/      # 7 tests: proof, negative controls, stop, limits, safety, inbox, bus
-node greenfield/mycelium/session/demo.mjs [dir]    # prints the timeline and the evidence report of the proof scenario
+node --test greenfield/mycelium/session/test/      # 36 tests (Claude + Codex suites)
+node greenfield/mycelium/session/demo.mjs [dir]    # timeline + evidence of the fake-agent proof scenario
 ```
 
-**Evidence (`analyze()`, computed only from the stream):**
+## Controls (each one tested)
 
-| Field | Meaning |
-|---|---|
-| `overlapMs` | How long both sessions were live together |
-| `callOverlapMs` | How long both agents' model calls were in flight together |
-| `midSessionReactions` | Events by one agent that reference the other's event while both sessions were live |
-| `commitsCausedByOther` | Commits whose reference chain starts at the other agent |
-| `integrationTests` | The shared test result after each merge |
+- **Pre-dispatch grants.** `runtime.reserve(intent)` writes a durable `grant` before any model turn or steer. With an allowance of zero there are no dispatches. Every `call` ledger line must use an unused grant. Steering counts as a dispatch.
+- **The stream** (`bus.mjs`):
+  - one exclusive writer (a lock file);
+  - limits counted in UTF-8 bytes;
+  - deduplication is exact, and a reused id with different content is refused as a collision;
+  - every record is validated when the stream is reopened; a torn final line is reported, not repaired;
+  - control records keep reserved headroom, so a full stream can still record its stop.
+- **STOP** (file, wall-clock limit, or full stream):
+  - the stopping flag is set first, so no new grant, publication or Git mutation can start;
+  - a Git step already running finishes before the `stop` record, so nothing is committed or merged after it;
+  - running tests are aborted;
+  - workers are signalled, then their whole process groups are killed;
+  - each worker's exit becomes a trusted `exit` record, and that ends its live span.
+- **Files:**
+  - only the submitted paths, exactly, under `artifact/`;
+  - no symlinks, dotfiles or modes other than 100644;
+  - direct worktree edits are discarded and reported;
+  - Git hooks are disabled.
+- **Tests** (`sandbox.mjs`): they run on a copy, as `nobody`, with no network, a private `/tmp`, a clean environment and rlimits. If no sandbox works they are NOT RUN (fail closed). The backend is `unshare` here; on fpd-prod it would be `systemd`, which is untested.
+- **Workers** get a clean environment: nothing is inherited except PATH, plus explicit `config.env`.
+- **What is delivered to a peer:** the other agent's finding, question, challenge, reply and commit events, plus the coordinator's tested, conflict, refused, stop and limit events. Notes, grants and ledger lines are recorded but not delivered: each delivery may cost a model steer.
 
-The negative controls show that parallel solo work, or a reply sent only after the other agent finished, does **not** count.
+## Adapters
 
-**Event:** `{seq, id, at, session, actor: claude|codex|coordinator, kind, refs: [seq], body ≤4000, data?}`.
-- `kind` is one of `start note finding question challenge reply commit merged conflict refused call limit stop done error`.
-- Adapters refer to earlier events by **id** (`refIds`); the coordinator maps ids to seq.
-- Duplicate ids are not stored twice.
+All adapters use `async function* agentRun({ agent, config, worktree, inbox, runtime })` with `runtime = { reserve, publish, signal, rpc? }`:
+- `publish` resolves with the coordinator's receipt;
+- `inbox.take()` and `inbox.wait(ms)` read from a bounded, replayed buffer.
 
-## Adapter interface (MYC-P0-AGENT plugs in here)
+| Adapter | How it works | Offline evidence |
+|---|---|---|
+| `fake` | Scripted reference | — |
+| `codex-app-server` (Codex) | Persistent app-server thread; `turn/steer` into the same active turn; `myc_publish` / `myc_submit` dynamic tools | 12 tests (Codex); `test/claude-codex-bridge.test.mjs` runs it under the real worker runtime with a process-level app-server stand-in |
+| `claude-stream` (Claude) | One persistent session (`claude -p --input-format stream-json --output-format stream-json`), started with `--restricted`, `--tools ""` and only the `myc` MCP bridge (`mcp-bridge.mjs`: `myc_publish`, `myc_submit`, `myc_inbox`). Peer events go both to `myc_inbox` (read during the turn) and to stdin, under a grant | `test/claude-stream.test.mjs`: both adapters together, with a stand-in for each CLI |
 
-`adapters/<name>.mjs` exports `async function* agentRun({ agent, session, config, worktree, inbox, acks })`.
+How each stdin delivery to Claude is classified (from `--replay-user-messages`):
+- `mid-turn`: taken in during the running turn;
+- `queued`: held until that turn ended;
+- `new-turn`: sent while Claude was idle.
 
-**It yields:**
-- `{type:'event', kind, body, refIds?, id?, data?}`
-- `{type:'files', files:[{path, content}], message, refIds?}`. The coordinator writes the files (allowlist `artifact/`, no symlinks, no dotfiles), commits them on the agent's branch, merges into `session/<id>/integration`, and runs the shared tests there. It reports `commit`, `merged {tests}` or `conflict`.
-- `{type:'call', startedAt, endedAt, ms, model?, inputTokens?, outputTokens?, costUsd?}`, one per model call, for the ledger.
-- `{type:'done', body}`.
+**Not yet proven:** whether the real CLI consumes stdin mid-turn. Collaboration does not depend on it, because `myc_inbox` is read during the turn either way.
 
-**It reads:**
-- `inbox.take()` returns the new events.
-- `inbox.wait(ms)` resolves on the next delivery or after `ms`.
-- `inbox.dropped` counts events lost because the bounded inbox (64) overflowed.
-- `inbox.stopped` becomes true once the coordinator says stop.
+**Evidence:** `analyze()` computes the following from the stream alone:
+- `overlapMs` and `callOverlapMs`;
+- `midSessionReactions`: references to the other agent's event while both sessions are live; a crashed agent's span ends at its exit;
+- `commitsCausedByOther`;
+- `integrationTests`;
+- `pass.criteria`, and `pass.mechanical` when all criteria hold.
 
-The fake adapter (`adapters/fake.mjs`) is a scripted reference.
+`pass` always says manual review is required, because references prove linkage, not substance.
 
-**What a real adapter must add:**
-- a way to put new inbox events in front of a live model session. The Claude CLI (2.1.314) has `-p --input-format stream-json --output-format stream-json`, which takes further user messages on stdin while running. Codex's equivalent is still to be checked;
-- a context budget per delivery;
-- the CLI's tool/sandbox mode;
-- a `call` record per model turn.
-
-**Controls:**
-- a `STOP` file in the session directory;
-- `limits.maxWallMs` and `maxCallsPerAgent`;
-- the stream size limit (`maxEvents`);
-- a grace period and then SIGKILL;
-- after STOP, only the ledger lines of calls that were already running are accepted.
-
-**Not yet:** real adapters, live calls, the web breadcrumb experiment (MYC-P0-AGENT, proposed for Codex), and any deployment. The coordinator runs both workers on one machine.
+**Not done (needs Chris's separate approval of a bounded package):**
+- running the real CLIs;
+- confirming the installed versions' schemas and flags on fpd-prod;
+- the systemd sandbox backend on fpd-prod;
+- memory headroom;
+- the real-web breadcrumb fixture.

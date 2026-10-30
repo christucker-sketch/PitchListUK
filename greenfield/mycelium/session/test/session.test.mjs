@@ -42,6 +42,8 @@ test('PROOF: both agents run at the same time, react to each other mid-session, 
   assert.equal(readFileSync(join(dir, 'events.jsonl'), 'utf8').trim().split('\n').length, ev.length);
   assert.ok(rep.calls.length === 5 && rep.calls.every(c => c.startedAt && c.endedAt && c.ms >= 0));
   assert.equal(rep.stopped, false);
+  assert.equal(rep.grants, rep.calls.length, 'every call ran under its own pre-dispatch grant');
+  assert.equal(rep.pass.mechanical, true, JSON.stringify(rep.pass.criteria));
   writeFileSync(join(dir, 'report.json'), JSON.stringify(rep, null, 1));
 });
 
@@ -52,7 +54,7 @@ test('STOP file halts both agents promptly; nothing enters the stream after the 
   const t0 = Date.now(), r = await runSession({ dir, repo: repo(), id: 'stop', agents: { claude: long('claude'), codex: long('codex') }, limits: { maxWallMs: 30000, graceMs: 1500 } });
   assert.ok(Date.now() - t0 < 6000, 'stopped within the grace period');
   const st = r.events.find(e => e.kind === 'stop'); assert.match(st.body, /STOP file/);
-  assert.ok(r.events.filter(e => e.seq > st.seq).every(e => e.kind === 'call' || (e.actor === 'coordinator' && e.kind === 'done')));
+  assert.ok(r.events.filter(e => e.seq > st.seq).every(e => e.kind === 'call' || (e.actor === 'coordinator' && ['exit', 'done'].includes(e.kind))), 'only finished-call ledger lines and trusted exit records after STOP');
   assert.ok(!r.events.some(e => /should never appear/.test(e.body)));
 });
 
@@ -61,9 +63,9 @@ test('limits: the per-agent call limit stops that agent; the wall-clock limit st
   const many = { adapter: 'fake', script: Array.from({ length: 6 }, () => ({ call: 50 })).concat([{ emit: 'note', body: 'past the limit' }, { done: 'x' }]) };
   const idle = { adapter: 'fake', script: [{ call: 50 }, { done: 'codex done' }] };
   const r = await runSession({ dir, repo: repo(), id: 'lim', agents: { claude: many, codex: idle }, limits: { maxCallsPerAgent: 2, maxWallMs: 20000 } });
-  assert.ok(r.events.some(e => e.kind === 'limit' && /claude reached its 2-call limit/.test(e.body)));
+  assert.ok(r.events.some(e => e.kind === 'limit' && /claude has used its 2-dispatch allowance/.test(e.body)));
   assert.ok(!r.events.some(e => /past the limit/.test(e.body)));
-  assert.ok(r.events.filter(e => e.kind === 'call' && e.actor === 'claude').length <= 3);
+  assert.equal(r.events.filter(e => e.kind === 'call' && e.actor === 'claude').length, 2);
   const dir2 = mkdtempSync(join(tmpdir(), 'myc-session-'));
   const slow = { adapter: 'fake', script: [{ call: 20000 }, { done: 'x' }] };
   const r2 = await runSession({ dir: dir2, repo: repo(), id: 'wall', agents: { claude: slow, codex: slow }, limits: { maxWallMs: 800, graceMs: 800 } });
@@ -72,31 +74,33 @@ test('limits: the per-agent call limit stops that agent; the wall-clock limit st
 
 test('safety: paths outside the allowlist, traversal and symlinks are refused; a merge conflict leaves integration unchanged', async () => {
   const dir = mkdtempSync(join(tmpdir(), 'myc-session-'));
-  const claude = { adapter: 'fake', script: [{ files: { '../escape.js': 'x', 'notes/x.md': 'x', 'artifact/.hidden': 'x', 'artifact/same.mjs': 'export const v = "claude";\n' }, message: 'mixed' }, { call: 600 }, { done: 'c' }] };
+  const claude = { adapter: 'fake', script: [{ files: { '../escape.js': 'x', 'notes/x.md': 'x', 'artifact/.hidden': 'x', 'artifact/ok.mjs': 'x' }, message: 'mixed' },
+    { files: { 'artifact/same.mjs': 'export const v = "claude";\n' }, message: 'same file' }, { call: 600 }, { done: 'c' }] };
   const codex = { adapter: 'fake', script: [{ call: 300 }, { files: { 'artifact/same.mjs': 'export const v = "codex";\n' }, message: 'same file' }, { call: 600 }, { done: 'x' }] };
   const r = await runSession({ dir, repo: repo(), id: 'safe', agents: { claude, codex }, limits: { maxWallMs: 20000 } });
   const refused = r.events.find(e => e.kind === 'refused');
   assert.ok(refused && /\.\.\/escape\.js/.test(refused.body) && /notes\/x\.md/.test(refused.body) && /\.hidden/.test(refused.body));
-  assert.ok(!existsSync(join(dir, 'escape.js')) && !existsSync(join(dir, 'wt-claude', 'notes')));
+  assert.ok(!existsSync(join(dir, 'escape.js')) && !existsSync(join(dir, 'wt-claude', 'notes')) && !existsSync(join(dir, 'wt-claude', 'artifact', 'ok.mjs')), 'a refused submission writes nothing, not even its valid files');
   assert.ok(r.events.some(e => e.kind === 'conflict' && e.data.agent === 'codex'));
   const shared = execFileSync('git', ['show', 'session/safe/integration:artifact/same.mjs'], { cwd: r.worktrees.integration, encoding: 'utf8' });
   assert.match(shared, /claude/);
 });
 
-test('bounded inbox: an agent that falls behind loses the oldest undelivered events and is told how many', async () => {
+test('replayed inbox: an agent that falls behind loses NOTHING; it reads the backlog from its cursor later', async () => {
   const dir = mkdtempSync(join(tmpdir(), 'myc-session-'));
-  const flood = { adapter: 'fake', script: [...Array.from({ length: 100 }, (_, i) => ({ emit: 'note', body: `n${i}` })), { call: 1500 }, { done: 'f' }] };
-  const slow = { adapter: 'fake', script: [{ busy: 1200 }, { report: 'dropped' }, { done: 's' }] };
+  const flood = { adapter: 'fake', script: [...Array.from({ length: 100 }, (_, i) => ({ emit: 'finding', body: `n${i}` })), { call: 1500 }, { done: 'f' }] };
+  const slow = { adapter: 'fake', script: [{ busy: 1200 }, { await: { actor: 'claude', match: '^n99$' }, label: 'last', timeoutMs: 5000 }, { report: 'inbox' }, { done: 's' }] };
   const r = await runSession({ dir, repo: repo(), id: 'inbox', agents: { claude: flood, codex: slow }, limits: { maxWallMs: 20000 } });
   const m = r.events.find(e => e.actor === 'codex' && /inbox dropped=/.test(e.body)).body.match(/dropped=(\d+) seen=(\d+)/);
-  assert.ok(Number(m[1]) > 0 && Number(m[2]) <= 64, m[0]);
+  assert.ok(Number(m[1]) === 0 && Number(m[2]) >= 100, m[0]);
 });
 
 test('bus: append-only, deduplicated by id, refs must point backwards, bounded, durable across reopen', () => {
   const p = join(mkdtempSync(join(tmpdir(), 'myc-bus-')), 'e.jsonl');
   const b = openBus(p, { session: 't', maxEvents: 3 });
   const a = b.append({ actor: 'claude', kind: 'note', body: 'a', id: 'x1' });
-  assert.equal(b.append({ actor: 'claude', kind: 'note', body: 'retry', id: 'x1' }).seq, a.seq);
+  assert.equal(b.append({ actor: 'claude', kind: 'note', body: 'a', id: 'x1' }).seq, a.seq, 'an exact retry is the same event');
+  assert.throws(() => b.append({ actor: 'claude', kind: 'note', body: 'changed', id: 'x1' }), /collision/);
   assert.throws(() => b.append({ actor: 'codex', kind: 'reply', body: 'r', refs: [9] }), /does not exist/);
   assert.throws(() => b.append({ actor: 'someone', kind: 'note', body: 'x' }), /actor/);
   b.append({ actor: 'codex', kind: 'reply', body: 'r', refs: [1] }); b.append({ actor: 'codex', kind: 'note', body: 'c' });

@@ -33,17 +33,17 @@ export function proofAgents() {
     { emit: 'reply', body: 'Agreed on relative hrefs and duplicates: resolving against the page URL and deduplicating.', refs: ['ch'] },
     { call: 300 },
     { files: { 'artifact/links.mjs': V2 }, message: 'resolve relative links and dedupe (answers the Codex challenge)', refs: ['ch'] },
-    { await: { actor: 'coordinator', kind: 'merged', data: { agent: 'claude', 'tests.ok': true } }, label: 'green', timeoutMs: 15000 },
+    { await: { actor: 'coordinator', kind: 'tested', data: { agent: 'claude', ok: true } }, label: 'green', timeoutMs: 15000 },
     { done: 'claude done' }] };
   const codex = { adapter: 'fake', script: [
     { call: 200 },
     { files: { 'artifact/links.test.mjs': LINK_TESTS }, message: 'tests for the shared link extractor' },
-    { await: { actor: 'coordinator', kind: 'merged', data: { agent: 'claude', 'tests.ok': false } }, label: 'red', timeoutMs: 15000 },
+    { await: { actor: 'coordinator', kind: 'tested', data: { agent: 'claude', ok: false } }, label: 'red', timeoutMs: 15000 },
     { emit: 'challenge', body: 'Integration tests FAIL on links v1: relative hrefs are not resolved against the page URL, and duplicates are kept.', refs: ['red'] },
     { call: 800 },
     { await: { actor: 'claude', kind: 'reply' }, label: 'rep', timeoutMs: 15000 },
     { emit: 'note', body: 'Seen. I will add a mailto/javascript case next.', refs: ['rep'] },
-    { await: { actor: 'coordinator', kind: 'merged', data: { agent: 'claude', 'tests.ok': true } }, label: 'g', timeoutMs: 15000 },
+    { await: { actor: 'coordinator', kind: 'tested', data: { agent: 'claude', ok: true } }, label: 'g', timeoutMs: 15000 },
     { done: 'codex done' }] };
   return { claude, codex };
 }
