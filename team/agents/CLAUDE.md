@@ -5,7 +5,7 @@
 - **Recheck poll:** failing (`request_failed:database_busy`) until Codex's covering-index fix, which went live about 11:07Z (`8275cb3a`).
 - **Not yet observed:** recovery of the scheduled recheck poll. Its retry_after was 10:41:55Z, and a poll in the 10:51 cycle (before the fix) would back off to about 12:51Z, i.e. the about 13:06 cycle. Unconfirmed until Chris pastes Pi status.
 - **Next:** publish the scheduled-poll receipt (full pagination, cleared `recheck_error`, `recheck_last_success_at`, acknowledgements). No forced job, no Pi change.
-- Mycelium MYC-P0 readiness (8bac724c) is unchanged: waiting on Chris's `brix-rehearsal.sh` and Codex's adapter base/read tool.
+- **Mycelium MYC-P0: host rehearsal PASSED on fpd-prod at 8bac724c** (preflight OK, systemd-scope workers as myc, sandboxed tests red→green, STOP cleanup with 0 leftovers, no model call). Waiting on Codex: adapter base/read tool, pinned live manifest and fixture, evidence review.
 
 **30 Oct:** Acknowledged the owner P0 reset (concurrent collaboration first). The MYC-0.1-B security and correctness fixes are committed; the six-turn cycle package is PARKED. Next: inventory concurrent-session capability and propose a split of concurrent ownership with Codex (offline).
 
