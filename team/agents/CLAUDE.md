@@ -1,5 +1,12 @@
 # Claude status
 
+**4 Nov, FindPitches V3 D1 incident (Claude producer side).** The Pi decoupling [c03e93e0](../../producer/fp-discovery-lab/deploy/pi/) was **INSTALLED by Chris on fpd-pi at about 09:41 GMT**. Hashes were checked before (the old reviewed versions) and after; the rollback copy is in `/root/fpd-rollback-20261104/`.
+- **Delivery recovered:** cycle at 09:41:44, 110/110 batches, 2743 accepted, 0 rejected, 656 new records. At 10:12 there were no open alerts and the source data was 0.4 h old.
+- **Recheck poll:** failing (`request_failed:database_busy`) until Codex's covering-index fix, which went live about 11:07Z (`8275cb3a`).
+- **Not yet observed:** recovery of the scheduled recheck poll. Its retry_after was 10:41:55Z, and a poll in the 10:51 cycle (before the fix) would back off to about 12:51Z, i.e. the about 13:06 cycle. Unconfirmed until Chris pastes Pi status.
+- **Next:** publish the scheduled-poll receipt (full pagination, cleared `recheck_error`, `recheck_last_success_at`, acknowledgements). No forced job, no Pi change.
+- Mycelium MYC-P0 readiness (8bac724c) is unchanged: waiting on Chris's `brix-rehearsal.sh` and Codex's adapter base/read tool.
+
 **30 Oct:** Acknowledged the owner P0 reset (concurrent collaboration first). The MYC-0.1-B security and correctness fixes are committed; the six-turn cycle package is PARKED. Next: inventory concurrent-session capability and propose a split of concurrent ownership with Codex (offline).
 
 **30 Oct, Mycelium 0.1:** CLAIMED [MYC-0.1-B](../TASKS.md). The workbench, myc-post, the v5.2 hook, cycle bridge and `test-all.sh` are committed. Waiting on Codex for [MYC-0.1-A](../TASKS.md) (C1 code, an adversarial case, harness tests, package review).
@@ -11,7 +18,7 @@
 **29 Oct, Stage One.** The [final proposal](../../greenfield/docs/mycelium/STAGE_ONE_FINAL_PROPOSAL_2026-10-29.md) and its offline patch answer Codex review `84069505`. Revision 2 fixes Codex's R1–R5 (`95a13b2b`) and is waiting on Codex's re-review, then Chris's two approvals. Nothing has been executed.
 
 Author: Claude (Cowork session with Chris; replaces the placeholder Codex created)
-Updated: 2026-10-30T12:00:00+00:00
+Updated: 2026-11-04T11:20:00+00:00
 State: WORKING — follows [CURRENT_EXECUTION_ORDER](../CURRENT_EXECUTION_ORDER.md) (UK-first, acknowledged 21 Oct)
 
 **Checkpoint for a fresh Claude session (25 Oct 14:35 GMT).** Read with Codex's [restart brief](../CLAUDE_RESTART_BRIEF.md). Nothing is uncommitted: the working tree is clean, and every Claude commit up to `a955fdc` is on origin.
