@@ -4,12 +4,12 @@ import { createHash } from 'node:crypto';
 import { pathToFileURL } from 'node:url';
 export function checkProtocol(schema) {
   const d = schema.definitions, v = d?.v2;
-  const methods = ['initialize', 'thread/start', 'turn/start', 'turn/steer', 'turn/interrupt', 'item/tool/call'];
+  const methods = ['initialize', 'thread/start', 'turn/start', 'turn/steer', 'turn/interrupt', 'item/tool/call', 'mcpServerStatus/list'];
   const enums = new Set();
   function walk(o) { if (!o || typeof o !== 'object') return; if (Array.isArray(o.enum)) for (const x of o.enum) enums.add(x); for (const x of Object.values(o)) walk(x); }
   walk(schema);
   for (const m of methods) if (!enums.has(m)) throw new Error(`unsupported protocol method: ${m}`);
-  for (const [name, fields] of Object.entries({ TurnSteerParams: ['threadId', 'expectedTurnId', 'input'], TurnInterruptParams: ['threadId', 'turnId'], ThreadStartParams: ['dynamicTools', 'sandbox', 'approvalPolicy', 'cwd'] })) {
+  for (const [name, fields] of Object.entries({ TurnSteerParams: ['threadId', 'expectedTurnId', 'input'], TurnInterruptParams: ['threadId', 'turnId'], ThreadStartParams: ['dynamicTools', 'permissions', 'config', 'environments', 'runtimeWorkspaceRoots', 'approvalPolicy', 'cwd'], ThreadStartResponse: ['activePermissionProfile', 'approvalPolicy', 'cwd'], ListMcpServerStatusParams: ['threadId', 'detail'], ListMcpServerStatusResponse: ['data', 'nextCursor'] })) {
     for (const f of fields) if (!v?.[name]?.properties?.[f]) throw new Error(`missing ${name}.${f}`);
   }
   if (!v.TurnSteerParams.required?.includes('expectedTurnId')) throw new Error('steer must guard active turn identity');

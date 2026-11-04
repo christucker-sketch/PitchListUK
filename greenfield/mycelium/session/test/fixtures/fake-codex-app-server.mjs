@@ -10,7 +10,8 @@ const complete = status => setTimeout(() => { out({ method: 'thread/tokenUsage/u
 createInterface({ input: process.stdin }).on('line', line => {
   const m = JSON.parse(line);
   if (m.method === 'initialize') out({ id: m.id, result: {} });
-  else if (m.method === 'thread/start') out({ id: m.id, result: { thread: { id: thread } } });
+  else if (m.method === 'thread/start') out({ id: m.id, result: { thread: { id: thread },activePermissionProfile:{id:m.params.permissions},approvalPolicy:'never',cwd:m.params.cwd } });
+  else if (m.method === 'mcpServerStatus/list') out({id:m.id,result:{data:[],nextCursor:null}});
   else if (m.method === 'turn/start') {
     out({ id: m.id, result: { turn: { id: turn } } }); out({ method: 'turn/started', params: { threadId: thread, turn: { id: turn } } });
     setTimeout(() => tool('myc_publish', { kind: 'finding', body: 'Codex: fragment-only links (#top) should not become new frontier entries', refIds: [] }), 200);

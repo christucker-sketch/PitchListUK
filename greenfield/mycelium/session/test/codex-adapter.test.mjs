@@ -9,7 +9,8 @@ function fixture({ reserve = async () => ({ id: 'permit' }), maxContextBytes, re
   const rpc = {
     async request(method, params) {
       wire.push({ method, params });
-      if (method === 'thread/start') return { thread: { id: 'thread-1' } };
+      if (method === 'thread/start') return { thread: { id: 'thread-1' }, activePermissionProfile:{id:params.permissions},approvalPolicy:'never',cwd:params.cwd };
+      if (method === 'mcpServerStatus/list') return {data:[],nextCursor:null};
       if (method === 'turn/start') { await rpc.onNotification({ method: 'turn/started', params: { threadId: 'thread-1', turn: { id: 'turn-1' } } }); return { turn: { id: 'turn-1' } }; }
       if (method === 'turn/steer') return { turnId: 'turn-1' };
       return {};
@@ -25,12 +26,14 @@ test('one persistent thread receives deduplicated same-turn steering before comp
   await s.start('Investigate shared link normalisation.');
   await s.deliver([{ id: 'claude-17', body: 'Relative URLs fail.', kind: 'finding' }]);
   await s.deliver([{ id: 'claude-17', body: 'Relative URLs fail.', kind: 'finding' }]);
-  assert.deepEqual(wire.map(x => x.method), ['initialize', 'initialized', 'thread/start', 'turn/start', 'turn/steer']);
+  assert.deepEqual(wire.map(x => x.method), ['initialize', 'initialized', 'thread/start', 'mcpServerStatus/list', 'turn/start', 'turn/steer']);
   assert.equal(wire.at(-1).params.expectedTurnId, 'turn-1');
   assert.equal(wire.at(-1).params.threadId, 'thread-1');
   assert.equal(s.completed, undefined);
   assert.deepEqual(audit.filter(x => x.reservation).map(x => x.reservation), ['turn/start', 'turn/steer']);
-  assert.equal(wire[2].params.sandbox, 'read-only');
+  assert.equal(wire[2].params.sandbox, undefined);
+  assert.equal(wire[2].params.config['features.shell_tool'],false);
+  assert.equal(wire[2].params.permissions.startsWith('myc-p0-'),true);
   assert.equal(wire[2].params.approvalPolicy, 'never');
 });
 
@@ -134,7 +137,8 @@ test('wire-level fake app-server publishes and reacts to steering before its one
     for (const line of data.toString().trim().split('\n')) {
       const m = JSON.parse(line); received.push(m);
       if (m.method === 'initialize') send({ id: m.id, result: {} });
-      if (m.method === 'thread/start') send({ id: m.id, result: { thread: { id: 't' } } });
+      if (m.method === 'thread/start') send({ id: m.id, result: { thread: { id: 't' },activePermissionProfile:{id:m.params.permissions},approvalPolicy:'never',cwd:m.params.cwd } });
+      if (m.method === 'mcpServerStatus/list') send({id:m.id,result:{data:[],nextCursor:null}});
       if (m.method === 'turn/start') {
         startRequest = m;
         send({ method: 'turn/started', params: { threadId: 't', turn: { id: 'u' } } });

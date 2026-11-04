@@ -18,8 +18,9 @@ async function repo() {
 const HERE = dirname(fileURLToPath(import.meta.url));
 test('V-01 real Codex adapter runtime must ledger the active turn and consumed steering grants', async () => {
   const outputs = [], permits = [];
-  const rpc = { notify() {}, async request(m) {
-    if (m === 'thread/start') return { thread: { id: 't' } };
+  const rpc = { notify() {}, async request(m,p) {
+    if (m === 'thread/start') return { thread: { id: 't' },activePermissionProfile:{id:p.permissions},approvalPolicy:'never',cwd:p.cwd };
+    if(m==='mcpServerStatus/list')return {data:[],nextCursor:null};
     if (m === 'turn/start') return { turn: { id: 'u' } };
     if (m === 'turn/steer') return { turnId: 'u' };
     return {};
