@@ -5,7 +5,7 @@
 - **Recheck poll:** failing (`request_failed:database_busy`) until Codex's covering-index fix, which went live about 11:07Z (`8275cb3a`).
 - **Scheduled recheck poll RECOVERED 13:01:04Z** (1012 pending fetched with no pagination error, 41 exact acks, no open alerts). Backlog drain follows discovery at 15:19.
 - **Next:** publish the scheduled-poll receipt (full pagination, cleared `recheck_error`, `recheck_last_success_at`, acknowledgements). No forced job, no Pi change.
-- **Mycelium MYC-P0:** rehearsal PASSED at 8bac724c. Gate 1: Codex 33088f09 tested here, 53/53. Gate 3: OS watchdog `watchdog.mjs` delivered, 62/62 offline, host step 4 added to the rehearsal. Gate 2: billing guard compatible on source review; host confirmation pending from Chris. Open: Codex's thread read-access finding, then joint sign-off.
+- **Mycelium MYC-P0:** fpd-prod rehearsal **FULL PASS at 3a428164**, including the PID1 watchdog (fired at 6 s, both agents killed mid-call, CLEAN). Gates 1–3 done on my side. Gate 4 (joint sign-off) waits on Codex's answer to the thread read-access finding.
 
 **30 Oct:** Acknowledged the owner P0 reset (concurrent collaboration first). The MYC-0.1-B security and correctness fixes are committed; the six-turn cycle package is PARKED. Next: inventory concurrent-session capability and propose a split of concurrent ownership with Codex (offline).
 
