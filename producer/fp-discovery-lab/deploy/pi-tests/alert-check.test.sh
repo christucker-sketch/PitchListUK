@@ -191,4 +191,15 @@ ok "unmounted disk mounted and reported" '[[ ! -f $T/ctl/unmounted ]] && [[ $(se
 touch $T/ctl/unmounted $T/ctl/mount_fails; FPD_ALERT_NOW=$((H+1300)) bash "$CHECK" --show > $T/show 2>&1
 ok "failed mount reported as disk_unmounted" 'grep -q "is NOT mounted" $T/show'
 rm -f $T/ctl/unmounted $T/ctl/mount_fails
+# 15. 4 Nov (V3 D1 incident): V3's own reason is shown; a failing recheck poll is its own alert even while delivery succeeds
+R=$((H+2000)); touch -d "@$R" "$T/srv/backups/fpd-20261011T0320Z.sqlite.zst" $T/srv/export/full/current.jsonl
+printf '{"status":"failed","checked_at":"%s","accepted":0,"records":0,"rejected":0,"consecutive_failures":3,"error":"recheck_http_400","error_v3":"request_failed:database_busy","source_age_seconds":600}\n' "$(iso $R)" > "$T/srv/delivery/state/status.json"
+FPD_ALERT_NOW=$R bash "$CHECK" --show > $T/show 2>&1
+ok "delivery_failing shows V3's reason" 'grep -q "error=recheck_http_400 (V3: request_failed:database_busy)" $T/show'
+printf '{"status":"delivered","checked_at":"%s","accepted":2743,"records":2743,"rejected":0,"consecutive_failures":0,"error":null,"source_age_seconds":600,"recheck_error":"recheck_http_400","recheck_error_v3":"request_failed:database_busy","recheck_consecutive_failures":2,"recheck_retry_after":"2026-11-04T13:00:00.000Z","recheck_last_success_at":"2026-11-03T20:54:37.615Z"}\n' "$(iso $R)" > "$T/srv/delivery/state/status.json"
+FPD_ALERT_NOW=$R bash "$CHECK" --show > $T/show 2>&1
+ok "recheck_failing raised while delivery itself succeeds" 'grep -q "recheck_failing" $T/show && grep -q "V3: request_failed:database_busy" $T/show && grep -q "Exports are still delivered" $T/show && ! grep -q "delivery_failing" $T/show'
+printf '{"status":"delivered","checked_at":"%s","accepted":2743,"records":2743,"rejected":0,"consecutive_failures":0,"error":null,"source_age_seconds":600,"recheck_error":"recheck_http_400","recheck_consecutive_failures":1}\n' "$(iso $R)" > "$T/srv/delivery/state/status.json"
+FPD_ALERT_NOW=$R bash "$CHECK" --show > $T/show 2>&1
+ok "a single failed poll is not yet an alert" '! grep -q "recheck_failing" $T/show'
 echo "alert-check tests: $pass passed, $fail failed"; [[ $fail == 0 ]]

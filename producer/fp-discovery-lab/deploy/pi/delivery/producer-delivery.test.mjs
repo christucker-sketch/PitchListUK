@@ -126,3 +126,54 @@ test('delivery cycle: document upload is off by default and never fails record d
   const on = await deliveryCycle({ ...base, state_dir: path.join(dir, 's2'), source_documents_manifest: manifest }, { fetcher });
   assert.equal(on.status, 'delivered'); assert.deepEqual(on.source_documents, { error: 'source_document_http_404' });
 });
+
+// 2026-11-04 (V3 D1 incident): the recheck poll is a side call. A slow/failing V3 recheck query must not stop the export
+// reaching V3, must be reported loudly with V3's own reason, and must back off instead of polling every cycle.
+test('a failing recheck poll no longer blocks export delivery; V3 reason kept; no acks; backoff; recovery resets', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'fpd-recheck-fail-'));
+  const tokenFile = path.join(dir, 'token.env'); fs.writeFileSync(tokenFile, 'V3_INGEST_TOKEN=' + TOKEN + '\n');
+  const records = Array.from({ length: 30 }, (_, i) => ({ schema_version: 'findpitches-discovery-export-v1', opportunity_id: 'fdx1_' + String(i).padStart(4, '0'), last_checked: '2026-11-04T09:00:00.000Z' }));
+  const input = path.join(dir, 'feed.jsonl'); fs.writeFileSync(input, records.map(r => JSON.stringify(r)).join('\n') + '\n');
+  const ok = mockIngest([req(1, '2026-11-04T08:00:00.000Z')]);
+  let failing = true; const calls = { rechecks: 0 };
+  const fetcher = async (url, options) => {
+    if (new URL(url).pathname === '/rechecks') { calls.rechecks++; if (failing) return json({ error: 'request_failed', diagnostic_code: 'database_busy' }, 400); }
+    return ok.fetcher(url, options);
+  };
+  const config = { input_file: input, token_file: tokenFile, state_dir: path.join(dir, 'state'), ingest_url: ORIGIN, environment: 'shadow', interval_seconds: 900 };
+  const t0 = Date.parse('2026-11-04T10:00:00.000Z'), at = ms => () => new Date(t0 + ms);
+  const s1 = await deliveryCycle(config, { fetcher, now: at(0) });
+  assert.equal(s1.status, 'delivered', 'the export was delivered despite the failed poll');
+  assert.equal(ok.calls.imports, 30);
+  assert.equal(s1.consecutive_failures, 0);
+  assert.equal(s1.recheck_error, 'recheck_http_400');
+  assert.equal(s1.recheck_error_v3, 'request_failed:database_busy', "V3's own reason is kept");
+  assert.equal(s1.recheck_consecutive_failures, 1);
+  assert.equal(s1.recheck_retry_after, '2026-11-04T11:00:00.000Z');
+  assert.equal(ok.calls.acks.length, 0, 'nothing is acknowledged without a successful poll');
+  // 15 minutes later: still backing off, so V3 is not polled; delivery continues; the failure stays on record
+  const s2 = await deliveryCycle(config, { fetcher, now: at(15 * 60e3) });
+  assert.equal(calls.rechecks, 1); assert.equal(s2.status, 'delivered'); assert.equal(s2.recheck_skipped, true);
+  assert.equal(s2.recheck_error_v3, 'request_failed:database_busy'); assert.equal(s2.recheck_consecutive_failures, 1);
+  // after the backoff: poll fails again, and the next wait doubles
+  const s3 = await deliveryCycle(config, { fetcher, now: at(61 * 60e3) });
+  assert.equal(calls.rechecks, 2); assert.equal(s3.recheck_consecutive_failures, 2);
+  assert.equal(s3.recheck_retry_after, new Date(t0 + 61 * 60e3 + 2 * 3600e3).toISOString());
+  // V3 recovers: the next due poll succeeds, failure fields clear, and acks resume for re-checked records
+  failing = false;
+  const s4 = await deliveryCycle(config, { fetcher, now: at(4 * 3600e3) });
+  assert.equal(s4.recheck_error, null); assert.equal(s4.recheck_consecutive_failures, 0); assert.equal(s4.recheck_retry_after, null);
+  assert.equal(s4.pending_rechecks, 1); assert.equal(s4.acknowledged_rechecks, 1);
+  assert.equal(s4.recheck_last_success_at, new Date(t0 + 4 * 3600e3).toISOString());
+});
+
+test('a failed import keeps V3\'s reason in status.error_v3 (no token or payload text)', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'fpd-import-fail-'));
+  const tokenFile = path.join(dir, 'token.env'); fs.writeFileSync(tokenFile, 'V3_INGEST_TOKEN=' + TOKEN + '\n');
+  const input = path.join(dir, 'feed.jsonl'); fs.writeFileSync(input, JSON.stringify({ schema_version: 'findpitches-discovery-export-v1', opportunity_id: 'fdx1_0001', last_checked: '2026-11-04T09:00:00.000Z' }) + '\n');
+  const { fetcher: base } = mockIngest([]);
+  const fetcher = async (url, options) => new URL(url).pathname === '/imports' ? json({ error: 'request_failed', diagnostic_code: 'database_busy <script>' + TOKEN }, 400) : base(url, options);
+  const s = await deliveryCycle({ input_file: input, token_file: tokenFile, state_dir: path.join(dir, 'state'), ingest_url: ORIGIN, environment: 'shadow', interval_seconds: 900 }, { fetcher });
+  assert.equal(s.status, 'failed'); assert.equal(s.error, 'ingest_http_400');
+  assert.equal(s.error_v3, 'request_failed', 'a code that is not an exact label is dropped whole, so no echoed text can leak');
+});

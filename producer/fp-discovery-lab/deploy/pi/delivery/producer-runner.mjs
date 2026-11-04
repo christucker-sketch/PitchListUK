@@ -1,5 +1,9 @@
 // Run beside the independent producer. Only delivery APIs and producer export data.
 // Local patch 2026-10-07: stale cycle.lock recovery via openLock; error_detail (error code only) in failed status.
+// 2026-11-04 (V3 D1 incident): the recheck poll is a SIDE call and no longer blocks export delivery. If it fails, the
+// export is still delivered, no acks are sent (there is nothing verified to ack), and the failure is recorded LOUDLY:
+// recheck_error / recheck_error_v3 / recheck_consecutive_failures in status.json, which fpd-alert-check turns into its own
+// alert. While polls fail they back off (1 h, 2 h, ... max 6 h) instead of loading an already struggling V3 every cycle.
 import fs from 'node:fs';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
@@ -65,11 +69,26 @@ export async function deliveryCycle(config,{fetcher=fetch,now=()=>new Date()}={}
   let previous={};
   try {
     previous=fs.existsSync(statusFile)?JSON.parse(fs.readFileSync(statusFile,'utf8')):{};
-    const token=readIngestToken(config.token_file),requests=await fetchRechecks({ingestUrl:config.ingest_url,token,fetcher});
-    write(path.join(config.state_dir,'rechecks.json'),{requested_at:now().toISOString(),requests});
+    const token=readIngestToken(config.token_file);
+    let requests=[],recheck={recheck_error:null,recheck_error_v3:null,recheck_consecutive_failures:0,recheck_retry_after:null,recheck_last_success_at:previous.recheck_last_success_at??null};
+    const retryAt=Date.parse(previous.recheck_retry_after??'');
+    if(Number.isFinite(retryAt)&&now().getTime()<retryAt) {   // backing off: keep the recorded failure, do not poll this cycle
+      recheck={...recheck,recheck_error:previous.recheck_error??null,recheck_error_v3:previous.recheck_error_v3??null,
+        recheck_consecutive_failures:previous.recheck_consecutive_failures??0,recheck_retry_after:previous.recheck_retry_after,recheck_skipped:true};
+    } else {
+      try {
+        requests=await fetchRechecks({ingestUrl:config.ingest_url,token,fetcher});
+        write(path.join(config.state_dir,'rechecks.json'),{requested_at:now().toISOString(),requests});
+        recheck.recheck_last_success_at=now().toISOString();
+      } catch(error) {
+        const n=(previous.recheck_consecutive_failures??0)+1;
+        recheck={...recheck,recheck_error:/^[a-z][a-z0-9_]+$/.test(error.message)?error.message:'recheck_poll_failed',recheck_error_v3:error.v3??null,
+          recheck_consecutive_failures:n,recheck_retry_after:new Date(now().getTime()+Math.min(21600,3600*2**(n-1))*1000).toISOString()};
+      }
+    }
     const input=await materializeExport(config,fetcher);
     const delivery=await deliverExport({inputFile:input.file,ingestUrl:config.ingest_url,token,checkpointFile:path.join(config.state_dir,'checkpoints',input.file_hash+'.json'),environment:config.environment,fetcher});
-    const ack=await acknowledgeDeliveredRechecks({requests,delivery,token,fetcher});
+    const ack=requests.length?await acknowledgeDeliveredRechecks({requests,delivery,token,fetcher}):{acknowledged:0};
     // V3-002 option B: off unless config.source_documents_manifest is set (and only after a 0-rejection delivery).
     // A document-upload failure is reported in status but never fails the record delivery itself.
     let documents=null;
@@ -84,12 +103,13 @@ export async function deliveryCycle(config,{fetcher=fetch,now=()=>new Date()}={}
       file_hash:input.file_hash,unchanged_export:previous.file_hash===input.file_hash,last_changed_at:previous.file_hash===input.file_hash?previous.last_changed_at:now().toISOString(),
       records:delivery.total_records,accepted:delivery.accepted,rejected:delivery.rejected,inserted:delivery.inserted,duplicates:delivery.duplicates,
       pending_rechecks:requests.length,acknowledged_rechecks:ack.acknowledged,...(documents?{source_documents:documents}:{}),source_age_seconds:sourceAge,
-      freshness_warning:sourceAge===null||sourceAge>Math.max(3600,config.interval_seconds*2),consecutive_failures:delivery.rejected?(previous.consecutive_failures??0)+1:0};
+      freshness_warning:sourceAge===null||sourceAge>Math.max(3600,config.interval_seconds*2),consecutive_failures:delivery.rejected?(previous.consecutive_failures??0)+1:0,
+      ...recheck};
     write(statusFile,status);return status;
   } catch(error) {
     const label=/^[a-z][a-z0-9_]+$/.test(error.message)?error.message:'producer_delivery_cycle_failed';
     const detail=String(error?.cause?.code??error?.code??error?.name??'').replace(/[^A-Za-z0-9_.:-]/g,'').slice(0,40)||null;
-    const status={...previous,schema:'findpitches-producer-runner-v1',status:'failed',checked_at:now().toISOString(),error:label,error_detail:detail,consecutive_failures:(previous.consecutive_failures??0)+1};
+    const status={...previous,schema:'findpitches-producer-runner-v1',status:'failed',checked_at:now().toISOString(),error:label,error_detail:detail,error_v3:error?.v3??null,consecutive_failures:(previous.consecutive_failures??0)+1};
     write(statusFile,status);return status;
   } finally {fs.closeSync(fd);fs.unlinkSync(lock);}
 }

@@ -3848,3 +3848,29 @@ Customer impact: none expected, because V3 is shadow-only and V1 is untouched.
 **Approved canary executed once at 2026-11-04T09:25:45.364Z: FAILED the performance gate.** HTTP200, identical101rows/SHA256 `720257d9a2a6badb87f37f06f181a3d04e635fb9ee9d63f039f344a3fbcf3926`, zero rows written/changed_db=false, but SQL duration **4115.4209ms >1000ms**, 91,326 rows read. No retry, upload, activation, rollback, application probe or Pi operation followed. This candidate is **NOT approved for deployment** under the conditional grant. Recovery remains unresolved. [Sanitized canary result](../operations/findpitches-v3/reports/d1-incident-canary-2026-11-04.json). Workspace access was restored before this attempt.
 
 Chris replied **“approved”** in this Codex session on4November to the one-canary/conditional-ingest-fix scope described in6dfc35d9 and docs/findpitches-v3-d1-incident-2026-11-04.md (candidate abc441c4). One canary was authorised, no retry. Deployment was conditional on correct results and reported SQL duration≤1000ms. The canary returned correct results but4115.4209ms, so the deployment condition failed. **Attempt closed:1/1canary,0deployments,0D1writes.** No rollback was necessary because no activation occurred. Approval does not authorise another canary, a weaker gate, different schema/index/queue changes or unreviewed alternative. Further offline refinement remains within investigation scope; complete a concrete revised proposal before requesting another remote action.
+
+## 4 November 2026 — Claude: Pi delivery decoupled from the recheck poll (prepared, awaiting Chris's install); query suggestion for Codex
+
+Chris chose option 2 (Codex keeps optimising the V3 recheck query) plus option 3 (producer side). The producer change fixes two producer flaws the incident exposed. It does **not** fix V3's slow query.
+
+**Producer change** (`producer/fp-discovery-lab/deploy/pi`, this commit):
+- `producer-runner.mjs`: the `/rechecks` poll is a side call and no longer blocks export delivery.
+  - On failure the export is still delivered, no acks are sent, and the failure is recorded as `recheck_error`, `recheck_error_v3`, `recheck_consecutive_failures`, `recheck_retry_after` and `recheck_last_success_at`.
+  - Failing polls back off (1 h, 2 h, up to 6 h), so a struggling D1 isn't hit every cycle.
+- `producer-delivery.mjs` `httpError()`: V3's body reason (`error:diagnostic_code`) is kept for imports, rechecks, acks and documents. Only exact lowercase label codes are kept; anything else is dropped whole.
+- `fpd-alert-check`:
+  - `delivery_failing` shows V3's reason;
+  - a new **`recheck_failing`** alert is raised from the 2nd failed poll in a row, even while delivery succeeds. It is never silent.
+- `fpd-status` shows the recheck poll state.
+- Tests: delivery 8/8 (+2 new), alert-check 55/55 (+3), prune 3/3, source-key 8/8. SHA256SUMS updated for the five changed files.
+- Installed-file hashes the Pi must show BEFORE install, i.e. the previous reviewed versions:
+  - `producer-delivery.mjs` `d370e3c0…`
+  - `producer-runner.mjs` `b4978cb5…`
+  - `fpd-alert-check` `9201cf79…`
+  - `fpd-status` `f9ac309a…`
+
+**Codex, suggestion for the next query iteration** (yours to judge; based on the 4.115 s canary reading 91,326 rows for 101):
+- The page CTE still joins **every historical producer_records version** and reads the wide rows (raw_json/normalized_json) to test membership before GROUP BY/LIMIT.
+- Paging over `recheck_requests` first (a few hundred rows) and using EXISTS/LIMIT-1 membership per request, through `entity_records_entity`, should touch only about 101 requests' records.
+- A covering index for the membership columns would also work, but is a migration on a 6.5 GB DB.
+- Separately: 6.5 GB and growing, against D1's per-database cap, needs a history archive/trim plan.

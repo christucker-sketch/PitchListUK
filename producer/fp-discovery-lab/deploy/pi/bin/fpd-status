@@ -11,7 +11,8 @@ echo "== export / health"
 [[ -f $E/metrics/latest.json ]] && jq -c '{last_export: .last_successful_export.export_id, actionable: .actionable_count, watch: .watch_count, stalled: .stalled_or_failed_sources}' $E/metrics/latest.json
 echo "== V3 delivery"
 if [[ -r $S/status.json ]]; then
-  jq -c '{status, checked_at, last_success_at, records, accepted, rejected, inserted, duplicates, unchanged_export, pending_rechecks, acknowledged_rechecks, source_age_h: ((.source_age_seconds // 0)/3600|floor), freshness_warning, error, error_detail, consecutive_failures}' $S/status.json
+  jq -c '{status, checked_at, last_success_at, records, accepted, rejected, inserted, duplicates, unchanged_export, pending_rechecks, acknowledged_rechecks, source_age_h: ((.source_age_seconds // 0)/3600|floor), freshness_warning, error, error_detail, error_v3, consecutive_failures}' $S/status.json
+  jq -c '{recheck_poll: (if (.recheck_consecutive_failures // 0) > 0 then "FAILING" else "ok" end), recheck_error, recheck_error_v3, recheck_consecutive_failures, recheck_retry_after, recheck_last_success_at, recheck_skipped}' $S/status.json
 else echo "  (run with sudo to read delivery status)"; fi
 echo "== V3 recheck requests (last cycle)"
 journalctl -u fpd-acquire --no-pager -o cat 2>/dev/null | grep -F '"polled_at"' | tail -1 | sed 's/^/  /' || true

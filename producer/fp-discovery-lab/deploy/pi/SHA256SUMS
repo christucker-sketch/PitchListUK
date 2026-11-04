@@ -1,5 +1,5 @@
 fbc5ed0eb42bd2d5bc0ef60b2349096d2fc7d05f0db957e5279ce0c1aeb8e92b  ./bin/fpd
-9201cf79fff583e92b0e257c6ddd307c87ac7b370f17e7c121b2d7cd06e744fb  ./bin/fpd-alert-check
+eeea1ef086e75fc82240976adc7172df608811154664e673697960989eab1b61  ./bin/fpd-alert-check
 78cbefa873c475b99f17a98742575ba5d8e2bbaef890c0ef820bb7724d1cff84  ./bin/fpd-alert-setup
 7e8be4d83baa291092e2eb7e6afec595789af0d664aa8d8b870e106c3d1e8352  ./bin/fpd-backup
 d8ae6bc871ffc40adc9a6019173c1ebf9a71a93ea3bd8d7608e8158f856dd6af  ./bin/fpd-cycle
@@ -11,7 +11,7 @@ e9e4d8dbbbb5f936bceef3725bf7b91f52ccab9dde630779d3ec5489aa8d2248  ./bin/fpd-offs
 52e87b6abfacd93aa16d1c83c51ad61c3e7bc34726c6a0d58b9733046ba82f49  ./bin/fpd-rechecks-handoff
 465ed7bd02c20bcfabc3bf3e83f853533ce40de4bcf80e0291037fc78a858148  ./bin/fpd-set-source-key
 9ef9b6b1020b09b8fc1417bf67d08b697ccb9da2347275f4e591673fedcc36c0  ./bin/fpd-set-token
-f9ac309ab92d9517c583a7a2935e04f566ed95a27f46141c05665776a0c81888  ./bin/fpd-status
+f2f5d4c9f5aa07efa89abb351e3493c83c0e18bc9892c1b67ce5f9d7dab38400  ./bin/fpd-status
 6163259252aa4610f3fc5982dbcfb1b000d2f7a680ad2c44f3f08e0b3b8e1e6c  ./bin/fpd-v3-feed
 9f95c36112cb44ec268d79fe680845406a2ee3cca6f1fb651fca95680b21d463  ./bin/fpd-v3-prune
 dfc9de058de2bbe40dd80d07a38d4e1480f5985b15da173947e3d80ac1f16440  ./build-kit.sh
@@ -19,9 +19,9 @@ dfc9de058de2bbe40dd80d07a38d4e1480f5985b15da173947e3d80ac1f16440  ./build-kit.sh
 97ed72a42093d94b25ebf6b3663c2d3fca9d3a2ae3ea35ef5b7cd227b6bdde6f  ./config/fpd.env
 3b3e1436930ba2ee8fa89dc2890674a3a3b6df1ea436fce55c22d8ae51f5716e  ./config/journald-fpd.conf
 863e756c1f5364b0a9ee61ea678c8a8e20bcf11cb619a3800ae34f149df73b61  ./config/v3-runner.json
-d370e3c0fd1c3fb9956af88f8d4d30c0c932dcf5b03d4271005a75e3578baa6a  ./delivery/producer-delivery.mjs
-6c485e090035ba8580f1e47ffa7da7ba18b6ef87cfa627de68d829793181b134  ./delivery/producer-delivery.test.mjs
-b4978cb50a07996d6e5472cea192f6c9742f00ca83ac1f469a6402a2757f8f88  ./delivery/producer-runner.mjs
+593f6d38786b07dc08f0411e062bc9dcf80e1614bea3243c987061b054e295de  ./delivery/producer-delivery.mjs
+1818b353eef0f0b4476be711e2626313562ed00fd19a8917981f0c97d2e8cbd5  ./delivery/producer-delivery.test.mjs
+816890f40995f438d579449284e84a0e3649ff43ccaad880c112850e340b0289  ./delivery/producer-runner.mjs
 7f0a6074c7482098947a1867fd600d19c2273f8b8ca17db8e9af82dc1ed28ab6  ./fpd-app.tgz
 fa4698a0b8f884518e8e5f6a9dcd779fbc2a5866e4e3d632d73cca0c51455fe0  ./install.sh
 a9da07ccd34685a6c94d49a099aca7e2221b740e0e58e6ec126d066b96012573  ./lib/evidence.py

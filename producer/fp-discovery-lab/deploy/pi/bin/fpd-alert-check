@@ -82,13 +82,21 @@ problems() {
   fi
   # delivery
   if [[ -r $STATUS ]]; then
-    local st; st=$(jq -c '{checked_at,rejected:(.rejected//0),cf:(.consecutive_failures//0),error,age:(.source_age_seconds//null),status}' "$STATUS" 2>/dev/null)
+    local st; st=$(jq -c '{checked_at,rejected:(.rejected//0),cf:(.consecutive_failures//0),error,v3:(.error_v3//null),age:(.source_age_seconds//null),status,rcf:(.recheck_consecutive_failures//0),rerr:(.recheck_error//null),rv3:(.recheck_error_v3//null),rnext:(.recheck_retry_after//null),rlast:(.recheck_last_success_at//null)}' "$STATUS" 2>/dev/null)
     if [[ -n $st ]]; then
       a=$(age_of "$(jq -r .checked_at <<<"$st")")
       [[ $a -lt 0 || $a -gt 2700 ]] && printf 'delivery_stalled\tNo V3 delivery for %sh (last %s). Check: systemctl status fpd-v3-delivery\n' "$(hrs $a)" "$(jq -r .checked_at <<<"$st")"
       [[ $(jq .rejected <<<"$st") -gt 0 ]] && printf 'delivery_rejected\tV3 rejected %s records in the last delivery\n' "$(jq .rejected <<<"$st")"
       if [[ $(jq .cf <<<"$st") -ge 2 || $(jq -r '.error // empty' <<<"$st") != "" ]]; then
-        printf 'delivery_failing\tV3 delivery failing: status=%s error=%s consecutive_failures=%s\n' "$(jq -r .status <<<"$st")" "$(jq -r '.error // "none"' <<<"$st" | clean)" "$(jq .cf <<<"$st")"
+        printf 'delivery_failing\tV3 delivery failing: status=%s error=%s%s consecutive_failures=%s\n' "$(jq -r .status <<<"$st")" "$(jq -r '.error // "none"' <<<"$st" | clean)" \
+          "$(jq -r 'if .v3 then " (V3: "+.v3+")" else "" end' <<<"$st" | clean)" "$(jq .cf <<<"$st")"
+      fi
+      # 4 Nov: the recheck poll no longer blocks delivery, so its failure is its own alert (never silent): exports still reach
+      # V3, but V3's recheck requests are not being served. Raised from the 2nd failed poll in a row.
+      if [[ $(jq .rcf <<<"$st") -ge 2 ]]; then
+        printf 'recheck_failing\tV3 recheck poll failing (%s in a row): %s%s. Exports are still delivered; V3 recheck requests are not served. Next poll after %s; last good poll %s\n' \
+          "$(jq .rcf <<<"$st")" "$(jq -r '.rerr // "unknown"' <<<"$st" | clean)" "$(jq -r 'if .rv3 then " (V3: "+.rv3+")" else "" end' <<<"$st" | clean)" \
+          "$(jq -r '.rnext // "now"' <<<"$st")" "$(jq -r '.rlast // "never"' <<<"$st")"
       fi
       s=$(jq -r '.age // empty' <<<"$st")
       [[ -n $s && $s -gt 25200 ]] && printf 'source_stale\tProducer source data is %sh old (newest page check); a discovery cycle has been missed twice\n' "$(hrs $s)"

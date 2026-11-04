@@ -49,6 +49,19 @@ export function readIngestToken(file) {
   }
   if(typeof token!=='string'||token.length<24||/\s/.test(token))throw new Error('ingest_token_file_required');return token;
 }
+// 2026-11-04: keep V3's own failure reason. The Worker answers every internal error with HTTP 400 and puts the cause in
+// the body ({error, diagnostic_code}); dropping it made a slow D1 query look like a bad request. The reason is read from
+// a bounded body; only exact lowercase label codes are kept (anything else is dropped whole), carried as error.v3.
+export async function httpError(label,response) {
+  const error=new Error(label+'_'+response.status);
+  try {
+    const text=(await response.text()).slice(0,2048);let body=null;try{body=JSON.parse(text);}catch{}
+    const safe=v=>typeof v==='string'&&/^[a-z][a-z0-9_:-]{0,59}$/.test(v)?v:'';   // exact label-shaped codes only; anything else is dropped whole
+    const reason=[safe(body?.error),safe(body?.diagnostic_code)].filter(Boolean).join(':');
+    if(reason)error.v3=reason;
+  } catch {}
+  return error;
+}
 function endpoint(value) {
   const url=new URL(value);
   if(url.protocol!=='https:'||url.username||url.password||url.pathname!=='/'||url.search||url.hash)throw new Error('https_ingest_origin_required');
@@ -75,7 +88,7 @@ export async function deliverExport({inputFile,ingestUrl,token,checkpointFile,en
     for(let index=state.next_batch;index<batches.length;index++) {
       const started=Date.now();
       const response=await fetcher(origin+'/imports',{method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify({environment,records:batches[index]}),signal:AbortSignal.timeout(180000)});
-      if(!response.ok)throw new Error('ingest_http_'+response.status);
+      if(!response.ok)throw await httpError('ingest_http',response);
       const result=await response.json();
       if(result.accepted+result.rejected!==batches[index].length||result.inserted+result.duplicates!==batches[index].length||!Array.isArray(result.record_ids)||!Array.isArray(result.errors))throw new Error('ingest_receipt_invalid');
       for(const field of ['accepted','rejected','inserted','duplicates'])state[field]+=result[field];
@@ -95,7 +108,7 @@ export async function fetchRechecks({ingestUrl,token,fetcher=fetch,probe=false})
   for(let page=0;page<100;page++) {
     const query=new URLSearchParams();if(probe)query.set('probe','1');if(cursor)query.set('cursor',cursor);
     const response=await fetcher(endpoint(ingestUrl)+'/rechecks'+(query.size?'?'+query:''),{headers:{Authorization:'Bearer '+token},signal:AbortSignal.timeout(30000)});
-    if(!response.ok)throw new Error('recheck_http_'+response.status);
+    if(!response.ok)throw await httpError('recheck_http',response);
     const body=await response.json();if(!Array.isArray(body.requests)||body.requests.length>100)throw new Error('recheck_receipt_invalid');requests.push(...body.requests);
     if(!body.next_cursor)return requests;
     if(typeof body.next_cursor!=='string'||body.next_cursor.length>3000||seen.has(body.next_cursor))throw new Error('recheck_cursor_loop');
@@ -112,7 +125,7 @@ export async function acknowledgeDeliveredRechecks({requests,delivery,token,fetc
   for(const request of requests) {
     if(request.environment!==delivery.environment||!accepted.has(request.producer_record_id)||!(accepted.get(request.producer_record_id)>=Date.parse(request.requested_at)))continue;
     const response=await fetcher(endpoint(delivery.ingest_origin)+'/rechecks/ack',{method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify({entity_id:request.entity_id,requested_at:request.requested_at,producer_record_id:request.producer_record_id}),signal:AbortSignal.timeout(30000)});
-    if(!response.ok)throw new Error('recheck_ack_http_'+response.status);
+    if(!response.ok)throw await httpError('recheck_ack_http',response);
     if((await response.json()).acknowledged)acknowledged++;
   }
   return {acknowledged};
@@ -136,7 +149,7 @@ export async function uploadSourceDocuments({manifestFile,ingestUrl,token,stateF
     if(digest(body)!==doc.content_sha256||body.length>2000000){skipped++;continue;}
     const {file:_f,...meta}=doc;
     const response=await fetcher(endpoint(ingestUrl)+'/source-documents',{method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify({environment,document:{...meta,body_base64:body.toString('base64')}}),signal:AbortSignal.timeout(60000)});
-    if(!response.ok)throw new Error('source_document_http_'+response.status);
+    if(!response.ok)throw await httpError('source_document_http',response);
     const result=await response.json();
     if(result.content_sha256!==doc.content_sha256||typeof result.accepted!=='boolean')throw new Error('source_document_receipt_invalid');
     if(result.accepted){state.sent[doc.content_sha256]=new Date().toISOString();sent++;}else skipped++;
