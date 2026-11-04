@@ -1,3 +1,11 @@
+# Update: approved canary failed — no deployment
+
+**Approved canary executed once at 2026-11-04T09:25:45.364Z: FAILED the performance gate.** HTTP200, identical101rows/SHA256 `720257d9a2a6badb87f37f06f181a3d04e635fb9ee9d63f039f344a3fbcf3926`, zero rows written/changed_db=false, but SQL duration **4115.4209ms >1000ms**, 91,326 rows read. No retry, upload, activation, rollback, application probe or Pi operation followed. This candidate is **NOT approved for deployment** under the conditional grant. Recovery remains unresolved. [Sanitized canary result](../operations/findpitches-v3/reports/d1-incident-canary-2026-11-04.json). Workspace access was restored before this attempt.
+
+The pre-approval diagnosis/proposal below is retained as history; its unverified-canary and approval-pending statements are superseded by this result. No successful recovery is claimed.
+
+---
+
 # V3 incident, 4 November 2026: recheck query exhausts D1's resource window
 
 Investigation: 08:51–09:07 UTC, read-only Cloudflare API/GraphQL and SELECT/EXPLAIN, source review and offline SQLite tests. Governing handover: da3e7cc735162e5493ece6c5aab3e9f0fabe55b3. No deployments, cron/consumer changes, D1 writes/migrations, token changes, Pi or customer/legacy actions.
