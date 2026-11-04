@@ -29,7 +29,14 @@ export function freezeReviewedSource({sourceFile,expectedSourceSha256,expectedAc
 }
 export function requireReviewedRecheckIndex(actualSql){
  const expected=fs.readFileSync(new URL('./migrations/0028_structured_recheck_lookup.sql',import.meta.url),'utf8');
- const normal=s=>s.replace(/--[^\n]*/g,'').replace(/\bIF\s+NOT\s+EXISTS\b/gi,'').replace(/[\s;]/g,'').toLowerCase();
+ // Fold SQL keywords, never quoted JSON keys or predicate values: those are case-sensitive.
+ const normal=s=>{
+  const tokens=(s.match(/--[^\n]*|'(?:[^']|'')*'|"(?:[^"]|"")*"|\s+|[A-Za-z_][A-Za-z0-9_]*|./g)??[])
+   .filter(t=>!/^\s+$/.test(t)&&!t.startsWith('--')&&t!==';')
+   .map(t=>/^["']/.test(t)?t:t.toLowerCase());
+  if(tokens[0]==='create'&&tokens[1]==='index'&&tokens.slice(2,5).join(' ')==='if not exists')tokens.splice(2,3);
+  return JSON.stringify(tokens);
+ };
  if(typeof actualSql!=='string'||normal(actualSql)!==normal(expected))throw Error('reviewed_recheck_index_definition_required');
 }
 export async function releaseSourceWorker({credentialsFile,stateDirectory,outputDirectory,role,sourceFile=null,expectedSourceSha256=null,expectedActiveVersion=null}){

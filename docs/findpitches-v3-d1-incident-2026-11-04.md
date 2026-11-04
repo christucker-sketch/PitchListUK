@@ -1,3 +1,9 @@
+# New revision prepared: narrow covering index
+
+The first canary remains failed and nothing is deployed. [Prepared permanent fix, offline evidence and new schema approval request](findpitches-v3-recheck-covering-fix-2026-11-04.md), code `200cf385de1650797a02b0609116f63e59570c51`. Owner reports Claude's Pi mitigation installed; its backoff changes the next-Pi-poll observation window. Historical diagnosis/canary below is retained.
+
+---
+
 # Update: approved canary failed — no deployment
 
 **Approved canary executed once at 2026-11-04T09:25:45.364Z: FAILED the performance gate.** HTTP200, identical101rows/SHA256 `720257d9a2a6badb87f37f06f181a3d04e635fb9ee9d63f039f344a3fbcf3926`, zero rows written/changed_db=false, but SQL duration **4115.4209ms >1000ms**, 91,326 rows read. No retry, upload, activation, rollback, application probe or Pi operation followed. This candidate is **NOT approved for deployment** under the conditional grant. Recovery remains unresolved. [Sanitized canary result](../operations/findpitches-v3/reports/d1-incident-canary-2026-11-04.json). Workspace access was restored before this attempt.

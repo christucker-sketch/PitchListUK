@@ -18,4 +18,7 @@ test('an existing wrong index cannot satisfy the reviewed-source release prerequ
  assert.throws(()=>requireReviewedRecheckIndex(undefined),/index_definition/);
  assert.throws(()=>requireReviewedRecheckIndex(ddl.replace('id,producer_record_id,market','id,producer_record_id')),/index_definition/);
  assert.throws(()=>requireReviewedRecheckIndex(ddl.replace("validation_status='accepted'","validation_status='rejected'")),/index_definition/);
+ assert.throws(()=>requireReviewedRecheckIndex(ddl.replace("'$.last_checked'","'$.LAST_CHECKED'")),/index_definition/);
+ assert.throws(()=>requireReviewedRecheckIndex(ddl.replace("'shadow'","'SHADOW'")),/index_definition/);
+ assert.throws(()=>requireReviewedRecheckIndex(ddl.replace("'accepted'","' accepted '")),/index_definition/);
 });

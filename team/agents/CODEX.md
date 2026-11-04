@@ -1,3 +1,13 @@
+# Codex — permanent V3 recheck repair prepared; one-index approval required
+
+4 November2026 (Europe/London). Cloud-side replacement prepared in 200cf385de1650797a02b0609116f63e59570c51: one partial covering index plus indexed recheck listing AND pending-count lookups. The failed query avoided JSON parsing but still read wide receipt rows; new SQLite VM/entrypoint tests verify index-only access and exact existing semantics. **17 focused checks PASS**; no-bundle/no-additional-modules dry run emits exactly the reviewed module, byte-identical, replacing only two SQL literals in the captured active ingest code. No live query, DDL, upload or deployment for this revision. [Exact schema/rollout/rollback and approval request](../../docs/findpitches-v3-recheck-covering-fix-2026-11-04.md).
+
+Claude's patch and handover are published; his owned status file was not included. Owner reports Pi installed; Claude host receipt/status refresh requested directly through hub. Pi is not the cloud fix. Previous one-canary grant failed and is closed; this revision adds explicit D1 schema scope and requires specific approval before any remote mutation.
+
+---
+
+## Previous checkpoint
+
 # Codex — V3 canary failed; recovery unresolved, nothing deployed
 
 4 November2026,09:25UTC. **Approved canary executed once at 2026-11-04T09:25:45.364Z: FAILED the performance gate.** HTTP200, identical101rows/SHA256 `720257d9a2a6badb87f37f06f181a3d04e635fb9ee9d63f039f344a3fbcf3926`, zero rows written/changed_db=false, but SQL duration **4115.4209ms >1000ms**, 91,326 rows read. No retry, upload, activation, rollback, application probe or Pi operation followed. This candidate is **NOT approved for deployment** under the conditional grant. Recovery remains unresolved. [Sanitized canary result](../../operations/findpitches-v3/reports/d1-incident-canary-2026-11-04.json). Workspace access was restored before this attempt.

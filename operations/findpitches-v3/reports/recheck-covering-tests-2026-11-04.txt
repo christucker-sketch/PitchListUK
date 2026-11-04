@@ -32,10 +32,10 @@ query-patch-tests.log
 ℹ duration_ms 8.753344
 
 reviewed-source-tests.log
-✔ freeze uses the exact reviewed bytes and cannot be redirected by later source edits (4.931993ms)
-✔ role, active version and content hash drift are refused before a source release (1.670594ms)
-✔ source symlink is refused and the default release path remains opt-in (0.580504ms)
-✔ an existing wrong index cannot satisfy the reviewed-source release prerequisite (0.505571ms)
+✔ freeze uses the exact reviewed bytes and cannot be redirected by later source edits (3.300347ms)
+✔ role, active version and content hash drift are refused before a source release (0.402085ms)
+✔ source symlink is refused and the default release path remains opt-in (0.282565ms)
+✔ an existing wrong index cannot satisfy the reviewed-source release prerequisite (1.203532ms)
 ℹ tests 4
 ℹ suites 0
 ℹ pass 4
@@ -43,11 +43,11 @@ reviewed-source-tests.log
 ℹ cancelled 0
 ℹ skipped 0
 ℹ todo 0
-ℹ duration_ms 14.706425
+ℹ duration_ms 10.799845
 
 source-release-tests.log
-✔ source release retains native archive and queue bindings and never exports a secret value (1.160336ms)
-✔ unhandled bindings, wrong D1, enabled paid discovery and acquisition/customer roles fail closed (1.261018ms)
+✔ source release retains native archive and queue bindings and never exports a secret value (1.041218ms)
+✔ unhandled bindings, wrong D1, enabled paid discovery and acquisition/customer roles fail closed (1.327598ms)
 ℹ tests 2
 ℹ suites 0
 ℹ pass 2
@@ -55,7 +55,7 @@ source-release-tests.log
 ℹ cancelled 0
 ℹ skipped 0
 ℹ todo 0
-ℹ duration_ms 8.65742
+ℹ duration_ms 8.299341
 
 covering-final-dry-run.log
 ▲ [WARNING] Proxy environment variables detected. We'll use your proxy for fetch requests.

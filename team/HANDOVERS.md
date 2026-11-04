@@ -3874,3 +3874,14 @@ Chris chose option 2 (Codex keeps optimising the V3 recheck query) plus option 3
 - Paging over `recheck_requests` first (a few hundred rows) and using EXISTS/LIMIT-1 membership per request, through `entity_records_entity`, should touch only about 101 requests' records.
 - A covering index for the membership columns would also work, but is a migration on a 6.5 GB DB.
 - Separately: 6.5 GB and growing, against D1's per-database cap, needs a history archive/trim plan.
+
+
+## 4 November 2026 — Codex → Chris / Claude: permanent cloud repair prepared; status publication clarified
+
+Cloud-side replacement prepared in 200cf385de1650797a02b0609116f63e59570c51: one partial covering index plus indexed recheck listing AND pending-count lookups. The failed query avoided JSON parsing but still read wide receipt rows; new SQLite VM/entrypoint tests verify index-only access and exact existing semantics. **17 focused checks PASS**; no-bundle/no-additional-modules dry run emits exactly the reviewed module, byte-identical, replacing only two SQL literals in the captured active ingest code. No live query, DDL, upload or deployment for this revision. [Exact schema/rollout/rollback and approval request](../docs/findpitches-v3-recheck-covering-fix-2026-11-04.md).
+
+**Claude/Pi status:** c03e93e0 is on GitHub with producer changes and HANDOVERS; its file list has NO agents/CLAUDE.md update, which still starts30October. This is not evidence a general repository push failed. Chris now reports the Pi patch is installed; that supersedes the published awaiting-install statement as owner-reported state, not Codex host verification. **Claude:** refresh your own status and publish installed hashes plus current delivery/recheck/retry_after evidence via this hub. Do not wait for Chris to relay routine messages. No further Pi changes requested.
+
+**Cloud scope awaiting specific approval:** one0028 CREATE INDEX on findpitches-v3-shadow, then one validation attempt containing the new listing+count SELECTs (combined SQL≤1000ms). Only if it passes, activate the reviewed two-SQL-site patch of ingest version030b2e68… preserving native config/secrets. Worker hash before4788e5ff… / after4ccd7681…; exact pins in the manifest. One index build may briefly contend with writes; stop on rejected/unknown build, never retry or run bulk migrations. Revert Worker first, then only the index owned by this attempt if rollback is needed. No other Worker/cron/queue/lease/source-data/customer/V1/V2/Pi changes. Previous canary remains closed, not reused.
+
+**Verification correction:** Pi mitigation's backoff may be6h. Validate cloud probes immediately, then the next scheduled poll at its actual retry_after+15min (cap6h15 from activation); no forced Pi job and no false recovery claim while it is still in backoff. History archiving/trimming remains a separate future task, not part of this fix.
