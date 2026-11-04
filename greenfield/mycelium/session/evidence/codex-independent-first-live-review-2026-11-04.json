@@ -1,0 +1,93 @@
+{
+  "sourceCommit": "0b19d137a61ac8e31b7efcf6993f9bb6c9c549af",
+  "publishedEvents": 84,
+  "sequenceAndRefsValid": true,
+  "clockOffsetsMonotonic": true,
+  "fixedOracleUnchanged": true,
+  "firstReported20kExceedance": {
+    "seq": 19,
+    "tMs": 35052,
+    "totalTokens": 27841
+  },
+  "eventFileSha256": "787dcf33a57c938288580df229cc5ce3a5a3333b1c6eae6e0408f87360edc255",
+  "focusedChecks": [
+    {
+      "file": "codex-live-regressions",
+      "exit": 0,
+      "tail": "ℹ tests 10\nℹ suites 0\nℹ pass 10\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 113.616105"
+    },
+    {
+      "file": "codex-adapter",
+      "exit": 0,
+      "tail": "ℹ tests 15\nℹ suites 0\nℹ pass 15\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 49.983211"
+    },
+    {
+      "file": "codex-hardening-verification",
+      "exit": 0,
+      "tail": "ℹ tests 3\nℹ suites 0\nℹ pass 3\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 42.328786"
+    },
+    {
+      "file": "codex-boundary",
+      "exit": 0,
+      "tail": "ℹ tests 10\nℹ suites 0\nℹ pass 10\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 13.448473"
+    },
+    {
+      "file": "proof-package",
+      "exit": 0,
+      "tail": "ℹ tests 3\nℹ suites 0\nℹ pass 3\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 9.702885"
+    },
+    {
+      "file": "codex-final-integration-regression",
+      "exit": 0,
+      "tail": "ℹ tests 1\nℹ suites 0\nℹ pass 1\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 7.602413"
+    },
+    {
+      "file": "live-repairs-claude (two pure checks only)",
+      "exit": 0,
+      "output": "✔ D4: Codex-style cumulative snapshots per thread/turn count once (latest per key); calls and snapshots are not added twice (1.40834ms)\n✔ D5: the newest integration must itself be tested; an untested final merge is reported, never certified (1.173697ms)\nℹ tests 2\nℹ suites 0\nℹ pass 2\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 8.996983\n"
+    }
+  ],
+  "artifactTests": {
+    "isolation": "clean-env Node permission mode, restricted fs reads, no child/addon permissions; code reviewed, no network operations; not an OS-sandbox rerun",
+    "tests": [
+      {
+        "file": "checks/frontier.test.mjs",
+        "exit": 0,
+        "output": "✔ resolve relative link and preserve meaningful query (2.21251ms)\n✔ single quotes, Unicode and nested label (0.230447ms)\n✔ dedupe after fragment removal (0.569767ms)\n✔ visited links do not reenter frontier (0.164929ms)\n✔ reject non-web, credentialed and fragment-only links (0.23265ms)\n✔ distinct queries remain distinct exploratory branches (0.274623ms)\nℹ tests 6\nℹ suites 0\nℹ pass 6\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 10.542339\n"
+      },
+      {
+        "file": "artifact/frontier.test.mjs",
+        "exit": 0,
+        "output": "✔ resolves multilingual links, preserves queries, strips fragments, and deduplicates (2.504149ms)\n✔ rejects fragment-only, credentialed, and non-web destinations (0.436217ms)\n✔ normalizes visited URL fragments while retaining query distinctions (0.430898ms)\n✔ handles quoted greater-than characters and HTML entities without losing Unicode (4.321891ms)\n✔ does not treat comments or raw script/style text as links (0.222675ms)\n✔ accepts uppercase tags, single quotes, unquoted hrefs, and protocol-relative HTTPS (0.298239ms)\n✔ distinguishes href from data attributes and respects first duplicate attribute (0.215113ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 14.662335\n"
+      },
+      {
+        "file": "artifact/frontier.extra.test.mjs",
+        "exit": 0,
+        "output": "✔ pages.json fixtures (2.914727ms)\n✔ href text inside another attribute value is not the href (0.283958ms)\n✔ textarea and title contents are raw text, not anchors (0.287002ms)\n✔ unclosed anchor does not swallow the following anchor (0.299171ms)\n✔ the page itself counts as visited (0.447804ms)\n✔ obfuscated schemes are rejected (0.418349ms)\n✔ seen list is normalized (host case, Unicode path, fragment) (0.195684ms)\n✔ unknown entities are left as-is; whitespace and nbsp collapse (0.134573ms)\n✔ hostile or malformed input does not throw (27.759343ms)\nℹ tests 9\nℹ suites 0\nℹ pass 9\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 44.719983\n"
+      }
+    ]
+  },
+  "historicalOutcome": "FAIL unchanged; no new live attempt",
+  "reanalysis": {
+    "mechanical": false,
+    "criteria": {
+      "overlappingCalls": false,
+      "reactionEachDirection": true,
+      "changedByOther": true,
+      "sharedTestsPass": false,
+      "noStop": false,
+      "noWorkerFailure": false
+    },
+    "usage": {
+      "claude": null,
+      "codex": 230937
+    },
+    "finalIntegration": {
+      "integration": "17b3a2c21539b9a3cb1a3716cff42aa3dafaf315",
+      "seq": 80,
+      "tested": false,
+      "ok": null
+    },
+    "callOverlapMs": 0
+  }
+}
