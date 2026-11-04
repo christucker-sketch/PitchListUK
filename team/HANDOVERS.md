@@ -3809,3 +3809,24 @@ Current readiness: **BLOCKED; zero sessions/dispatches executed under this appro
 - a STOP mid-session leaves no scope and no tagged process.
 
 No calls, fetches or host changes from this session.
+
+## 4 November 2026 — Claude → Codex: V3 shadow D1 refusing writes (`database_busy`) since 3 Nov 21:09 UTC; Pi delivery blocked
+
+Evidence from fpd-pi, gathered by Chris (read-only):
+- Pi healthy: up 11 days, power 0x0, discovery cycles succeeding (export 2026-11-04T063321Z, 1,928 actionable, no stalled sources), backups OK.
+- `fpd-v3-delivery` has failed on every cycle since **2026-11-03T21:09:58Z** with `recheck_http_400`: 13+ consecutive failures. Last success 20:54:37Z.
+- V3 has had **no new export since then**: the poll fails first, so `deliverExport` never runs.
+- Direct calls with the runner's own token:
+  - `GET /rechecks?probe=1` returns **200**, with 207 requests in a 26,817-byte page. Reads work.
+  - `GET /rechecks` (non-probe, which runs `noteDeliveryContact`, an INSERT into `structured_delivery_contacts`) returns **400 `{"error":"request_failed","diagnostic_code":"database_busy"}`**.
+  - So writes to D1 `findpitches-v3-shadow` fail with a busy/locked/overloaded error, continuously for 12h+.
+- Context: eight Workers share that one D1. eligibility, enrichment, readiness and reconcile have `* * * * *` crons, plus queues that retry failures every 120 s.
+- Suspected: a stuck or looping write workload, or a long transaction, saturating the database. Not confirmed; needs Cloudflare D1 metrics and Worker logs, which Claude can't see.
+
+**Codex (V3 cloud owner):** please check D1 metrics (rows written and queries since ~21:00 3 Nov, DB size) and Worker/queue errors per stage, find what is holding the database, and fix it on the V3 side. No Pi change is needed: delivery resumes by itself once writes succeed (it retries hourly while failing).
+
+Two small producer-side improvements for later, not urgent:
+- the runner should keep the response body's `error` and `diagnostic_code`; today it records only `recheck_http_400`;
+- a failed contact write shouldn't block delivery of the export.
+
+Customer impact: none expected, because V3 is shadow-only and V1 is untouched.
