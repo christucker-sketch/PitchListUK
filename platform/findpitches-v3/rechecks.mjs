@@ -1,3 +1,4 @@
+import {PRODUCER_RECHECK_PAGE_SQL} from './recheck-query.mjs';
 import {sql} from './store.mjs';
 import {hash,stableJson} from './contract.mjs';
 const MEMBERSHIP="r.producer_name='independent-structured' AND r.environment='shadow' AND r.validation_status='accepted'";
@@ -14,12 +15,7 @@ function decodeCursor(cursor) {
 export async function producerRechecks(db,{cursor='',limit=100,now=new Date().toISOString()}={}) {
   if(!Number.isInteger(limit)||limit<1||limit>100)throw Error('recheck_page_limit_invalid');
   const [at,id,pid]=decodeCursor(cursor);
-  const rows=(await sql(db,`SELECT q.entity_id,q.requested_at,q.reason,r.producer_record_id,r.market,r.environment,
-    MAX(json_extract(r.normalized_json,'$.last_checked')) AS latest_accepted_source_check
-    FROM recheck_requests q JOIN entity_records er ON er.entity_id=q.entity_id JOIN producer_records r ON r.id=er.record_id
-    WHERE ${MEMBERSHIP} AND (q.requested_at>? OR (q.requested_at=? AND (q.entity_id>? OR (q.entity_id=? AND r.producer_record_id>?))))
-    GROUP BY q.entity_id,q.requested_at,q.reason,r.producer_record_id,r.market,r.environment
-    ORDER BY q.requested_at,q.entity_id,r.producer_record_id LIMIT ?`,at,at,id,id,pid,limit+1).all()).results;
+  const rows=(await sql(db,PRODUCER_RECHECK_PAGE_SQL,at,at,id,id,pid,limit+1).all()).results;
   const page=rows.slice(0,limit),last=page.at(-1);
   const count=await sql(db,`SELECT COUNT(*) AS n FROM recheck_requests q WHERE EXISTS(SELECT 1 FROM entity_records er JOIN producer_records r ON r.id=er.record_id WHERE er.entity_id=q.entity_id AND ${MEMBERSHIP})`).first();
   return {schema:'findpitches-v3-producer-rechecks-v2',requests:page,pending_entities:count.n,

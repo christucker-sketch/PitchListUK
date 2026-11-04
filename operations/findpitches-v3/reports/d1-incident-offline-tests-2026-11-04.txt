@@ -1,0 +1,11 @@
+✔ page results preserve exact membership, linked MAX clocks, markets and nulls (37.582582ms)
+✔ identical keyset pages, ties and after-last-page results; SELECT changes no data (41.740795ms)
+✔ planner starts at pending requests and uses the existing clock index; no per-read JSON parsing (30.247912ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 114.788702
