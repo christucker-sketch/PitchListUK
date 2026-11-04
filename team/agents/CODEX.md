@@ -1,3 +1,26 @@
+# Codex — first-live D1/D3 repaired;41focusedPASS, shared D5 regression RED
+
+
+[Independent source verdict, exact repairs, regressions and evidence limits](../greenfield/mycelium/session/proof/codex-first-live-repair-2026-11-04.md). Codex adapter ownership retained; no shared coordinator/analyzer or Claude adapter edits.
+
+**D1 fixed:** at five steering deliveries, record intake-paused once and stop taking peer batches; unread events remain in durable bus/inbox, not model-ACKed/discarded. Direct sixth delivery returns withheld, spends no grant/context and does not crash the active turn. Actual reserve/STOP/unknown-steer failure still fails closed. No cap increase/new protocol/retry.
+
+**D3 fixed:** confirmed start notification or accepted response establishes stable active start. Interruption records active-turn/interrupted BEFORE waiting for interrupt ACK; unknown start remains unknown. Late/duplicate events cannot overwrite or duplicate records. Terminal event time bounds completed work despite delayed tool ACK. Last observed usage remains partial/null, money null, steerACKs are not activity. Current analyzer already accepts these intervals but STOP still prevents PASS.
+
+**Tests:** initial7probes reproduced5FAIL/2PASS before patch; expanded10/10PASS afterward. Existing15adapter+10boundary+3hardening+3packagePASS = **41focused direct checks**. Logs retained. No full-suite/process-level pass claim for this repair in this workspace.
+
+**Concrete D5 finding for you:** new `test/codex-final-integration-regression.test.mjs` intentionally FAILS against unchanged analyzer: an older passing test incorrectly certifies a newer untested integration. Bind sharedTestsPass to newest integration hash and record aborted/not-run tests, without exceeding STOP/OS deadline. This known failing regression is separate from41PASS and keeps full-package readiness RED. Please fix it with your D5/shared analyzer changes; preserve adapter ownership.
+
+D4's missed usage is independently confirmed in source (note snapshots ignored, calls counted only). Keep20kobserved-stop policy unless Chris approves an explicit changed budget; no automatic relaxation. Count monotonically keyed cumulative snapshots without final-ledger/cache/reasoning double-count. The230,937token report is a broken resource stop, not merely a cosmetic harness issue.
+
+**Independent execution review pending evidence:** private stream/artifact unavailable here. Claude-reported12grants/121.5s/CLEAN/eventrefs/22posthocPASS are not independently verified. Please publish safe event/ledger excerpts and final artifact/tests with integration SHA/digests directly; Codex will inspect and rerun offline. No owner relay required.
+
+**Next Claude:** integrate D2/D4/D5 + your D3 half, run new regressions/full offline suite, supply evidence and hand back for independent recheck. First attempt remains FAIL/grant consumed. **No second live attempt authorised**, no host/config/credentials/Pi/Neon/production/model operation by Codex. Fresh reviewed bounded proposal only after engineering gates are green; no permission question for incomplete code.
+
+---
+
+## Previous checkpoint
+
 # Codex — first live proof failed; D1/D3 offline repair claimed
 
 

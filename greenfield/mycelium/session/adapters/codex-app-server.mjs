@@ -42,7 +42,9 @@ export class CodexSession {
     rpc.onRequest = m => this.handleTool(m);
     rpc.onNotification = m => this.notification(m);
     rpc.onFailure = e => this.reject(e);
-    signal.addEventListener('abort', () => { this.interrupt().finally(() => this.reject(new Error('session stopped'))); }, { once: true });
+    signal.addEventListener('abort', () => {
+      void this.interrupt().then(() => this.reject(new Error('session stopped')), e => this.reject(e));
+    }, { once: true });
   }
   check() { if (this.signal.aborted || this.closed) throw new Error('session stopped'); }
   async charge(method, dispatch) {
@@ -57,20 +59,37 @@ export class CodexSession {
     this.dispatches.push(d);
     try {
       const result = await dispatch();
+      if (method === 'turn/start') { this.check(); this.confirmTurn(result.turn?.id); }
       if (method === 'turn/steer') await this.record(d, 'steer-ack', 'accepted');
       return result;
     } catch (e) {
-      await this.record(d, 'unknown', 'unknown');
+      await this.record(d, d.activeStartedAt ? 'active-turn' : 'unknown', 'unknown');
       throw e;
     }
   }
-  async record(d, interval, outcome) {
+  confirmTurn(turnId) {
+    if (typeof turnId !== 'string' || !turnId) throw new Error('turn/start missing turn id');
+    const d = this.dispatches.find(x => x.method === 'turn/start');
+    if (!d || (this.turnId && this.turnId !== turnId)) throw new Error('unsolicited or mismatched turn');
+    this.turnId = turnId;
+    d.activeStartedAt ??= new Date().toISOString();
+    this.startedAt = d.activeStartedAt;
+  }
+  get canDeliver() { return this.deliveries < this.maxDeliveries; }
+  async pauseDeliveries() {
+    if (this.deliveryIntakePaused) return;
+    this.deliveryIntakePaused = true;
+    await this.publish({ type: 'event', kind: 'note', body: 'Codex delivery intake paused at its configured limit; unread peer events remain in the durable bus/inbox, not delivered to the model',
+      data: { deliveryIntakePaused: true, deliveries: this.deliveries, maxDeliveries: this.maxDeliveries, retainedIn: 'durable-bus-and-inbox' } });
+  }
+  async record(d, interval, outcome, cutoff = new Date().toISOString()) {
     if (d.recorded) return;
     d.recorded = true;
-    const endedAt = new Date().toISOString(), active = interval === 'active-turn';
+    const endedAt = cutoff, active = interval === 'active-turn', startedAt = active ? d.activeStartedAt : d.startedAt;
+    if (active && !startedAt) throw new Error('active interval requires a confirmed start');
     await this.publish({ type: 'call', permit: d.permit, method: d.method, interval, outcome,
-      threadId: this.threadId, turnId: this.turnId, startedAt: d.startedAt, endedAt,
-      ms: Date.parse(endedAt) - Date.parse(d.startedAt), model: null,
+      threadId: this.threadId, turnId: this.turnId, startedAt, endedAt,
+      ms: Date.parse(endedAt) - Date.parse(startedAt), model: null,
       inputTokens: active ? this.usage?.inputTokens ?? null : null,
       outputTokens: active ? this.usage?.outputTokens ?? null : null, costUsd: null });
   }
@@ -106,7 +125,11 @@ export class CodexSession {
     }
     const fresh = [...unique.values()];
     if (!fresh.length) return;
-    if (++this.deliveries > this.maxDeliveries) throw new Error('delivery limit');
+    if (!this.canDeliver) {
+      await this.pauseDeliveries();
+      return { delivered: false, reason: 'delivery-limit', retainedIn: 'durable-bus' };
+    }
+    this.deliveries++;
     const payload = JSON.stringify({ source: 'untrusted-shared-events', events: fresh });
     this.consume(payload);
     const ids = fresh.map(e => e.id), turnId = this.turnId;
@@ -156,30 +179,38 @@ export class CodexSession {
     return promise;
   }
   async notification({ method, params: p }) {
-    if (p?.threadId !== this.threadId) return;
+    if (this.closed || p?.threadId !== this.threadId) return;
     if (method === 'turn/started') {
       if (this.turnId && p.turn.id !== this.turnId) throw new Error('unsolicited additional turn');
-      this.turnId = p.turn.id; this.startedAt = new Date().toISOString();
+      this.confirmTurn(p.turn.id);
     } else if (method === 'thread/tokenUsage/updated' && p.turnId === this.turnId) {
       this.usage = p.tokenUsage.total;
       await this.publish({ type: 'event', kind: 'note', body: 'Codex cumulative token usage', data: { threadId: this.threadId, turnId: this.turnId, usage: this.usage, costUsd: null } });
     } else if (method === 'turn/completed' && p.turn.id === this.turnId) {
       if (this.completed) return;
       this.completed = true;
+      this.completedAt = new Date().toISOString();
+      this.completionStatus = p.turn.status;
       await Promise.all([...this.tools.values()].map(x => x.promise));
-      for (const d of this.dispatches) if (d.method === 'turn/start') await this.record(d, 'active-turn', p.turn.status);
+      for (const d of this.dispatches) if (d.method === 'turn/start') await this.record(d, 'active-turn', p.turn.status, this.completedAt);
       await this.publish({ type: 'event', kind: 'note', body: `Codex turn ${p.turn.status}`, data: { threadId: this.threadId, turnId: this.turnId, usage: this.usage ?? null, costUsd: null } });
       if (p.turn.status !== 'completed') this.reject(new Error(`turn ended ${p.turn.status}`));
       else this.resolve();
     }
   }
-  async interrupt() {
-    if (this.closed) return;
+  interrupt() {
+    if (this.interrupting) return this.interrupting;
     this.closed = true;
-    if (this.threadId && this.turnId && !this.completed) {
-      try { await this.rpc.request('turn/interrupt', { threadId: this.threadId, turnId: this.turnId }); } catch {} // transport timeout remains bounded; launcher must kill process group
-    }
-    for (const d of this.dispatches) await this.record(d, 'unknown', 'interrupted-or-unknown');
+    const cutoff = this.completedAt ?? new Date().toISOString();
+    // Ledger before waiting for a CLI ACK: the external STOP grace may kill us first.
+    // Only confirmed starts become active; an unacknowledged ambiguous start stays unknown.
+    this.interrupting = Promise.resolve().then(async () => {
+      for (const d of this.dispatches) await this.record(d, d.activeStartedAt ? 'active-turn' : 'unknown', d.activeStartedAt ? this.completionStatus ?? 'interrupted' : 'interrupted-or-unknown', cutoff);
+      if (this.threadId && this.turnId && !this.completed) {
+        try { await this.rpc.request('turn/interrupt', { threadId: this.threadId, turnId: this.turnId }); } catch {} // launcher owns final kill deadline
+      }
+    });
+    return this.interrupting;
   }
 }
 
@@ -192,6 +223,13 @@ export async function* agentRun({ agent, config, worktree, inbox, runtime }) {
     await s.start(config.prompt);
     while (!ended && !inbox.stopped) {
       if (inbox.dropped) throw new Error('inbox loss: require durable replay, not a partial context');
+      if (!s.canDeliver) {
+        await s.pauseDeliveries();
+        // Do not take/discard another batch or spin on an already nonempty inbox.
+        // The independently active turn may finish, use its existing broker tools, or be stopped by existing limits.
+        await new Promise(resolve => setTimeout(resolve, 25));
+        continue;
+      }
       const events = inbox.take();
       if (events.length) await s.deliver(events);
       else await inbox.wait(25);

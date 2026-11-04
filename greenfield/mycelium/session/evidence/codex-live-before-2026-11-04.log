@@ -1,0 +1,84 @@
+✖ D1: sixth peer batch is explicitly withheld, never granted/ACKed or fatal to the active turn (3.339216ms)
+✖ D1: worker adapter stops taking durable peer batches at its cap but lets the active turn complete (1.495551ms)
+✖ D3: confirmed interrupted turn is ledgered as active BEFORE a slow interrupt acknowledgement (12.665225ms)
+✖ D3: accepted start response also confirms activity without a started notification (1.301659ms)
+✔ D3: ambiguous start without a confirmation remains unknown; no invented active interval (1.173186ms)
+✖ D3: concurrent STOP, duplicate started event and late completion cannot replace/duplicate interruption evidence (3.866179ms)
+✔ D3: overlap accepts confirmed interrupted intervals but STOP still prevents a mechanical PASS (0.855658ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 2
+ℹ fail 5
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 70.53321
+
+✖ failing tests:
+
+test at greenfield/mycelium/session/test/codex-live-regressions.test.mjs:23:1
+✖ D1: sixth peer batch is explicitly withheld, never granted/ACKed or fatal to the active turn (3.339216ms)
+  Error: delivery limit
+      at CodexSession.deliverBatch (file:///workspace/myc-p0-repair/greenfield/mycelium/session/adapters/codex-app-server.mjs:109:55)
+      at file:///workspace/myc-p0-repair/greenfield/mycelium/session/adapters/codex-app-server.mjs:94:50
+
+test at greenfield/mycelium/session/test/codex-live-regressions.test.mjs:36:1
+✖ D1: worker adapter stops taking durable peer batches at its cap but lets the active turn complete (1.495551ms)
+  Error: delivery limit
+      at CodexSession.deliverBatch (file:///workspace/myc-p0-repair/greenfield/mycelium/session/adapters/codex-app-server.mjs:109:55)
+      at file:///workspace/myc-p0-repair/greenfield/mycelium/session/adapters/codex-app-server.mjs:94:50
+
+test at greenfield/mycelium/session/test/codex-live-regressions.test.mjs:46:1
+✖ D3: confirmed interrupted turn is ledgered as active BEFORE a slow interrupt acknowledgement (12.665225ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (file:///workspace/myc-p0-repair/greenfield/mycelium/session/test/codex-live-regressions.test.mjs:52:9)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at greenfield/mycelium/session/test/codex-live-regressions.test.mjs:57:1
+✖ D3: accepted start response also confirms activity without a started notification (1.301659ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'unknown'
+  - 'active-turn'
+  
+      at TestContext.<anonymous> (file:///workspace/myc-p0-repair/greenfield/mycelium/session/test/codex-live-regressions.test.mjs:59:50)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'unknown',
+    expected: 'active-turn',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at greenfield/mycelium/session/test/codex-live-regressions.test.mjs:67:1
+✖ D3: concurrent STOP, duplicate started event and late completion cannot replace/duplicate interruption evidence (3.866179ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'unknown'
+  - 'active-turn'
+  
+      at TestContext.<anonymous> (file:///workspace/myc-p0-repair/greenfield/mycelium/session/test/codex-live-regressions.test.mjs:73:52)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'unknown',
+    expected: 'active-turn',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

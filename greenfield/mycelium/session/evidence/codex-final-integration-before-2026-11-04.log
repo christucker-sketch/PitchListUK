@@ -1,0 +1,30 @@
+✖ D5: a passing test of an older integration must not certify the newest untested merge (1.818798ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9.667222
+
+✖ failing tests:
+
+test at greenfield/mycelium/session/test/codex-final-integration-regression.test.mjs:6:1
+✖ D5: a passing test of an older integration must not certify the newest untested merge (1.818798ms)
+  AssertionError [ERR_ASSERTION]: latest integration has no test receipt, even though an earlier version passed
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///workspace/myc-p0-repair/greenfield/mycelium/session/test/codex-final-integration-regression.test.mjs:9:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

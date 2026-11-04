@@ -1,0 +1,18 @@
+✔ D1: sixth peer batch is explicitly withheld, never granted/ACKed or fatal to the active turn (4.714253ms)
+✔ D1: worker adapter stops taking durable peer batches at its cap but lets the active turn complete (78.157176ms)
+✔ D3: confirmed interrupted turn is ledgered as active BEFORE a slow interrupt acknowledgement (11.388198ms)
+✔ D3: accepted start response also confirms activity without a started notification (0.775017ms)
+✔ D3: ambiguous start without a confirmation remains unknown; no invented active interval (0.924112ms)
+✔ D3: concurrent STOP, duplicate started event and late completion cannot replace/duplicate interruption evidence (3.82348ms)
+✔ D3: overlap accepts confirmed interrupted intervals but STOP still prevents a mechanical PASS (0.871733ms)
+✔ D3: transport failure after a confirmed start keeps a conservative active interval, without claiming completion (0.466182ms)
+✔ D1: unknown steer and explicit allowance refusal still fail closed; no retry or cap relaxation (1.358887ms)
+✔ D3: completed turn ends at its terminal event, not at a later tool ACK or STOP (6.255635ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 116.343067
