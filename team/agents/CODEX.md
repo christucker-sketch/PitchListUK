@@ -1,3 +1,20 @@
+# Codex — V3 cloud recheck repair deployed; Pi end-to-end pending
+
+
+**Cloud verification PASS.** Executed Chris's approval at fb42a51a once: created exactly `structured_recheck_lookup` on findpitches-v3-shadow (75ccfd1a-f136-4598-8cfb-9a4489d174b9); exact definition verified. Build SQL 9449.3939ms; database 6,591,668,224 bytes (~6.1MB increase). Reported 58,204 index entries written, zero source-row changes. After clearing the resource window, one listing+count canary returned correct101rows, zero writes, **244.614+24.9706=269.5846ms**, below1000ms. Result hash720257d9… unchanged.
+
+**Deployment:** one native-preserving upload and activation of ingest only, version `8275cb3a-3774-42c0-afd7-c4cce9943d61` at100%; exact served module SHA256 `4ccd768128fd7e4613a17165e87da386efd449434835e55ebe9101d3d8bf160a`. Bindings (including secret bindings), runtime, settings and schedules preserved; native read-back and served-code checks PASS. Prior version `030b2e68-6e5e-4d3e-89ba-8c7d249b4cf6` retained for rollback, unused. Node child spawning returned EPERM in this workspace; Python subprocess ran the same pinned Wrangler/config with normal existing permissions, durable one-attempt guards and no extra privileges.
+
+**Authenticated probes:** exactly5pages, >10seconds spacing, HTTP200 throughout; elapsed628/563/412/391/442ms.500distinct, correctly ordered cursor tuples, all cursors advance. Backlog991 and next_cursor remains: **bounded prefix PASS, full pagination NOT verified**. No further probes/retries or Pi operations. [Sanitized rollout receipt](../operations/findpitches-v3/reports/recheck-covering-result-2026-11-04.json).17focused offline checks and exact-module dry run remain the preparation evidence, not a whole-suite claim.
+
+**Next Claude, through this hub:** cloud fix is active. Publish a read-only installed-hash/status receipt and actual `recheck_retry_after`; observe the next **scheduled** producer poll, its complete pagination, cleared `recheck_error`/last-success timestamp and fresh exact acknowledgements. Do not force a job, change Pi or reinstall. An export/contact alone does not prove recovery because your mitigation decouples delivery from failed polls. If not yet due, report next poll time; backoff can be6h. Codex's end-to-end status remains **PENDING**, not recovered. No acknowledgement from Claude is inferred.
+
+**Preservation/remaining risk:** no other Worker, cron, queue, lease, credential, source-data, customer, V1/V2 or Pi change. This fixes the measured wide-row recheck-query bottleneck; it does not resolve database growth or prove all collateral cron workloads healthy. No evidence of source-data deletion; historical unsent producer revisions remain uncertified. Native secret values and private probe rows were not published. Further history archive/trim work is separate, not authorised here.
+
+---
+
+## Previous checkpoint
+
 # Codex — permanent V3 recheck repair prepared; one-index approval required
 
 4 November2026 (Europe/London). Cloud-side replacement prepared in 200cf385de1650797a02b0609116f63e59570c51: one partial covering index plus indexed recheck listing AND pending-count lookups. The failed query avoided JSON parsing but still read wide receipt rows; new SQLite VM/entrypoint tests verify index-only access and exact existing semantics. **17 focused checks PASS**; no-bundle/no-additional-modules dry run emits exactly the reviewed module, byte-identical, replacing only two SQL literals in the captured active ingest code. No live query, DDL, upload or deployment for this revision. [Exact schema/rollout/rollback and approval request](../../docs/findpitches-v3-recheck-covering-fix-2026-11-04.md).

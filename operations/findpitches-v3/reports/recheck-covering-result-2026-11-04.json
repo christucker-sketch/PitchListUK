@@ -1,0 +1,145 @@
+{
+  "scope": "owner-approved V3 shadow covering index and ingest-only two-SQL patch",
+  "index": {
+    "at": "2026-11-04T10:53:50.705Z",
+    "pass": true,
+    "attempt": 1,
+    "elapsedMs": 10400,
+    "index": "structured_recheck_lookup",
+    "meta": {
+      "served_by": "v3-prod",
+      "served_by_region": "WNAM",
+      "served_by_colo": "DFW",
+      "served_by_primary": true,
+      "timings": {
+        "sql_duration_ms": 9449.3939
+      },
+      "duration": 9449.3939,
+      "changes": 0,
+      "last_row_id": 0,
+      "changed_db": true,
+      "size_after": 6591668224,
+      "rows_read": 133581,
+      "rows_written": 58204,
+      "total_attempts": 1
+    },
+    "indexDefinitionVerified": true,
+    "database": {
+      "uuid": "75ccfd1a-f136-4598-8cfb-9a4489d174b9",
+      "name": "findpitches-v3-shadow",
+      "created_at": "2026-10-06T09:38:56.851Z",
+      "version": "production",
+      "num_tables": 70,
+      "file_size": 6591668224,
+      "running_in_region": "WNAM",
+      "read_replication": {
+        "mode": "disabled"
+      },
+      "jurisdiction": null
+    },
+    "workerDeployed": false,
+    "sourceDataMutations": 0
+  },
+  "canary": {
+    "at": "2026-11-04T10:54:32.201Z",
+    "pass": true,
+    "http": [
+      200,
+      200
+    ],
+    "correct": true,
+    "rows": 101,
+    "pendingEntities": 988,
+    "listingSqlMs": 244.614,
+    "countSqlMs": 24.9706,
+    "combinedSqlMs": 269.5846,
+    "listingRowsRead": 122173,
+    "countRowsRead": 19062,
+    "rowsWritten": [
+      0,
+      0
+    ],
+    "rowHash": "720257d9a2a6badb87f37f06f181a3d04e635fb9ee9d63f039f344a3fbcf3926",
+    "baselineHashIsNotGate": "source data may have advanced after Pi mitigation"
+  },
+  "activation": {
+    "at": "2026-11-04T11:03:49.876Z",
+    "worker": "findpitches-v3-ingest-shadow",
+    "activeVersion": "8275cb3a-3774-42c0-afd7-c4cce9943d61",
+    "deploymentId": "c838099a-00a1-4077-8e21-e3e2ec8d576c",
+    "activeCorrect": true,
+    "moduleName": "reviewed-active-source.mjs",
+    "moduleSha256": "4ccd768128fd7e4613a17165e87da386efd449434835e55ebe9101d3d8bf160a",
+    "codeCorrect": true,
+    "bindingsEqual": true,
+    "settingsEqual": true,
+    "schedulesEqual": true,
+    "rollbackVersion": "030b2e68-6e5e-4d3e-89ba-8c7d249b4cf6",
+    "pass": true
+  },
+  "probes": {
+    "startedAt": "2026-11-04T11:06:11.082Z",
+    "pages": [
+      {
+        "at": "2026-11-04T11:06:12.144Z",
+        "page": 1,
+        "http": 200,
+        "elapsedMs": 628,
+        "requests": 100,
+        "pendingEntities": 991,
+        "hasNextCursor": true
+      },
+      {
+        "at": "2026-11-04T11:06:22.711Z",
+        "page": 2,
+        "http": 200,
+        "elapsedMs": 563,
+        "requests": 100,
+        "pendingEntities": 991,
+        "hasNextCursor": true
+      },
+      {
+        "at": "2026-11-04T11:06:33.129Z",
+        "page": 3,
+        "http": 200,
+        "elapsedMs": 412,
+        "requests": 100,
+        "pendingEntities": 991,
+        "hasNextCursor": true
+      },
+      {
+        "at": "2026-11-04T11:06:43.522Z",
+        "page": 4,
+        "http": 200,
+        "elapsedMs": 391,
+        "requests": 100,
+        "pendingEntities": 991,
+        "hasNextCursor": true
+      },
+      {
+        "at": "2026-11-04T11:06:53.967Z",
+        "page": 5,
+        "http": 200,
+        "elapsedMs": 442,
+        "requests": 100,
+        "pendingEntities": 991,
+        "hasNextCursor": true
+      }
+    ],
+    "pass": true,
+    "complete": false,
+    "totalRequests": 500,
+    "remainingCursor": true,
+    "finishedAt": "2026-11-04T11:06:53.967Z"
+  },
+  "offlinePageValidation": {
+    "ordered": true,
+    "distinctCursorTuples": 500
+  },
+  "piEndToEnd": "PENDING scheduled full poll and exact acknowledgements; no Pi access/change or manual trigger",
+  "limitations": [
+    "Five-page cap reached with next cursor; full pagination not claimed",
+    "Pi backoff can be six hours; import/contact alone is not recheck recovery proof"
+  ],
+  "rollbackUsed": false
+}
