@@ -4,7 +4,7 @@
 // and the workers all hang:
 //   1. refuse a reused output folder, or any unit/slice/cgroup this session id already has (no reuse, no foreign units);
 //   2. ARM a transient systemd timer myc-watchdog-<id> (deadline = maxWallMs + graceMs, rounded up): when it fires, PID1
-//      kills the whole session slice mycp_<id>.slice (cgroup.kill, then systemctl kill/stop), i.e. both worker scopes and
+//      writes <out>/deadline-fired and kills the whole session slice mycp_<id>.slice (cgroup.kill, then systemctl kill/stop), i.e. both worker scopes and
 //      any test unit, wherever their processes went (the CLIs drop the MYC_SESSION tag via myc-run's env -i, the cgroup
 //      does not let them out);
 //   3. start the broker (run.mjs) as transient service myc-session-<id>-broker with RuntimeMaxSec (deadline + 30 s for
@@ -35,9 +35,11 @@ export function plan({ manifest, manifestPath, out, node = process.execPath, run
   const b = brokerMaxS ?? d + 30;
   if (!Number.isInteger(b) || b < d || b > fullDeadline + 30) throw new Error(`broker limit must be ${d}..${fullDeadline + 30} s`);
   const slice = sessionSlice(id), broker = `myc-session-${id}-broker`, timer = `myc-watchdog-${id}`;
+  if (!/^\/[A-Za-z0-9._\/-]{1,200}$/.test(out ?? '')) throw new Error('output folder must be a plain absolute path');
+  const marker = join(out, 'deadline-fired');   // written by PID1 when the timer fires: systemd drops a one-shot transient timer once it has run, so its state cannot be queried afterwards
   const kill = `echo 1 > ${cgroupRoot}/${slice}/cgroup.kill 2>/dev/null; ${bin.systemctl} kill --signal=SIGKILL ${slice}; ${bin.systemctl} stop --no-block ${slice}; true`;
-  return { id, slice, broker, timer, deadlineS: d, brokerMaxS: b, killCmd: kill,
-    arm: [bin.systemdRun, '--quiet', `--unit=${timer}`, `--description=myc session ${id} absolute deadline`, `--on-active=${d}s`, '--timer-property=AccuracySec=100ms', '--', bin.sh, '-c', kill],
+  return { id, slice, broker, timer, deadlineS: d, brokerMaxS: b, killCmd: kill, marker,
+    arm: [bin.systemdRun, '--quiet', `--unit=${timer}`, `--description=myc session ${id} absolute deadline`, `--on-active=${d}s`, '--timer-property=AccuracySec=100ms', '--', bin.sh, '-c', `date -u +%Y-%m-%dT%H:%M:%S.%3NZ >> ${marker}; ${kill}`],
     start: [bin.systemdRun, '--wait', `--unit=${broker}`, `--description=myc session ${id} broker`, '--collect', '--service-type=exec', '-p', `RuntimeMaxSec=${b}`, '-p', 'KillMode=control-group',
       `--setenv=MYC_SESSION_SLICE=${slice}`, `--working-directory=${HERE}`, '-p', `StandardOutput=append:${join(out, 'broker.log')}`, '-p', `StandardError=append:${join(out, 'broker.log')}`,
       '--', node, runPath, manifestPath, join(out, 'run')] };
@@ -91,7 +93,8 @@ export async function watch({ manifestPath, out, bin = BIN, cgroupRoot = '/sys/f
   rec.interrupted = interrupted;
   // 4. always: record whether the deadline fired, then take everything of this session down and verify
   const trig = sc('show', '-p', 'LastTriggerUSec', '--value', `${p.timer}.timer`);
-  rec.fired = !!trig && trig !== 'n/a' && trig !== '0';
+  rec.fired = existsSync(p.marker) || (!!trig && trig !== 'n/a' && trig !== '0');
+  if (existsSync(p.marker)) rec.firedAt = readFileSync(p.marker, 'utf8').trim().split('\n')[0];
   try { execFileSync(bin.sh, ['-c', p.killCmd], { stdio: 'ignore', timeout: 15000 }); } catch {}
   sc('stop', `${p.broker}.service`); sc('stop', p.slice); sc('stop', `${p.timer}.timer`);
   sc('reset-failed', `${p.broker}.service`, `${p.timer}.service`, `${p.timer}.timer`, p.slice, `myc-session-${p.id}-claude.scope`, `myc-session-${p.id}-codex.scope`);

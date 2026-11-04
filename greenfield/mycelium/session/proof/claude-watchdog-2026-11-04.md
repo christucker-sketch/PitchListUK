@@ -124,3 +124,29 @@ How each connector fares:
 - a rerun of the rehearsal at this commit (step 4 is new).
 
 Then both engineers sign off the SAME commit (gate 4).
+
+## 4. Host evidence (fpd-prod, run by Chris, pasted; read-only except the rehearsal's own transient units)
+
+**Host checks:**
+
+| Check | Result |
+|---|---|
+| `myc-run` sha256 | `827c2940…44bd`, **matches the source** |
+| Memory | 7280 MB available of 7769 (swap 5908) |
+| `/` | 95 G free |
+| Kernel | 6.12.113 (cgroup.kill supported) |
+| systemd | 257 |
+
+**Rehearsal at b3512f40** (evidence `/var/tmp/myc-rehearsal.WZdL8Y`):
+- Steps 1–3 PASS as before: preflight OK for both CLIs, MECHANICAL PASS with FAIL→FAIL→PASS, 0 leftovers, and STOP with 0 leftovers.
+- **Step 4: the watchdog worked; my check failed.**
+  - Armed 14:18:16.521Z, broker started 3 ms later.
+  - Both scopes were in `mycp_rehearsal_w.slice`, cgroup.kill was present, and the broker had `RuntimeMaxUSec=20s`.
+  - Broker log: claude was SIGKILLed at +5889 ms and codex at +5931 ms, i.e. at the 6 s PID1 deadline while both were mid-call. The coordinator ended at +8015 ms. The broker exited 1, as expected (mechanical FAIL because of the kill).
+  - Leftovers: sliceProcs 0, brokerProcs 0, units [], tagged 0. **CLEAN.**
+- **Defect found (mine, fixed in this commit):** the record said `fired:false`. systemd discards a one-shot transient timer after it runs, so `LastTriggerUSec` could no longer be queried.
+  - Fix: the timer's PID1 command first appends a timestamp to `<out>/deadline-fired`. `fired` and `firedAt` now come from that marker. The cleanup kill never writes it, so a firing can't be faked.
+  - The output path is restricted to plain absolute paths, because it is interpolated into the PID1 shell command.
+  - New test: watchdog 10/10; full suite 63/63.
+  - Also fixed: the rehearsal's slice probe compared a string that systemd separates with a blank line. It now counts matching lines and also requires the marker file.
+- A rerun of the rehearsal at this commit is needed before sign-off.

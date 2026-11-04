@@ -52,6 +52,8 @@ test('plan: the candidate gets an absolute 605 s PID1 deadline on its own slice,
   assert.equal(p.deadlineS, 605); assert.equal(p.brokerMaxS, 635); assert.equal(p.slice, 'mycp_myc_p0_first_live.slice');
   assert.equal(p.slice, sessionSlice(m.id));
   assert.ok(p.arm.includes('--on-active=605s') && p.arm.includes('--unit=myc-watchdog-myc-p0-first-live'));
+  assert.match(p.arm.at(-1), /^date -u \S+ >> \/x\/out\/deadline-fired; /); assert.ok(!p.killCmd.includes('deadline-fired'), 'cleanup kill does not fake a firing');
+  assert.throws(() => plan({ manifest: m, manifestPath: 'm', out: '/x/o ut;rm' }), /plain absolute/);
   assert.match(p.killCmd, /cgroup\/mycp_myc_p0_first_live\.slice\/cgroup\.kill/); assert.match(p.killCmd, /systemctl kill --signal=SIGKILL mycp_myc_p0_first_live\.slice/);
   assert.ok(p.start.includes('RuntimeMaxSec=635') && p.start.includes('--setenv=MYC_SESSION_SLICE=mycp_myc_p0_first_live.slice') && p.start.includes('--unit=myc-session-myc-p0-first-live-broker'));
   assert.equal(p.start.at(-1), '/x/out/run'); assert.equal(p.start.at(-2), '/x/m.json'); assert.match(p.start.at(-3), /run\.mjs$/);
@@ -59,12 +61,12 @@ test('plan: the candidate gets an absolute 605 s PID1 deadline on its own slice,
 
 test('plan: overrides may only shorten; bad ids and missing limits are refused', () => {
   const m = candidate();
-  assert.throws(() => plan({ manifest: m, manifestPath: 'm', out: 'o', deadlineS: 606 }), /only shorten/);
-  assert.equal(plan({ manifest: m, manifestPath: 'm', out: 'o', deadlineS: 5 }).brokerMaxS, 35);
-  assert.throws(() => plan({ manifest: m, manifestPath: 'm', out: 'o', deadlineS: 10, brokerMaxS: 9 }), /broker limit/);
-  assert.throws(() => plan({ manifest: m, manifestPath: 'm', out: 'o', brokerMaxS: 636 }), /broker limit/);
-  assert.throws(() => plan({ manifest: { ...m, id: 'Bad id' }, manifestPath: 'm', out: 'o' }), /slug/);
-  assert.throws(() => plan({ manifest: { id: 'x', limits: {} }, manifestPath: 'm', out: 'o' }), /required/);
+  assert.throws(() => plan({ manifest: m, manifestPath: 'm', out: '/o', deadlineS: 606 }), /only shorten/);
+  assert.equal(plan({ manifest: m, manifestPath: 'm', out: '/o', deadlineS: 5 }).brokerMaxS, 35);
+  assert.throws(() => plan({ manifest: m, manifestPath: 'm', out: '/o', deadlineS: 10, brokerMaxS: 9 }), /broker limit/);
+  assert.throws(() => plan({ manifest: m, manifestPath: 'm', out: '/o', brokerMaxS: 636 }), /broker limit/);
+  assert.throws(() => plan({ manifest: { ...m, id: 'Bad id' }, manifestPath: 'm', out: '/o' }), /slug/);
+  assert.throws(() => plan({ manifest: { id: 'x', limits: {} }, manifestPath: 'm', out: '/o' }), /required/);
 });
 
 test('normal end: deadline armed BEFORE the broker starts; cleanup, timer stop and verification always follow; CLEAN', async () => {
@@ -79,6 +81,12 @@ test('normal end: deadline armed BEFORE the broker starts; cleanup, timer stop a
   assert.equal(rec.brokerExit.code, 0); assert.equal(rec.fired, false); assert.equal(rec.clean, true);
   assert.match(readFileSync(join(r.opts.out, 'broker.log'), 'utf8'), /slice=mycp_wd_test\.slice/);
   assert.equal(JSON.parse(readFileSync(join(r.opts.out, 'watchdog.json'), 'utf8')).clean, true);
+});
+
+test('a deadline that fired is known from the PID1 marker even though the one-shot timer is gone (fpd-prod 4 Nov finding)', async () => {
+  const r = rig(), b = r.broker(`require('fs').writeFileSync(process.argv[3].replace(/run$/, 'deadline-fired'), '2026-11-04T14:18:22.500Z\\n');process.exit(1);`);
+  const rec = await watch({ ...r.opts, runPath: b });
+  assert.equal(rec.fired, true); assert.equal(rec.firedAt, '2026-11-04T14:18:22.500Z'); assert.equal(rec.clean, true);
 });
 
 test('broker failure and a fired deadline are recorded; cleanup still runs', async () => {

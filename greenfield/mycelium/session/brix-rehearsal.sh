@@ -55,7 +55,7 @@ cat > "$W/rehearsal-w.json" <<EOF
   "launcher": { "mode": "systemd-scope", "user": "myc", "path": "/usr/local/bin:/usr/bin:/bin", "memoryMax": "1G", "tasksMax": 128 },
   "limits": { "maxWallMs": 60000, "maxCallsPerAgent": 6, "graceMs": 2000 } }
 EOF
-( sleep 3; { systemctl show -p Slice --value myc-session-rehearsal-w-claude.scope myc-session-rehearsal-w-codex.scope | tr '\n' ' '; echo;
+( sleep 3; { echo "scopes in slice: $(systemctl show -p Slice --value myc-session-rehearsal-w-claude.scope myc-session-rehearsal-w-codex.scope | grep -c '^mycp_rehearsal_w\.slice$')";
     [[ -e /sys/fs/cgroup/mycp_rehearsal_w.slice/cgroup.kill ]] && echo "cgroup.kill present" || echo "cgroup.kill MISSING";
     systemctl show -p RuntimeMaxUSec --value myc-session-rehearsal-w-broker.service; } > "$W/w-probe.txt" 2>&1 ) &
 t0=$SECONDS
@@ -64,7 +64,8 @@ wait; dt=$((SECONDS - t0))
 sed 's/^/   probe: /' "$W/w-probe.txt"; tail -2 "$W/w.log" | sed 's/^/   /'
 "$NODE" -e 'const r=JSON.parse(require("fs").readFileSync(process.argv[1]));if(!(r.fired===true&&r.clean===true))process.exit(1)' "$W/w/watchdog.json" \
   || { echo "   watchdog did not fire cleanly (see $W/w.log, $W/w/watchdog.json)"; exit 1; }
-[[ $(head -1 "$W/w-probe.txt") == "mycp_rehearsal_w.slice mycp_rehearsal_w.slice " ]] || { echo "   worker scopes were not in the session slice"; exit 1; }
+grep -qx 'scopes in slice: 2' "$W/w-probe.txt" || { echo "   worker scopes were not in the session slice"; exit 1; }
+[[ -s $W/w/deadline-fired ]] || { echo "   PID1 left no deadline-fired marker"; exit 1; }
 grep -q 'worker exited (code null, SIGKILL)' "$W/w/broker.log" || { echo "   the agents were not killed by the deadline (see $W/w/broker.log)"; exit 1; }
 (( dt < 30 )) || { echo "   took ${dt}s: the 6 s deadline did not hold"; exit 1; }
 echo "   deadline fired, both agents killed mid-call, done in ${dt}s"
