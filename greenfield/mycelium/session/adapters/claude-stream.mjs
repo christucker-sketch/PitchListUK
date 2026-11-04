@@ -35,6 +35,7 @@ export async function* agentRun({ agent, config, worktree, inbox, runtime }) {
   const sock = join(process.env.MYC_RUNTIME_DIR ?? process.env.HOME, `myc-${process.pid}.sock`);   // private per-worker runtime dir
   rmSync(sock, { force: true });
   const server = createServer({ allowHalfOpen: true }, c => {   // half-open: the bridge ends its request, then reads our reply
+    c.on('error', () => {});   // D2 (live 4 Nov): a bridge that went away before our reply (EPIPE/ECONNRESET) must not crash the worker
     let buf = '';
     c.on('data', d => { buf += d; if (buf.length > 256 * 1024) c.destroy(); });
     c.on('end', async () => {
@@ -59,7 +60,8 @@ export async function* agentRun({ agent, config, worktree, inbox, runtime }) {
   const [cmd, ...pre] = config.command ?? ['claude'];
   const permit0 = await runtime.reserve({ method: 'claude/turn', reason: 'initial prompt' });
   if (!permit0 || runtime.signal.aborted) { server.close(); return; }   // a grant issued just before STOP is not used
-  const child = spawn(cmd, [...pre, ...claudeArgs({ mcpConfig, sessionId: randomUUID() })], { cwd: worktree, stdio: ['pipe', 'pipe', 'inherit'], env: process.env });   // CLI stderr lands in the worker log
+  const sessionId = randomUUID();
+  const child = spawn(cmd, [...pre, ...claudeArgs({ mcpConfig, sessionId })], { cwd: worktree, stdio: ['pipe', 'pipe', 'inherit'], env: process.env });   // CLI stderr lands in the worker log
   const kill = () => { try { child.kill('SIGTERM'); } catch {} setTimeout(() => { try { child.kill('SIGKILL'); } catch {} }, 2000); };
   runtime.signal.addEventListener('abort', kill, { once: true });
   const exited = new Promise(res => child.on('close', code => res(code)));
@@ -72,10 +74,25 @@ export async function* agentRun({ agent, config, worktree, inbox, runtime }) {
   const idleMs = config.idleMs ?? 3000;   // after its last turn, keep listening this long for a peer event worth a new turn
   const firstText = `${config.prompt}\n\nUse myc_publish for intermediate findings and myc_inbox to read the other engineer while you work. Read the current shared files with myc_read and submit whole files with myc_submit, naming the integration commit you read as base.`;
   charge(firstText);
-  turns.push({ permit: permit0.id, startedAt: new Date().toISOString() }); turnActive = true; send(randomUUID(), firstText);
+  const firstUuid = randomUUID();
+  turns.push({ permit: permit0.id, startedAt: new Date().toISOString(), uuid: firstUuid }); turnActive = true; send(firstUuid, firstText);
+  // D4: observed usage while a turn is still running. Assistant messages carry per-message usage (repeated across the content
+  // blocks of one message): keep the maximum per message id, report the session's cumulative total, monotonic, at most
+  // once a second. input + cache creation + cache read + output; never invented: absent fields count as 0, no usage = no note.
+  const perMessage = new Map(); let usageSent = 0, usageAt = 0, usageTimer = null;
+  const usageTotal = () => { const t = { inputTokens: 0, outputTokens: 0, cacheReadInputTokens: 0, cacheCreationInputTokens: 0 }; for (const u of perMessage.values()) for (const k in t) t[k] += u[k]; return { ...t, totalTokens: t.inputTokens + t.outputTokens + t.cacheReadInputTokens + t.cacheCreationInputTokens }; };
+  const reportUsage = () => { usageTimer = null; const u = usageTotal(); if (u.totalTokens <= usageSent) return; usageSent = u.totalTokens; usageAt = Date.now();
+    return runtime.publish({ type: 'event', kind: 'note', body: 'Claude cumulative token usage', data: { sessionId, usage: u, costUsd: null } }).catch(() => {}); };
+  const noteUsage = (id, u) => {
+    const n = k => (Number.isFinite(u?.[k]) && u[k] >= 0 ? u[k] : 0), cur = { inputTokens: n('input_tokens'), outputTokens: n('output_tokens'), cacheReadInputTokens: n('cache_read_input_tokens'), cacheCreationInputTokens: n('cache_creation_input_tokens') };
+    const prev = perMessage.get(id); perMessage.set(id, prev ? Object.fromEntries(Object.keys(cur).map(k => [k, Math.max(prev[k], cur[k])])) : cur);
+    if (!usageTimer) usageTimer = setTimeout(reportUsage, Math.max(0, 1000 - (Date.now() - usageAt)));
+  };
   const rl = createInterface({ input: child.stdout });
   rl.on('line', async line => {
     let m; try { m = JSON.parse(line); } catch { return; }
+    if (m.type === 'assistant' && m.message?.usage) noteUsage(m.message.id ?? `msg-${perMessage.size}`, m.message.usage);
+    if (m.type === 'user' && m.uuid === firstUuid) { turns[0].confirmedAt ??= new Date().toISOString(); return; }   // the CLI took the prompt in: the turn really started
     if (m.type === 'user' && m.uuid && deliveries.has(m.uuid)) {     // the CLI took a delivered message in
       const d = deliveries.get(m.uuid); if (d.consumedAt) return;
       d.consumedAt = new Date().toISOString(); d.midTurn = d.openTurn !== null && !turns[d.openTurn].endedAt;
@@ -118,6 +135,16 @@ export async function* agentRun({ agent, config, worktree, inbox, runtime }) {
       if (child.exitCode !== null) break;
     }
   } finally {
+    // D3 (live 4 Nov): a turn cut off by STOP/the pair stopping is still recorded, under its grant, with its real start and the
+    // observed end: 'active-turn' + outcome 'interrupted' only if the CLI confirmed it took the message in, else 'unknown'.
+    // Tokens stay null here (partial usage is in the cumulative usage notes); money null.
+    if (usageTimer) { clearTimeout(usageTimer); await reportUsage(); }
+    const cut = new Date().toISOString();
+    for (const t of turns.filter(x => !x.endedAt)) {
+      const confirmed = t.viaDelivery ? !!deliveries.get(t.viaDelivery)?.consumedAt : !!t.confirmedAt;
+      t.endedAt = cut;
+      await ledger({ type: 'call', permit: t.permit, interval: confirmed ? 'active-turn' : 'unknown', outcome: 'interrupted', startedAt: t.startedAt, endedAt: cut, ms: Date.parse(cut) - Date.parse(t.startedAt), model: null, inputTokens: null, outputTokens: null, costUsd: null });
+    }
     try { child.stdin.end(); } catch {}
     await Promise.race([exited, new Promise(r => setTimeout(r, 3000))]); kill();
     server.close(); rmSync(sock, { force: true });

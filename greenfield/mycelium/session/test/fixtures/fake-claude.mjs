@@ -3,9 +3,13 @@
 // would, and plays a scripted engineer: publishes a finding, polls myc_inbox during its turn, and replies to a Codex
 // finding with a linked reply and submission. FAKE_CLAUDE_STDIN=midturn consumes (replays) stdin messages at once;
 // =queue holds them until the current turn's result, as a CLI without mid-turn input would. Not a protocol claim.
+// Live-repair probes (4 Nov): FAKE_CLAUDE_ECHO_FIRST=1 replays the first prompt like the real CLI; FAKE_CLAUDE_HANG=1 keeps
+// the first turn running (never a result); FAKE_CLAUDE_USAGE=<n> emits assistant messages reporting n tokens each;
+// FAKE_CLAUDE_DROP=1 sends one bridge request on a raw socket and vanishes before the reply (EPIPE on the adapter side).
 import { spawn } from 'node:child_process';
 import { createInterface } from 'node:readline';
 import { writeFileSync } from 'node:fs';
+import { connect } from 'node:net';
 const argv = process.argv.slice(2), opt = k => argv[argv.indexOf(k) + 1];
 if (process.env.FAKE_CLAUDE_ARGV) writeFileSync(process.env.FAKE_CLAUDE_ARGV, JSON.stringify(argv));
 const policy = process.env.FAKE_CLAUDE_STDIN ?? 'queue', out = m => process.stdout.write(JSON.stringify(m) + '\n');
@@ -33,6 +37,9 @@ async function react(events) {
 const consume = m => { out({ type: 'user', uuid: m.uuid, message: m.message }); try { return JSON.parse(m.message.content[0].text).events ?? []; } catch { return []; } };
 async function turn(first) {
   inTurn = true;
+  if (first && process.env.FAKE_CLAUDE_DROP) { const s = connect(mcp.env.MYC_BRIDGE_SOCK); s.on('error', () => {}); s.on('connect', () => { s.end(JSON.stringify({ op: 'read', args: {} }) + '\n'); s.destroy(); }); await sleep(300); }
+  if (first && process.env.FAKE_CLAUDE_USAGE) for (let i = 0; i < 3; i++) { await sleep(100); for (const block of [1, 2]) out({ type: 'assistant', message: { id: `m${i}`, role: 'assistant', content: [{ type: 'text', text: 'x' + block }], usage: { input_tokens: Number(process.env.FAKE_CLAUDE_USAGE), output_tokens: 0 } } }); }
+  if (first && process.env.FAKE_CLAUDE_HANG) { await call('myc_publish', { kind: 'finding', body: 'Claude: still working (hang probe)', refIds: [] }); await new Promise(() => {}); }
   if (first) {
     await sleep(150); await call('myc_publish', { kind: 'finding', body: 'Claude: relative links must be resolved against the page URL before dedupe', refIds: [] });
     for (let i = 0; i < 30 && !replied; i++) {
@@ -47,7 +54,7 @@ async function turn(first) {
 let started = false, chain = Promise.resolve();
 createInterface({ input: process.stdin }).on('line', l => {
   const m = JSON.parse(l);
-  if (!started) { started = true; chain = chain.then(() => turn(true)).then(drain); return; }
+  if (!started) { started = true; if (process.env.FAKE_CLAUDE_ECHO_FIRST) out({ type: 'user', uuid: m.uuid, message: m.message }); chain = chain.then(() => turn(true)).then(drain); return; }
   if (inTurn) { if (policy === 'midturn') incoming.push(m); else held.push(m); }
   else chain = chain.then(async () => { await react(consume(m)); await turn(false); });
 }).on('close', () => { stdinEnded = true; chain.then(() => { srv.kill(); process.exit(0); }); });

@@ -110,6 +110,17 @@ export async function runSession(opts) {
   for (const a of [...AGENTS, 'integration']) { await git(wt[a], 'config', 'user.name', a === 'integration' ? 'session-coordinator' : `${a}-agent`); await git(wt[a], 'config', 'user.email', `${a}@mycelium.invalid`); }
   const calls = { claude: 0, codex: 0 }, permits = new Map(), workers = {}, limited = new Set();
   let observedTokens = 0;
+  // D4 (live 4 Nov): observed usage per agent = max(sum of the latest cumulative usage snapshot per thread/turn/session key,
+  // sum of the tokens on its call records). Snapshots are monotonic per key; taking the max of the two sources never adds
+  // the same turn twice. Cached input is already inside each adapter's total (not added again). Unreported = 0 here, and
+  // the report says unknown.
+  const usageSnap = new Map(), callTokens = { claude: 0, codex: 0 };
+  const observe = () => {
+    const snap = { claude: 0, codex: 0 };
+    for (const [k, v] of usageSnap) snap[k.split('|')[0]] += v;
+    observedTokens = AGENTS.reduce((n, a) => n + Math.max(snap[a], callTokens[a]), 0);
+    if (observedTokens >= maxObservedTokens && !stopping) stop(`observed tokens ${observedTokens} reached the ${maxObservedTokens} threshold (reported after the fact; in-flight work may overshoot)`);
+  };
   let stopping = false, stopDone = null, mutex = Promise.resolve(), testAbort = new AbortController(), pidCounter = 0;
   const live = new Set();
 
@@ -242,6 +253,8 @@ export async function runSession(opts) {
         if (!AGENT_KINDS.includes(out.kind)) throw new Error(`agents may publish only ${AGENT_KINDS.join('/')}`);
         const ev = append(a, out.kind, out.body ?? '', { refs: resolveRefs(out.refIds), id: out.id ? `${a}:${String(out.id).slice(0, 80)}` : undefined, data: out.data });
         if (!ev) throw new Error('not recorded');
+        const total = usageTotalOf(out);
+        if (total !== null) { const key = `${a}|${usageKeyOf(out)}`; usageSnap.set(key, Math.max(usageSnap.get(key) ?? 0, total)); observe(); }
         return { seq: ev.seq, id: ev.id };
       }
       if (out.type === 'files') return integrate(a, out);
@@ -251,8 +264,8 @@ export async function runSession(opts) {
         p.used = true;
         const ev = append(a, 'call', `${a} model dispatch under ${out.permit}: ${out.ms ?? '?'} ms`, { refs: [bus.byId(out.permit).seq], data: { permit: out.permit, startedAt: out.startedAt ?? null, endedAt: out.endedAt ?? null, ms: out.ms ?? null, model: out.model ?? null, inputTokens: out.inputTokens ?? null, outputTokens: out.outputTokens ?? null, costUsd: out.costUsd ?? null, interval: out.interval ?? (agents[a].adapter === 'fake' ? 'simulated' : 'unknown'), outcome: out.outcome ?? null, method: out.method ?? null, threadId: out.threadId ?? null, turnId: out.turnId ?? null } });
         // observed tokens (as reported, possibly after the fact): past the threshold the session stops. Not a hard cap.
-        observedTokens += (Number.isFinite(out.inputTokens) ? out.inputTokens : 0) + (Number.isFinite(out.outputTokens) ? out.outputTokens : 0);
-        if (observedTokens >= maxObservedTokens && !stopping) stop(`observed tokens ${observedTokens} reached the ${maxObservedTokens} threshold (reported after the fact; in-flight work may overshoot)`);
+        callTokens[a] += (Number.isFinite(out.inputTokens) ? out.inputTokens : 0) + (Number.isFinite(out.outputTokens) ? out.outputTokens : 0);
+        observe();
         return { seq: ev?.seq ?? null };
       }
       throw new Error('unknown publication type');
@@ -305,6 +318,16 @@ export async function runSession(opts) {
   return { id, events, report: analyze(events), worktrees: wt };
 }
 
+// A cumulative usage snapshot an adapter published as a note (Codex: thread/tokenUsage total; Claude: per-session sum).
+export function usageTotalOf(out) {
+  const u = out?.kind === 'note' ? out.data?.usage : null;
+  if (!u || typeof u !== 'object') return null;
+  if (Number.isFinite(u.totalTokens) && u.totalTokens >= 0) return u.totalTokens;
+  const n = k => (Number.isFinite(u[k]) && u[k] >= 0 ? u[k] : 0), t = n('inputTokens') + n('outputTokens');
+  return t > 0 ? t : null;
+}
+export const usageKeyOf = out => [out.data?.threadId, out.data?.turnId, out.data?.sessionId].map(x => String(x ?? '')).join('/');
+
 // Evidence, computed only from the stream. A live span runs from the agent's start to the FIRST of: its done, its trusted
 // exit/error record, or the session stop (P0-08). An event "belongs" to an agent if the agent wrote it or it is the
 // coordinator's record of that agent's commit. References are evidence pointers, not proof of substance: `pass` states
@@ -333,11 +356,25 @@ export function analyze(events) {
     callOverlapMs += Math.max(0, Math.min(Date.parse(x.endedAt), Date.parse(y.endedAt)) - Math.max(Date.parse(x.startedAt), Date.parse(y.startedAt)));
   const tested = events.filter(e => e.kind === 'tested');
   const lastTest = tested.at(-1);
+  // D5 (live 4 Nov, Codex regression): the shared tests count only for the NEWEST integration. A merge with no test
+  // receipt (the session stopped first) is reported as untested, never certified by an older pass.
+  const lastMerge = events.filter(e => e.kind === 'merged').at(-1);
+  const finalIntegration = lastMerge ? { integration: lastMerge.data?.integration ?? null, seq: lastMerge.seq,
+    tested: tested.some(t => t.seq > lastMerge.seq && t.data?.integration === lastMerge.data?.integration && t.data?.ok !== null),
+    ok: tested.filter(t => t.seq > lastMerge.seq && t.data?.integration === lastMerge.data?.integration).at(-1)?.data?.ok ?? null } : null;
+  const usage = {};
+  for (const a of AGENTS) {
+    const snaps = new Map();
+    for (const e of events.filter(x => x.actor === a)) { const t = usageTotalOf(e); if (t !== null) { const k = usageKeyOf(e); snaps.set(k, Math.max(snaps.get(k) ?? 0, t)); } }
+    const fromCalls = events.filter(x => x.actor === a && x.kind === 'call').reduce((n, x) => n + (Number.isFinite(x.data?.inputTokens) ? x.data.inputTokens : 0) + (Number.isFinite(x.data?.outputTokens) ? x.data.outputTokens : 0), 0);
+    const fromSnaps = [...snaps.values()].reduce((n, v) => n + v, 0);
+    usage[a] = fromSnaps || fromCalls ? Math.max(fromSnaps, fromCalls) : null;   // null = not reported (unknown), never 0
+  }
   const dir = { claudeToCodex: midSession.some(e => e.actor === 'claude'), codexToClaude: midSession.some(e => e.actor === 'codex') };
   const criteria = { overlappingCalls: callOverlapMs > 0, reactionEachDirection: dir.claudeToCodex && dir.codexToClaude, changedByOther: changedBy.length > 0,
-    sharedTestsPass: lastTest?.data?.ok === true, noStop: !events.some(e => e.kind === 'stop'), noWorkerFailure: !events.some(e => e.kind === 'exit' && (e.data?.code !== 0 || e.data?.signal)) };
+    sharedTestsPass: lastTest?.data?.ok === true && (!lastMerge || (finalIntegration.tested && finalIntegration.ok === true && lastTest.data?.integration === lastMerge.data?.integration)), noStop: !events.some(e => e.kind === 'stop'), noWorkerFailure: !events.some(e => e.kind === 'exit' && (e.data?.code !== 0 || e.data?.signal)) };
   return { span, overlapMs, callOverlapMs, crossReactions: crossRefs.map(e => e.seq), midSessionReactions: midSession.map(e => e.seq), commitsCausedByOther: changedBy.map(e => e.seq),
-    integrationTests: tested.map(e => ({ seq: e.seq, agent: e.data.agent, ok: e.data.ok })), calls: ledger, grants: events.filter(e => e.kind === 'grant').length,
+    integrationTests: tested.map(e => ({ seq: e.seq, agent: e.data.agent, ok: e.data.ok })), finalIntegration, usage, calls: ledger, grants: events.filter(e => e.kind === 'grant').length,
     stopped: events.some(e => e.kind === 'stop'), events: events.length,
     pass: { mechanical: Object.values(criteria).every(Boolean), criteria, requiresManualReview: 'references prove linkage, not substance: review the linked events, diffs and tests by hand' } };
 }

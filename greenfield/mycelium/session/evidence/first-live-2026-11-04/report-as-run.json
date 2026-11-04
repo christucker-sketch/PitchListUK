@@ -1,0 +1,234 @@
+{
+ "span": {
+  "claude": [
+   1793808594362,
+   1793808710585
+  ],
+  "codex": [
+   1793808594388,
+   1793808710578
+  ]
+ },
+ "overlapMs": 116190,
+ "callOverlapMs": 0,
+ "crossReactions": [
+  55,
+  61,
+  72,
+  76
+ ],
+ "midSessionReactions": [
+  55,
+  61,
+  72,
+  76
+ ],
+ "commitsCausedByOther": [
+  76
+ ],
+ "integrationTests": [
+  {
+   "seq": 15,
+   "agent": "codex",
+   "ok": false
+  },
+  {
+   "seq": 48,
+   "agent": "codex",
+   "ok": false
+  }
+ ],
+ "calls": [
+  {
+   "agent": "codex",
+   "permit": "codex-grant-2",
+   "startedAt": "2026-11-04T16:10:29.252Z",
+   "endedAt": "2026-11-04T16:10:29.256Z",
+   "ms": 4,
+   "model": null,
+   "inputTokens": null,
+   "outputTokens": null,
+   "costUsd": null,
+   "interval": "steer-ack",
+   "outcome": "accepted",
+   "method": "turn/steer",
+   "threadId": "01a1a752-f67b-71b2-8ebf-a850fd14de3f",
+   "turnId": "01a1a752-f97d-7b40-afe7-d22eab5c6b74"
+  },
+  {
+   "agent": "codex",
+   "permit": "codex-grant-3",
+   "startedAt": "2026-11-04T16:10:39.040Z",
+   "endedAt": "2026-11-04T16:10:39.043Z",
+   "ms": 3,
+   "model": null,
+   "inputTokens": null,
+   "outputTokens": null,
+   "costUsd": null,
+   "interval": "steer-ack",
+   "outcome": "accepted",
+   "method": "turn/steer",
+   "threadId": "01a1a752-f67b-71b2-8ebf-a850fd14de3f",
+   "turnId": "01a1a752-f97d-7b40-afe7-d22eab5c6b74"
+  },
+  {
+   "agent": "claude",
+   "permit": "claude-grant-2",
+   "startedAt": "2026-11-04T16:10:28.712Z",
+   "endedAt": "2026-11-04T16:10:39.095Z",
+   "ms": 10383,
+   "model": null,
+   "inputTokens": null,
+   "outputTokens": null,
+   "costUsd": null,
+   "interval": "stdin-ack",
+   "outcome": null,
+   "method": null,
+   "threadId": null,
+   "turnId": null
+  },
+  {
+   "agent": "claude",
+   "permit": "claude-grant-3",
+   "startedAt": "2026-11-04T16:10:28.793Z",
+   "endedAt": "2026-11-04T16:10:39.097Z",
+   "ms": 10304,
+   "model": null,
+   "inputTokens": null,
+   "outputTokens": null,
+   "costUsd": null,
+   "interval": "stdin-ack",
+   "outcome": null,
+   "method": null,
+   "threadId": null,
+   "turnId": null
+  },
+  {
+   "agent": "claude",
+   "permit": "claude-grant-4",
+   "startedAt": "2026-11-04T16:10:29.242Z",
+   "endedAt": "2026-11-04T16:10:39.100Z",
+   "ms": 9858,
+   "model": null,
+   "inputTokens": null,
+   "outputTokens": null,
+   "costUsd": null,
+   "interval": "stdin-ack",
+   "outcome": null,
+   "method": null,
+   "threadId": null,
+   "turnId": null
+  },
+  {
+   "agent": "claude",
+   "permit": "claude-grant-5",
+   "startedAt": "2026-11-04T16:10:36.411Z",
+   "endedAt": "2026-11-04T16:10:39.102Z",
+   "ms": 2691,
+   "model": null,
+   "inputTokens": null,
+   "outputTokens": null,
+   "costUsd": null,
+   "interval": "stdin-ack",
+   "outcome": null,
+   "method": null,
+   "threadId": null,
+   "turnId": null
+  },
+  {
+   "agent": "claude",
+   "permit": "claude-grant-6",
+   "startedAt": "2026-11-04T16:10:39.038Z",
+   "endedAt": "2026-11-04T16:10:43.766Z",
+   "ms": 4728,
+   "model": null,
+   "inputTokens": null,
+   "outputTokens": null,
+   "costUsd": null,
+   "interval": "stdin-ack",
+   "outcome": null,
+   "method": null,
+   "threadId": null,
+   "turnId": null
+  },
+  {
+   "agent": "codex",
+   "permit": "codex-grant-4",
+   "startedAt": "2026-11-04T16:10:54.239Z",
+   "endedAt": "2026-11-04T16:10:54.242Z",
+   "ms": 3,
+   "model": null,
+   "inputTokens": null,
+   "outputTokens": null,
+   "costUsd": null,
+   "interval": "steer-ack",
+   "outcome": "accepted",
+   "method": "turn/steer",
+   "threadId": "01a1a752-f67b-71b2-8ebf-a850fd14de3f",
+   "turnId": "01a1a752-f97d-7b40-afe7-d22eab5c6b74"
+  },
+  {
+   "agent": "codex",
+   "permit": "codex-grant-5",
+   "startedAt": "2026-11-04T16:10:59.199Z",
+   "endedAt": "2026-11-04T16:10:59.204Z",
+   "ms": 5,
+   "model": null,
+   "inputTokens": null,
+   "outputTokens": null,
+   "costUsd": null,
+   "interval": "steer-ack",
+   "outcome": "accepted",
+   "method": "turn/steer",
+   "threadId": "01a1a752-f67b-71b2-8ebf-a850fd14de3f",
+   "turnId": "01a1a752-f97d-7b40-afe7-d22eab5c6b74"
+  },
+  {
+   "agent": "codex",
+   "permit": "codex-grant-6",
+   "startedAt": "2026-11-04T16:11:22.473Z",
+   "endedAt": "2026-11-04T16:11:22.483Z",
+   "ms": 10,
+   "model": null,
+   "inputTokens": null,
+   "outputTokens": null,
+   "costUsd": null,
+   "interval": "steer-ack",
+   "outcome": "accepted",
+   "method": "turn/steer",
+   "threadId": "01a1a752-f67b-71b2-8ebf-a850fd14de3f",
+   "turnId": "01a1a752-f97d-7b40-afe7-d22eab5c6b74"
+  },
+  {
+   "agent": "codex",
+   "permit": "codex-grant-1",
+   "startedAt": "2026-11-04T16:09:55.317Z",
+   "endedAt": "2026-11-04T16:11:50.468Z",
+   "ms": 115151,
+   "model": null,
+   "inputTokens": null,
+   "outputTokens": null,
+   "costUsd": null,
+   "interval": "unknown",
+   "outcome": "interrupted-or-unknown",
+   "method": "turn/start",
+   "threadId": "01a1a752-f67b-71b2-8ebf-a850fd14de3f",
+   "turnId": "01a1a752-f97d-7b40-afe7-d22eab5c6b74"
+  }
+ ],
+ "grants": 12,
+ "stopped": true,
+ "events": 84,
+ "pass": {
+  "mechanical": false,
+  "criteria": {
+   "overlappingCalls": false,
+   "reactionEachDirection": true,
+   "changedByOther": true,
+   "sharedTestsPass": false,
+   "noStop": false,
+   "noWorkerFailure": false
+  },
+  "requiresManualReview": "references prove linkage, not substance: review the linked events, diffs and tests by hand"
+ }
+}

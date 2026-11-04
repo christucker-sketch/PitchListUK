@@ -1,0 +1,35 @@
+post-hoc, offline, Claude cloud workspace, unshare --net as nobody, node v22.23.4, 2026-11-04T16:51:17Z; NOT in-session evidence
+== checks/frontier.test.mjs
+ok 1 - resolve relative link and preserve meaningful query
+ok 2 - single quotes, Unicode and nested label
+ok 3 - dedupe after fragment removal
+ok 4 - visited links do not reenter frontier
+ok 5 - reject non-web, credentialed and fragment-only links
+ok 6 - distinct queries remain distinct exploratory branches
+# tests 6
+# pass 6
+# fail 0
+== artifact/frontier.test.mjs
+ok 1 - resolves multilingual links, preserves queries, strips fragments, and deduplicates
+ok 2 - rejects fragment-only, credentialed, and non-web destinations
+ok 3 - normalizes visited URL fragments while retaining query distinctions
+ok 4 - handles quoted greater-than characters and HTML entities without losing Unicode
+ok 5 - does not treat comments or raw script/style text as links
+ok 6 - accepts uppercase tags, single quotes, unquoted hrefs, and protocol-relative HTTPS
+ok 7 - distinguishes href from data attributes and respects first duplicate attribute
+# tests 7
+# pass 7
+# fail 0
+== artifact/frontier.extra.test.mjs
+ok 1 - pages.json fixtures
+ok 2 - href text inside another attribute value is not the href
+ok 3 - textarea and title contents are raw text, not anchors
+ok 4 - unclosed anchor does not swallow the following anchor
+ok 5 - the page itself counts as visited
+ok 6 - obfuscated schemes are rejected
+ok 7 - seen list is normalized (host case, Unicode path, fragment)
+ok 8 - unknown entities are left as-is; whitespace and nbsp collapse
+ok 9 - hostile or malformed input does not throw
+# tests 9
+# pass 9
+# fail 0

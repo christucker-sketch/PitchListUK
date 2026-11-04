@@ -81,3 +81,48 @@ This is **not** in-session evidence and does not change the mechanical FAIL. It 
 - Chris's approval covered one attempt, and it has been used.
 - Any second attempt, after the fixes and reviews, needs Chris's new decision.
 - Nothing was rerun.
+
+## Claude's repairs: D2, D4, D5 and Claude's half of D3 (4 Nov, offline)
+
+**D2 (`adapters/claude-stream.mjs`):** each bridge connection has an error handler, so a client that vanishes before the reply (EPIPE or ECONNRESET) no longer crashes the worker.
+
+**D3, Claude half (`adapters/claude-stream.mjs`):**
+- A turn still open when the session ends is ledgered under its grant, with its real start and the observed end, and `outcome:"interrupted"`.
+- `interval` is `active-turn` only if the CLI confirmed it took the message in. For the first prompt, that is the `--replay-user-messages` echo of its uuid; for a stdin delivery, it is consumption. Otherwise the interval is `unknown`.
+- Tokens are null; money is null.
+- This is published before the CLI is killed. The coordinator already accepts call records after a stop.
+
+**D4 (`coordinator.mjs` plus the Claude adapter):**
+- Observed usage per agent = max(sum of the latest cumulative usage snapshot per thread/turn/session key, sum of call-record tokens). Snapshots are monotonic per key, so no turn is counted twice. Cached input is already inside each adapter's total.
+- The Claude adapter now reports cumulative usage while a turn runs: assistant-message usage is deduplicated per message id across repeated content blocks, as input + cache creation + cache read + output, at most once a second.
+- The report gains `usage:{claude,codex}`, with null meaning unreported (unknown), never 0.
+- **Policy is unchanged:** the 20,000 observed-token stop stays, as Codex asks.
+
+**D5 (`coordinator.mjs` analyzer):**
+- `sharedTestsPass` requires a passing test receipt for the **newest merged integration**. `NOT RUN` doesn't count.
+- The report gains `finalIntegration:{integration, seq, tested, ok}`.
+- No test runs after stop, and nothing is written to the stream after stop. An untested final merge is reported as untested, not certified.
+- This satisfies Codex's `codex-final-integration-regression.test.mjs`.
+
+**Tests:**
+- New `test/live-repairs-claude.test.mjs`: **5/5** after the fix, and **5/5 fail** against the pre-fix `claude-stream.mjs`/`coordinator.mjs`.
+- Stand-in probes added to `fake-claude.mjs`: ECHO_FIRST, HANG, USAGE, DROP.
+- **Full suite 89/89**, including Codex's new regressions. Pins regenerated (37).
+
+**Re-analysis of the live stream with the repaired analyzer:**
+- `usage:{claude:null, codex:230937}`.
+- `finalIntegration:{integration:17b3a2c21539b9a3cb1a3716cff42aa3dafaf315, tested:false}`.
+- The criteria are unchanged. That's expected: the run is not re-scored as a pass.
+
+**Evidence for Codex's independent review:** published sanitised under `evidence/first-live-2026-11-04/`:
+- `events-sanitized.jsonl`: all 84 events, with seq, tMs, actor, kind, refs and body, plus an allowlist of data fields;
+- `final-integration/` (artifact and checks at 17b3a2c2, SHA256SUMS);
+- `posthoc-tests.log`;
+- `watchdog.json`;
+- `report-as-run.json`.
+
+The worker logs are excluded; their failing lines are quoted above. A secrets scan found nothing.
+
+**Open policy question (Chris, with Codex):**
+- At 20,000 observed tokens, a repeat run would very likely stop within seconds: Codex reported 8,327 tokens 6 s into its first turn.
+- Keep 20k (expect an early stop), or set a reviewed explicit budget. That's a new decision, not a fix.
