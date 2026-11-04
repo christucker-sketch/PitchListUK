@@ -7,7 +7,8 @@
 //   backend 'systemd' (fpd-prod): systemd-run with DynamicUser=yes (a fresh transient UID per run: no account to create,
 //     nothing shared with other services), PrivateNetwork, IPAddressDeny=any, ProtectSystem=strict, ProtectHome,
 //     PrivateTmp, NoNewPrivileges, MemoryMax=512M, TasksMax=64, RuntimeMaxSec, CPUQuota=200%. The copy is made writable
-//     to that UID (mode a+rwX inside a 0711 box with a random name). Not exercised offline (no systemd here).
+//     to that UID (mode a+rwX inside a 0711 box with a random name). Under watchdog.mjs the unit joins the session slice,
+//     so the watchdog's slice kill also ends a test still running. Not exercised offline (no systemd here).
 import { spawn, execFileSync } from 'node:child_process';
 import { mkdirSync, mkdtempSync, chmodSync, rmSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
@@ -28,7 +29,8 @@ export function sandboxAvailable(backend = 'unshare') {
 }
 
 // cmd: argv array run in the copy's root. Resolves { ok, code, tail, ms } or { ok: false, refused } without running.
-export function runSandboxed(cmd, { repoDir, commit, backend = 'unshare', timeoutMs = 60000, signal } = {}) {
+export function runSandboxed(cmd, { repoDir, commit, backend = 'unshare', timeoutMs = 60000, signal, slice } = {}) {
+  if (slice !== undefined && (backend !== 'systemd' || !/^mycp_[a-z0-9_]{1,41}\.slice$/.test(slice))) return Promise.resolve({ ok: false, refused: 'slice needs the systemd backend and a mycp_<id>.slice name: tests not run' });
   if (!sandboxAvailable(backend)) return Promise.resolve({ ok: false, refused: `no working ${backend} sandbox: tests not run (fail closed)` });
   mkdirSync(SANDBOX_ROOT, { recursive: true, mode: 0o711 }); chmodSync(SANDBOX_ROOT, 0o711);
   const box = mkdtempSync(join(SANDBOX_ROOT, 't-')), work = join(box, 'work');
@@ -42,7 +44,7 @@ export function runSandboxed(cmd, { repoDir, commit, backend = 'unshare', timeou
     let out = '';
     const argv = backend === 'unshare'
       ? ['unshare', '--mount', '--net', '--pid', '--fork', '--kill-child', '--', 'sh', '-c', INNER, 'sbx', ...cmd]
-      : ['systemd-run', '--quiet', '--wait', '--pipe', '--collect', '--service-type=exec', '-p', 'DynamicUser=yes', '-p', 'PrivateNetwork=yes',
+      : ['systemd-run', '--quiet', '--wait', '--pipe', '--collect', '--service-type=exec', ...(slice ? [`--slice=${slice}`] : []), '-p', 'DynamicUser=yes', '-p', 'PrivateNetwork=yes',
          '-p', 'IPAddressDeny=any', '-p', 'ProtectSystem=strict', '-p', 'ProtectHome=yes', '-p', 'PrivateTmp=yes', '-p', 'NoNewPrivileges=yes', '-p', `ReadWritePaths=${work}`,
          '-p', 'MemoryMax=512M', '-p', 'TasksMax=64', '-p', `RuntimeMaxSec=${Math.ceil(timeoutMs / 1000)}`, '-p', 'CPUQuota=200%', '-p', `WorkingDirectory=${work}`,
          '-p', 'Environment=HOME=/nonexistent', '-p', `Environment=PATH=${path}`, '--', ...cmd];

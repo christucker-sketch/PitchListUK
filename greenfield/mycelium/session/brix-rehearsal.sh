@@ -5,6 +5,7 @@
 #   - shared tests in the systemd sandbox (DynamicUser, no network, read-only system)
 #   - STOP: a second run is stopped mid-session; afterwards no scope and no tagged process may remain
 #   - the existing no-model sign-in/billing preflight (myc-agent --preflight) still passes for both CLIs
+#   - the independent OS watchdog (watchdog.mjs): a PID1 timer kills the session slice while both agents are still working
 # No model call, no login, no network use by the session, no install, no service/timer, no Neon, no Git push.
 # Root only (it launches as root and drops agents to myc).   sudo bash brix-rehearsal.sh <commit>
 set -euo pipefail
@@ -46,6 +47,28 @@ manifest rehearsal-b ''
 "$NODE" "$W/session/run.mjs" "$W/rehearsal-b.json" "$W/b" > "$W/b.log" 2>&1 || true
 grep -q 'session stopping: STOP file' "$W/b.log" && echo "   stopped by the STOP file" || { echo "   STOP not observed (see $W/b.log)"; exit 1; }
 sleep 1; leftovers rehearsal-b || { echo "   LEFTOVERS after STOP"; exit 1; }
+echo "== 4. independent OS watchdog: the PID1 deadline (6 s here) kills both agents mid-call; the broker reports; nothing remains"
+cat > "$W/rehearsal-w.json" <<EOF
+{ "id": "rehearsal-w", "fixture": "links-proof", "testCmd": null, "sandbox": "systemd",
+  "agents": { "claude": { "adapter": "fake", "script": [ { "call": 45000 }, { "done": "too late" } ] },
+              "codex":  { "adapter": "fake", "script": [ { "call": 45000 }, { "done": "too late" } ] } },
+  "launcher": { "mode": "systemd-scope", "user": "myc", "path": "/usr/local/bin:/usr/bin:/bin", "memoryMax": "1G", "tasksMax": 128 },
+  "limits": { "maxWallMs": 60000, "maxCallsPerAgent": 6, "graceMs": 2000 } }
+EOF
+( sleep 3; { systemctl show -p Slice --value myc-session-rehearsal-w-claude.scope myc-session-rehearsal-w-codex.scope | tr '\n' ' '; echo;
+    [[ -e /sys/fs/cgroup/mycp_rehearsal_w.slice/cgroup.kill ]] && echo "cgroup.kill present" || echo "cgroup.kill MISSING";
+    systemctl show -p RuntimeMaxUSec --value myc-session-rehearsal-w-broker.service; } > "$W/w-probe.txt" 2>&1 ) &
+t0=$SECONDS
+"$NODE" "$W/session/watchdog.mjs" "$W/rehearsal-w.json" "$W/w" --deadline-s 6 --broker-max-s 20 > "$W/w.log" 2>&1 || true
+wait; dt=$((SECONDS - t0))
+sed 's/^/   probe: /' "$W/w-probe.txt"; tail -2 "$W/w.log" | sed 's/^/   /'
+"$NODE" -e 'const r=JSON.parse(require("fs").readFileSync(process.argv[1]));if(!(r.fired===true&&r.clean===true))process.exit(1)' "$W/w/watchdog.json" \
+  || { echo "   watchdog did not fire cleanly (see $W/w.log, $W/w/watchdog.json)"; exit 1; }
+[[ $(head -1 "$W/w-probe.txt") == "mycp_rehearsal_w.slice mycp_rehearsal_w.slice " ]] || { echo "   worker scopes were not in the session slice"; exit 1; }
+grep -q 'worker exited (code null, SIGKILL)' "$W/w/broker.log" || { echo "   the agents were not killed by the deadline (see $W/w/broker.log)"; exit 1; }
+(( dt < 30 )) || { echo "   took ${dt}s: the 6 s deadline did not hold"; exit 1; }
+echo "   deadline fired, both agents killed mid-call, done in ${dt}s"
+leftovers rehearsal-w || { echo "   LEFTOVERS after the watchdog"; exit 1; }
 echo
-echo "REHEARSAL OK at $C: systemd-scope launcher (myc), systemd sandbox, STOP cleanup, sign-in preflight. No model was called."
-echo "Evidence: $W (a.log, b.log, a/report.json, source.sha256)"
+echo "REHEARSAL OK at $C: systemd-scope launcher (myc), systemd sandbox, STOP cleanup, PID1 watchdog, sign-in preflight. No model was called."
+echo "Evidence: $W (a.log, b.log, a/report.json, w.log, w/watchdog.json, w/broker.log, source.sha256)"

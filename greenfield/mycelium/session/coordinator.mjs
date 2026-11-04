@@ -73,13 +73,18 @@ export function sweepSession(tag) {
 // How a worker is started. 'local': a forked child (offline tests). 'runuser': drop to an existing account (e.g. myc)
 // with a clean environment; the IPC channel is passed through explicitly. 'systemd-scope': the same, inside a transient
 // systemd scope with MemoryMax/TasksMax, so STOP kills the whole cgroup (fpd-prod; not exercised offline).
-export function workerCommand({ mode = 'local', user, unit, memoryMax = '2G', tasksMax = 256 }, env, workerPath) {
+// Under the independent OS watchdog (watchdog.mjs) every worker scope and every test unit of a session is placed in ONE
+// session slice, so a single PID1-owned kill of that slice ends all of them even if this coordinator hangs or dies.
+export const SLICE_RE = /^mycp_[a-z0-9_]{1,41}\.slice$/;
+export const sessionSlice = id => `mycp_${String(id).replace(/-/g, '_')}.slice`;
+export function workerCommand({ mode = 'local', user, unit, memoryMax = '2G', tasksMax = 256, slice }, env, workerPath) {
+  if (slice !== undefined && (mode !== 'systemd-scope' || !SLICE_RE.test(slice))) throw new Error('launcher.slice needs systemd-scope and a mycp_<id>.slice name');
   if (mode === 'local') return null;
   if (!/^[a-z_][a-z0-9_-]{0,31}$/.test(user ?? '')) throw new Error('launcher.user must name an existing account');
   const pairs = Object.entries({ ...env, NODE_CHANNEL_FD: '3', NODE_CHANNEL_SERIALIZATION_MODE: 'json' }).map(([k, v]) => `${k}=${v}`);
   const inner = ['runuser', '-u', user, '--', 'env', '-i', ...pairs, process.execPath, workerPath];
   if (mode === 'runuser') return inner;
-  if (mode === 'systemd-scope') return ['systemd-run', '--scope', '--quiet', '--collect', '--unit', unit, '-p', `MemoryMax=${memoryMax}`, '-p', `TasksMax=${tasksMax}`, '--', ...inner];
+  if (mode === 'systemd-scope') return ['systemd-run', '--scope', '--quiet', '--collect', '--unit', unit, ...(slice ? ['--slice', slice] : []), '-p', `MemoryMax=${memoryMax}`, '-p', `TasksMax=${tasksMax}`, '--', ...inner];
   throw new Error(`unknown launcher mode ${mode}`);
 }
 
@@ -87,6 +92,7 @@ export async function runSession(opts) {
   const { dir, repo, baseRef = 'HEAD', id = 's' + Date.now().toString(36), agents, allow = ['artifact/'], testCmd = null, sandbox = 'unshare', launcher = { mode: 'local' },
     limits: { maxWallMs = 60000, maxCallsPerAgent = 20, maxEvents = 2000, maxBytes = 4_000_000, maxFileBytes = 64000, maxFiles = 8, pullBytes = 24000, readBytes = 24000, graceMs = 2000, testMs = 60000, requireBase = true, maxSubmissionBytes = 32000, maxObservedTokens = Infinity } = {} } = opts;
   if (!/^[a-z0-9][a-z0-9-]{0,40}$/.test(id)) throw new Error('session id must be a short slug');
+  if (launcher.slice !== undefined && launcher.slice !== sessionSlice(id)) throw new Error('launcher.slice must be this session\'s own slice');
   for (const a of AGENTS) {
     if (!/^[a-z0-9-]{1,40}$/.test(agents?.[a]?.adapter ?? '')) throw new Error(`agents.${a}.adapter must name a module in adapters/`);
     for (const k of Object.keys(agents[a].env ?? {})) if (!ENV_OK.test(k)) throw new Error(`agents.${a}.env may not set ${k}`);
@@ -185,7 +191,7 @@ export async function runSession(opts) {
       return append('coordinator', 'merged', `integration ${isha.slice(0, 12)} now includes ${agent} ${commit.data.sha.slice(0, 12)}`, { refs: [commit.seq], data: { agent, sha: commit.data.sha, integration: isha } });
     });
     if (merged?.kind === 'merged' && testCmd && !stopping) {
-      const t = await runSandboxed(testCmd, { repoDir: wt.integration, commit: merged.data.integration, backend: sandbox, timeoutMs: testMs, signal: testAbort.signal });
+      const t = await runSandboxed(testCmd, { repoDir: wt.integration, commit: merged.data.integration, backend: sandbox, timeoutMs: testMs, signal: testAbort.signal, slice: launcher.slice });
       if (!stopping) append('coordinator', 'tested', `shared tests on integration ${merged.data.integration.slice(0, 12)}: ${t.refused ? 'NOT RUN (' + t.refused + ')' : t.ok ? 'PASS' : 'FAIL'}`, { refs: [merged.seq], data: { agent, integration: merged.data.integration, ok: t.refused ? null : t.ok, refused: t.refused ?? null, ms: t.ms ?? null, tail: t.tail ?? '' } });
     }
     return { commit: commit.seq, merged: merged?.kind === 'merged' ? merged.seq : null, conflict: merged?.kind === 'conflict' ? merged.seq : null };
