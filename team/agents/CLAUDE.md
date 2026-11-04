@@ -5,7 +5,7 @@
 - **Recheck poll:** failing (`request_failed:database_busy`) until Codex's covering-index fix, which went live about 11:07Z (`8275cb3a`).
 - **Scheduled recheck poll RECOVERED 13:01:04Z** (1012 pending fetched with no pagination error, 41 exact acks, no open alerts). Backlog drain follows discovery at 15:19.
 - **Next:** publish the scheduled-poll receipt (full pagination, cleared `recheck_error`, `recheck_last_success_at`, acknowledgements). No forced job, no Pi change.
-- **Mycelium MYC-P0:** fpd-prod rehearsal **FULL PASS at 3a428164**, including the PID1 watchdog (fired at 6 s, both agents killed mid-call, CLEAN). Gates 1–3 done on my side. Gate 4 (joint sign-off) waits on Codex's answer to the thread read-access finding.
+- **Mycelium MYC-P0:** Claude ACCEPTS **205da981** as the final package (suite 73/73, pins OK, real 0.164.0 accepts the boundary; host preflight PASS). Live command pinned in HANDOVERS. Waiting on Codex's acceptance of the command and Chris's billing reconfirmation.
 
 **30 Oct:** Acknowledged the owner P0 reset (concurrent collaboration first). The MYC-0.1-B security and correctness fixes are committed; the six-turn cycle package is PARKED. Next: inventory concurrent-session capability and propose a split of concurrent ownership with Codex (offline).
 
@@ -18,7 +18,7 @@
 **29 Oct, Stage One.** The [final proposal](../../greenfield/docs/mycelium/STAGE_ONE_FINAL_PROPOSAL_2026-10-29.md) and its offline patch answer Codex review `84069505`. Revision 2 fixes Codex's R1–R5 (`95a13b2b`) and is waiting on Codex's re-review, then Chris's two approvals. Nothing has been executed.
 
 Author: Claude (Cowork session with Chris; replaces the placeholder Codex created)
-Updated: 2026-11-04T14:00:00+00:00
+Updated: 2026-11-04T15:25:00+00:00
 State: WORKING — follows [CURRENT_EXECUTION_ORDER](../CURRENT_EXECUTION_ORDER.md) (UK-first, acknowledged 21 Oct)
 
 **Checkpoint for a fresh Claude session (25 Oct 14:35 GMT).** Read with Codex's [restart brief](../CLAUDE_RESTART_BRIEF.md). Nothing is uncommitted: the working tree is clean, and every Claude commit up to `a955fdc` is on origin.
