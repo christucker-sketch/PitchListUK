@@ -1,0 +1,71 @@
+{
+  "schema": "findpitches-v3-recheck-covering-index-rollout-v1",
+  "status": "prepared_not_approved_or_deployed",
+  "database": {
+    "name": "findpitches-v3-shadow",
+    "id": "75ccfd1a-f136-4598-8cfb-9a4489d174b9"
+  },
+  "worker": {
+    "name": "findpitches-v3-ingest-shadow",
+    "expectedActiveVersion": "030b2e68-6e5e-4d3e-89ba-8c7d249b4cf6"
+  },
+  "migration": {
+    "file": "operations/findpitches-v3/migrations/0028_structured_recheck_lookup.sql",
+    "sha256": "57850d0b399650d9a14a89b2def7af85d01d1caaebf13cbfc8e67315470bef7c",
+    "index": "structured_recheck_lookup",
+    "applied": false
+  },
+  "sourcePatch": {
+    "beforeSha256": "4788e5ffe4cbc0db5fe03c6f43db67180c8643064b429eebdf0fcbbb34f52869",
+    "afterSha256": "4ccd768128fd7e4613a17165e87da386efd449434835e55ebe9101d3d8bf160a",
+    "replacementCount": 2,
+    "sqlSites": [
+      {
+        "beforeSqlSha256": "7273b104be8792bc7b8d1e59afea20b3d6d38035690a47e95cf2fd6b2dc7acb1",
+        "afterSqlSha256": "313076961a1f6e1d242241a98bd8ef5ed72a078ac5bb08e6f3abaf6ece4d7335"
+      },
+      {
+        "beforeSqlSha256": "c2e11656ea53dad41bb9b1358fd8ec671f4f9920e8b05a6a255d4ae2443a58aa",
+        "afterSqlSha256": "87ac1d1096d412f1a877b23fe83d30e13432a06e95580f4cd66cb688939bda32"
+      }
+    ],
+    "unchangedRegionsSha256": "35204e53df560d61898eb9ae2aa861603068028a4222275a5d38d35d91b8ce75",
+    "requiresIndex": "structured_recheck_lookup",
+    "migrationsApplied": 0,
+    "uploaded": false,
+    "deployed": false,
+    "moduleName": "worker.js",
+    "capturedVersion": "030b2e68-6e5e-4d3e-89ba-8c7d249b4cf6"
+  },
+  "dryRun": {
+    "wrangler": "4.127.1",
+    "uploaded": false,
+    "noBundle": true,
+    "findAdditionalModules": false,
+    "additionalModules": 0,
+    "artifactBytes": 644236,
+    "artifactSha256": "4ccd768128fd7e4613a17165e87da386efd449434835e55ebe9101d3d8bf160a",
+    "outputByteIdentical": true
+  },
+  "validation": {
+    "queryTests": 7,
+    "patchTests": 4,
+    "reviewedSourceTests": 4,
+    "existingReleaseTests": 2,
+    "passed": 17,
+    "failed": 0,
+    "liveLatency": null
+  },
+  "gate": {
+    "oneIndexBuild": true,
+    "noAutomaticRetry": true,
+    "canaryBatches": 1,
+    "canarySelects": 2,
+    "pageLimit": 101,
+    "maxCombinedReportedSqlMs": 1000,
+    "probePagesMax": 5,
+    "probeSpacingSecondsMin": 10,
+    "maxDatabaseBytesBeforeBuild": 9000000000
+  },
+  "mutationsPerformed": 0
+}

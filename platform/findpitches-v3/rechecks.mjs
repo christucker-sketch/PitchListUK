@@ -1,4 +1,4 @@
-import {PRODUCER_RECHECK_PAGE_SQL} from './recheck-query.mjs';
+import {PRODUCER_RECHECK_PAGE_SQL,PRODUCER_RECHECK_COUNT_SQL} from './recheck-query.mjs';
 import {sql} from './store.mjs';
 import {hash,stableJson} from './contract.mjs';
 const MEMBERSHIP="r.producer_name='independent-structured' AND r.environment='shadow' AND r.validation_status='accepted'";
@@ -17,7 +17,7 @@ export async function producerRechecks(db,{cursor='',limit=100,now=new Date().to
   const [at,id,pid]=decodeCursor(cursor);
   const rows=(await sql(db,PRODUCER_RECHECK_PAGE_SQL,at,at,id,id,pid,limit+1).all()).results;
   const page=rows.slice(0,limit),last=page.at(-1);
-  const count=await sql(db,`SELECT COUNT(*) AS n FROM recheck_requests q WHERE EXISTS(SELECT 1 FROM entity_records er JOIN producer_records r ON r.id=er.record_id WHERE er.entity_id=q.entity_id AND ${MEMBERSHIP})`).first();
+  const count=await sql(db,PRODUCER_RECHECK_COUNT_SQL).first();
   return {schema:'findpitches-v3-producer-rechecks-v2',requests:page,pending_entities:count.n,
     next_cursor:rows.length>limit?cursorValue([last.requested_at,last.entity_id,last.producer_record_id]):null,
     as_of:now,acknowledgement_requires:'Exact request timestamp and accepted linked evidence for the named producer ID checked after the request; no future checks.'};
@@ -90,3 +90,4 @@ export async function resolveObsoleteProducerRequest(db,input,{now=new Date().to
   ]);
   return {resolved:Number(result[1].meta?.changes)===1,resolution_id:id,acknowledged:false,reason:Number(result[1].meta?.changes)===1?'obsolete_past_edition_reviewed':'exact_review_or_past_edition_guard_failed'};
 }
+

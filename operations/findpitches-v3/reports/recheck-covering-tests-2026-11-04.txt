@@ -1,0 +1,68 @@
+Offline verification only; no D1 migration, API query, upload or deployment.
+
+covering-index-tests.log
+✔ page results preserve exact membership, linked MAX clocks, markets and nulls (41.170485ms)
+✔ identical keyset pages, ties and after-last-page results; SELECT changes no data (45.55197ms)
+✔ pending-first lookup uses the new covering index without receipt-table column reads or JSON parsing (35.706361ms)
+✔ missing migration fails closed rather than silently reverting to the overloaded query (33.517116ms)
+✔ actual producerRechecks entrypoint retains pagination, pending-entity count and cursor validation (38.911815ms)
+✔ growing linked receipt history does not change page membership or latest-clock semantics (134.618312ms)
+✔ replaying the same index migration leaves receipt data unchanged (35.716446ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 371.47364
+
+query-patch-tests.log
+✔ multipart extraction preserves exact Worker source bytes including the trailing newline (1.478656ms)
+✔ only the two SQL literals change; all other worker code stays byte-identical (0.642247ms)
+✔ hash drift, missing target and ambiguous repeated SQL sites fail closed (0.51786ms)
+✔ multiple modules or altered multipart framing are refused (0.240973ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8.753344
+
+reviewed-source-tests.log
+✔ freeze uses the exact reviewed bytes and cannot be redirected by later source edits (4.931993ms)
+✔ role, active version and content hash drift are refused before a source release (1.670594ms)
+✔ source symlink is refused and the default release path remains opt-in (0.580504ms)
+✔ an existing wrong index cannot satisfy the reviewed-source release prerequisite (0.505571ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 14.706425
+
+source-release-tests.log
+✔ source release retains native archive and queue bindings and never exports a secret value (1.160336ms)
+✔ unhandled bindings, wrong D1, enabled paid discovery and acquisition/customer roles fail closed (1.261018ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8.65742
+
+covering-final-dry-run.log
+▲ [WARNING] Proxy environment variables detected. We'll use your proxy for fetch requests.
+
+
+
+ ⛅️ wrangler 4.127.1
+────────────────────
+Total Upload: 629.14 KiB / gzip: 152.93 KiB
+--dry-run: exiting now.

@@ -2,6 +2,7 @@
 // its active version, never a restored draft. No provisioning or migrations.
 import fs from 'node:fs';import path from 'node:path';import {fileURLToPath} from 'node:url';import {createRequire} from 'node:module';import {spawnSync} from 'node:child_process';import {isDeepStrictEqual} from 'node:util';
 import {shadowContext} from './shadow-context.mjs';import {readCredentials} from './cloudflare-api.mjs';
+import {createHash} from 'node:crypto';
 const ROOT=fileURLToPath(new URL('../../',import.meta.url)),ROLES=['ingest','reconcile','eligibility','enrichment','readiness','watch','api'];
 const sorted=bindings=>[...bindings].sort((a,b)=>a.name.localeCompare(b.name));
 export function sourceReleaseConfig(version,{role,databaseId}){
@@ -15,11 +16,32 @@ export function sourceReleaseConfig(version,{role,databaseId}){
   r2_buckets:b.filter(x=>x.type==='r2_bucket').map(x=>({binding:x.name,bucket_name:x.bucket_name,...x.jurisdiction?{jurisdiction:x.jurisdiction}:{}})),
   queues:{producers:b.filter(x=>x.type==='queue').map(x=>({binding:x.name,queue:x.queue_name,...x.delivery_delay?{delivery_delay:x.delivery_delay}:{}}))}};
 }
-export async function releaseSourceWorker({credentialsFile,stateDirectory,outputDirectory,role}){
+// Optional incident path: freeze a reviewed patch of the ACTIVE bundle rather than
+// accidentally rebuilding unrelated repository code. Existing callers are unchanged.
+export function freezeReviewedSource({sourceFile,expectedSourceSha256,expectedActiveVersion,activeVersion,role,outputDirectory}){
+ if(!sourceFile)return null;
+ if(role!=='ingest'||!/^[a-f0-9]{64}$/.test(expectedSourceSha256??'')||!expectedActiveVersion||activeVersion!==expectedActiveVersion)throw Error('reviewed_ingest_source_and_active_version_required');
+ const fd=fs.openSync(sourceFile,fs.constants.O_RDONLY|fs.constants.O_NOFOLLOW);let data;
+ try{const st=fs.fstatSync(fd);if(!st.isFile()||st.size>2*1024*1024)throw Error('bounded_regular_source_file_required');data=fs.readFileSync(fd);}finally{fs.closeSync(fd);}
+ if(createHash('sha256').update(data).digest('hex')!==expectedSourceSha256)throw Error('reviewed_source_hash_mismatch');
+ fs.mkdirSync(outputDirectory,{recursive:true,mode:0o700});const frozen=path.join(outputDirectory,'reviewed-active-source.mjs');
+ fs.writeFileSync(frozen,data,{flag:'wx',mode:0o600});return frozen;
+}
+export function requireReviewedRecheckIndex(actualSql){
+ const expected=fs.readFileSync(new URL('./migrations/0028_structured_recheck_lookup.sql',import.meta.url),'utf8');
+ const normal=s=>s.replace(/--[^\n]*/g,'').replace(/\bIF\s+NOT\s+EXISTS\b/gi,'').replace(/[\s;]/g,'').toLowerCase();
+ if(typeof actualSql!=='string'||normal(actualSql)!==normal(expected))throw Error('reviewed_recheck_index_definition_required');
+}
+export async function releaseSourceWorker({credentialsFile,stateDirectory,outputDirectory,role,sourceFile=null,expectedSourceSha256=null,expectedActiveVersion=null}){
  const ctx=await shadowContext({credentialsFile,stateDirectory}),endpoint='/workers/scripts/findpitches-v3-'+role+'-shadow';if(!ROLES.includes(role))throw Error('owned_source_worker_required');
  const safety=await ctx.db.prepare('SELECT (SELECT publication_enabled FROM runtime_policy WHERE id=1) publication,(SELECT bulk_enabled FROM serper_policy WHERE id=1) bulk,(SELECT manual_paused FROM commercial_acquisition_policy WHERE id=1) paused,(SELECT COUNT(*) FROM customer_projections)+(SELECT COUNT(*) FROM publication_queue) leakage').first();if(safety.publication||safety.bulk||safety.paused!==1||safety.leakage)throw Error('paused_source_scope_required');
  const deployments=await ctx.api.accountRequest(endpoint+'/deployments'),prior=deployments.deployments[0];if(prior.versions.length!==1||prior.versions[0].percentage!==100)throw Error('single_source_version_required');
  const activeId=prior.versions[0].version_id,version=await ctx.api.accountRequest(endpoint+'/versions/'+activeId),settings=await ctx.api.accountRequest(endpoint+'/settings'),schedules=await ctx.api.accountRequest(endpoint+'/schedules'),config=sourceReleaseConfig(version,{role,databaseId:ctx.state.database_id});
+ const frozen=freezeReviewedSource({sourceFile,expectedSourceSha256,expectedActiveVersion,activeVersion:activeId,role,outputDirectory});if(frozen){config.main=frozen;config.no_bundle=true;config.find_additional_modules=false;}
+ if(frozen){
+  const index=await ctx.db.prepare("SELECT sql FROM sqlite_master WHERE type='index' AND name='structured_recheck_lookup'").first();
+  requireReviewedRecheckIndex(index?.sql);
+ }
  fs.mkdirSync(outputDirectory,{recursive:true,mode:0o700});const save=(name,value)=>fs.writeFileSync(path.join(outputDirectory,name),JSON.stringify(value,null,2)+'\n',{mode:0o600});save('before-private.json',{prior,version,settings,schedules});save('release.jsonc',config);
  const credentials=readCredentials(credentialsFile),require=createRequire(process.env.V3_TOOLING_ROOT?path.join(process.env.V3_TOOLING_ROOT,'package.json'):import.meta.url),wrangler=path.join(path.dirname(require.resolve('wrangler/package.json')),'bin/wrangler.js'),file=path.join(outputDirectory,'release.jsonc');
  const run=(label,args)=>{const result=spawnSync(process.execPath,[wrangler,...args],{env:{...process.env,...credentials,WRANGLER_SEND_METRICS:'false'},encoding:'utf8',timeout:180000});let log=(result.stdout??'')+(result.stderr??'');for(const value of Object.values(credentials))log=log.split(value).join('[redacted]');fs.writeFileSync(path.join(outputDirectory,label+'.log'),log,{mode:0o600});if(result.error||result.status!==0)throw Error('source_'+label+'_failed');return log;};
@@ -34,3 +56,4 @@ export async function releaseSourceWorker({credentialsFile,stateDirectory,output
   const report={as_of:new Date().toISOString(),worker:config.name,version_id:id,previous_version_id:activeId,deployment_id:deployed.deployments[0].id,bindings_and_runtime_preserved:true,schedules_and_settings_preserved:true,secret_values_replaced:false,migrations:0,customer_or_legacy_changes:0};save('release-report.json',report);return report;
  }catch(e){if(activating)run('rollback',['versions','deploy',activeId+'@100%','--yes','--config',file]);throw e;}
 }
+
