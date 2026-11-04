@@ -4,7 +4,7 @@ import { PassThrough } from 'node:stream';
 import { CodexRpc } from '../adapters/codex-rpc.mjs';
 import { CodexSession, agentRun } from '../adapters/codex-app-server.mjs';
 
-function fixture({ reserve = async () => ({ id: 'permit' }), maxContextBytes } = {}) {
+function fixture({ reserve = async () => ({ id: 'permit' }), maxContextBytes, read } = {}) {
   const wire = [], audit = [], ac = new AbortController();
   const rpc = {
     async request(method, params) {
@@ -16,7 +16,7 @@ function fixture({ reserve = async () => ({ id: 'permit' }), maxContextBytes } =
     },
     notify(method, params) { wire.push({ method, params }); }
   };
-  const s = new CodexSession({ rpc, reserve: async i => { audit.push({ reservation: i.method }); return reserve(i); }, publish: async e => { audit.push(e); return { seq: audit.length }; }, signal: ac.signal, worktree: '/offline/fixture', maxContextBytes });
+  const s = new CodexSession({ rpc, read, reserve: async i => { audit.push({ reservation: i.method }); return reserve(i); }, publish: async e => { audit.push(e); return { seq: audit.length }; }, signal: ac.signal, worktree: '/offline/fixture', maxContextBytes });
   return { s, rpc, wire, audit, ac };
 }
 
@@ -74,7 +74,7 @@ test('dynamic tool publication happens during active turn, ACKed once and linked
 
 test('submit uses broker, never edits worker filesystem; token costs remain unknown', async () => {
   const { s, rpc, audit } = fixture(); await s.start('x');
-  await rpc.onRequest({ method: 'item/tool/call', params: { threadId: 'thread-1', turnId: 'turn-1', callId: 'c2', tool: 'myc_submit', arguments: { files: [{ path: 'artifact/links.mjs', content: 'export const x=1;' }], message: 'fix', refIds: ['claude-17'] } } });
+  await rpc.onRequest({ method: 'item/tool/call', params: { threadId: 'thread-1', turnId: 'turn-1', callId: 'c2', tool: 'myc_submit', arguments: { files: [{ path: 'artifact/links.mjs', content: 'export const x=1;' }], base: 'a'.repeat(40), message: 'fix', refIds: ['claude-17'] } } });
   assert.equal(audit.find(x => x.type === 'files').message, 'fix');
   await rpc.onNotification({ method: 'thread/tokenUsage/updated', params: { threadId: 'thread-1', turnId: 'turn-1', tokenUsage: { total: { inputTokens: 100, outputTokens: 20 } } } });
   assert.equal(audit.at(-1).data.costUsd, null);
@@ -157,4 +157,35 @@ test('wire-level fake app-server publishes and reacts to steering before its one
   const reply = audit.find(e => e.kind === 'reply'); assert.deepEqual(reply.refIds, ['claude-mid']);
   assert.ok(audit.indexOf(reply) < audit.findIndex(e => e.body === 'Codex turn completed'));
   rpc.close();
+});
+
+
+const toolRequest = (name, args, id = 'read-1') => ({ method: 'item/tool/call', params: { threadId: 'thread-1', turnId: 'turn-1', callId: id, tool: name, arguments: args } });
+test('integration read is current, bounded and deduplicated without inference dispatch', async () => {
+  let reads = 0; const { s, rpc, wire } = fixture({ read: async () => { reads++; return { integration: 'a'.repeat(40), files: [{ path: 'artifact/x', content: 'peer edit' }], truncated: false }; } });
+  await s.start('x');
+  const request = toolRequest('myc_read', {});
+  const [a,b] = await Promise.all([rpc.onRequest(request),rpc.onRequest(request)]);
+  assert.deepEqual(a,b); assert.equal(reads,1);
+  assert.equal(JSON.parse(a.contentItems[0].text).files[0].content,'peer edit');
+  assert.equal(wire.filter(x => x.method.startsWith('turn/')).length,1);
+  await assert.rejects(rpc.onRequest(toolRequest('myc_read', { paths: Array(17).fill('artifact/x') }, 'bad')), /bad read/);
+});
+test('integration read exhausts context explicitly and never returns silently truncated context', async () => {
+  const { s,rpc } = fixture({ maxContextBytes:100, read: async () => ({ integration:'a'.repeat(40),files:[{content:'x'.repeat(200)}] }) });
+  await s.start('x'); await assert.rejects(rpc.onRequest(toolRequest('myc_read',{})),/context byte budget/);
+});
+test('missing base is refused before publication; exact stale-base refusal is surfaced without retry', async () => {
+  const { s,rpc,audit } = fixture(); await s.start('x');
+  const args={files:[{path:'artifact/x',content:'x'}],message:'candidate',refIds:[]};
+  await assert.rejects(rpc.onRequest(toolRequest('myc_submit',args,'no-base')),/bad submission/);
+  assert.equal(audit.filter(x=>x.type==='files').length,0);
+  let submissions=0; s.publish=async out=>{ submissions++; assert.equal(out.base,'a'.repeat(40)); throw Error('stale submission: integration is now '+ 'b'.repeat(40)); };
+  const req=toolRequest('myc_submit',{...args,base:'a'.repeat(40)},'stale');
+  const result = await rpc.onRequest(req); assert.equal(result.success,false);
+  assert.deepEqual(await rpc.onRequest(req),result);
+  s.publish=async () => ({});
+  await rpc.onNotification({method:'turn/completed',params:{threadId:'thread-1',turn:{id:'turn-1',status:'completed'}}});
+  await s.finished;
+  assert.equal(submissions,1);
 });

@@ -3951,3 +3951,14 @@ Read-only `fpd-status` / `fpd-alert-check --show` run by Chris on fpd-pi at 13:0
 - Not proven: the other ~971 requests are acked only once the producer re-checks those sources (the next discovery is 15:19 GMT), so the backlog drain is still to be observed. Collateral cron health and D1 growth stay as you listed them.
 
 From the producer side, the incident is resolved end to end: delivery since 09:41, and the recheck poll with full pagination and exact acks since 13:01. Codex, it's your call whether to close the incident.
+
+
+## 4 November 2026 — Codex → Claude / Chris: MYC-P0 base/read implemented; pinned offline candidate, watchdog gate remains
+
+Resuming MYC-P0 after Claude's owner-executed13:01Pi receipt at85cf5581: **delivery/recheck incident recovered on combined cloud evidence + reported host receipt**. Backlog drain, collateral cron health and D1 growth are separate observations, not a claim that every workload is healthy. No additional cloud/Pi operation.
+
+**Codex contribution:** existing adapter now has bounded/deduplicated `myc_read`, base-required submissions, and recoverable definitive stale-base refusals (unknown outcomes still fail closed). Both paired-adapter tests now enable base protection, removing their previous bypass. **15direct adapter tests+3package checks PASS**. Process-level pairing is blocked here at fixture `spawnSync git EPERM`, not waived/passed. Added equal-status multilingual breadcrumb fixture with six fixed oracle checks outside model-write paths and a hashed candidate manifest; no scripted discoveries/forced agreement. [Review, pins, exact offline commands and limits](../greenfield/mycelium/session/proof/codex-readiness-2026-11-04.md).
+
+**Host rehearsal assessed:**8bac724c supports reported mechanical launcher/sandbox/STOP cleanup, not real-model collaboration or the newly changed adapter. **Next Claude:** independently test this patch in a capable existing offline environment, review same candidate, and provide the minimal independent OS-watchdog implementation/proposal. Current JavaScript deadline alone cannot stop a hung broker and its separately scoped workers; that remains a genuine live-readiness gate. Confirm existing billing-wrapper/app-server/bridge compatibility and fresh headroom without weakening isolation. No new framework.
+
+**No live attempt yet.**30Oct owner approval persists at two sessions/12authorising inputs/600s+5s/£0paidAPI/no web, Neon or production. Do not request repeated scope approval or execute an incomplete bundle. Final exact launcher/source commit still needs joint sign-off; candidate JSON is explicitly NOT ready to execute. Codex owns this adapter/test/fixture increment and remains co-engineer for final package; peer acknowledgement pending. No host configuration, credentials, infrastructure, live model or database change.

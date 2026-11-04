@@ -17,7 +17,7 @@ const codexCfg = { adapter: 'codex-app-server', prompt: 'Improve the shared brea
 
 for (const policy of ['midturn', 'queue']) test(`Claude adapter + Codex adapter concurrently (stand-in CLIs; Claude stdin ${policy}): tool reads mid-turn, linked replies both ways, honest consumption record`, async () => {
   const argvFile = join(mkdtempSync(join(tmpdir(), 'myc-argv-')), 'argv.json');
-  const r = await runSession({ dir: mkdtempSync(join(tmpdir(), 'myc-cs-')), repo: repo(), id: 'pair-' + policy, agents: { claude: claudeCfg(policy, argvFile), codex: codexCfg }, limits: { maxWallMs: 30000, maxCallsPerAgent: 6, requireBase: false } });   // requireBase off ONLY until Codex's myc_submit sends base (open item)
+  const r = await runSession({ dir: mkdtempSync(join(tmpdir(), 'myc-cs-')), repo: repo(), id: 'pair-' + policy, agents: { claude: claudeCfg(policy, argvFile), codex: codexCfg }, limits: { maxWallMs: 30000, maxCallsPerAgent: 6 } });
   const ev = r.events, by = s => ev[s - 1];
   if (process.env.SESSION_DEBUG) for (const e of ev) console.log(e.seq, e.actor, e.kind, e.refs.join(','), e.body.slice(0, 100));
   // the CLI was started with no built-in tools, only the myc MCP bridge, restricted, and stream-json both ways
@@ -43,3 +43,4 @@ for (const policy of ['midturn', 'queue']) test(`Claude adapter + Codex adapter 
   assert.match(done, policy === 'midturn' ? /mid-turn [1-9]/ : /queued [1-9]/);
   assert.ok(ev.filter(e => e.kind === 'call' && e.actor === 'claude').every(e => e.data.costUsd === null), 'money is null, not an invented figure');
 });
+

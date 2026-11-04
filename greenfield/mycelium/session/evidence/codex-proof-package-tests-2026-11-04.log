@@ -1,0 +1,11 @@
+✔ pinned candidate manifest exactly matches source, with equal-status prompts and billing-guard commands (1.583514ms)
+✔ candidate retains exact approved action/time limits and required base protection (0.129846ms)
+✔ fixed acceptance tests live outside model-write allowlist; no network workload or predefined discovery lanes (0.195634ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 10.180883
