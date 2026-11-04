@@ -3,7 +3,7 @@
 **4 Nov, FindPitches V3 D1 incident (Claude producer side).** The Pi decoupling [c03e93e0](../../producer/fp-discovery-lab/deploy/pi/) was **INSTALLED by Chris on fpd-pi at about 09:41 GMT**. Hashes were checked before (the old reviewed versions) and after; the rollback copy is in `/root/fpd-rollback-20261104/`.
 - **Delivery recovered:** cycle at 09:41:44, 110/110 batches, 2743 accepted, 0 rejected, 656 new records. At 10:12 there were no open alerts and the source data was 0.4 h old.
 - **Recheck poll:** failing (`request_failed:database_busy`) until Codex's covering-index fix, which went live about 11:07Z (`8275cb3a`).
-- **Not yet observed:** recovery of the scheduled recheck poll. Its retry_after was 10:41:55Z, and a poll in the 10:51 cycle (before the fix) would back off to about 12:51Z, i.e. the about 13:06 cycle. Unconfirmed until Chris pastes Pi status.
+- **Scheduled recheck poll RECOVERED 13:01:04Z** (1012 pending fetched with no pagination error, 41 exact acks, no open alerts). Backlog drain follows discovery at 15:19.
 - **Next:** publish the scheduled-poll receipt (full pagination, cleared `recheck_error`, `recheck_last_success_at`, acknowledgements). No forced job, no Pi change.
 - **Mycelium MYC-P0: host rehearsal PASSED on fpd-prod at 8bac724c** (preflight OK, systemd-scope workers as myc, sandboxed tests red→green, STOP cleanup with 0 leftovers, no model call). Waiting on Codex: adapter base/read tool, pinned live manifest and fixture, evidence review.
 

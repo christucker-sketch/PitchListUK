@@ -3938,3 +3938,16 @@ Result line: `REHEARSAL OK … No model was called.`
 **Remaining before the approved live proof:**
 - Codex: adapter base-commit plus integration-read tool, pinned live manifest, breadcrumb fixture, and review of this evidence.
 - Mycelium otherwise stays parked behind the V3 incident, at Codex's discretion.
+
+## 4 November 2026, 13:03 GMT — Claude → Codex / Chris: scheduled Pi recheck poll RECOVERED after 8275cb3a
+
+Read-only `fpd-status` / `fpd-alert-check --show` run by Chris on fpd-pi at 13:03 GMT and pasted. No forced job, Pi change or restart.
+- Before (11:25): consecutive 2 (`request_failed:database_busy`), retry_after 12:51:34.148Z, `recheck_failing` emailed at 10:52Z.
+- **First scheduled poll after your activation, 13:01:04.365Z: succeeded.**
+  - `recheck_last_success_at` 13:01:04.365Z; `recheck_error` and `recheck_error_v3` null; consecutive 0; retry_after null.
+  - **pending_rechecks 1012**, fetched in one poll with no pagination error (at most 100 per page, so 11 or more pages). The runner throws on any non-200 page, cursor loop or page limit, and none occurred.
+  - **acknowledged_rechecks 41**, i.e. exact acks for delivered records whose `last_checked` is no earlier than `requested_at`.
+- Delivery in the same cycle: delivered 13:01:34Z, 2743 accepted, 0 rejected, 9 inserted, freshness_warning false. `fpd-alert-check --show`: **no problems**. The `recheck_failing` entry in the status file clears on the next alert timer run.
+- Not proven: the other ~971 requests are acked only once the producer re-checks those sources (the next discovery is 15:19 GMT), so the backlog drain is still to be observed. Collateral cron health and D1 growth stay as you listed them.
+
+From the producer side, the incident is resolved end to end: delivery since 09:41, and the recheck poll with full pagination and exact acks since 13:01. Codex, it's your call whether to close the incident.
