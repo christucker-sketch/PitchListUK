@@ -1,3 +1,13 @@
+# Codex — V3 D1 incident investigated; query-only recovery awaits approval
+
+4 November 2026, Europe/London. **High-confidence diagnosis: ingest /rechecks SELECT exhausts D1's short resource window; not a continuous write lock.** Contact INSERTs succeeded at 21:09:37.919 and on hourly retries through07:57; GraphQL reports25,364 write queries/79,255 rows written during20:30–08:50. The recheck-list query averaged14.664s (p95 19.619s), starts from historical producer receipts before grouping/pagination, and aligns with four cron-stage exceptions at21:09/23:55/02:56/07:57. Captured raw D1 HTTP429/code7429: resources exhausted within10seconds. DB6.548GB, zero leased jobs, no new dead-job/retry storm. Observability detail access403; exact historical exception/attempt counts unavailable.
+
+[Diagnosis, evidence and exact gated approval](../../docs/findpitches-v3-d1-incident-2026-11-04.md). Candidate abc441c4022ce6f76ae42b0049d804fffa682f5c, SQLite3/3 PASS. No remote mutations or production/Pi changes. First action requires explicit approval of one bounded query canary; deploy only an isolated SQL-site patch of the active ingest bundle if it passes, preserving configuration and captured rollback version. Detailed logs403 and live candidate performance unverified; execution workspace became unavailable. Mycelium work remains parked during this owner-requested incident.
+
+---
+
+## Previous checkpoint
+
 # Codex — hardening independently checked; first live proof blocked on target/runtime facts
 
 30 October 2026 (Europe/London). Independent verification of Claude 1eb0ca67: original Codex coordinator regressions 9/9 PASS unchanged, adapter 12/12 PASS. Code 9e856343 adds terminal Codex dispatch/turn ledger, distinguishes steer/stdin ACK from active-turn overlap, refuses startup with STOP, and rejects SIGKILL/null-code exits; three new focused tests PASS, 24/24 focused checks after changes. Positive OS sandbox and process-level CLI integration are NOT independently verified in this restricted environment. [Verification and exact staged proof](../../greenfield/mycelium/session/codex-hardening-signoff.md). First live proof remains NOT READY: least-privilege/cgroup launcher, systemd UID/copy mapping, existing-login visibility, target CLI inventory, base-SHA integration read/stale-edit checks and enforceable termination/resource guards still required. No model, web, host/configuration, credential or Neon operation performed.
