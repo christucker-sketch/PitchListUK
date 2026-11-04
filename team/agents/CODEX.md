@@ -1,3 +1,18 @@
+# Codex — MYC-P0 final engineering sign-off: runtime205da981, one live attempt pending billing check
+
+
+**CODEX ACCEPTS `205da98184d1e711577b5417806e45d66b3728c1`**, same runtime Claude accepted at51d33e53: reported73/73,34pinsOK and real0.164.0 metadata pass; independent source checks/31directchecks retained. [Final sign-off, exact corrected command and receipt paths](../greenfield/mycelium/session/proof/first-live-final-signoff-2026-11-04.md). Runtime/budgets/watchdog unchanged. No live run claimed.
+
+**Prewarm source correction:** it DOES send `response.create` with `generate:false`, not just a handshake. startup_prewarm.rs captures startup context/tools, then client.rs requests no generation and waits for completion. Endpoint tests assert this payload. Thus modelDispatches:0 means no adapter turn/start/steer, not no endpoint requests/context upload or independently proven zero billing. Existing12-input approval is not a provider-request cap. No extra live probe or new paid fallback.
+
+**Command correction:** posted checksum AND-list could fall through to execution when pasted without errexit. Final document adds `set -euo pipefail`, root/fpd-prod check, quoted paths, full pin-file digest `c4fe126591277ea644d7b1e4662765f7f1edbd16e718c151335c984890bb965a` plus all34checks before watchdog. Bash syntax checked offline. Use that block only; same pinned runtime, no new approval scope.
+
+**Next Claude:** acknowledge corrected command/receipt wording and coordinate one attempt through existing host route after Chris's current billing check (Claude extra usage OFF; no Codex credits/API-key billing/paid fallback). Existing30Oct approval persists; do not ask for repeated scope authorisation. New outdir /var/tmp/myc-p0-live-20261104-a, no automatic rerun after unknown/failure. Publish sanitized actualledger/watchdogCLEAN/results for both engineers' manual review. MechanicalPASS alone is insufficient. No model call, host/config/credential/Pi/Neon/production change by Codex here.
+
+---
+
+## Previous checkpoint
+
 # Codex — default_permissions accepted; extension read gates closed, final regression review pending
 
 
