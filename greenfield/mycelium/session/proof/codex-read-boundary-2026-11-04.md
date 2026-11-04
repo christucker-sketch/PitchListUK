@@ -52,3 +52,30 @@ runuser -u myc -- env -i HOME=/home/myc USER=myc LOGNAME=myc LANG=C.UTF-8 PATH=/
 Use a genuinely new evidence path; do not rerun after an unknown result or change authentication. This is a proposed no-model check for the existing host route, not a claim it was run. Publish only boundary.json and sanitized failure labels. If the target cannot confirm this profile, stop; do not fall back to broad read-only or expand credentials. Claude should challenge the source-level boundary and, where supported by his offline0.164 environment, add synthetic allow/deny filesystem checks without reading real credentials.
 
 **Joint sign-off remains pending those results and Claude's independent acceptance.** Existing owner approval persists within the exact two-session/12-input/600s+5s/£0paidAPI/no-web/Neon/production scope; there is no repeat approval request here. Retain Claude's watchdog unchanged and do not run the live manifest until the same final source commit is signed off. No budget increase for shared read context is made: the24KB cap still fails explicitly rather than silently dropping context.
+
+## Claude's independent check (4 Nov, offline, real codex-cli 0.164.0 from npm; no login, no model turn, synthetic files only)
+
+**Suite at edbb5ca7:** `node --test test/*.test.mjs` gives **71/71 PASS**, including the process-level stand-in pairs 15/16.
+
+**Real 0.164.0 app-server**, run through `prepareCodexThread` with an empty CODEX_HOME (no account):
+- `thread/start` **accepted** the boundary. It returned `activePermissionProfile:{id:<our myc-p0-… id>, extends:null}`, `approvalPolicy:"never"`, the exact `cwd`, and `sandbox:{type:"readOnly",networkAccess:false}`. `verifyThreadBoundary` passes.
+  - Note: it reported `runtimeWorkspaceRoots: []` although `[worktree]` was requested. That value is not checked, and the profile is what grants access.
+- **Defect (blocker, now fixed):** `mcpServerStatus/list` **failed** with -32603 `failed to reload config: config defines [permissions] profiles but does not set default_permissions`. The adapter therefore fails closed before `turn/start`, so the live run, and Codex's host preflight, would have refused.
+  - **Fix (Claude, for Codex's review):** `threadBoundary` also sets `default_permissions: <the same profile id>`. With it, the real CLI returns `{"data":[],"nextCursor":null}` and `prepareCodexThread` PASSES.
+  - The stand-in app-server now reproduces the real refusal. Removing the line makes 4 tests fail (adapter runtime, both concurrent pairs, boundary), so the regression is caught. The suite with the fix: 71/71.
+- **Physical allow/deny** under the same profile shape. Run with `codex sandbox -c permissions.p.filesystem={<worktree>="read", <codex vendor dir>="read", /opt/probe="read"} -c permissions.p.network.enabled=false -c default_permissions="p" -P p -C <worktree>`, using a static probe binary; vendor dir and probe added only so the probe can execute:
+
+  | Probe | Result |
+  |---|---|
+  | worktree README | **READ OK** |
+  | synthetic `home/.codex/auth.json` | **not visible** (ENOENT) |
+  | sibling file | **not visible** |
+  | `/etc/hostname` | **not visible** |
+  | write into the worktree | **EROFS** |
+  | TCP connect | **socket EPERM** |
+
+  - Control: the same probe without the sandbox reads the synthetic credential and connects.
+  - With the **exact** candidate profile (worktree only), sandboxed execution cannot even start: bwrap cannot exec Codex's own helper. Any sandboxed tool fails closed.
+- **Residual, for Codex to state:** whether 0.164.0 offers any *in-process* (non-sandboxed) file-reading tool under this config. It can't be listed without a turn. Source review suffices.
+
+**Host step:** `codex-boundary-preflight.mjs` against myc's 0.164.0 through `myc-run`, run by Chris at the commit with this fix.

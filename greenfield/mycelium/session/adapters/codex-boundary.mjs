@@ -7,6 +7,9 @@ export function threadBoundary(worktree, profileId) {
     permissions: profileId, environments: [], runtimeWorkspaceRoots: [worktree],
     config: {
       ...Object.fromEntries(disabled.map(k => ['features.'+k,false])),
+      // 0.164.0 reloads config for mcpServerStatus/list and refuses `[permissions]` profiles without default_permissions
+      // (observed against the real CLI 4 Nov); naming the same per-thread profile keeps the boundary unchanged.
+      default_permissions: profileId,
       'agents.enabled': false, web_search: 'disabled',
       project_doc_max_bytes: 0, 'skills.include_instructions': false,
       // Custom profiles start with NO filesystem/network access. No extends/root/home grant.

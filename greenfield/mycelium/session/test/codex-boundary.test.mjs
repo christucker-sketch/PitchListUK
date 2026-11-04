@@ -6,7 +6,7 @@ const id='myc-p0-'+ 'a'.repeat(32), root='/isolated/worktree';
 test('named permissions grant only the isolated worktree read access and no network; no root/home grant or inheritance',()=>{
  const p=threadBoundary(root,id);assert.equal(p.permissions,id);assert.equal(p.sandbox,undefined);
  assert.deepEqual(p.config['permissions.'+id],{filesystem:{[root]:'read'},network:{enabled:false}});
- assert.deepEqual(p.environments,[]);assert.deepEqual(p.runtimeWorkspaceRoots,[root]);
+ assert.equal(p.config.default_permissions,id,'0.164.0 needs default_permissions naming the profile');assert.deepEqual(p.environments,[]);assert.deepEqual(p.runtimeWorkspaceRoots,[root]);
  for(const f of ['shell_tool','view_image','code_mode','multi_agent','multi_agent_v2','apps','enable_mcp_apps','plugins','memory_tool','request_permissions_tool'])assert.equal(p.config['features.'+f],false,f);
  assert.equal(p.config.web_search,'disabled');assert.equal(p.config['agents.enabled'],false);
 });
