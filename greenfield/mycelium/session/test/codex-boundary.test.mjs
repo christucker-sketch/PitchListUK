@@ -34,3 +34,19 @@ for(const failure of ['fallback','mcp','missing','cwd'])test('no allowance or in
  await assert.rejects(s.start('offline metadata refusal'));
  assert.equal(reservations,0);assert.ok(!methods.includes('turn/start'));
 });
+
+test('no in-process skills-read route: cloud and executor discovery disabled, no selected capability roots',()=>{
+ const p=threadBoundary(root,id);
+ assert.equal(p.config['cloud.skills.enabled'],false);
+ assert.equal(p.config['features.executor_capability_discovery'],false);
+ assert.equal(p.config['features.executor_capability_discovery_v2'],false);
+ assert.deepEqual(p.selectedCapabilityRoots,[]);
+ assert.equal(p.config['features.skip_host_skill_discovery'],true);
+ assert.equal(p.config['skills.bundled.enabled'],false);
+});
+test('independent file-copy and history-note extensions are disabled explicitly',()=>{
+ const p=threadBoundary(root,id);
+ assert.equal(p.config['features.multi_env_copy_file'],false);
+ assert.equal(p.config['features.token_budget.use_history_notes_extension'],false);
+ assert.equal(p.config.default_permissions,id);
+});

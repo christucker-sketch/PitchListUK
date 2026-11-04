@@ -1,0 +1,18 @@
+✔ named permissions grant only the isolated worktree read access and no network; no root/home grant or inheritance (1.648802ms)
+✔ broad or ambiguous worktree/profile inputs are rejected (0.426612ms)
+✔ profile echo, no inheritance, cwd and approval policy are required; no silent read-only fallback (0.251759ms)
+✔ external MCP is refused, including incomplete pagination or malformed status (0.164277ms)
+✔ no allowance or inference when boundary fails: fallback (1.855153ms)
+✔ no allowance or inference when boundary fails: mcp (0.175344ms)
+✔ no allowance or inference when boundary fails: missing (0.403227ms)
+✔ no allowance or inference when boundary fails: cwd (0.203376ms)
+✔ no in-process skills-read route: cloud and executor discovery disabled, no selected capability roots (0.160812ms)
+✔ independent file-copy and history-note extensions are disabled explicitly (0.242575ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 12.052042
