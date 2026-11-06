@@ -1,0 +1,8 @@
+Error: RPC inbound work limit
+    at CodexRpc.receive (file:///var/tmp/myc-src.zcEMgF/session/adapters/codex-rpc.mjs:48:51)
+    at Socket.<anonymous> (file:///var/tmp/myc-src.zcEMgF/session/adapters/codex-rpc.mjs:19:33)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)

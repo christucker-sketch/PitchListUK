@@ -1,0 +1,38 @@
+post-hoc, offline, unshare --net as nobody, node v22.23.4, 2026-11-06T14:29:07Z; NOT in-session evidence (in-session: seq 88 PASS)
+== checks/frontier.test.mjs
+ok 1 - resolve relative link and preserve meaningful query
+ok 2 - single quotes, Unicode and nested label
+ok 3 - dedupe after fragment removal
+ok 4 - visited links do not reenter frontier
+ok 5 - reject non-web, credentialed and fragment-only links
+ok 6 - distinct queries remain distinct exploratory branches
+# tests 6
+# pass 6
+# fail 0
+== artifact/frontier.test.mjs
+ok 1 - fixture page 1: relative resolution, fragment stripped, query kept, Unicode
+ok 2 - fixture page 2: fragment-only and javascript: rejected
+ok 3 - seen URLs are excluded, including when seen/link carry fragments
+ok 4 - default seen argument and no mutation of inputs
+ok 5 - duplicates collapse (after fragment stripping and resolution)
+ok 6 - non-web and credentialed URLs rejected
+ok 7 - http and protocol-relative links accepted
+ok 8 - entity-encoded hrefs are decoded once
+ok 9 - attribute syntax variants: case, single/unquoted, other attrs, quoted >
+ok 10 - href-like attributes that are not href are ignored
+ok 11 - anchors inside comments, script, style, textarea are ignored
+ok 12 - anchor text: nested tags stripped, entities decoded, whitespace collapsed
+ok 13 - first text wins on duplicate
+ok 14 - whitespace around href is trimmed
+ok 15 - malformed / hostile html does not throw and stays linear
+ok 16 - results are plain records with exactly url,text,from
+# tests 16
+# pass 16
+# fail 0
+== artifact/frontier.extra.test.mjs
+ok 1 - bogus comments and declarations do not expose anchors
+ok 2 - raw text offsets survive Unicode case expansion before and inside blocks
+ok 3 - raw text closing tags require a name boundary
+# tests 3
+# pass 3
+# fail 0

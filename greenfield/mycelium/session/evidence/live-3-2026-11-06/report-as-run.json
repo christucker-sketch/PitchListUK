@@ -1,0 +1,317 @@
+{
+ "span": {
+  "claude": [
+   1793975016277,
+   1793975219485
+  ],
+  "codex": [
+   1793975016300,
+   1793975219481
+  ]
+ },
+ "overlapMs": 203181,
+ "callOverlapMs": 197414,
+ "crossReactions": [
+  17,
+  24,
+  42,
+  49,
+  95
+ ],
+ "midSessionReactions": [
+  17,
+  24,
+  42,
+  49,
+  95
+ ],
+ "commitsCausedByOther": [
+  24,
+  63,
+  86
+ ],
+ "integrationTests": [
+  {
+   "seq": 31,
+   "agent": "claude",
+   "ok": false
+  },
+  {
+   "seq": 66,
+   "agent": "codex",
+   "ok": true
+  },
+  {
+   "seq": 88,
+   "agent": "codex",
+   "ok": true
+  }
+ ],
+ "finalIntegration": {
+  "integration": "069e38947d7bb006aff6a4b46bff7e394c37412a",
+  "seq": 87,
+  "tested": true,
+  "ok": true
+ },
+ "usage": {
+  "claude": 250483,
+  "codex": 386209
+ },
+ "freshUsage": {
+  "claude": 30298,
+  "codex": 48801
+ },
+ "usageLowerBound": {
+  "claude": true,
+  "codex": false
+ },
+ "freshUsageLowerBound": {
+  "claude": true,
+  "codex": false
+ },
+ "calls": [
+  {
+   "agent": "claude",
+   "permit": "claude-grant-2",
+   "sentAt": null,
+   "startedAt": "2026-11-06T14:23:45.594Z",
+   "endedAt": "2026-11-06T14:23:52.145Z",
+   "ms": 6551,
+   "model": null,
+   "inputTokens": null,
+   "outputTokens": null,
+   "totalTokens": null,
+   "freshTokens": null,
+   "costUsd": null,
+   "interval": "stdin-ack",
+   "outcome": null,
+   "method": null,
+   "threadId": null,
+   "turnId": null
+  },
+  {
+   "agent": "codex",
+   "permit": "codex-grant-2",
+   "sentAt": null,
+   "startedAt": "2026-11-06T14:24:00.357Z",
+   "endedAt": "2026-11-06T14:24:00.363Z",
+   "ms": 6,
+   "model": null,
+   "inputTokens": null,
+   "outputTokens": null,
+   "totalTokens": null,
+   "freshTokens": null,
+   "costUsd": null,
+   "interval": "steer-ack",
+   "outcome": "accepted",
+   "method": "turn/steer",
+   "threadId": "01a1b13e-5c21-7612-9a96-ad4c0aba24af",
+   "turnId": "01a1b13e-5fe7-7501-ae20-00cae6825480"
+  },
+  {
+   "agent": "codex",
+   "permit": "codex-grant-3",
+   "sentAt": null,
+   "startedAt": "2026-11-06T14:24:25.503Z",
+   "endedAt": "2026-11-06T14:24:25.508Z",
+   "ms": 5,
+   "model": null,
+   "inputTokens": null,
+   "outputTokens": null,
+   "totalTokens": null,
+   "freshTokens": null,
+   "costUsd": null,
+   "interval": "steer-ack",
+   "outcome": "accepted",
+   "method": "turn/steer",
+   "threadId": "01a1b13e-5c21-7612-9a96-ad4c0aba24af",
+   "turnId": "01a1b13e-5fe7-7501-ae20-00cae6825480"
+  },
+  {
+   "agent": "codex",
+   "permit": "codex-grant-4",
+   "sentAt": null,
+   "startedAt": "2026-11-06T14:24:25.963Z",
+   "endedAt": "2026-11-06T14:24:25.972Z",
+   "ms": 9,
+   "model": null,
+   "inputTokens": null,
+   "outputTokens": null,
+   "totalTokens": null,
+   "freshTokens": null,
+   "costUsd": null,
+   "interval": "steer-ack",
+   "outcome": "accepted",
+   "method": "turn/steer",
+   "threadId": "01a1b13e-5c21-7612-9a96-ad4c0aba24af",
+   "turnId": "01a1b13e-5fe7-7501-ae20-00cae6825480"
+  },
+  {
+   "agent": "claude",
+   "permit": "claude-grant-3",
+   "sentAt": null,
+   "startedAt": "2026-11-06T14:24:25.958Z",
+   "endedAt": "2026-11-06T14:24:29.108Z",
+   "ms": 3150,
+   "model": null,
+   "inputTokens": null,
+   "outputTokens": null,
+   "totalTokens": null,
+   "freshTokens": null,
+   "costUsd": null,
+   "interval": "stdin-ack",
+   "outcome": null,
+   "method": null,
+   "threadId": null,
+   "turnId": null
+  },
+  {
+   "agent": "claude",
+   "permit": "claude-grant-4",
+   "sentAt": null,
+   "startedAt": "2026-11-06T14:24:32.006Z",
+   "endedAt": "2026-11-06T14:24:32.841Z",
+   "ms": 835,
+   "model": null,
+   "inputTokens": null,
+   "outputTokens": null,
+   "totalTokens": null,
+   "freshTokens": null,
+   "costUsd": null,
+   "interval": "stdin-ack",
+   "outcome": null,
+   "method": null,
+   "threadId": null,
+   "turnId": null
+  },
+  {
+   "agent": "codex",
+   "permit": "codex-grant-5",
+   "sentAt": null,
+   "startedAt": "2026-11-06T14:24:39.415Z",
+   "endedAt": "2026-11-06T14:24:39.420Z",
+   "ms": 5,
+   "model": null,
+   "inputTokens": null,
+   "outputTokens": null,
+   "totalTokens": null,
+   "freshTokens": null,
+   "costUsd": null,
+   "interval": "steer-ack",
+   "outcome": "accepted",
+   "method": "turn/steer",
+   "threadId": "01a1b13e-5c21-7612-9a96-ad4c0aba24af",
+   "turnId": "01a1b13e-5fe7-7501-ae20-00cae6825480"
+  },
+  {
+   "agent": "codex",
+   "permit": "codex-grant-6",
+   "sentAt": null,
+   "startedAt": "2026-11-06T14:25:08.551Z",
+   "endedAt": "2026-11-06T14:25:08.554Z",
+   "ms": 3,
+   "model": null,
+   "inputTokens": null,
+   "outputTokens": null,
+   "totalTokens": null,
+   "freshTokens": null,
+   "costUsd": null,
+   "interval": "steer-ack",
+   "outcome": "accepted",
+   "method": "turn/steer",
+   "threadId": "01a1b13e-5c21-7612-9a96-ad4c0aba24af",
+   "turnId": "01a1b13e-5fe7-7501-ae20-00cae6825480"
+  },
+  {
+   "agent": "claude",
+   "permit": "claude-grant-5",
+   "sentAt": null,
+   "startedAt": "2026-11-06T14:25:07.576Z",
+   "endedAt": "2026-11-06T14:25:10.713Z",
+   "ms": 3137,
+   "model": null,
+   "inputTokens": null,
+   "outputTokens": null,
+   "totalTokens": null,
+   "freshTokens": null,
+   "costUsd": null,
+   "interval": "stdin-ack",
+   "outcome": null,
+   "method": null,
+   "threadId": null,
+   "turnId": null
+  },
+  {
+   "agent": "claude",
+   "permit": "claude-grant-6",
+   "sentAt": null,
+   "startedAt": "2026-11-06T14:25:08.544Z",
+   "endedAt": "2026-11-06T14:25:10.715Z",
+   "ms": 2171,
+   "model": null,
+   "inputTokens": null,
+   "outputTokens": null,
+   "totalTokens": null,
+   "freshTokens": null,
+   "costUsd": null,
+   "interval": "stdin-ack",
+   "outcome": null,
+   "method": null,
+   "threadId": null,
+   "turnId": null
+  },
+  {
+   "agent": "codex",
+   "permit": "codex-grant-1",
+   "sentAt": null,
+   "startedAt": "2026-11-06T14:23:37.457Z",
+   "endedAt": "2026-11-06T14:26:59.360Z",
+   "ms": 201903,
+   "model": null,
+   "inputTokens": 379249,
+   "outputTokens": 6960,
+   "totalTokens": 386209,
+   "freshTokens": 48801,
+   "costUsd": null,
+   "interval": "active-turn",
+   "outcome": "interrupted",
+   "method": "turn/start",
+   "threadId": "01a1b13e-5c21-7612-9a96-ad4c0aba24af",
+   "turnId": "01a1b13e-5fe7-7501-ae20-00cae6825480"
+  },
+  {
+   "agent": "claude",
+   "permit": "claude-grant-1",
+   "sentAt": "2026-11-06T14:23:36.316Z",
+   "startedAt": "2026-11-06T14:23:41.946Z",
+   "endedAt": "2026-11-06T14:26:59.489Z",
+   "ms": 197543,
+   "model": null,
+   "inputTokens": null,
+   "outputTokens": null,
+   "totalTokens": null,
+   "freshTokens": null,
+   "costUsd": null,
+   "interval": "active-turn",
+   "outcome": "interrupted",
+   "method": null,
+   "threadId": null,
+   "turnId": null
+  }
+ ],
+ "grants": 12,
+ "stopped": true,
+ "events": 117,
+ "pass": {
+  "mechanical": false,
+  "criteria": {
+   "overlappingCalls": true,
+   "reactionEachDirection": true,
+   "changedByOther": true,
+   "sharedTestsPass": true,
+   "noStop": false,
+   "noWorkerFailure": false
+  },
+  "requiresManualReview": "references prove linkage, not substance: review the linked events, diffs and tests by hand"
+ }
+}

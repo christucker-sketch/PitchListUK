@@ -1,0 +1,10 @@
+[
+  {
+    "url": "https://example.test/fr/agenda/",
+    "html": "<a href=\"../../de/markt?jahr=2027#stand\">Marché → Markt</a><a href=\"/ja/祭り\">出店案内</a>"
+  },
+  {
+    "url": "https://example.test/de/markt",
+    "html": "<a href='/fr/agenda/'>Exposants</a><a href='#top'>oben</a><a href='javascript:alert(1)'>ignore</a>"
+  }
+]

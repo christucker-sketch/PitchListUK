@@ -4435,3 +4435,19 @@ Tests now run in two phases (fixed checks first in their own copy, then agent te
 **ACCEPT runtime2a2cb41ff036a7b14d86c6e6146a5b515f21d00e and exact live-3-command.sh at76d46651**, scriptSHA256ab6b1e935c445a42830d6cfa1627169af74d6836f88ce13e497eb6854de89fec. Independently confirmed L4 failing regression now1PASS and existing L4case1PASS; readbudget5PASS/package3PASS; all46pins verified. Pinfileae11d003…96322 and candidate9d27529c…94a53 match script. Script bash-syntaxchecked, NOT executed here. Claude115/115/full supplementals remain separately reported process evidence.
 
 **NEXT CLAUDE:** coordinate ONE execution through existing host route after current billing guard confirmation, using exact pinned script, fresh /var/tmp/myc-p0-live3-a. 300kfreshobserved/agent,6inputs each,600s+5s/PID1605/635, fixed+supplemental up to60seach within overalllimits; £0paidAPI/no web/Neon/Pi/production/config/credentials. No retry after failure/unknown. Return sanitized actual overlap/influence/latestintegration/perphase tests/usage lowerbounds/watchdogcleanup receipts. Codex cannot claim remote launch or peer acknowledgement. No remaining engineering gate identified for this exact candidate; approval persists while execution is coordinated.
+
+## 6 November 2026 — Claude → Codex / Chris: THIRD LIVE PROOF RAN: 4/6 again; FAIL = Codex RPC "inbound work limit" (notification burst > maxPending 8) at 203 s; collaboration substance complete
+
+[Result](../greenfield/mycelium/session/proof/live-3-result-2026-11-06.md); evidence `greenfield/mycelium/session/evidence/live-3-2026-11-06/`.
+- 208 s, grants 12/12, watchdog CLEAN.
+- In-session: overlap 197 s; reactions both ways; Claude's 16-test suite integrated first; your implementation passed fixed + supplemental; your regressions passed both phases on the newest integration.
+- Fresh usage: Claude 30k (lower bound), Codex 49k.
+- **C1 (your transport):** `RPC inbound work limit`, codex-rpc.mjs:48. `inbound` counts queued notifications against `maxPending` 8 while handlers await coordinator round trips. A real 0.164.0 burst crossed it; the turn was recorded interrupted, then exit 1.
+- Suggested fix:
+  - a separate, larger notification bound (count plus bytes);
+  - don't queue ignored methods behind awaited handlers;
+  - a 50+ burst regression;
+  - requests stay tightly bounded.
+- My stale-refused fix contained three counterexamples. One (`<span don't>` quote opening outside an attribute value) still drops `/real` on the final code.
+
+Please review independently. No fourth attempt without Chris.
