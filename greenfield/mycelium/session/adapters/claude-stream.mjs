@@ -25,13 +25,34 @@ export function claudeArgs({ mcpConfig, sessionId }) {
     '--allowedTools', 'mcp__myc__myc_publish,mcp__myc__myc_submit,mcp__myc__myc_inbox,mcp__myc__myc_read', '--session-id', sessionId];
 }
 
+// M3 delta reads, Claude side: the adapter (not the model's memory) decides which bases this session holds COMPLETELY. A
+// full read (no paths, not headOnly, not truncated) or a complete delta from a held base makes its head held; selective,
+// head-only, truncated or omitted results never do. A delta from a base not held is refused here, bounded, before any
+// coordinator call; the state advances only after the reply was charged and delivered (budget refusal = no advance).
+export function createReadGuard() {
+  const held = new Set();
+  return {
+    held,
+    check(args) {
+      if (args?.sinceIntegration === undefined) return null;
+      if (!held.has(args.sinceIntegration)) return { delta: true, since: args.sinceIntegration, refused: 'base-not-held-completely', fullReadRequired: true, changed: [], deleted: [], files: [], omitted: [], complete: false };
+      return null;
+    },
+    delivered(args, reply) {
+      if (!reply || reply.refused) return;
+      if (reply.delta) { if (reply.complete === true && !reply.selective && held.has(reply.since)) held.add(reply.integration); return; }
+      if (!args?.headOnly && !(Array.isArray(args?.paths) && args.paths.length) && reply.truncated === false && typeof reply.integration === 'string') held.add(reply.integration);
+    }
+  };
+}
+
 export async function* agentRun({ agent, config, worktree, inbox, runtime }) {
   if (agent !== 'claude' || !runtime?.reserve || !runtime?.publish || !runtime?.signal) throw new Error('Claude adapter needs the trusted runtime');
   const maxContextBytes = config.maxContextBytes ?? 24000, maxDeliveries = config.maxDeliveries ?? 5;
   let contextBytes = 0;
   const charge = s => { contextBytes += Buffer.byteLength(s); if (contextBytes > maxContextBytes) throw new Error('context byte budget exhausted; no silent truncation'); };
   // the model's tool calls arrive here through the MCP bridge
-  const unread = [];
+  const unread = [], readGuard = createReadGuard();
   const sock = join(process.env.MYC_RUNTIME_DIR ?? process.env.HOME, `myc-${process.pid}.sock`);   // private per-worker runtime dir
   rmSync(sock, { force: true });
   const server = createServer({ allowHalfOpen: true }, c => {   // half-open: the bridge ends its request, then reads our reply
@@ -44,7 +65,11 @@ export async function* agentRun({ agent, config, worktree, inbox, runtime }) {
         const { op, args } = JSON.parse(buf);
         if (op === 'publish') reply = await runtime.publish({ type: 'event', kind: args.kind, body: args.body, refIds: args.refIds ?? [] });
         else if (op === 'submit') reply = await runtime.publish({ type: 'files', files: args.files, message: args.message, refIds: args.refIds ?? [], base: args.base });
-        else if (op === 'read') { reply = await runtime.read({ paths: args.paths }); charge(JSON.stringify(reply)); }
+        else if (op === 'read') {
+          const local = readGuard.check(args);
+          if (local) { reply = local; charge(JSON.stringify(reply)); }
+          else { reply = await runtime.read({ paths: args.paths, headOnly: args.headOnly, sinceIntegration: args.sinceIntegration }); charge(JSON.stringify(reply)); readGuard.delivered(args, reply); }
+        }
         else if (op === 'inbox') {
           const events = unread.splice(0).map(e => ({ id: e.id, actor: e.actor, kind: e.kind, body: e.body, refs: e.refs, data: e.kind === 'tested' ? { ok: e.data?.ok, tail: e.data?.tail } : undefined }));
           const text = JSON.stringify(events); charge(text);

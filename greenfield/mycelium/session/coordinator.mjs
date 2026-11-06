@@ -109,6 +109,8 @@ export async function runSession(opts) {
   const wt = {}, branch = a => `session/${id}/${a}`;
   for (const a of [...AGENTS, 'integration']) { wt[a] = join(dir, 'wt-' + a); await git(repo, 'worktree', 'add', '-q', '-b', branch(a), wt[a], baseRef); }
   for (const a of [...AGENTS, 'integration']) { await git(wt[a], 'config', 'user.name', a === 'integration' ? 'session-coordinator' : `${a}-agent`); await git(wt[a], 'config', 'user.email', `${a}@mycelium.invalid`); }
+  // Every integration commit this session has published: the only bases a delta read may start from (never arbitrary history).
+  const integrationHistory = new Set([(await git(wt.integration, 'rev-parse', 'HEAD')).stdout.trim()]);
   const calls = { claude: 0, codex: 0 }, permits = new Map(), workers = {}, limited = new Set();
   let observedTokens = 0;
   // D4 (live 4 Nov): observed usage per agent = max(sum of the latest cumulative usage snapshot per thread/turn/session key,
@@ -206,6 +208,7 @@ export async function runSession(opts) {
         return append('coordinator', 'conflict', `merging ${agent} ${commit.data.sha.slice(0, 12)} into integration conflicted; integration unchanged`, { refs: [commit.seq], data: { agent, sha: commit.data.sha } });
       }
       const isha = (await git(wt.integration, 'rev-parse', 'HEAD')).stdout.trim();
+      integrationHistory.add(isha);
       return append('coordinator', 'merged', `integration ${isha.slice(0, 12)} now includes ${agent} ${commit.data.sha.slice(0, 12)}`, { refs: [commit.seq], data: { agent, sha: commit.data.sha, integration: isha } });
     });
     if (merged?.kind === 'merged' && testCmd && !stopping) {
@@ -228,6 +231,27 @@ export async function runSession(opts) {
     return { commit: commit.seq, merged: merged?.kind === 'merged' ? merged.seq : null, conflict: merged?.kind === 'conflict' ? merged.seq : null };
   }
 
+  // Delta read (M3, 6 Nov): only the allowlisted paths changed or deleted between a base this session published and the
+  // current head. Unknown / non-ancestor base -> a bounded definitive refusal (fullReadRequired), never arbitrary history
+  // and never an automatic full resend. complete=false (omitted paths, readBytes) means the caller must NOT treat the head
+  // as fully known; nothing advances on its behalf here.
+  async function deltaRead(head, all, m) {
+    const since = m.sinceIntegration, base = { integration: head, since, delta: true, changed: [], deleted: [], files: [], omitted: [] };
+    if (typeof since !== 'string' || !/^[0-9a-f]{40}$/.test(since) || !integrationHistory.has(since)) return { ...base, complete: false, refused: 'unknown-base', fullReadRequired: true };
+    try { await git(wt.integration, 'merge-base', '--is-ancestor', since, head); } catch { return { ...base, complete: false, refused: 'not-ancestor', fullReadRequired: true }; }
+    if (since === head) return { ...base, complete: true };
+    const lines = (await git(wt.integration, 'diff', '--name-status', '--no-renames', since, head, '--', ...allow)).stdout.split('\n').filter(Boolean).map(l => l.split('\t'));
+    const sel = Array.isArray(m.paths) && m.paths.length ? p => m.paths.includes(p) : () => true;
+    const changed = lines.filter(([s, p]) => s !== 'D' && all.includes(p) && sel(p)).map(([, p]) => p), deleted = lines.filter(([s, p]) => s === 'D' && sel(p)).map(([, p]) => p);
+    const files = [], omitted = []; let bytes = 0;
+    for (const p of changed) {
+      const content = (await git(wt.integration, 'show', `${head}:${p}`)).stdout;
+      if (bytes + Buffer.byteLength(content) > readBytes) { omitted.push(p); continue; }
+      files.push({ path: p, content }); bytes += Buffer.byteLength(content);
+    }
+    return { ...base, changed, deleted, files, omitted, complete: omitted.length === 0, selective: Array.isArray(m.paths) && m.paths.length > 0 };
+  }
+
   async function handle(a, m) {
     if (m.op === 'reserve') {
       if (existsSync(join(dir, 'STOP'))) { stop('STOP file'); throw new Error('session stopping'); }
@@ -246,6 +270,7 @@ export async function runSession(opts) {
     if (m.op === 'read') {   // the CURRENT integration state: its commit (the base for the next submission) and allowlisted files
       const head = (await git(wt.integration, 'rev-parse', 'HEAD')).stdout.trim();
       const all = (await git(wt.integration, 'ls-tree', '-r', '--name-only', head, '--', ...allow)).stdout.split('\n').filter(Boolean);
+      if (m.sinceIntegration !== undefined) return deltaRead(head, all, m);
       const want = m.headOnly ? [] : Array.isArray(m.paths) && m.paths.length ? all.filter(p => m.paths.includes(p)) : all;
       const files = []; let bytes = 0, truncated = false;
       for (const p of want) {

@@ -49,7 +49,7 @@ const runtime = {
   // the current integration commit (the base a submission must name) and its allowlisted files, within a byte budget
   // Independent durable cursor for model-initiated inbox reads; does not drain the steering buffer.
   pull(from) { return request('pull', { from }); },
-  read({ paths, headOnly } = {}) { return request('read', { paths, headOnly }); },
+  read({ paths, headOnly, sinceIntegration } = {}) { return request('read', { paths, headOnly, sinceIntegration }); },
   signal: ac.signal, rpc: null
 };
 process.on('message', async m => {
