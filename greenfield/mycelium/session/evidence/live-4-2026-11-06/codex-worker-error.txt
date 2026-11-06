@@ -1,0 +1,5 @@
+Error: bad submission
+    at CodexSession.handleTool (file:///var/tmp/myc-src.WOble2/session/adapters/codex-app-server.mjs:189:241)
+    at CodexSession.rpc.onRequest (file:///var/tmp/myc-src.WOble2/session/adapters/codex-app-server.mjs:42:31)
+    at file:///var/tmp/myc-src.WOble2/session/adapters/codex-rpc.mjs:51:43
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)

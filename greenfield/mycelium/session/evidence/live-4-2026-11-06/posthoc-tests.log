@@ -1,0 +1,39 @@
+post-hoc, offline, unshare --net as nobody, node v22.23.4, 2026-11-06T16:10:45Z; NOT in-session evidence (in-session: seq 139 PASS)
+== checks/frontier.test.mjs
+ok 1 - resolve relative link and preserve meaningful query
+ok 2 - single quotes, Unicode and nested label
+ok 3 - dedupe after fragment removal
+ok 4 - visited links do not reenter frontier
+ok 5 - reject non-web, credentialed and fragment-only links
+ok 6 - distinct queries remain distinct exploratory branches
+# tests 6
+# pass 6
+# fail 0
+== artifact/**/*.test.mjs
+ok 1 - fixture page 1: relative resolution, fragment stripped, query kept, Unicode text
+ok 2 - fixture page 2: fragment-only and javascript: rejected
+ok 3 - seen entries are normalized (fragment, Unicode encoding) before comparison
+ok 4 - entity-encoded ampersand in href and entities in text
+ok 5 - quoted '>' inside attribute does not end the tag
+ok 6 - uppercase tag/attr and unquoted values
+ok 7 - data-href and other *href attributes are not links
+ok 8 - anchors in comments, script, style are ignored
+ok 9 - credentialed and non-web URLs rejected
+ok 10 - whitespace-padded fragment-only href rejected
+ok 11 - dedupe keeps first occurrence (fragments collapse)
+ok 12 - nested markup stripped and whitespace collapsed in text
+ok 13 - hostile input does not throw
+ok 14 - named character references preserve multilingual breadcrumb labels
+ok 15 - ambiguous semicolonless references in attributes preserve query names
+ok 16 - character references decode once, without turning escaped text into markup
+ok 17 - duplicate attributes keep the first href, including when it is unsafe
+ok 18 - URL canonicalization deduplicates default ports and path dot segments
+ok 19 - distinct query strings remain separate frontier entries
+ok 20 - encoded credentials are rejected after URL parsing
+ok 21 - entity-encoded fragment-only hrefs are rejected after decoding
+ok 22 - an explicit self URL is filtered only when supplied in seen
+ok 23 - unknown entity names cannot resolve inherited object properties
+ok 24 - EOF inside an anchor start tag never creates a breadcrumb
+# tests 24
+# pass 24
+# fail 0

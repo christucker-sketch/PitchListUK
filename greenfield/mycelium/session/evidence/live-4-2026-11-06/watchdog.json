@@ -1,0 +1,33 @@
+{
+ "schema": "myc-watchdog-v1",
+ "id": "myc-p0-live-4",
+ "slice": "mycp_myc_p0_live_4.slice",
+ "broker": "myc-session-myc-p0-live-4-broker",
+ "timer": "myc-watchdog-myc-p0-live-4",
+ "deadlineS": 605,
+ "brokerMaxS": 635,
+ "manifest": "/var/tmp/myc-src.WOble2/session/proof/first-live.candidate.json",
+ "armedAt": "2026-11-06T16:01:56.450Z",
+ "startedAt": "2026-11-06T16:01:56.453Z",
+ "endedAt": "2026-11-06T16:09:15.117Z",
+ "brokerExit": {
+  "code": 1,
+  "signal": null
+ },
+ "interrupted": null,
+ "fired": false,
+ "leftovers": {
+  "sliceProcs": 0,
+  "brokerProcs": 0,
+  "units": [],
+  "tagged": 0
+ },
+ "clean": true,
+ "brokerSummary": [
+  "Main processes terminated with: code=exited, status=1/FAILURE",
+  "Service runtime: 7min 18.449s",
+  "CPU time consumed: 5.664s",
+  "Memory peak: 18.7M (swap: 0B)"
+ ],
+ "taggedKilled": 0
+}
