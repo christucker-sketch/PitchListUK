@@ -110,3 +110,18 @@ test('R2: a refused usage report while the session is live stops the Claude adap
   } finally { for (const k of ['FAKE_CLAUDE_HANG', 'FAKE_CLAUDE_USAGE', 'FAKE_CLAUDE_STDIN', 'MYC_RUNTIME_DIR']) if (prev[k] === undefined) delete process.env[k]; else process.env[k] = prev[k]; }
   assert.equal(usageAttempts, 1, 'one refused publication, never retried'); assert.ok(Date.now() - t0 < 10000, 'stopped promptly although the turn would never end');
 });
+
+// ---- fresh-token cap (6 Nov proposal; owner: the budget must be enough to do real work) ----
+test('fresh tokens: cached re-reads do not count; the first live Codex usage was ~35k fresh of 230,937 total', () => {
+  const ev = [{ seq: 1, actor: 'codex', kind: 'note', at: '2026-11-04T00:01:56Z', refs: [], data: { threadId: 't', turnId: 'u', usage: { totalTokens: 230937, inputTokens: 228500, cachedInputTokens: 195456, outputTokens: 2437 } } },
+    { seq: 2, actor: 'claude', kind: 'note', at: '2026-11-04T00:01:57Z', refs: [], data: { sessionId: 's', usage: { totalTokens: 52000, inputTokens: 1000, cacheReadInputTokens: 45000, cacheCreationInputTokens: 5000, outputTokens: 1000 } } }];
+  const r = analyze(ev);
+  assert.equal(r.freshUsage.codex, 35481); assert.equal(r.freshUsage.claude, 7000);
+  assert.equal(r.usage.codex, 230937); assert.equal(r.usage.claude, 52000);
+});
+
+test('fresh tokens: the per-agent cap stops the pair; Claude-style usage without cache reads counts in full', async () => {
+  const r = await run('lr-fresh', { FAKE_CLAUDE_HANG: '1', FAKE_CLAUDE_USAGE: '8000' }, { maxFreshTokensPerAgent: 20000, maxWallMs: 15000 });
+  assert.match(r.events.find(e => e.kind === 'stop').body, /claude fresh tokens 24000 reached the 20000 per-agent cap/);
+  assert.equal(r.report.freshUsage.claude, 24000); assert.equal(r.report.freshUsage.codex, null);
+});

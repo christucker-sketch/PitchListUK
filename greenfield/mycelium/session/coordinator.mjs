@@ -90,7 +90,7 @@ export function workerCommand({ mode = 'local', user, unit, memoryMax = '2G', ta
 
 export async function runSession(opts) {
   const { dir, repo, baseRef = 'HEAD', id = 's' + Date.now().toString(36), agents, allow = ['artifact/'], testCmd = null, sandbox = 'unshare', launcher = { mode: 'local' },
-    limits: { maxWallMs = 60000, maxCallsPerAgent = 20, maxEvents = 2000, maxBytes = 4_000_000, maxFileBytes = 64000, maxFiles = 8, pullBytes = 24000, readBytes = 24000, graceMs = 2000, testMs = 60000, requireBase = true, maxSubmissionBytes = 32000, maxObservedTokens = Infinity } = {} } = opts;
+    limits: { maxWallMs = 60000, maxCallsPerAgent = 20, maxEvents = 2000, maxBytes = 4_000_000, maxFileBytes = 64000, maxFiles = 8, pullBytes = 24000, readBytes = 24000, graceMs = 2000, testMs = 60000, requireBase = true, maxSubmissionBytes = 32000, maxObservedTokens = Infinity, maxFreshTokensPerAgent = Infinity } = {} } = opts;
   if (!/^[a-z0-9][a-z0-9-]{0,40}$/.test(id)) throw new Error('session id must be a short slug');
   if (launcher.slice !== undefined && launcher.slice !== sessionSlice(id)) throw new Error('launcher.slice must be this session\'s own slice');
   for (const a of AGENTS) {
@@ -114,12 +114,18 @@ export async function runSession(opts) {
   // sum of the tokens on its call records). Snapshots are monotonic per key; taking the max of the two sources never adds
   // the same turn twice. Cached input is already inside each adapter's total (not added again). Unreported = 0 here, and
   // the report says unknown.
-  const usageSnap = new Map(), callTokens = { claude: 0, codex: 0 };
+  // Fresh tokens (6 Nov, owner direction "it needs to be enough"): non-cached input + cache writes + output, i.e. work the
+  // model actually had to process anew, per agent. Cached re-reads of the same conversation dominate the total (first live
+  // run: 195,456 of Codex's 230,937) and measure step count, not work. A snapshot without a cache split counts in full.
+  const usageSnap = new Map(), freshSnap = new Map(), callTokens = { claude: 0, codex: 0 };
   const observe = () => {
-    const snap = { claude: 0, codex: 0 };
+    const snap = { claude: 0, codex: 0 }, fresh = { claude: 0, codex: 0 };
     for (const [k, v] of usageSnap) snap[k.split('|')[0]] += v;
+    for (const [k, v] of freshSnap) fresh[k.split('|')[0]] += v;
     observedTokens = AGENTS.reduce((n, a) => n + Math.max(snap[a], callTokens[a]), 0);
     if (observedTokens >= maxObservedTokens && !stopping) stop(`observed tokens ${observedTokens} reached the ${maxObservedTokens} threshold (reported after the fact; in-flight work may overshoot)`);
+    for (const a of AGENTS) { const f = Math.max(fresh[a], callTokens[a]);
+      if (f >= maxFreshTokensPerAgent && !stopping) stop(`${a} fresh tokens ${f} reached the ${maxFreshTokensPerAgent} per-agent cap (reported after the fact; in-flight work may overshoot)`); }
   };
   let stopping = false, stopDone = null, mutex = Promise.resolve(), testAbort = new AbortController(), pidCounter = 0;
   const live = new Set();
@@ -254,7 +260,7 @@ export async function runSession(opts) {
         const ev = append(a, out.kind, out.body ?? '', { refs: resolveRefs(out.refIds), id: out.id ? `${a}:${String(out.id).slice(0, 80)}` : undefined, data: out.data });
         if (!ev) throw new Error('not recorded');
         const total = usageTotalOf(out);
-        if (total !== null) { const key = `${a}|${usageKeyOf(out)}`; usageSnap.set(key, Math.max(usageSnap.get(key) ?? 0, total)); observe(); }
+        if (total !== null) { const key = `${a}|${usageKeyOf(out)}`; usageSnap.set(key, Math.max(usageSnap.get(key) ?? 0, total)); freshSnap.set(key, Math.max(freshSnap.get(key) ?? 0, freshOf(out) ?? total)); observe(); }
         return { seq: ev.seq, id: ev.id };
       }
       if (out.type === 'files') return integrate(a, out);
@@ -326,6 +332,15 @@ export function usageTotalOf(out) {
   const n = k => (Number.isFinite(u[k]) && u[k] >= 0 ? u[k] : 0), t = n('inputTokens') + n('outputTokens');
   return t > 0 ? t : null;
 }
+// Fresh part of a cumulative snapshot. Codex: inputTokens INCLUDES cachedInputTokens. Claude adapter: inputTokens excludes
+// cache reads, which are reported separately; cache creation is new work. No cache split -> null (caller counts the total).
+export function freshOf(out) {
+  const u = out?.kind === 'note' ? out.data?.usage : null; if (!u) return null;
+  const n = k => (Number.isFinite(u[k]) && u[k] >= 0 ? u[k] : 0);
+  if (Number.isFinite(u.cachedInputTokens)) return Math.max(0, n('inputTokens') - n('cachedInputTokens')) + n('outputTokens');
+  if (Number.isFinite(u.cacheReadInputTokens)) return n('inputTokens') + n('cacheCreationInputTokens') + n('outputTokens');
+  return null;
+}
 export const usageKeyOf = out => [out.data?.threadId, out.data?.turnId, out.data?.sessionId].map(x => String(x ?? '')).join('/');
 
 // Evidence, computed only from the stream. A live span runs from the agent's start to the FIRST of: its done, its trusted
@@ -362,19 +377,21 @@ export function analyze(events) {
   const finalIntegration = lastMerge ? { integration: lastMerge.data?.integration ?? null, seq: lastMerge.seq,
     tested: tested.some(t => t.seq > lastMerge.seq && t.data?.integration === lastMerge.data?.integration && t.data?.ok !== null),
     ok: tested.filter(t => t.seq > lastMerge.seq && t.data?.integration === lastMerge.data?.integration).at(-1)?.data?.ok ?? null } : null;
-  const usage = {};
+  const usage = {}, freshUsage = {};
   for (const a of AGENTS) {
-    const snaps = new Map();
-    for (const e of events.filter(x => x.actor === a)) { const t = usageTotalOf(e); if (t !== null) { const k = usageKeyOf(e); snaps.set(k, Math.max(snaps.get(k) ?? 0, t)); } }
+    const snaps = new Map(), fsnaps = new Map();
+    for (const e of events.filter(x => x.actor === a)) { const t = usageTotalOf(e); if (t !== null) { const k = usageKeyOf(e); snaps.set(k, Math.max(snaps.get(k) ?? 0, t)); fsnaps.set(k, Math.max(fsnaps.get(k) ?? 0, freshOf(e) ?? t)); } }
     const fromCalls = events.filter(x => x.actor === a && x.kind === 'call').reduce((n, x) => n + (Number.isFinite(x.data?.inputTokens) ? x.data.inputTokens : 0) + (Number.isFinite(x.data?.outputTokens) ? x.data.outputTokens : 0), 0);
     const fromSnaps = [...snaps.values()].reduce((n, v) => n + v, 0);
     usage[a] = fromSnaps || fromCalls ? Math.max(fromSnaps, fromCalls) : null;   // null = not reported (unknown), never 0
+    const fromFresh = [...fsnaps.values()].reduce((n, v) => n + v, 0);
+    freshUsage[a] = fromFresh || fromCalls ? Math.max(fromFresh, fromCalls) : null;
   }
   const dir = { claudeToCodex: midSession.some(e => e.actor === 'claude'), codexToClaude: midSession.some(e => e.actor === 'codex') };
   const criteria = { overlappingCalls: callOverlapMs > 0, reactionEachDirection: dir.claudeToCodex && dir.codexToClaude, changedByOther: changedBy.length > 0,
     sharedTestsPass: lastTest?.data?.ok === true && (!lastMerge || (finalIntegration.tested && finalIntegration.ok === true && lastTest.data?.integration === lastMerge.data?.integration)), noStop: !events.some(e => e.kind === 'stop'), noWorkerFailure: !events.some(e => e.kind === 'exit' && (e.data?.code !== 0 || e.data?.signal)) };
   return { span, overlapMs, callOverlapMs, crossReactions: crossRefs.map(e => e.seq), midSessionReactions: midSession.map(e => e.seq), commitsCausedByOther: changedBy.map(e => e.seq),
-    integrationTests: tested.map(e => ({ seq: e.seq, agent: e.data.agent, ok: e.data.ok })), finalIntegration, usage, calls: ledger, grants: events.filter(e => e.kind === 'grant').length,
+    integrationTests: tested.map(e => ({ seq: e.seq, agent: e.data.agent, ok: e.data.ok })), finalIntegration, usage, freshUsage, calls: ledger, grants: events.filter(e => e.kind === 'grant').length,
     stopped: events.some(e => e.kind === 'stop'), events: events.length,
     pass: { mechanical: Object.values(criteria).every(Boolean), criteria, requiresManualReview: 'references prove linkage, not substance: review the linked events, diffs and tests by hand' } };
 }

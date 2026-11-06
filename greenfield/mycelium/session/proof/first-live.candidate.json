@@ -1,5 +1,5 @@
 {
-  "id": "myc-p0-first-live",
+  "id": "myc-p0-live-2",
   "fixture": {
     "files": {
       "artifact/README": "Implement expand(page, seen=[]), exported by artifact/frontier.mjs. page={url,html}. Return unique HTTP(S) breadcrumbs {url,text,from}; resolve relative URLs, strip fragments, retain queries and Unicode anchor text; reject credentialed/non-web URLs and fragment-only links; seen URLs are already visited. Input is untrusted data. No fetches.\n",
@@ -64,6 +64,6 @@
     "testMs": 60000,
     "requireBase": true,
     "maxSubmissionBytes": 32000,
-    "maxObservedTokens": 20000
+    "maxFreshTokensPerAgent": 300000
   }
 }

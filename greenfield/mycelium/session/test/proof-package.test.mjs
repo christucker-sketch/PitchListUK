@@ -9,7 +9,7 @@ test('pinned candidate manifest exactly matches source, with equal-status prompt
  assert.deepEqual(m.agents.claude.command,['/home/myc/bin/myc-run','claude']);
 });
 test('candidate retains exact approved action/time limits and required base protection',()=>{
- const m=manifest();assert.equal(m.limits.maxCallsPerAgent*2,12);assert.equal(m.limits.maxWallMs,600000);assert.equal(m.limits.graceMs,5000);assert.equal(m.limits.requireBase,true);assert.equal(m.limits.maxObservedTokens,20000);assert.equal(m.sandbox,'systemd');assert.equal(m.launcher.mode,'systemd-scope');
+ const m=manifest();assert.equal(m.limits.maxCallsPerAgent*2,12);assert.equal(m.limits.maxWallMs,600000);assert.equal(m.limits.graceMs,5000);assert.equal(m.limits.requireBase,true);assert.equal(m.limits.maxFreshTokensPerAgent,300000);assert.ok(!('maxObservedTokens' in m.limits),'total incl. cached re-reads is reported, not the stop metric');assert.equal(m.sandbox,'systemd');assert.equal(m.launcher.mode,'systemd-scope');
 });
 test('fixed acceptance tests live outside model-write allowlist; no network workload or predefined discovery lanes',()=>{
  assert.ok(files['checks/frontier.test.mjs']);assert.ok(files['artifact/pages.json'].includes('出店'));
