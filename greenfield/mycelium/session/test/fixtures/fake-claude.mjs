@@ -3,7 +3,8 @@
 // would, and plays a scripted engineer: publishes a finding, polls myc_inbox during its turn, and replies to a Codex
 // finding with a linked reply and submission. FAKE_CLAUDE_STDIN=midturn consumes (replays) stdin messages at once;
 // =queue holds them until the current turn's result, as a CLI without mid-turn input would. Not a protocol claim.
-// Live-repair probes (4 Nov): FAKE_CLAUDE_ECHO_FIRST=1 replays the first prompt like the real CLI; FAKE_CLAUDE_HANG=1 keeps
+// Live-repair probes (4 Nov): the first prompt is replayed like the real CLI (FAKE_CLAUDE_NO_ECHO=1 suppresses it,
+// FAKE_CLAUDE_ECHO_DELAY=<ms> delays it); FAKE_CLAUDE_HANG=1 keeps
 // the first turn running (never a result); FAKE_CLAUDE_USAGE=<n> emits assistant messages reporting n tokens each;
 // FAKE_CLAUDE_DROP=1 sends one bridge request on a raw socket and vanishes before the reply (EPIPE on the adapter side).
 import { spawn } from 'node:child_process';
@@ -54,7 +55,9 @@ async function turn(first) {
 let started = false, chain = Promise.resolve();
 createInterface({ input: process.stdin }).on('line', l => {
   const m = JSON.parse(l);
-  if (!started) { started = true; if (process.env.FAKE_CLAUDE_ECHO_FIRST) out({ type: 'user', uuid: m.uuid, message: m.message }); chain = chain.then(() => turn(true)).then(drain); return; }
+  if (!started) { started = true; const echo = () => out({ type: 'user', uuid: m.uuid, message: m.message });   // like the real CLI with --replay-user-messages
+    if (!process.env.FAKE_CLAUDE_NO_ECHO) { const d = Number(process.env.FAKE_CLAUDE_ECHO_DELAY ?? 0); if (d) chain = chain.then(() => sleep(d)); chain = chain.then(echo); }
+    chain = chain.then(() => turn(true)).then(drain); return; }
   if (inTurn) { if (policy === 'midturn') incoming.push(m); else held.push(m); }
   else chain = chain.then(async () => { await react(consume(m)); await turn(false); });
 }).on('close', () => { stdinEnded = true; chain.then(() => { srv.kill(); process.exit(0); }); });

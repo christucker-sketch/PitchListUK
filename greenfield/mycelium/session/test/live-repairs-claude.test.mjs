@@ -8,6 +8,7 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
 import { runSession, analyze } from '../coordinator.mjs';
+import { agentRun } from '../adapters/claude-stream.mjs';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const repo = () => { const d = mkdtempSync(join(tmpdir(), 'myc-lr-repo-')), g = (...a) => execFileSync('git', a, { cwd: d });
   g('init', '-q', '-b', 'main'); g('config', 'user.name', 't'); g('config', 'user.email', 't@x.invalid'); mkdirSync(join(d, 'artifact')); writeFileSync(join(d, 'artifact', 'README'), 'b\n'); g('add', '-A'); g('commit', '-qm', 'b'); return d; };
@@ -22,8 +23,8 @@ test('D2: a bridge client that vanishes before the reply (EPIPE) does not crash 
 });
 
 test('D3: a confirmed Claude turn cut off by the stop is ledgered as active-turn/interrupted with its real interval; unconfirmed is unknown', async () => {
-  for (const [echo, interval] of [['1', 'active-turn'], ['', 'unknown']]) {
-    const r = await run('lr-d3' + (echo ? 'a' : 'b'), { FAKE_CLAUDE_HANG: '1', FAKE_CLAUDE_ECHO_FIRST: echo }, { maxWallMs: 2500 });
+  for (const [noEcho, interval] of [['', 'active-turn'], ['1', 'unknown']]) {
+    const r = await run('lr-d3' + (noEcho ? 'b' : 'a'), { FAKE_CLAUDE_HANG: '1', ...(noEcho ? { FAKE_CLAUDE_NO_ECHO: '1' } : {}) }, { maxWallMs: 2500 });
     const c = r.events.find(e => e.kind === 'call' && e.actor === 'claude' && e.data.permit === 'claude-grant-1');
     assert.ok(c, 'the cut-off turn has a call record');
     assert.equal(c.data.interval, interval); assert.equal(c.data.outcome, 'interrupted');
@@ -60,4 +61,52 @@ test('D5: the newest integration must itself be tested; an untested final merge 
   assert.equal(r.pass.criteria.sharedTestsPass, false); assert.deepEqual([r.finalIntegration.tested, r.finalIntegration.ok], [false, null]);
   r = analyze([e(1, 'merged', { integration: b }), e(2, 'tested', { integration: b, ok: null, refused: 'no sandbox', agent: 'claude' })]);
   assert.equal(r.pass.criteria.sharedTestsPass, false, 'NOT RUN is not a pass'); assert.equal(r.finalIntegration.tested, false);
+});
+
+// ---- R1 / R2 (Codex review of the repairs, 4 Nov) ----
+const call1 = r => r.events.find(e => e.kind === 'call' && e.actor === 'claude' && e.data.permit === 'claude-grant-1').data;
+
+test('R1: a confirmed interval starts at the CLI acceptance (delayed echo), not at the send; send time kept as sentAt', async () => {
+  const r = await run('lr-r1a', { FAKE_CLAUDE_HANG: '1', FAKE_CLAUDE_ECHO_DELAY: '1200' }, { maxWallMs: 3000 });
+  const c = call1(r);
+  assert.equal(c.interval, 'active-turn'); assert.equal(c.outcome, 'interrupted');
+  assert.ok(Date.parse(c.startedAt) - Date.parse(c.sentAt) >= 1100, `start ${c.startedAt} vs sent ${c.sentAt}`);
+  assert.equal(c.ms, Date.parse(c.endedAt) - Date.parse(c.startedAt));
+});
+
+test('R1: a turn whose start was never accepted stays unknown even when a result arrives later', async () => {
+  const r = await run('lr-r1b', { FAKE_CLAUDE_NO_ECHO: '1' });
+  const c = call1(r);
+  assert.equal(c.interval, 'unknown'); assert.equal(c.outcome, null); assert.equal(c.inputTokens, 900, 'the reported usage is still kept');
+});
+
+test('R1: a queued stdin delivery is active only from its consumption after the running turn ended; mid-turn ACKs are not activity', async () => {
+  const r = await run('lr-r1c', { FAKE_CLAUDE_STDIN: 'queue' });
+  const notes = r.events.filter(e => e.actor === 'claude' && /stdin delivery .* consumed/.test(e.body) && e.data.mode === 'queued');
+  assert.ok(notes.length >= 1, 'a delivery was queued');
+  const first = call1(r);
+  for (const n of notes) {
+    const permit = r.events.find(e => e.kind === 'grant' && e.data.agent === 'claude' && JSON.stringify(e.data.intent?.ids) === JSON.stringify(n.data.ids)).data.permit;
+    const c = r.events.find(e => e.kind === 'call' && e.data.permit === permit).data;
+    assert.equal(c.interval, 'active-turn'); assert.equal(c.startedAt, n.data.consumedAt); assert.equal(c.sentAt, n.data.sentAt);
+    assert.ok(Date.parse(c.startedAt) >= Date.parse(first.endedAt), 'not counted while the earlier turn was still running');
+  }
+  assert.ok(!r.events.some(e => e.kind === 'call' && e.data.interval === 'stdin-ack'), 'queue mode folds nothing mid-turn');
+});
+
+test('R2: a refused usage report while the session is live stops the Claude adapter; no retry, no further sampling', async () => {
+  const dir = mkdtempSync(join(tmpdir(), 'myc-r2-')); const wt = join(dir, 'wt'); mkdirSync(wt);
+  const ac = new AbortController(); let usageAttempts = 0, grants = 0, t0 = Date.now();
+  const runtime = { signal: ac.signal,
+    reserve: async () => ({ id: `claude-grant-${++grants}` }),
+    read: async () => ({ integration: 'a'.repeat(40), paths: [], files: [] }),
+    publish: async out => { if (out.kind === 'note' && out.data?.usage) { usageAttempts++; throw new Error('not recorded'); } return { seq: 1, id: 'x' }; } };
+  const inbox = { stopped: false, take: () => [], wait: ms => new Promise(r => setTimeout(r, ms)) };
+  process.env.MYC_RUNTIME_DIR = dir;
+  const cfg = { prompt: 'p', command: [process.execPath, join(HERE, 'fixtures', 'fake-claude.mjs')], idleMs: 500 };
+  const prev = { ...process.env }; Object.assign(process.env, { FAKE_CLAUDE_HANG: '1', FAKE_CLAUDE_USAGE: '1000', FAKE_CLAUDE_STDIN: 'midturn' });
+  try {
+    await assert.rejects((async () => { for await (const _ of agentRun({ agent: 'claude', config: cfg, worktree: wt, inbox, runtime })) {} })(), /usage report refused/);
+  } finally { for (const k of ['FAKE_CLAUDE_HANG', 'FAKE_CLAUDE_USAGE', 'FAKE_CLAUDE_STDIN', 'MYC_RUNTIME_DIR']) if (prev[k] === undefined) delete process.env[k]; else process.env[k] = prev[k]; }
+  assert.equal(usageAttempts, 1, 'one refused publication, never retried'); assert.ok(Date.now() - t0 < 10000, 'stopped promptly although the turn would never end');
 });

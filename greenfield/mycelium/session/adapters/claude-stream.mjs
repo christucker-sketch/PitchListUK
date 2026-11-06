@@ -66,6 +66,12 @@ export async function* agentRun({ agent, config, worktree, inbox, runtime }) {
   runtime.signal.addEventListener('abort', kill, { once: true });
   const exited = new Promise(res => child.on('close', code => res(code)));
   let ledgerFailure = null;
+  // R1 (Codex review): a turn is model-active only from the CLI's own acceptance of its message: the replay echo of the first
+  // prompt (confirmedAt) or the consumption of a queued/new-turn stdin delivery (consumedAt). The send time is kept as sentAt
+  // (dispatch timing only). With no acceptance seen the interval is 'unknown', even if a result arrives later.
+  const acceptedAt = t => t.viaDelivery ? deliveries.get(t.viaDelivery)?.consumedAt ?? null : t.confirmedAt ?? null;
+  const turnRecord = (t, extra) => { const a = acceptedAt(t), start = a ?? t.startedAt;
+    return { type: 'call', permit: t.permit, interval: a ? 'active-turn' : 'unknown', sentAt: t.startedAt, startedAt: start, endedAt: t.endedAt, ms: Date.parse(t.endedAt) - Date.parse(start), ...extra }; };
   const ledger = out => runtime.publish(out).catch(e => { ledgerFailure ??= e; });   // a lost ledger line is fatal, never silent
   const send = (uuid, text) => runtime.signal.aborted ? false : child.stdin.write(JSON.stringify({ type: 'user', uuid, message: { role: 'user', content: [{ type: 'text', text }] } }) + '\n');
   // turn bookkeeping: grants queue in the order messages were sent; each `result` closes the oldest open turn
@@ -79,10 +85,22 @@ export async function* agentRun({ agent, config, worktree, inbox, runtime }) {
   // D4: observed usage while a turn is still running. Assistant messages carry per-message usage (repeated across the content
   // blocks of one message): keep the maximum per message id, report the session's cumulative total, monotonic, at most
   // once a second. input + cache creation + cache read + output; never invented: absent fields count as 0, no usage = no note.
-  const perMessage = new Map(); let usageSent = 0, usageAt = 0, usageTimer = null;
+  // R2 (Codex review): usageSent advances only on the coordinator's acknowledgement; a refused or ambiguous publication while
+  // the session is live is fatal (ledgerFailure -> the loop throws -> the pair stops), never retried; during a stop that is
+  // already under way the remainder is simply left unreported (unknown), not claimed as sent.
+  const perMessage = new Map(); let usageSent = 0, usageAt = 0, usageTimer = null, usageInFlight = null, usageFailed = false;
   const usageTotal = () => { const t = { inputTokens: 0, outputTokens: 0, cacheReadInputTokens: 0, cacheCreationInputTokens: 0 }; for (const u of perMessage.values()) for (const k in t) t[k] += u[k]; return { ...t, totalTokens: t.inputTokens + t.outputTokens + t.cacheReadInputTokens + t.cacheCreationInputTokens }; };
-  const reportUsage = () => { usageTimer = null; const u = usageTotal(); if (u.totalTokens <= usageSent) return; usageSent = u.totalTokens; usageAt = Date.now();
-    return runtime.publish({ type: 'event', kind: 'note', body: 'Claude cumulative token usage', data: { sessionId, usage: u, costUsd: null } }).catch(() => {}); };
+  const reportUsage = () => {
+    usageTimer = null;
+    if (usageFailed) return null;
+    if (usageInFlight) { usageTimer = setTimeout(reportUsage, 200); return usageInFlight; }   // one publication at a time
+    const u = usageTotal(); if (u.totalTokens <= usageSent) return null; usageAt = Date.now();
+    usageInFlight = runtime.publish({ type: 'event', kind: 'note', body: 'Claude cumulative token usage', data: { sessionId, usage: u, costUsd: null } })
+      .then(() => { usageSent = Math.max(usageSent, u.totalTokens); },
+        e => { usageFailed = true; if (!runtime.signal.aborted && !inbox.stopped) ledgerFailure ??= new Error(`usage report refused: ${e.message}`); })
+      .finally(() => { usageInFlight = null; });
+    return usageInFlight;
+  };
   const noteUsage = (id, u) => {
     const n = k => (Number.isFinite(u?.[k]) && u[k] >= 0 ? u[k] : 0), cur = { inputTokens: n('input_tokens'), outputTokens: n('output_tokens'), cacheReadInputTokens: n('cache_read_input_tokens'), cacheCreationInputTokens: n('cache_creation_input_tokens') };
     const prev = perMessage.get(id); perMessage.set(id, prev ? Object.fromEntries(Object.keys(cur).map(k => [k, Math.max(prev[k], cur[k])])) : cur);
@@ -107,8 +125,7 @@ export async function* agentRun({ agent, config, worktree, inbox, runtime }) {
       const t = turns.find(x => !x.endedAt && !(x.viaDelivery && !deliveries.get(x.viaDelivery).consumedAt)) ?? turns.find(x => !x.endedAt); if (!t) return;
       t.endedAt = new Date().toISOString(); turnActive = turns.some(x => !x.endedAt); if (!turnActive) idleSince = Date.now();
       const u = m.usage ?? {};
-      ledger({ type: 'call', permit: t.permit, interval: 'active-turn', startedAt: t.startedAt, endedAt: t.endedAt, ms: Date.parse(t.endedAt) - Date.parse(t.startedAt), model: m.model ?? null,
-        inputTokens: u.input_tokens ?? null, outputTokens: u.output_tokens ?? null, costUsd: null }).catch(() => {});
+      ledger(turnRecord(t, { model: m.model ?? null, inputTokens: u.input_tokens ?? null, outputTokens: u.output_tokens ?? null, costUsd: null })).catch(() => {});
       if (typeof m.total_cost_usd === 'number') runtime.publish({ type: 'event', kind: 'note', body: `Claude turn result (${m.subtype ?? 'result'}); API-equivalent ${m.total_cost_usd} USD, not billed under subscription`, data: { apiEquivalentUsd: m.total_cost_usd, permit: t.permit } }).catch(() => {});
     }
   });
@@ -138,12 +155,12 @@ export async function* agentRun({ agent, config, worktree, inbox, runtime }) {
     // D3 (live 4 Nov): a turn cut off by STOP/the pair stopping is still recorded, under its grant, with its real start and the
     // observed end: 'active-turn' + outcome 'interrupted' only if the CLI confirmed it took the message in, else 'unknown'.
     // Tokens stay null here (partial usage is in the cumulative usage notes); money null.
-    if (usageTimer) { clearTimeout(usageTimer); await reportUsage(); }
+    if (usageTimer) { clearTimeout(usageTimer); usageTimer = null; }
+    await usageInFlight; if (!usageFailed) await reportUsage();
     const cut = new Date().toISOString();
     for (const t of turns.filter(x => !x.endedAt)) {
-      const confirmed = t.viaDelivery ? !!deliveries.get(t.viaDelivery)?.consumedAt : !!t.confirmedAt;
       t.endedAt = cut;
-      await ledger({ type: 'call', permit: t.permit, interval: confirmed ? 'active-turn' : 'unknown', outcome: 'interrupted', startedAt: t.startedAt, endedAt: cut, ms: Date.parse(cut) - Date.parse(t.startedAt), model: null, inputTokens: null, outputTokens: null, costUsd: null });
+      await ledger(turnRecord(t, { outcome: 'interrupted', model: null, inputTokens: null, outputTokens: null, costUsd: null }));
     }
     try { child.stdin.end(); } catch {}
     await Promise.race([exited, new Promise(r => setTimeout(r, 3000))]); kill();

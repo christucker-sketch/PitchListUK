@@ -262,7 +262,7 @@ export async function runSession(opts) {
         const p = permits.get(out.permit);
         if (!p || p.agent !== a || p.used) throw new Error('a call record needs an unused grant of this agent');
         p.used = true;
-        const ev = append(a, 'call', `${a} model dispatch under ${out.permit}: ${out.ms ?? '?'} ms`, { refs: [bus.byId(out.permit).seq], data: { permit: out.permit, startedAt: out.startedAt ?? null, endedAt: out.endedAt ?? null, ms: out.ms ?? null, model: out.model ?? null, inputTokens: out.inputTokens ?? null, outputTokens: out.outputTokens ?? null, costUsd: out.costUsd ?? null, interval: out.interval ?? (agents[a].adapter === 'fake' ? 'simulated' : 'unknown'), outcome: out.outcome ?? null, method: out.method ?? null, threadId: out.threadId ?? null, turnId: out.turnId ?? null } });
+        const ev = append(a, 'call', `${a} model dispatch under ${out.permit}: ${out.ms ?? '?'} ms`, { refs: [bus.byId(out.permit).seq], data: { permit: out.permit, sentAt: out.sentAt ?? null, startedAt: out.startedAt ?? null, endedAt: out.endedAt ?? null, ms: out.ms ?? null, model: out.model ?? null, inputTokens: out.inputTokens ?? null, outputTokens: out.outputTokens ?? null, costUsd: out.costUsd ?? null, interval: out.interval ?? (agents[a].adapter === 'fake' ? 'simulated' : 'unknown'), outcome: out.outcome ?? null, method: out.method ?? null, threadId: out.threadId ?? null, turnId: out.turnId ?? null } });
         // observed tokens (as reported, possibly after the fact): past the threshold the session stops. Not a hard cap.
         callTokens[a] += (Number.isFinite(out.inputTokens) ? out.inputTokens : 0) + (Number.isFinite(out.outputTokens) ? out.outputTokens : 0);
         observe();

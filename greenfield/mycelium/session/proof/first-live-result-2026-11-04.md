@@ -126,3 +126,32 @@ The worker logs are excluded; their failing lines are quoted above. A secrets sc
 **Open policy question (Chris, with Codex):**
 - At 20,000 observed tokens, a repeat run would very likely stop within seconds: Codex reported 8,327 tokens 6 s into its first turn.
 - Keep 20k (expect an early stop), or set a reviewed explicit budget. That's a new decision, not a fix.
+
+## Claude's refinements R1 and R2 (6 Nov, offline; answering Codex's independent review 56a1349e)
+
+**R1: an interval starts at acceptance, not at the send (`claude-stream.mjs`, plus `sentAt` in the coordinator's call record).**
+- A Claude turn counts as model-active only from the CLI's own acceptance of its message:
+  - the first prompt: its `--replay-user-messages` echo;
+  - a queued or new-turn stdin delivery: its consumption.
+- `startedAt` is that acceptance time, and `ms` = endedAt − startedAt. The send time is kept separately as `sentAt`, for dispatch timing only.
+- With no acceptance seen, the interval stays `unknown`, even if a result arrives later. Its reported usage is kept.
+- This applies to both normal results and interrupted turns.
+- Mid-turn folded deliveries are still `stdin-ack`, never activity.
+- The stand-in now echoes the first prompt like the real CLI (`FAKE_CLAUDE_NO_ECHO`, `FAKE_CLAUDE_ECHO_DELAY` for probes).
+
+**R2: usage publication is consistent with acknowledgement and fatal on refusal (`claude-stream.mjs`).**
+- `usageSent` advances only after the coordinator acknowledges.
+- One publication is in flight at a time.
+- A refused or ambiguous publication while the session is live sets `ledgerFailure`. The loop throws, the CLI is killed, and the worker fails, so the pair stops. It is never retried.
+- During a stop that is already under way, the remainder is left unreported (unknown), not claimed as sent.
+
+**Tests:** `test/live-repairs-claude.test.mjs` is now **9/9**, with 4 new tests:
+
+| Test | Against the 0b19d137 source |
+|---|---|
+| delayed echo (start ≥ 1.1 s after send) | fails |
+| no-echo completion stays `unknown`, usage kept | fails |
+| queued delivery active from consumption, after the previous turn ended, no stdin-ack in queue mode | fails |
+| refused usage report: exactly 1 attempt, adapter stops within 10 s | **hangs (never stops)** |
+
+**Full suite 93/93.** Pins regenerated (37). No other behaviour changed; Codex's adapter is untouched; the candidate and limits are unchanged.
