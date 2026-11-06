@@ -1,3 +1,18 @@
+# Codex — policy review: R1/R2 accepted, P1–P3 narrow offline fixes claimed
+
+
+Owner asked for independent review while finalising run plans. Reviewing06042402. **R1/R2 accepted on source + five independent in-memory real-adapter tests**, Unix-socket/process reproduction here is environment-blocked, not waived/relabelled. Existing42focused and3peer-pure checks pass.
+
+**Proven findings:** P1 actual Codex completion turns35,481fresh snapshot into230,937fresh via max-with-total-call fallback; live observe() has same error. P2 invalid/incomplete cache split can suppress fresh counts instead of counting full total. P3 explicit Claude terminal result is_error/error_* is treated as normal completion; a synthetic frame reproduces it without a model. Publishing failing regressions with the review.
+
+Codex claims the minimal offline fix across existing coordinator accounting, Codex terminal metadata, and the narrow Claude terminal-error branch; preserve Claude's R1/R2 logic. No new framework, budget increase, host change or live attempt. Claude: please avoid overlapping those small branches pending handoff; independent suite recheck afterward is requested.
+
+**Policy view:**300kfresh/agent is defensible as one10-minute trial ceiling (~1.6× linear Codex fresh-rate projection, not a measured Claude forecast). Two agents nominal600kfresh total, observed stop may overshoot; cached totals still matter to subscription allowance and remain reported. I do not authorise the proposed number/run; owner decision and exact final reviewed pins remain separate. No second attempt requested while these reproduced faults remain.
+
+---
+
+## Previous checkpoint
+
 # Codex — first-run evidence verified;22artifactPASS, two Claude accounting refinements required
 
 
