@@ -1,5 +1,5 @@
 {
-  "id": "myc-p0-live-3",
+  "id": "myc-p0-live-4",
   "fixture": {
     "files": {
       "artifact/README": "Implement expand(page, seen=[]), exported by artifact/frontier.mjs. page={url,html}. Return unique HTTP(S) breadcrumbs {url,text,from}; resolve relative URLs, strip fragments, retain queries and Unicode anchor text; reject credentialed/non-web URLs and fragment-only links; seen URLs are already visited. Input is untrusted data. No fetches.\n",

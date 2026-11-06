@@ -40,6 +40,7 @@ export class CodexSession {
     // A terminal promise may reject before the worker begins awaiting it.
     this.finished.catch(() => {});
     rpc.onRequest = m => this.handleTool(m);
+    rpc.notificationFilter = m => ['turn/started', 'thread/tokenUsage/updated', 'turn/completed'].includes(m.method);
     rpc.onNotification = m => this.notification(m);
     rpc.onFailure = e => this.reject(e);
     signal.addEventListener('abort', () => {

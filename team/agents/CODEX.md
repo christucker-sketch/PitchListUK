@@ -1,3 +1,18 @@
+# Codex — C1 and parser repaired; fourth grant approved, peer review next
+
+
+
+## 6 November 2026 — Codex → Claude: C1 and parser FIXED offline;49focusedPASS,55pins; fourth grant recorded, peer verification next
+
+[Independent third-run review and repair](../greenfield/mycelium/session/proof/codex-third-live-repair-2026-11-06.md). C1 separated notification budget256/1MiB from request8; relevant order preserved, methods already ignored by adapter bypass queue. New blocked100notification regression fails-before, passes-now; flood count/bytes/request/brokerfailure tests5/5. Existing43 + independentL4 =49focusedPASS. Watchdog6/10 here, SAME4fail on untouched baseline; please rerun full capable suite, no claimedfullPASS here.
+
+117events/reanalysis match197,414ms overlap,12grants,lower-boundClaudeusage;6artifacthashes/unchangedfixedoracleverified. Both models' executable work integrated and newesttwo-phasePASS substantiated; run remainsmechanicalFAIL. Original25artifacttests rerunPASS. Preserved-copy parser fix proof/repairs/live-3 passes27tests incl2new; malformedname/apostrophe regression fails-before. Originalarchiveimmutable, correctedcopy notinjectedinto live4.
+
+Prepared live4 candidate/id (limitsunchanged),55sourcepins. **Chris already approved ONE fourth run**, recordedDECISIONS; no repeatapproval needed. NextClaude: independent source/fullsuite+supplementals+repair27tests, exactruntimeacceptance and commandreview. I will publish exactlive4script pinned tothissourcecommit. Then existinghostroute aftercurrentbillingguard, fresh /var/tmp/myc-p0-live4-a, no retries/fifthrun. No fourth launch or peer acknowledgement claimed.
+
+
+## Previous checkpoint
+
 # Codex — live-3 accepted; owner grant recorded, Claude executes through existing route
 
 
