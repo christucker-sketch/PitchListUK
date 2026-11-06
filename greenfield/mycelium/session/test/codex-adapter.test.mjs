@@ -58,9 +58,10 @@ test('no exec/resume fallback when active turn rejects steering; ambiguity is no
   assert.equal(wire.filter(x => x.method === 'turn/steer').length, 1);
 });
 
-test('context overflow fails explicitly before inference; no silent oldest-event drop', async () => {
+test('context overflow pauses intake before inference; no silent oldest-event drop', async () => {
   const { s, wire } = fixture({ maxContextBytes: 100 }); await s.start('x');
-  await assert.rejects(s.deliver([{ id: 'e1', body: 'x'.repeat(200) }]), /context byte budget/);
+  assert.equal((await s.deliver([{ id: 'e1', body: 'x'.repeat(200) }])).reason, 'context-budget');
+  assert.equal(s.canDeliver, false);
   assert.ok(!wire.some(x => x.method === 'turn/steer'));
 });
 

@@ -75,12 +75,13 @@ export class CodexSession {
     d.activeStartedAt ??= new Date().toISOString();
     this.startedAt = d.activeStartedAt;
   }
-  get canDeliver() { return this.deliveries < this.maxDeliveries; }
-  async pauseDeliveries() {
+  get canDeliver() { return !this.deliveryIntakePaused && this.deliveries < this.maxDeliveries; }
+  async pauseDeliveries(reason = 'delivery-limit', withheldEventIds = []) {
     if (this.deliveryIntakePaused) return;
     this.deliveryIntakePaused = true;
-    await this.publish({ type: 'event', kind: 'note', body: 'Codex delivery intake paused at its configured limit; unread peer events remain in the durable bus/inbox, not delivered to the model',
-      data: { deliveryIntakePaused: true, deliveries: this.deliveries, maxDeliveries: this.maxDeliveries, retainedIn: 'durable-bus-and-inbox' } });
+    this.deliveryPauseReason = reason;
+    await this.publish({ type: 'event', kind: 'note', body: 'Codex delivery intake paused; withheld peer events remain in the durable bus, not delivered to the model',
+      data: { deliveryIntakePaused: true, reason, withheldEventIds, deliveries: this.deliveries, maxDeliveries: this.maxDeliveries, remainingContextBytes: this.maxContextBytes - this.contextBytes, retainedIn: 'durable-bus-and-inbox' } });
   }
   async record(d, interval, outcome, cutoff = new Date().toISOString()) {
     if (d.recorded) return;
@@ -132,10 +133,14 @@ export class CodexSession {
     if (!fresh.length) return;
     if (!this.canDeliver) {
       await this.pauseDeliveries();
-      return { delivered: false, reason: 'delivery-limit', retainedIn: 'durable-bus' };
+      return { delivered: false, reason: this.deliveryPauseReason, retainedIn: 'durable-bus' };
+    }
+    const payload = JSON.stringify({ source: 'untrusted-shared-events', events: fresh });
+    if (Buffer.byteLength(payload) + 256 > this.maxContextBytes - this.contextBytes) {
+      await this.pauseDeliveries('context-budget', fresh.map(e => e.id));
+      return { delivered: false, reason: 'context-budget', retainedIn: 'durable-bus' };
     }
     this.deliveries++;
-    const payload = JSON.stringify({ source: 'untrusted-shared-events', events: fresh });
     this.consume(payload);
     const ids = fresh.map(e => e.id), turnId = this.turnId;
     const r = await this.charge('turn/steer', () => this.rpc.request('turn/steer', { threadId: this.threadId, expectedTurnId: turnId, input: text(payload) }));

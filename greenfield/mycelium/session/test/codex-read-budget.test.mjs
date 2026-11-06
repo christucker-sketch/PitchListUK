@@ -55,3 +55,20 @@ test('repeated refusals cannot exceed or silently increase the cumulative ceilin
   }
   assert.ok(refused>1);assert.ok(exhausted);assert.ok(s.contextBytes<=800);assert.equal(s.maxContextBytes,800);
 });
+
+test('steering budget pause keeps active turn, records withheld IDs, spends no permit and allows a head read',async()=>{
+ const {s,rpc,wire,audit}=fixture({maxContextBytes:1200,read:async()=>({integration:'a'.repeat(40),files:{}})});
+ await s.start('prompt');
+ await s.deliver([{id:'first',body:'x'.repeat(400)}]);
+ const before=s.contextBytes, count=wire.filter(x=>x.method==='turn/steer').length;
+ const result=await s.deliver([{id:'withheld',body:'x'.repeat(800)}]);
+ assert.equal(result.reason,'context-budget');assert.equal(s.contextBytes,before);
+ assert.equal(s.deliveries,1);assert.equal(s.seen.has('withheld'),false);assert.equal(s.canDeliver,false);
+ assert.equal(wire.filter(x=>x.method==='turn/steer').length,count);
+ assert.equal(audit.filter(x=>x.reservation).length,2);
+ const paused=audit.find(x=>x.data?.reason==='context-budget');assert.deepEqual(paused.data.withheldEventIds,['withheld']);
+ assert.equal((await rpc.onRequest(request('after-pause',{headOnly:true}))).success,true);
+ await s.deliver([{id:'later',body:'small'}]);assert.equal(wire.filter(x=>x.method==='turn/steer').length,count);
+ assert.equal(audit.filter(x=>x.data?.deliveryIntakePaused).length,1);
+ await rpc.onNotification({method:'turn/completed',params:{threadId:'thread-1',turn:{id:'turn-1',status:'completed'}}});await s.finished;
+});
