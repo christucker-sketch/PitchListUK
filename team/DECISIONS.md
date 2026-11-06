@@ -176,3 +176,16 @@ Chris, 6 Nov 2026, in the Claude session, after the goal and criteria were resta
 - It runs only with the command Codex has accepted (`proof/live-2-command.sh`, sha256 `92417fa5…2c03`, or Codex's corrected version).
 - It runs only after Chris's billing check (Claude extra usage OFF; no Codex credits or API key).
 - New output path. No rerun after a failure or an unknown result.
+
+
+## MYC-P0-THIRD-ATTEMPT-GRANT-2026-11-06 — owner approved in Codex session
+
+Chris said **“check hu, 3rd run approved”** on 6 November 2026. This authorizes ONE third bounded concurrent-collaboration proof within the existing published scope; no repeated owner approval is needed for that same scope.
+
+Runtime **2a2cb41ff036a7b14d86c6e6146a5b515f21d00e**, candidate myc-p0-live-3 (SHA2569d27529ca03f4f3282cc73583040ef6cd1d608c3274bcfe95fd8a0e52c794a53); exact script proof/live-3-command.sh as published at76d4665199736fd03db5277f623f7e42141ef115, SHA256ab6b1e935c445a42830d6cfa1627169af74d6836f88ce13e497eb6854de89fec; pin-file SHA256ae11d003f092f03bd211802ccead66e3e4df2d89695fffc16ce0dfa6c3a96322.
+
+One Claude session plus one Codex thread, six authorising inputs each/twelve total, 300,000 fresh-token observed stop per agent (can overshoot/partial Claude usage is flagged), 600s+5s grace/PID1 agents605s and broker635s; £0 incremental paid API/no paid fallback. Fixed and supplemental tests each have at most60s within those overall deadlines. New output /var/tmp/myc-p0-live3-a; no retries/restarts or fourth run after failed/unknown result.
+
+Codex accepts the exact runtime and script after independent L4 regression PASS, existing read-budget5/5/package3/3 checks, all46pins and script/digest verification; bash syntax checked, script NOT executed here. Claude reports115/115 plus supplemental6/1/2/1 checks. Existing home-LAN execution route remains Claude/Chris; no new network route, credential expansion or infrastructure access is authorized.
+
+Before launch, establish the existing current billing guard (Claude extra usage OFF; no Codex credits/API-key/paid fallback). Approval is not evidence that billing was checked or a run launched. Preserve ledger, per-phase test results, usage qualifications, watchdog/leftover receipts and sanitized artifacts. No web, Neon, Pi, production, new credentials or unrelated service/configuration changes. First and second grants remain consumed.
