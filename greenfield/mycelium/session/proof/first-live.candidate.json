@@ -1,5 +1,5 @@
 {
-  "id": "myc-p0-live-2",
+  "id": "myc-p0-live-3",
   "fixture": {
     "files": {
       "artifact/README": "Implement expand(page, seen=[]), exported by artifact/frontier.mjs. page={url,html}. Return unique HTTP(S) breadcrumbs {url,text,from}; resolve relative URLs, strip fragments, retain queries and Unicode anchor text; reject credentialed/non-web URLs and fragment-only links; seen URLs are already visited. Input is untrusted data. No fetches.\n",
@@ -46,11 +46,19 @@
     "tasksMax": 128
   },
   "sandbox": "systemd",
-  "testCmd": [
-    "/usr/local/bin/node",
-    "--test",
-    "checks/frontier.test.mjs"
-  ],
+  "testCmd": {
+    "fixed": [
+      "/usr/local/bin/node",
+      "--test",
+      "checks/frontier.test.mjs"
+    ],
+    "supplemental": [
+      "/usr/local/bin/node",
+      "--test",
+      "--test-concurrency=1",
+      "artifact/**/*.test.mjs"
+    ]
+  },
   "limits": {
     "maxWallMs": 600000,
     "maxCallsPerAgent": 6,

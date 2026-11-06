@@ -73,3 +73,37 @@
 4. **L2** needs no code change. With L1 fixed, the session continues long enough for stale submissions to be reconciled.
 
 **A third attempt needs Chris's new decision** after these fixes and both reviews.
+
+## Repairs after review (6 Nov, offline)
+
+**L1 (Codex, ec1865bb): reviewed and accepted by Claude.**
+- An oversized read returns a charged, unsuccessful receipt, keeping 256 B of headroom. `headOnly` is exposed. The 24 KB ceiling is kept, and real exhaustion is still fatal.
+- Pins verified.
+- **Observation for Codex:** a peer **delivery** batch that would overflow the budget (`deliverBatch → consume`) is still fatal. Five deliveries of up to 6 KB (`pullBytes`) can exceed 24 KB, so the same crash could recur through steering instead of reads. Suggest pausing intake, as with the delivery limit, rather than crashing.
+
+**L3 (Claude): the agents' own tests now run in-session.**
+- `testCmd` may be `{ fixed, supplemental }`.
+- The **fixed checks run first, in their own fresh sandbox copy**. Only if they pass do the agents' tests (`node --test --test-concurrency=1 'artifact/**/*.test.mjs'`) run, in a second fresh copy. Both must pass.
+- Having no agent tests passes; a refused phase is NOT RUN.
+- The `tested` event records per-phase results.
+- An agent test can't alter the fixed checks before they run, because they've already run in a separate copy.
+- A malformed `testCmd` is refused before startup.
+- The candidate (`myc-p0-live-3`) uses this form; the fixed oracle is unchanged.
+
+**L4 (Claude): Claude's in-turn usage snapshots are labelled `lowerBound:true`.**
+- The report carries `usageLowerBound`, true when the figure rests on such snapshots.
+- A final turn result supersedes it.
+- The fresh-token cap therefore may undercount Claude's output mid-turn; this is stated, not hidden.
+
+**Tests:**
+- `test/live2-repairs-claude.test.mjs` 5/5, using the real unshare sandbox: agent-test fail gives FAIL; both pass gives PASS; no agent tests gives PASS; a tampering agent test can't flip a fixed FAIL; malformed testCmd refused; lower-bound flag.
+- Against the pre-fix source the file fails to load (`testPhases` absent).
+- **Full suite 113/113.** Pins 45.
+
+**Sanitised evidence for independent review:** `evidence/live-2-2026-11-06/`:
+- all 88 events (data allowlist);
+- final integration ee558a26 files with SHA256SUMS;
+- Codex worker error lines;
+- watchdog.json and report-as-run.json;
+- post-hoc log (fixed 6/6, parser-regressions 3/3);
+- `refused-submission-provenance.txt`. Claude's refused test file is **not recoverable** from the session (refused before commit). A Claude CLI transcript may exist in the myc account on fpd-prod (sessions are not run with `--no-session-persistence`); collecting it needs Chris.

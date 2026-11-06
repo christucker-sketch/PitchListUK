@@ -13,7 +13,7 @@ test('candidate retains exact approved action/time limits and required base prot
 });
 test('fixed acceptance tests live outside model-write allowlist; no network workload or predefined discovery lanes',()=>{
  assert.ok(files['checks/frontier.test.mjs']);assert.ok(files['artifact/pages.json'].includes('出店'));
- assert.deepEqual(manifest().testCmd,['/usr/local/bin/node','--test','checks/frontier.test.mjs']);
+ assert.deepEqual(manifest().testCmd.fixed,['/usr/local/bin/node','--test','checks/frontier.test.mjs']);assert.deepEqual(manifest().testCmd.supplemental,['/usr/local/bin/node','--test','--test-concurrency=1','artifact/**/*.test.mjs']);
  assert.equal(Object.keys(files).filter(p=>!p.startsWith('artifact/')&&!p.startsWith('checks/')).length,0);
  assert.ok(!('env' in manifest().agents.codex));
 });

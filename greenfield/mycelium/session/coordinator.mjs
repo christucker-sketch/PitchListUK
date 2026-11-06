@@ -93,6 +93,7 @@ export async function runSession(opts) {
     limits: { maxWallMs = 60000, maxCallsPerAgent = 20, maxEvents = 2000, maxBytes = 4_000_000, maxFileBytes = 64000, maxFiles = 8, pullBytes = 24000, readBytes = 24000, graceMs = 2000, testMs = 60000, requireBase = true, maxSubmissionBytes = 32000, maxObservedTokens = Infinity, maxFreshTokensPerAgent = Infinity } = {} } = opts;
   if (!/^[a-z0-9][a-z0-9-]{0,40}$/.test(id)) throw new Error('session id must be a short slug');
   if (launcher.slice !== undefined && launcher.slice !== sessionSlice(id)) throw new Error('launcher.slice must be this session\'s own slice');
+  if (testCmd) testPhases(testCmd);
   for (const a of AGENTS) {
     if (!/^[a-z0-9-]{1,40}$/.test(agents?.[a]?.adapter ?? '')) throw new Error(`agents.${a}.adapter must name a module in adapters/`);
     for (const k of Object.keys(agents[a].env ?? {})) if (!ENV_OK.test(k)) throw new Error(`agents.${a}.env may not set ${k}`);
@@ -208,8 +209,21 @@ export async function runSession(opts) {
       return append('coordinator', 'merged', `integration ${isha.slice(0, 12)} now includes ${agent} ${commit.data.sha.slice(0, 12)}`, { refs: [commit.seq], data: { agent, sha: commit.data.sha, integration: isha } });
     });
     if (merged?.kind === 'merged' && testCmd && !stopping) {
-      const t = await runSandboxed(testCmd, { repoDir: wt.integration, commit: merged.data.integration, backend: sandbox, timeoutMs: testMs, signal: testAbort.signal, slice: launcher.slice });
-      if (!stopping) append('coordinator', 'tested', `shared tests on integration ${merged.data.integration.slice(0, 12)}: ${t.refused ? 'NOT RUN (' + t.refused + ')' : t.ok ? 'PASS' : 'FAIL'}`, { refs: [merged.seq], data: { agent, integration: merged.data.integration, ok: t.refused ? null : t.ok, refused: t.refused ?? null, ms: t.ms ?? null, tail: t.tail ?? '' } });
+      // L3 (6 Nov): the fixed checks run FIRST in their own fresh sandbox copy, so nothing the agents wrote can alter them
+      // before they run; then, only if they pass, the agents' own tests run in a second fresh copy. Both must pass. A
+      // supplemental phase with no matching test files passes (nothing to run); a refused phase is NOT RUN, never a pass.
+      const phases = testPhases(testCmd), results = [];
+      for (const [phase, cmd] of phases) {
+        if (stopping) break;
+        const t = await runSandboxed(cmd, { repoDir: wt.integration, commit: merged.data.integration, backend: sandbox, timeoutMs: testMs, signal: testAbort.signal, slice: launcher.slice });
+        results.push({ phase, ok: t.refused ? null : t.ok, refused: t.refused ?? null, ms: t.ms ?? null, tail: t.tail ?? '' });
+        if (!t.ok) break;
+      }
+      const refused = results.find(r => r.refused)?.refused ?? null, done = results.length === phases.length;
+      const ok = refused ? null : done && results.every(r => r.ok === true);
+      const last = results.at(-1) ?? {};
+      if (!stopping) append('coordinator', 'tested', `shared tests on integration ${merged.data.integration.slice(0, 12)}: ${refused ? 'NOT RUN (' + refused + ')' : ok ? 'PASS' : 'FAIL'}${phases.length > 1 ? ' [' + results.map(r => `${r.phase} ${r.refused ? 'not run' : r.ok ? 'pass' : 'fail'}`).join(', ') + ']' : ''}`,
+        { refs: [merged.seq], data: { agent, integration: merged.data.integration, ok, refused, ms: results.reduce((n, r) => n + (r.ms ?? 0), 0) || null, tail: last.tail ?? '', phases: results.map(({ phase, ok, refused, ms }) => ({ phase, ok, refused, ms })) } });
     }
     return { commit: commit.seq, merged: merged?.kind === 'merged' ? merged.seq : null, conflict: merged?.kind === 'conflict' ? merged.seq : null };
   }
@@ -325,6 +339,15 @@ export async function runSession(opts) {
   return { id, events, report: analyze(events), worktrees: wt };
 }
 
+// testCmd: an argv (fixed checks only) or { fixed: argv, supplemental?: argv } (fixed first, then the agents' own tests).
+export function testPhases(testCmd) {
+  const argv = a => Array.isArray(a) && a.length > 0 && a.every(x => typeof x === 'string');
+  if (argv(testCmd)) return [['fixed', testCmd]];
+  if (testCmd && typeof testCmd === 'object' && argv(testCmd.fixed) && (testCmd.supplemental === undefined || argv(testCmd.supplemental)))
+    return [['fixed', testCmd.fixed], ...(testCmd.supplemental ? [['supplemental', testCmd.supplemental]] : [])];
+  throw new Error('testCmd must be an argv or { fixed: argv, supplemental?: argv }');
+}
+
 // A cumulative usage snapshot an adapter published as a note (Codex: thread/tokenUsage total; Claude: per-session sum).
 export function usageTotalOf(out) {
   const u = out?.kind === 'note' ? out.data?.usage : null;
@@ -393,7 +416,7 @@ export function analyze(events) {
   const finalIntegration = lastMerge ? { integration: lastMerge.data?.integration ?? null, seq: lastMerge.seq,
     tested: tested.some(t => t.seq > lastMerge.seq && t.data?.integration === lastMerge.data?.integration && t.data?.ok !== null),
     ok: tested.filter(t => t.seq > lastMerge.seq && t.data?.integration === lastMerge.data?.integration).at(-1)?.data?.ok ?? null } : null;
-  const usage = {}, freshUsage = {};
+  const usage = {}, freshUsage = {}, usageLowerBound = {};
   for (const a of AGENTS) {
     const snaps = new Map(), fsnaps = new Map();
     for (const e of events.filter(x => x.actor === a)) { const t = usageTotalOf(e); if (t !== null) { const k = usageKeyOf(e); snaps.set(k, Math.max(snaps.get(k) ?? 0, t)); fsnaps.set(k, Math.max(fsnaps.get(k) ?? 0, freshOf(e) ?? t)); } }
@@ -405,12 +428,16 @@ export function analyze(events) {
     usage[a] = snaps.size || knownCalls ? Math.max(fromSnaps, fromCalls) : null; // a reported zero is zero; absent/simulated usage is unknown
     const fromFresh = [...fsnaps.values()].reduce((n, v) => n + v, 0);
     freshUsage[a] = fsnaps.size || knownCalls ? Math.max(fromFresh, fromFreshCalls) : null;
+    // L4 (6 Nov): in-turn snapshots flagged lowerBound (Claude stream-json reports output usage as of each message's start)
+    // understate output until a final result arrives; say so when such a snapshot is what the figure rests on.
+    const lb = events.filter(x => x.actor === a && x.kind === 'note' && x.data?.usage && x.data.lowerBound === true);
+    usageLowerBound[a] = lb.length > 0 && fromSnaps >= fromCalls;
   }
   const dir = { claudeToCodex: midSession.some(e => e.actor === 'claude'), codexToClaude: midSession.some(e => e.actor === 'codex') };
   const criteria = { overlappingCalls: callOverlapMs > 0, reactionEachDirection: dir.claudeToCodex && dir.codexToClaude, changedByOther: changedBy.length > 0,
     sharedTestsPass: lastTest?.data?.ok === true && (!lastMerge || (finalIntegration.tested && finalIntegration.ok === true && lastTest.data?.integration === lastMerge.data?.integration)), noStop: !events.some(e => e.kind === 'stop'), noWorkerFailure: !events.some(e => e.kind === 'exit' && (e.data?.code !== 0 || e.data?.signal)) };
   return { span, overlapMs, callOverlapMs, crossReactions: crossRefs.map(e => e.seq), midSessionReactions: midSession.map(e => e.seq), commitsCausedByOther: changedBy.map(e => e.seq),
-    integrationTests: tested.map(e => ({ seq: e.seq, agent: e.data.agent, ok: e.data.ok })), finalIntegration, usage, freshUsage, calls: ledger, grants: events.filter(e => e.kind === 'grant').length,
+    integrationTests: tested.map(e => ({ seq: e.seq, agent: e.data.agent, ok: e.data.ok })), finalIntegration, usage, freshUsage, usageLowerBound, calls: ledger, grants: events.filter(e => e.kind === 'grant').length,
     stopped: events.some(e => e.kind === 'stop'), events: events.length,
     pass: { mechanical: Object.values(criteria).every(Boolean), criteria, requiresManualReview: 'references prove linkage, not substance: review the linked events, diffs and tests by hand' } };
 }

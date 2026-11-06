@@ -1,0 +1,18 @@
+post-hoc, offline, Claude cloud workspace, unshare --net as nobody, node v22.23.4, 2026-11-06T12:29:40Z; NOT in-session evidence (in-session: seq 56 PASS)
+== checks/frontier.test.mjs
+ok 1 - resolve relative link and preserve meaningful query
+ok 2 - single quotes, Unicode and nested label
+ok 3 - dedupe after fragment removal
+ok 4 - visited links do not reenter frontier
+ok 5 - reject non-web, credentialed and fragment-only links
+ok 6 - distinct queries remain distinct exploratory branches
+# tests 6
+# pass 6
+# fail 0
+== artifact/parser-regressions.test.mjs
+ok 1 - Unicode case expansion before raw text does not corrupt parser offsets
+ok 2 - text character references cannot be synthesized across markup
+ok 3 - plaintext consumes the remainder without introducing anchor tags
+# tests 3
+# pass 3
+# fail 0

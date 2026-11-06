@@ -95,7 +95,7 @@ export async function* agentRun({ agent, config, worktree, inbox, runtime }) {
     if (usageFailed) return null;
     if (usageInFlight) { usageTimer = setTimeout(reportUsage, 200); return usageInFlight; }   // one publication at a time
     const u = usageTotal(); if (u.totalTokens <= usageSent) return null; usageAt = Date.now();
-    usageInFlight = runtime.publish({ type: 'event', kind: 'note', body: 'Claude cumulative token usage', data: { sessionId, usage: u, costUsd: null } })
+    usageInFlight = runtime.publish({ type: 'event', kind: 'note', body: 'Claude cumulative token usage', data: { sessionId, usage: u, costUsd: null, lowerBound: true, basis: 'in-turn stream-json message usage; output counted as of each message start, so a lower bound until the turn result' } })
       .then(() => { usageSent = Math.max(usageSent, u.totalTokens); },
         e => { usageFailed = true; if (!runtime.signal.aborted && !inbox.stopped) ledgerFailure ??= new Error(`usage report refused: ${e.message}`); })
       .finally(() => { usageInFlight = null; });

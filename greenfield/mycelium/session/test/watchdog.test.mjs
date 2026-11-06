@@ -49,13 +49,13 @@ function rig() {
 
 test('plan: the candidate gets an absolute 605 s PID1 deadline on its own slice, broker limit 635 s, slice passed to run.mjs', () => {
   const m = candidate(), p = plan({ manifest: m, manifestPath: '/x/m.json', out: '/x/out' });
-  assert.equal(p.deadlineS, 605); assert.equal(p.brokerMaxS, 635); assert.equal(p.slice, 'mycp_myc_p0_live_2.slice');
+  assert.equal(p.deadlineS, 605); assert.equal(p.brokerMaxS, 635); assert.equal(p.slice, 'mycp_myc_p0_live_3.slice');
   assert.equal(p.slice, sessionSlice(m.id));
-  assert.ok(p.arm.includes('--on-active=605s') && p.arm.includes('--unit=myc-watchdog-myc-p0-live-2'));
+  assert.ok(p.arm.includes('--on-active=605s') && p.arm.includes('--unit=myc-watchdog-myc-p0-live-3'));
   assert.match(p.arm.at(-1), /^date -u \S+ >> \/x\/out\/deadline-fired; /); assert.ok(!p.killCmd.includes('deadline-fired'), 'cleanup kill does not fake a firing');
   assert.throws(() => plan({ manifest: m, manifestPath: 'm', out: '/x/o ut;rm' }), /plain absolute/);
-  assert.match(p.killCmd, /cgroup\/mycp_myc_p0_live_2\.slice\/cgroup\.kill/); assert.match(p.killCmd, /systemctl kill --signal=SIGKILL mycp_myc_p0_live_2\.slice/);
-  assert.ok(p.start.includes('RuntimeMaxSec=635') && p.start.includes('--setenv=MYC_SESSION_SLICE=mycp_myc_p0_live_2.slice') && p.start.includes('--unit=myc-session-myc-p0-live-2-broker'));
+  assert.match(p.killCmd, /cgroup\/mycp_myc_p0_live_3\.slice\/cgroup\.kill/); assert.match(p.killCmd, /systemctl kill --signal=SIGKILL mycp_myc_p0_live_3\.slice/);
+  assert.ok(p.start.includes('RuntimeMaxSec=635') && p.start.includes('--setenv=MYC_SESSION_SLICE=mycp_myc_p0_live_3.slice') && p.start.includes('--unit=myc-session-myc-p0-live-3-broker'));
   assert.equal(p.start.at(-1), '/x/out/run'); assert.equal(p.start.at(-2), '/x/m.json'); assert.match(p.start.at(-3), /run\.mjs$/);
 });
 

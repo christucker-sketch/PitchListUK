@@ -1,0 +1,10 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {expand} from '../artifact/frontier.mjs';
+const page=(html)=>({url:'https://example.test/fr/agenda/',html});
+test('resolve relative link and preserve meaningful query',()=>assert.deepEqual(expand(page('<a href="../../de/markt?jahr=2027#stand">Marché → Markt</a>')),[{url:'https://example.test/de/markt?jahr=2027',text:'Marché → Markt',from:'https://example.test/fr/agenda/'}]));
+test('single quotes, Unicode and nested label',()=>assert.deepEqual(expand(page("<a href='/ja/祭り'>出店 <b>案内</b></a>")),[{url:'https://example.test/ja/%E7%A5%AD%E3%82%8A',text:'出店 案内',from:'https://example.test/fr/agenda/'}]));
+test('dedupe after fragment removal',()=>assert.equal(expand(page('<a href="/x#a">a</a><a href="/x#b">b</a>')).length,1));
+test('visited links do not reenter frontier',()=>assert.equal(expand(page('<a href="/x#t">x</a>'),['https://example.test/x']).length,0));
+test('reject non-web, credentialed and fragment-only links',()=>assert.deepEqual(expand(page('<a href="javascript:bad()">x</a><a href="mailto:x@example.test">x</a><a href="https://u:p@other.test/">x</a><a href="#top">x</a>')),[]));
+test('distinct queries remain distinct exploratory branches',()=>assert.equal(expand(page('<a href="/x?p=1">1</a><a href="/x?p=2">2</a>')).length,2));

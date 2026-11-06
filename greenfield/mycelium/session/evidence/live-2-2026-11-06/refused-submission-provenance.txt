@@ -1,0 +1,6 @@
+Claude's stale-refused submission (seq 66, 144.818 s): base 0a12b4771b4c..., integration then ee558a26d454...
+The coordinator refuses a stale submission BEFORE committing, so its file contents are not in the session repository, the
+stream or the worktree (wt-claude contains only the fixture files). No worker-claude.log was written (no stderr).
+Possible provenance source NOT collected: the Claude CLI may have persisted its session transcript under the myc
+account's ~/.claude/projects on fpd-prod (claudeArgs does not pass --no-session-persistence). Retrieving it needs an
+owner-run read on fpd-prod; not done. Nothing here is reconstructed or inferred.

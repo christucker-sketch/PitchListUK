@@ -1,0 +1,5 @@
+1:Error: context byte budget exhausted; no silent truncation
+Error: context byte budget exhausted; no silent truncation
+    at CodexSession.consume (file:///var/tmp/myc-src.gsPI9h/session/adapters/codex-app-server.mjs:114:57)
+    at file:///var/tmp/myc-src.gsPI9h/session/adapters/codex-app-server.mjs:160:67
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
