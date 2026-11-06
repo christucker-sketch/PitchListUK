@@ -54,3 +54,17 @@ test('L4: Claude usage resting on in-turn snapshots is flagged as a lower bound;
   r = analyze([snap, { seq: 2, actor: 'claude', kind: 'call', at: '2026-11-06T00:00:02Z', refs: [], data: { interval: 'active-turn', model: 'claude', inputTokens: 20, outputTokens: 9000, totalTokens: 90000, freshTokens: 31000 } }]);
   assert.equal(r.usageLowerBound.claude, false); assert.equal(r.usage.claude, 90000); assert.equal(r.freshUsage.claude, 31000);
 });
+
+test('L4 coverage: every finished turn with a terminal total clears the flag; any later unfinished turn sets it again (fresh too)', () => {
+  const ev = (seq, kind, data) => ({ seq, actor: 'claude', kind, at: `2026-11-06T00:00:0${seq}Z`, refs: [], data });
+  const snap = n => ev(n, 'note', { sessionId: 's', lowerBound: true, usage: { inputTokens: 0, cacheCreationInputTokens: 40, cacheReadInputTokens: 450, outputTokens: 10, totalTokens: 500 } });
+  const done = (n, p) => ev(n, 'call', { permit: p, interval: 'active-turn', outcome: 'completed', totalTokens: 900, freshTokens: 90 });
+  let r = analyze([snap(1), done(2, 'a'), done(3, 'b')]);
+  assert.equal(r.usageLowerBound.claude, false); assert.equal(r.freshUsageLowerBound.claude, false);
+  r = analyze([snap(1), done(2, 'a'), ev(3, 'call', { permit: 'b', interval: 'unknown', outcome: 'interrupted', totalTokens: null })]);
+  assert.equal(r.usageLowerBound.claude, true); assert.equal(r.freshUsageLowerBound.claude, true);
+  r = analyze([snap(1)]);
+  assert.equal(r.usageLowerBound.claude, true, 'snapshots with no turn record at all (crash before ledger) are a lower bound');
+  r = analyze([snap(1), done(2, 'a'), ev(3, 'call', { permit: 'c', interval: 'stdin-ack', totalTokens: null })]);
+  assert.equal(r.usageLowerBound.claude, false, 'a mid-turn stdin ACK is not a turn and carries no usage of its own');
+});

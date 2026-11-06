@@ -430,14 +430,18 @@ export function analyze(events) {
     freshUsage[a] = fsnaps.size || knownCalls ? Math.max(fromFresh, fromFreshCalls) : null;
     // L4 (6 Nov): in-turn snapshots flagged lowerBound (Claude stream-json reports output usage as of each message's start)
     // understate output until a final result arrives; say so when such a snapshot is what the figure rests on.
-    const lb = events.filter(x => x.actor === a && x.kind === 'note' && x.data?.usage && x.data.lowerBound === true);
-    usageLowerBound[a] = lb.length > 0 && fromSnaps >= fromCalls;
+    // Coverage, not scalar dominance (Codex review 4171e47): the figure is a lower bound if lower-bound snapshots exist and
+    // ANY turn record of the agent lacks a terminal total (interrupted / failed / unknown usage), or no turn record exists
+    // at all. A larger total from an earlier finished turn says nothing about a later unfinished one. Applies to fresh too.
+    const lb = events.some(x => x.actor === a && x.kind === 'note' && x.data?.usage && x.data.lowerBound === true);
+    const turnRecords = calls.filter(x => ['active-turn', 'unknown'].includes(x.data?.interval));
+    usageLowerBound[a] = lb && (turnRecords.length === 0 || turnRecords.some(x => callTotalOf(x.data) === null));
   }
   const dir = { claudeToCodex: midSession.some(e => e.actor === 'claude'), codexToClaude: midSession.some(e => e.actor === 'codex') };
   const criteria = { overlappingCalls: callOverlapMs > 0, reactionEachDirection: dir.claudeToCodex && dir.codexToClaude, changedByOther: changedBy.length > 0,
     sharedTestsPass: lastTest?.data?.ok === true && (!lastMerge || (finalIntegration.tested && finalIntegration.ok === true && lastTest.data?.integration === lastMerge.data?.integration)), noStop: !events.some(e => e.kind === 'stop'), noWorkerFailure: !events.some(e => e.kind === 'exit' && (e.data?.code !== 0 || e.data?.signal)) };
   return { span, overlapMs, callOverlapMs, crossReactions: crossRefs.map(e => e.seq), midSessionReactions: midSession.map(e => e.seq), commitsCausedByOther: changedBy.map(e => e.seq),
-    integrationTests: tested.map(e => ({ seq: e.seq, agent: e.data.agent, ok: e.data.ok })), finalIntegration, usage, freshUsage, usageLowerBound, calls: ledger, grants: events.filter(e => e.kind === 'grant').length,
+    integrationTests: tested.map(e => ({ seq: e.seq, agent: e.data.agent, ok: e.data.ok })), finalIntegration, usage, freshUsage, usageLowerBound, freshUsageLowerBound: usageLowerBound, calls: ledger, grants: events.filter(e => e.kind === 'grant').length,
     stopped: events.some(e => e.kind === 'stop'), events: events.length,
     pass: { mechanical: Object.values(criteria).every(Boolean), criteria, requiresManualReview: 'references prove linkage, not substance: review the linked events, diffs and tests by hand' } };
 }
