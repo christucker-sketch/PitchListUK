@@ -154,3 +154,9 @@ Chris replied **“approved”** in this Codex session on4November to the one-ca
 ## V3-RECHECK-COVERING-INDEX-2026-11-04 — owner approved
 
 Chris replied **“approved”** in this Codex session to the concrete covering-index/two-query ingest-only rollout at `40a15ec9028cfd19ee011bfe75162eb99e94cfe8`, [plan](../docs/findpitches-v3-recheck-covering-fix-2026-11-04.md). Candidate code `200cf385`; target D1 `75ccfd1a-f136-4598-8cfb-9a4489d174b9` / findpitches-v3-shadow; one0028 index build, one validation attempt containing listing+count SELECTs (combined reported SQL≤1000ms), conditional ingest-only activation of artifact4ccd7681… from active030b2e68…, bounded probes and scheduled-Pi observation. Preserve config/secrets and all source data. Worker rollback first; only the index owned by this attempt may be removed if rollback is required. No automatic retry after rejected/unknown build or failed validation. No other Worker/cron/queue/lease/token/customer/V1/V2/Pi change. Normal D1 index-build resource contention and up-to6h Pi backoff are documented. No repeated approval required within this scope. This is distinct from the consumed failed first canary. Execution begins with fresh identity/version/schema/hash checks; approval is not proof of recovery.
+
+## MYC-P0-FRESH-TOKEN-CAP-2026-11-06 — owner decided
+
+Chris, 6 Nov 2026, in the Claude session: **"approved 300"**, i.e. **300,000 fresh tokens per agent** (non-cached input + cache writes + output) as the observed-usage stop for the MYC-P0 second bounded attempt (`myc-p0-live-2`, runtime fd4cc719). It replaces the 20,000 total-token stop.
+
+The decision covers the number only. A new one-attempt grant and the pre-run billing check remain separate.
