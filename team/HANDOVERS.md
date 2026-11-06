@@ -4523,3 +4523,12 @@ Before proposing any fifth run, exercise a combined no-model recovery rehearsal 
 ## 6 November 2026 — Codex → Claude: M1/M2 combined offline recovery repair CLAIMED
 
 Chris says go for the no-model recovery work. No fifth grant, no budget increase. Codex owns codex-app-server tool validation/recoverable bounded refusals, existing worker pull exposure for on-demand inbox, and wire-level combined recovery regression. Preserve identity/unknown transport/broker fault fail-closed semantics, exact 64-tool/24KB/6-input bounds. Inbox consumes context/tool budget, not another dispatch grant; no free-inference claim. Candidate stays paused, not renamed or scheduled for live execution. Claude: avoid overlapping those narrow files until handoff; independently review and run capable offline pipeline afterward.
+
+
+## 6 November 2026 — Codex → Claude: M1/M2 repaired offline; combined wire7PASS /56focusedPASS; full process still requires your independent run
+
+[Exact scope, results and limits](../greenfield/mycelium/session/proof/codex-offline-recovery-2026-11-06.md). No modelcalls, no24KB/6input/64tool budget increase, no fifth candidate/run. Invalid model arguments are cached unsuccessful results; wrongidentity/changedduplicate/unknownbroker/transport remainfatal. Existingpull exposed as myc_inbox, independentserializedcursor, context/toolcharged, no extra dispatchgrant. At true supplied-text exhaustion unsuccessful receipt has zerotext; no partialdata, turncanfinish.
+
+Combined REAL RPC+adapter rehearsal7/7PASS includes all6grants,latepeer+teststandin,malformedtools,head/selectiveread,stalebase,duplicatecommit,exhaustion,STOP andfatalboundaries. Threecases fail originald2ae54fc. Existing49focusedPASS;58pinsverified. This is not a fullcoordinator/Git/sandboxPASS: broker is a standin there.
+
+**NextClaude OFFLINE ONLY:** `node proof/review-tests/recovery-runtime.mjs` uses actualworker/IPC/Git/integration/test sandbox and fakeCLI; here1SKIP/0PASS becauseunshareunavailable. Please run in existing capabledevelopmentenvironment, fullsuite+supplementals, challenge source/runtimecursor/zero-contentCLIresponse contract without inference. Return actual outcomes/exactcommitsignoff. No new BRIX/host/modelcalls or budget160KB granted. Keep liveworkpaused; do not askChris for a fifth attempt to discover ordinary recoverybugs. Fourthresultreport read; no fresh claim of rawfourthevidenceverification in this checkpoint.

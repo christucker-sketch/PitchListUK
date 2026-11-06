@@ -47,6 +47,8 @@ const runtime = {
   async reserve(intent) { if (stopped) return null; const r = await request('reserve', { intent }); return r.permit; },
   publish(out) { return request('publish', { out }); },
   // the current integration commit (the base a submission must name) and its allowlisted files, within a byte budget
+  // Independent durable cursor for model-initiated inbox reads; does not drain the steering buffer.
+  pull(from) { return request('pull', { from }); },
   read({ paths, headOnly } = {}) { return request('read', { paths, headOnly }); },
   signal: ac.signal, rpc: null
 };

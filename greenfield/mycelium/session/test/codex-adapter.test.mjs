@@ -174,16 +174,16 @@ test('integration read is current, bounded and deduplicated without inference di
   assert.deepEqual(a,b); assert.equal(reads,1);
   assert.equal(JSON.parse(a.contentItems[0].text).files[0].content,'peer edit');
   assert.equal(wire.filter(x => x.method.startsWith('turn/')).length,1);
-  await assert.rejects(rpc.onRequest(toolRequest('myc_read', { paths: Array(17).fill('artifact/x') }, 'bad')), /bad read/);
+  assert.equal((await rpc.onRequest(toolRequest('myc_read', { paths: Array(17).fill('artifact/x') }, 'bad'))).success,false);
 });
 test('integration read exhausts context explicitly and never returns silently truncated context', async () => {
   const { s,rpc } = fixture({ maxContextBytes:100, read: async () => ({ integration:'a'.repeat(40),files:[{content:'x'.repeat(200)}] }) });
-  await s.start('x'); await assert.rejects(rpc.onRequest(toolRequest('myc_read',{})),/context byte budget/);
+  await s.start('x'); const refused=await rpc.onRequest(toolRequest('myc_read',{})); assert.equal(refused.success,false); assert.deepEqual(refused.contentItems,[]);
 });
 test('missing base is refused before publication; exact stale-base refusal is surfaced without retry', async () => {
   const { s,rpc,audit } = fixture(); await s.start('x');
   const args={files:[{path:'artifact/x',content:'x'}],message:'candidate',refIds:[]};
-  await assert.rejects(rpc.onRequest(toolRequest('myc_submit',args,'no-base')),/bad submission/);
+  assert.equal((await rpc.onRequest(toolRequest('myc_submit',args,'no-base'))).success,false);
   assert.equal(audit.filter(x=>x.type==='files').length,0);
   let submissions=0; s.publish=async out=>{ submissions++; assert.equal(out.base,'a'.repeat(40)); throw Error('stale submission: integration is now '+ 'b'.repeat(40)); };
   const req=toolRequest('myc_submit',{...args,base:'a'.repeat(40)},'stale');

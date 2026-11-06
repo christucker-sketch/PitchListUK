@@ -40,7 +40,7 @@ test('headOnly uses trusted runtime without returning all files',async()=>{
   const {s,rpc}=fixture({read:async a=>{args=a;return {integration:'b'.repeat(40),files:{}};}});
   await s.start('x');const r=await rpc.onRequest(request('head',{headOnly:true}));
   assert.equal(r.success,true);assert.deepEqual(args,{headOnly:true});
-  await assert.rejects(rpc.onRequest(request('bad',{headOnly:'yes'})),/bad read/);
+  assert.equal((await rpc.onRequest(request('bad',{headOnly:'yes'}))).success,false);
 });
 test('broker failures remain fatal and are not converted to budget refusals',async()=>{
   const {s,rpc}=fixture({read:async()=>{throw Error('broker unavailable');}});await s.start('x');
@@ -48,12 +48,13 @@ test('broker failures remain fatal and are not converted to budget refusals',asy
 });
 test('repeated refusals cannot exceed or silently increase the cumulative ceiling',async()=>{
   const {s,rpc}=fixture({maxContextBytes:800,read:async()=>({files:{x:'x'.repeat(2000)}})});await s.start('x');
-  let refused=0,exhausted=false;
+  let empty=0;
   for(let i=0;i<10;i++){
-    try{assert.equal((await rpc.onRequest(request(String(i)))).success,false);refused++;}
-    catch(e){assert.match(e.message,/context byte budget/);exhausted=true;break;}
+    const r=await rpc.onRequest(request(String(i)));assert.equal(r.success,false);
+    if(!r.contentItems.length)empty++;
   }
-  assert.ok(refused>1);assert.ok(exhausted);assert.ok(s.contextBytes<=800);assert.equal(s.maxContextBytes,800);
+  assert.ok(empty>0);assert.ok(s.contextBytes<=800);assert.equal(s.maxContextBytes,800);
+
 });
 
 test('steering budget pause keeps active turn, records withheld IDs, spends no permit and allows a head read',async()=>{

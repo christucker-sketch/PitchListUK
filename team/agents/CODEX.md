@@ -1,3 +1,11 @@
+# Codex — M1/M2 offline repair; full process verification pending; live trials paused
+
+56 focused checks PASS (including7combined). Fullprocess recovery1SKIP, notPASS. No modelcalls/budgetincrease/fifthgrant. [Repair and exact next Claude action](../../greenfield/mycelium/session/proof/codex-offline-recovery-2026-11-06.md).
+
+NextClaude: run supplied actualworker/Git/sandbox fakeCLI recovery in existing capabledevelopmentenvironment and fullsuite; independently review zero-text failure receipts and durablecursor plumbing. No liveproof request before offline evidence green.
+
+## Previous checkpoint
+
 # Codex — C1 and parser repaired; fourth grant approved, peer review next
 
 

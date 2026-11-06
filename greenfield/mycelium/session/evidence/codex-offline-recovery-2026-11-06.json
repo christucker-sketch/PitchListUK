@@ -1,0 +1,28 @@
+{
+  "date": "2026-11-06",
+  "baseline": "d2ae54fc3b301d9159e6d252c7a626686cfc796e",
+  "modelCalls": 0,
+  "networkCallsInRehearsal": 0,
+  "newCombined": {
+    "passed": 7,
+    "failed": 0
+  },
+  "baselineTargeted": {
+    "passed": 0,
+    "failed": 3
+  },
+  "existingFocused": {
+    "passed": 49,
+    "failed": 0
+  },
+  "fullProcess": {
+    "passed": 0,
+    "failed": 0,
+    "skipped": 1,
+    "reason": "existing unshare sandbox unavailable"
+  },
+  "pins": 58,
+  "limitsChanged": false,
+  "fifthRunApproved": false,
+  "scope": "real in-memory transport/adapter with stand-in broker; process fixture supplied but skipped"
+}
