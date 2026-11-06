@@ -1,0 +1,24 @@
+{
+  "date": "2026-11-06",
+  "base": "89aabc600a89a7559aaa5ab393ab11b8bffa8eb2",
+  "modelCalls": 0,
+  "newDeltaPassed": 8,
+  "existingFocusedPassed": 56,
+  "claudeGuardPassed": 1,
+  "claudeMemoryChecksPassed": 6,
+  "totalFocusedPassed": 71,
+  "openClaudeBudgetFailures": 1,
+  "fullProcessSkipped": 1,
+  "pins": 61,
+  "synthetic": {
+    "actualRun4": false,
+    "tokenBillingMeasurement": false,
+    "requestedFullBytes": 39367,
+    "requestedDeltaBytes": 18987,
+    "fullDeliveredCompleteSnapshots": 4,
+    "deltaDeliveredCompleteSnapshots": 6,
+    "maxContextBytes": 24000
+  },
+  "budgetsChanged": false,
+  "fifthRunApproved": false
+}

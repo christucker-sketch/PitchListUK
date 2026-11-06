@@ -13,6 +13,11 @@ async function main(){
  assert.ok(late,'late peer event must arrive after five steers without a new grant');
  assert.equal((await tool('myc_submit',{files:[null],refIds:[],message:'bad'})).success,false);
  const head=value(await tool('myc_read',{headOnly:true})).integration;
+ assert.equal((await tool('myc_read',{sinceIntegration:head})).success,false,'metadata is not a complete base');
+ value(await tool('myc_read',{}));
+ const unchanged=value(await tool('myc_read',{sinceIntegration:head}));
+ assert.equal(unchanged.delta,true,'sinceIntegration must traverse worker IPC to the real coordinator');
+ assert.equal(unchanged.complete,true);assert.deepEqual(unchanged.changed,[]);
  const args={base:'0'.repeat(40),files:[{path:'artifact/x.mjs',content:'export const x=1;\n'}],message:'recovered submission',refIds:[late.id]};
  assert.equal((await tool('myc_submit',args)).success,false);
  value(await tool('myc_submit',{...args,base:head}));

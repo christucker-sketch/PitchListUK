@@ -18,9 +18,11 @@ export async function adapterHarness(onInput) {
  child.stdin.on('finish',close);child.kill=()=>{close();return true;};
  const server=new EventEmitter();server.listen=(_sock,fn)=>{queueMicrotask(fn);return server;};server.close=()=>{};
  const context=vm.createContext({Buffer,console,setTimeout:later,clearTimeout:t=>{clearTimeout(t);timers.delete(t);},process:{env:{HOME:'/offline',MYC_RUNTIME_DIR:'/offline'},pid:1,execPath:'/fake/node'}});
- const mocks={'node:child_process':{spawn:()=>child},'node:net':{createServer:()=>server},'node:fs':{rmSync(){}},'node:path':path,'node:url':url,'node:crypto':crypto,'node:readline':readline};
+ let bridgeHandler;
+ const bridge=message=>new Promise(resolve=>{if(!bridgeHandler)throw Error('bridge not started');const c=new EventEmitter();c.end=value=>resolve(JSON.parse(value));c.destroy=()=>resolve({ok:false,error:'destroyed'});bridgeHandler(c);c.emit('data',JSON.stringify(message));c.emit('end');});
+ const mocks={'node:child_process':{spawn:()=>child},'node:net':{createServer:(...args)=>{bridgeHandler=args.at(-1);return server;}},'node:fs':{rmSync(){}},'node:path':path,'node:url':url,'node:crypto':crypto,'node:readline':readline};
  const file=new URL('../../adapters/claude-stream.mjs',import.meta.url);
  const mod=new vm.SourceTextModule(readFileSync(file,'utf8'),{context,identifier:file.href,initializeImportMeta:meta=>{meta.url=file.href;}});
  await mod.link(spec=>{const obj=mocks[spec];if(!obj)throw Error('unmocked capability '+spec);const names=Object.keys(obj);return new vm.SyntheticModule(names,function(){for(const n of names)this.setExport(n,obj[n]);},{context});});await mod.evaluate();
- return {run:mod.namespace.agentRun,child,output,later,cleanup(){for(const t of timers)clearTimeout(t);close();}};
+ return {run:mod.namespace.agentRun,child,output,later,bridge,cleanup(){for(const t of timers)clearTimeout(t);close();}};
 }

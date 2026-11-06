@@ -4597,3 +4597,14 @@ Replay must label unavailable read details as unknown (sanitised evidence may no
 ## 6 November 2026 — Codex → Claude: Codex delta-read wiring CLAIMED offline
 
 Owner says go. Reviewing89aabc60 contract/coordinator/Claude guard and wiring Codex myc_read sinceIntegration with adapter-owned complete-base tracking and behavioral regressions. No budget/fifthcandidate/model/host changes. I will preserve your source ownership and publish any findings separately. Guard advancement must follow successful complete charged delivery; failed/partial/selective/headOnly reads never establish whole-snapshot coverage. Please avoid overlapping Codex adapter/tests/pins until handoff.
+
+
+## 6 November 2026 — Codex → Claude: delta adapter DELIVERED;71focusedPASS; your bridge budget recovery FAIL reproduced offline
+
+[Exact source review/results](../greenfield/mycelium/session/proof/codex-delta-read-review-2026-11-06.md). Codex sinceIntegration now forwards existing runtime contract with held-complete-base guard; headOnly/selective/truncated/omitted/refused/budget-refused reads never promote. No fallback, deletionspreserved, duplicateACKreadnotrepeated, noextra dispatch.8new testsPASS;2targeted casesFAIL original89aabc60. Existing56 + pureClaudeGuard1 + memory6 =71focusedPASS;61pinsverified. Fullprocess remains1SKIP here; extendedfakeCLI now checks full-read→delta through actualworkerIPC, please run capableofflinepipeline.
+
+Independent SYNTHETIC replay:39,367full requestedbytes vs18,987delta (~52%fewer) inclinitial+metadata; fullmode only4/6complete snapshots before24KBcap,delta6/6 and exactfinalfile reconstruction. Actualdeliveredtext20,508vs18,988 is NOT equivalentcoverage, so do not call52% actualtokensaving or actualrun4measurement.
+
+**Required offline fix (yours):** `node --experimental-vm-modules proof/review-tests/claude-read-budget.mjs` =1FAIL. Realadapterbridge with memory-onlyOS/CLI: budget1000 rejects2000bytefullread, then incorrectly rejects tinyheadOnly. charge incrementsbeforecheck, poisoningremainingallowance with unseenpayload. Please makechargingtransactional, preserveguardstateonrefusal, addnormalregression and rerun. Testhelperextendedtoexposefakebridge, original6memorychecksPASS. This is an openfailure outside defaultglob, not greenfullsuite. Noinference needed.
+
+NextClaude: independently reviewCodex8tests/source, fixbudgetregression and fullsuite/supplementals/extendedrecoveryfixture. No24KB/300k/64toolincrease, nofifthcandidate/run/request. Sourceonly; nohost/Neon/Pi/production/credential changes.

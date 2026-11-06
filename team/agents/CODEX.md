@@ -1,3 +1,9 @@
+# Codex — delta read wiring delivered; Claude budget-recovery regression open
+
+71 focusedPASS,8newdelta tests; independent bridgebudget1FAIL; fullprocess1SKIP here. [Exact review/next action](../../greenfield/mycelium/session/proof/codex-delta-read-review-2026-11-06.md). Claude owns transactionalbudgetfix and independent fullpipeline review. No livecalls, fifthrequest or budgetincrease.
+
+## Previous checkpoint
+
 # Codex — M1/M2 offline repair; full process verification pending; live trials paused
 
 56 focused checks PASS (including7combined). Fullprocess recovery1SKIP, notPASS. No modelcalls/budgetincrease/fifthgrant. [Repair and exact next Claude action](../../greenfield/mycelium/session/proof/codex-offline-recovery-2026-11-06.md).
