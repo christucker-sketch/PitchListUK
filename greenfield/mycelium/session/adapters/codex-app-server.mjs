@@ -12,8 +12,8 @@ export const TOOLS = [
     { kind: { type: 'string', enum: ['finding', 'question', 'challenge', 'reply', 'note'] }, body: { type: 'string', maxLength: 4000 }, refIds: { type: 'array', items: { type: 'string' }, maxItems: 8 } }, ['kind', 'body', 'refIds']),
   tool('myc_submit', 'Submit candidate artifact files for trusted integration and tests. References identify findings that changed this work.',
     { base: { type: 'string', pattern: '^[0-9a-f]{40}$' }, files: { type: 'array', maxItems: 8, items: { type: 'object', additionalProperties: false, properties: { path: { type: 'string' }, content: { type: 'string' } }, required: ['path', 'content'] } }, message: { type: 'string' }, refIds: { type: 'array', items: { type: 'string' }, maxItems: 8 } }, ['files', 'message', 'refIds', 'base']),
-  tool('myc_read', 'Read current shared integration commit and allowlisted files. Use integration as submission base; read again after stale refusal.',
-    { paths: { type: 'array', maxItems: 16, items: { type: 'string' } } }, [])
+  tool('myc_read', 'Read current shared integration commit and allowlisted files. Use integration as submission base; headOnly reads the commit without files. Select paths to conserve the cumulative context budget; read again after stale refusal.',
+    { paths: { type: 'array', maxItems: 16, items: { type: 'string' } }, headOnly: { type: 'boolean' } }, [])
 ];
 
 // No turn/start or inference reservation: usable as a target-side no-model metadata check.
@@ -110,8 +110,9 @@ export class CodexSession {
     return this.threadId;
   }
   consume(s) {
-    this.contextBytes += Buffer.byteLength(s);
-    if (this.contextBytes > this.maxContextBytes) throw new Error('context byte budget exhausted; no silent truncation');
+    const bytes = Buffer.byteLength(s);
+    if (this.contextBytes + bytes > this.maxContextBytes) throw new Error('context byte budget exhausted; no silent truncation');
+    this.contextBytes += bytes;
   }
   deliver(events) {
     const p = this.deliveryQueue.then(() => this.deliverBatch(events));
@@ -155,9 +156,19 @@ export class CodexSession {
     const a = p.arguments;
     if (!a || typeof a !== 'object' || Array.isArray(a) || Buffer.byteLength(JSON.stringify(a)) > 32000) throw new Error('bad tool arguments');
     if (p.tool === 'myc_read') {
-      if (typeof this.read !== 'function' || Object.keys(a).some(k => k !== 'paths') || (a.paths !== undefined && (!Array.isArray(a.paths) || a.paths.length > 16 || a.paths.some(x => typeof x !== 'string')))) throw new Error('bad read arguments or missing trusted reader');
+      if (typeof this.read !== 'function' || Object.keys(a).some(k => !['paths', 'headOnly'].includes(k)) || (a.headOnly !== undefined && typeof a.headOnly !== 'boolean') || (a.paths !== undefined && (!Array.isArray(a.paths) || a.paths.length > 16 || a.paths.some(x => typeof x !== 'string')))) throw new Error('bad read arguments or missing trusted reader');
       const promise = Promise.resolve().then(() => { this.check(); return this.read(a); }).then(receipt => {
-        this.check(); const value = JSON.stringify(receipt); this.consume(value);
+        this.check(); const value = JSON.stringify(receipt);
+        const remaining = this.maxContextBytes - this.contextBytes;
+        // Leave bounded control headroom, rather than deliver a last large read that
+        // prevents explaining the next refusal. Count every newly supplied receipt.
+        if (Buffer.byteLength(value) + 256 > remaining) {
+          const refusal = JSON.stringify({ error: 'read_context_budget', remainingBytes: remaining,
+            action: 'Use headOnly:true or select fewer paths. No file content delivered.' });
+          this.consume(refusal); // True exhaustion still fails honestly; never exceeds the ceiling.
+          return { success: false, contentItems: [{ type: 'inputText', text: refusal }] };
+        }
+        this.consume(value);
         return { success: true, contentItems: [{ type: 'inputText', text: value }] };
       });
       this.tools.set(key, { signature, promise });
