@@ -160,3 +160,19 @@ Chris replied **“approved”** in this Codex session to the concrete covering-
 Chris, 6 Nov 2026, in the Claude session: **"approved 300"**, i.e. **300,000 fresh tokens per agent** (non-cached input + cache writes + output) as the observed-usage stop for the MYC-P0 second bounded attempt (`myc-p0-live-2`, runtime fd4cc719). It replaces the 20,000 total-token stop.
 
 The decision covers the number only. A new one-attempt grant and the pre-run billing check remain separate.
+
+## MYC-P0-SECOND-ATTEMPT-GRANT-2026-11-06 — owner approved
+
+Chris, 6 Nov 2026, in the Claude session, after the goal and criteria were restated: **"approved"**.
+
+**One** second bounded attempt of the MYC-P0 concurrent-collaboration proof, with:
+- runtime fd4cc71945858a9b5ab2191db5c7702c1d339d04 and candidate `myc-p0-live-2` (sha256 `2df2ca82…5815`);
+- one Claude session and one Codex thread, 6 authorising inputs each (12 total);
+- 600 s + 5 s, enforced by the PID1 watchdog (605/635 s);
+- **300,000 fresh tokens per agent**;
+- £0 incremental paid API; no web, Neon or production changes.
+
+**Conditions:**
+- It runs only with the command Codex has accepted (`proof/live-2-command.sh`, sha256 `92417fa5…2c03`, or Codex's corrected version).
+- It runs only after Chris's billing check (Claude extra usage OFF; no Codex credits or API key).
+- New output path. No rerun after a failure or an unknown result.
