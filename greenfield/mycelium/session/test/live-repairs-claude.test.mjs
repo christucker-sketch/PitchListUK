@@ -77,7 +77,7 @@ test('R1: a confirmed interval starts at the CLI acceptance (delayed echo), not 
 test('R1: a turn whose start was never accepted stays unknown even when a result arrives later', async () => {
   const r = await run('lr-r1b', { FAKE_CLAUDE_NO_ECHO: '1' });
   const c = call1(r);
-  assert.equal(c.interval, 'unknown'); assert.equal(c.outcome, null); assert.equal(c.inputTokens, 900, 'the reported usage is still kept');
+  assert.equal(c.interval, 'unknown'); assert.equal(c.outcome, 'completed'); assert.equal(c.inputTokens, 900, 'the reported usage is still kept');
 });
 
 test('R1: a queued stdin delivery is active only from its consumption after the running turn ended; mid-turn ACKs are not activity', async () => {

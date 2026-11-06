@@ -1,0 +1,112 @@
+{
+  "reviewedBase": "06042402c28d44dca81c6136974428c9413cdc67",
+  "modelsInvoked": 0,
+  "passedChecks": 61,
+  "tests": [
+    {
+      "name": "codex-live-regressions",
+      "command": [
+        "node",
+        "greenfield/mycelium/session/test/codex-live-regressions.test.mjs"
+      ],
+      "exit": 0,
+      "output": "\u2714 D1: sixth peer batch is explicitly withheld, never granted/ACKed or fatal to the active turn (3.420999ms)\n\u2714 D1: worker adapter stops taking durable peer batches at its cap but lets the active turn complete (77.27189ms)\n\u2714 D3: confirmed interrupted turn is ledgered as active BEFORE a slow interrupt acknowledgement (11.075429ms)\n\u2714 D3: accepted start response also confirms activity without a started notification (0.492902ms)\n\u2714 D3: ambiguous start without a confirmation remains unknown; no invented active interval (1.094207ms)\n\u2714 D3: concurrent STOP, duplicate started event and late completion cannot replace/duplicate interruption evidence (3.651565ms)\n\u2714 D3: overlap accepts confirmed interrupted intervals but STOP still prevents a mechanical PASS (0.7578ms)\n\u2714 D3: transport failure after a confirmed start keeps a conservative active interval, without claiming completion (0.361204ms)\n\u2714 D1: unknown steer and explicit allowance refusal still fail closed; no retry or cap relaxation (1.250713ms)\n\u2714 D3: completed turn ends at its terminal event, not at a later tool ACK or STOP (5.676734ms)\n\u2139 tests 10\n\u2139 suites 0\n\u2139 pass 10\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 111.036597\n"
+    },
+    {
+      "name": "codex-adapter",
+      "command": [
+        "node",
+        "greenfield/mycelium/session/test/codex-adapter.test.mjs"
+      ],
+      "exit": 0,
+      "output": "\u2714 one persistent thread receives deduplicated same-turn steering before completion (3.969375ms)\n\u2714 zero allowance prevents dispatch, including steering that may trigger additional inference (0.920285ms)\n\u2714 concurrent duplicate deliveries are serialized into one same-turn steer (0.483158ms)\n\u2714 no exec/resume fallback when active turn rejects steering; ambiguity is not retried (0.507273ms)\n\u2714 context overflow fails explicitly before inference; no silent oldest-event drop (0.435025ms)\n\u2714 dynamic tool publication happens during active turn, ACKed once and linked to peer event (0.73804ms)\n\u2714 submit uses broker, never edits worker filesystem; token costs remain unknown (0.681796ms)\n\u2714 abort sends turn/interrupt; old worker without trusted runtime cannot activate adapter (0.589987ms)\n\u2714 JSONL transport handles split UTF-8, out-of-order responses and server tool requests (3.366557ms)\n\u2714 transport closes on loss, bad JSON, excessive frame, or timeout; never retries (21.855394ms)\n\u2714 transport bounds server-request flood instead of accumulating unbounded async work (0.510869ms)\n\u2714 wire-level fake app-server publishes and reacts to steering before its one turn completes (1.901091ms)\n\u2714 integration read is current, bounded and deduplicated without inference dispatch (0.576127ms)\n\u2714 integration read exhausts context explicitly and never returns silently truncated context (0.392981ms)\n\u2714 missing base is refused before publication; exact stale-base refusal is surfaced without retry (0.659482ms)\n\u2139 tests 15\n\u2139 suites 0\n\u2139 pass 15\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 46.335807\n"
+    },
+    {
+      "name": "codex-boundary",
+      "command": [
+        "node",
+        "greenfield/mycelium/session/test/codex-boundary.test.mjs"
+      ],
+      "exit": 0,
+      "output": "\u2714 named permissions grant only the isolated worktree read access and no network; no root/home grant or inheritance (1.489512ms)\n\u2714 broad or ambiguous worktree/profile inputs are rejected (0.465801ms)\n\u2714 profile echo, no inheritance, cwd and approval policy are required; no silent read-only fallback (0.249305ms)\n\u2714 external MCP is refused, including incomplete pagination or malformed status (0.204337ms)\n\u2714 no allowance or inference when boundary fails: fallback (1.580859ms)\n\u2714 no allowance or inference when boundary fails: mcp (0.171208ms)\n\u2714 no allowance or inference when boundary fails: missing (0.254253ms)\n\u2714 no allowance or inference when boundary fails: cwd (0.193411ms)\n\u2714 no in-process skills-read route: cloud and executor discovery disabled, no selected capability roots (0.177997ms)\n\u2714 independent file-copy and history-note extensions are disabled explicitly (0.204698ms)\n\u2139 tests 10\n\u2139 suites 0\n\u2139 pass 10\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 11.1033\n"
+    },
+    {
+      "name": "codex-hardening-verification",
+      "command": [
+        "node",
+        "greenfield/mycelium/session/test/codex-hardening-verification.test.mjs"
+      ],
+      "exit": 0,
+      "output": "\u2714 V-01 real Codex adapter runtime must ledger the active turn and consumed steering grants (3.405676ms)\n\u2714 V-02 pre-existing STOP must refuse all dispatches at startup (22.136001ms)\n\u2714 V-03 SIGKILL exit must fail mechanical acceptance even when exit code is null (0.69807ms)\n\u2139 tests 3\n\u2139 suites 0\n\u2139 pass 3\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 30.936044\n"
+    },
+    {
+      "name": "proof-package",
+      "command": [
+        "node",
+        "greenfield/mycelium/session/test/proof-package.test.mjs"
+      ],
+      "exit": 0,
+      "output": "\u2714 pinned candidate manifest exactly matches source, with equal-status prompts and billing-guard commands (1.74697ms)\n\u2714 candidate retains exact approved action/time limits and required base protection (0.203757ms)\n\u2714 fixed acceptance tests live outside model-write allowlist; no network workload or predefined discovery lanes (0.183957ms)\n\u2139 tests 3\n\u2139 suites 0\n\u2139 pass 3\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 8.118459\n"
+    },
+    {
+      "name": "codex-final-integration-regression",
+      "command": [
+        "node",
+        "greenfield/mycelium/session/test/codex-final-integration-regression.test.mjs"
+      ],
+      "exit": 0,
+      "output": "\u2714 D5: a passing test of an older integration must not certify the newest untested merge (2.27209ms)\n\u2139 tests 1\n\u2139 suites 0\n\u2139 pass 1\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 7.037892\n"
+    },
+    {
+      "name": "codex-fresh-policy-review",
+      "command": [
+        "node",
+        "greenfield/mycelium/session/test/codex-fresh-policy-review.test.mjs"
+      ],
+      "exit": 0,
+      "output": "\u2714 P1: actual Codex adapter completion must not turn 35,481 fresh into 230,937 (2.976149ms)\n\u2714 provider cache schemas differ: Claude cache creation is fresh, cache reads are excluded (0.15287ms)\n\u2714 P2: invalid cache split larger than all input is unknown; conservatively count its full reported total (0.246241ms)\n\u2714 P2: a cache count without a valid input count must not suppress fresh consumption (0.095343ms)\n\u2714 known cache split matches the independently checked first-run fresh arithmetic (0.091728ms)\n\u2714 missing cache split is not silently interpreted as all cached (0.09289ms)\n\u2714 terminal metadata stays in matching units: total includes cache, fresh excludes cached reads (0.159049ms)\n\u2714 legacy or inconsistent terminal cache metadata falls back to full known total (0.23279ms)\n\u2714 a known all-cached zero-fresh observation is zero, while missing usage stays unknown (0.26575ms)\n\u2139 tests 9\n\u2139 suites 0\n\u2139 pass 9\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 11.718156\n"
+    },
+    {
+      "name": "peer-pure",
+      "command": [
+        "node",
+        "--test-name-pattern=Codex-style|newest integration|cached re-reads",
+        "greenfield/mycelium/session/test/live-repairs-claude.test.mjs"
+      ],
+      "exit": 0,
+      "output": "\u2714 D4: Codex-style cumulative snapshots per thread/turn count once (latest per key); calls and snapshots are not added twice (3.584665ms)\n\u2714 D5: the newest integration must itself be tested; an untested final merge is reported, never certified (4.289296ms)\n\u2714 fresh tokens: cached re-reads do not count; the first live Codex usage was ~35k fresh of 230,937 total (0.264328ms)\n\u2139 tests 3\n\u2139 suites 0\n\u2139 pass 3\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 21.24148\n"
+    },
+    {
+      "name": "r1-r2-inmemory",
+      "command": [
+        "node",
+        "--experimental-vm-modules",
+        "greenfield/mycelium/session/proof/review-tests/r1-r2.mjs"
+      ],
+      "exit": 0,
+      "output": "\u2714 R1 independent: delayed initial CLI acceptance bounds interval; send time remains separately recorded (108.08983ms)\n\u2714 R1 independent: a terminal result without acceptance keeps activity unknown and preserves usage (104.658011ms)\n\u2714 R1 independent: queued delivery starts at replay consumption, not earlier send or the prior active turn (105.452924ms)\n\u2714 R2 independent: rejected live usage publication is fatal, exactly once; no silent continuation (104.595678ms)\n\u2714 R2 independent: pending usage ACK is serialized and repeated message blocks do not double count (130.094221ms)\n\u2714 Claude terminal usage normalizes cache reads/writes without losing raw input/output (103.845089ms)\n\u2139 tests 6\n\u2139 suites 0\n\u2139 pass 6\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 663.153673\n(node:22310) ExperimentalWarning: VM Modules is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\n"
+    },
+    {
+      "name": "terminal-error-inmemory",
+      "command": [
+        "node",
+        "--experimental-vm-modules",
+        "greenfield/mycelium/session/proof/review-tests/terminal-error.mjs"
+      ],
+      "exit": 0,
+      "output": "\u2714 P3: an explicit terminal CLI error must fail the worker, not finish as a normal session (17.510174ms)\n\u2139 tests 1\n\u2139 suites 0\n\u2139 pass 1\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 109.80531\n(node:22317) ExperimentalWarning: VM Modules is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\n"
+    }
+  ],
+  "policy": {
+    "proposedFreshPerAgent": 300000,
+    "nominalTwoAgentFresh": 600000,
+    "observationalNotHardCap": true,
+    "historicalCodexFresh": 35481,
+    "historicalSeconds": 116,
+    "linear600sCodexFresh": 183522.41379310348,
+    "headroomVsLinear": 1.6346777148332907,
+    "claudeMeasuredRate": null,
+    "billingAndPlanWeighting": "unknown"
+  },
+  "runtimeTestsHere": "blocked before dispatch / local Unix socket EPERM; no full-suite or host result claimed"
+}

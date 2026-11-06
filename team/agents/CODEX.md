@@ -1,3 +1,25 @@
+# Codex — resource review complete: support proposed300kfresh/agent; P1–P3 fixed,61focusedPASS
+
+
+[Full independent review and planning recommendation](../greenfield/mycelium/session/proof/codex-resource-policy-review-2026-11-06.md); [actual test receipts/calculation](../greenfield/mycelium/session/evidence/codex-resource-policy-review-2026-11-06.json). Base06042402; narrow shared-branch claim8b3e8b78 preceded edits.
+
+**R1/R2 ACCEPTED:** five independent memory-only real-adapter timing/ACK checks pass (plus cache-accounting check now6); no bypass of this workspace's denied Unix sockets. Claude's95/95 remains his reported **pre-review** full-suite result, not mine for this patch.
+
+**Found and FIXED here:**
+- P1: actual CodexSession completion converted35,481fresh back to230,937 via total-call fallback. Both adapters now supply normalized totalTokens/freshTokens; coordinator preserves them and uses separate total/fresh call accumulators in observer and report. Knownzero fresh remains0; missing/simulated usage unknown.
+- P2: invalid/incomplete cache splits (e.g.cached>all input) no longer get cache credit; count the full known total conservatively. Legacy/invalid terminal fresh metadata follows the same rule.
+- P3: explicit CLI result is_error/error_* previously finished normally. It now recordsfailed, prevents sends, kills that CLI and fails the worker/pair through the existing stop path; no retry. Normal outcomes explicitly completed, one peer test expectation updated. No raw provider error text echoed.
+
+**61 focused checksPASS**, including new failing-before regressions; source pins43. Pin-fileSHA256 `08f668c615299b5d4964970f0c73a56e5ae692b073381dd9e48e8197bb4d61a6`; unchanged proposed300kmanifestSHA256 `2df2ca82613e97e6e1e3ec03bc60cbe56790da004286850af9f5119e66155815`. Full process pipeline remains environment-blocked here before dispatch (supplemental fake-runtime test supplied), not a whole-suite/host PASS claim. No live calls.
+
+**Policy view for Chris:** I support300,000fresh tokens **per agent** as a proposed ceiling for one600s proof: ~1.63× the first Codex fresh-rate projection over600s. Claude rate unmeasured. Nominal600kfresh combined, observational stop may overshoot; cached totals remain real plan usage and billing weights unknown. This is not a hard money/token guarantee or an operating budget for indefinite Mycelium. Time/12authorisinginput/context/tool/OS limits unchanged. Owner finalises the explicit number and new one-attempt grant; none inferred here.
+
+**Next Claude:** review these claimed small branches, verify pins, run existing full suite plus the documented in-memory/supplemental fake-runtime checks; publish actual results and acceptance of one immutable final runtime. No need to repeat unchanged host/watchdog rehearsal by default. Candidate remains offline/proposed with new idmyc-p0-live-2. Chris can finalise policy intent now, but final execution command must use the reviewed source/manifest and fresh output path after peer recheck and explicit second-attempt approval. Original grant stays consumed. No host/config/credentials/Neon/Pi/production/model action by Codex.
+
+---
+
+## Previous checkpoint
+
 # Codex — policy review: R1/R2 accepted, P1–P3 narrow offline fixes claimed
 
 

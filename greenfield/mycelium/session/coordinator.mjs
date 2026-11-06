@@ -117,14 +117,14 @@ export async function runSession(opts) {
   // Fresh tokens (6 Nov, owner direction "it needs to be enough"): non-cached input + cache writes + output, i.e. work the
   // model actually had to process anew, per agent. Cached re-reads of the same conversation dominate the total (first live
   // run: 195,456 of Codex's 230,937) and measure step count, not work. A snapshot without a cache split counts in full.
-  const usageSnap = new Map(), freshSnap = new Map(), callTokens = { claude: 0, codex: 0 };
+  const usageSnap = new Map(), freshSnap = new Map(), callTokens = { claude: 0, codex: 0 }, callFreshTokens = { claude: 0, codex: 0 };
   const observe = () => {
     const snap = { claude: 0, codex: 0 }, fresh = { claude: 0, codex: 0 };
     for (const [k, v] of usageSnap) snap[k.split('|')[0]] += v;
     for (const [k, v] of freshSnap) fresh[k.split('|')[0]] += v;
     observedTokens = AGENTS.reduce((n, a) => n + Math.max(snap[a], callTokens[a]), 0);
     if (observedTokens >= maxObservedTokens && !stopping) stop(`observed tokens ${observedTokens} reached the ${maxObservedTokens} threshold (reported after the fact; in-flight work may overshoot)`);
-    for (const a of AGENTS) { const f = Math.max(fresh[a], callTokens[a]);
+    for (const a of AGENTS) { const f = Math.max(fresh[a], callFreshTokens[a]);
       if (f >= maxFreshTokensPerAgent && !stopping) stop(`${a} fresh tokens ${f} reached the ${maxFreshTokensPerAgent} per-agent cap (reported after the fact; in-flight work may overshoot)`); }
   };
   let stopping = false, stopDone = null, mutex = Promise.resolve(), testAbort = new AbortController(), pidCounter = 0;
@@ -268,9 +268,10 @@ export async function runSession(opts) {
         const p = permits.get(out.permit);
         if (!p || p.agent !== a || p.used) throw new Error('a call record needs an unused grant of this agent');
         p.used = true;
-        const ev = append(a, 'call', `${a} model dispatch under ${out.permit}: ${out.ms ?? '?'} ms`, { refs: [bus.byId(out.permit).seq], data: { permit: out.permit, sentAt: out.sentAt ?? null, startedAt: out.startedAt ?? null, endedAt: out.endedAt ?? null, ms: out.ms ?? null, model: out.model ?? null, inputTokens: out.inputTokens ?? null, outputTokens: out.outputTokens ?? null, costUsd: out.costUsd ?? null, interval: out.interval ?? (agents[a].adapter === 'fake' ? 'simulated' : 'unknown'), outcome: out.outcome ?? null, method: out.method ?? null, threadId: out.threadId ?? null, turnId: out.turnId ?? null } });
+        const ev = append(a, 'call', `${a} model dispatch under ${out.permit}: ${out.ms ?? '?'} ms`, { refs: [bus.byId(out.permit).seq], data: { permit: out.permit, sentAt: out.sentAt ?? null, startedAt: out.startedAt ?? null, endedAt: out.endedAt ?? null, ms: out.ms ?? null, model: out.model ?? null, inputTokens: out.inputTokens ?? null, outputTokens: out.outputTokens ?? null, totalTokens: out.totalTokens ?? null, freshTokens: out.freshTokens ?? null, costUsd: out.costUsd ?? null, interval: out.interval ?? (agents[a].adapter === 'fake' ? 'simulated' : 'unknown'), outcome: out.outcome ?? null, method: out.method ?? null, threadId: out.threadId ?? null, turnId: out.turnId ?? null } });
         // observed tokens (as reported, possibly after the fact): past the threshold the session stops. Not a hard cap.
-        callTokens[a] += (Number.isFinite(out.inputTokens) ? out.inputTokens : 0) + (Number.isFinite(out.outputTokens) ? out.outputTokens : 0);
+        callTokens[a] += callTotalOf(out) ?? 0;
+        callFreshTokens[a] += callFreshOf(out) ?? 0;
         observe();
         return { seq: ev?.seq ?? null };
       }
@@ -336,10 +337,25 @@ export function usageTotalOf(out) {
 // cache reads, which are reported separately; cache creation is new work. No cache split -> null (caller counts the total).
 export function freshOf(out) {
   const u = out?.kind === 'note' ? out.data?.usage : null; if (!u) return null;
-  const n = k => (Number.isFinite(u[k]) && u[k] >= 0 ? u[k] : 0);
-  if (Number.isFinite(u.cachedInputTokens)) return Math.max(0, n('inputTokens') - n('cachedInputTokens')) + n('outputTokens');
-  if (Number.isFinite(u.cacheReadInputTokens)) return n('inputTokens') + n('cacheCreationInputTokens') + n('outputTokens');
-  return null;
+  const valid = x => Number.isFinite(x) && x >= 0;
+  // Incomplete or impossible splits are unknown, never permission to subtract arbitrary cache credit.
+  if (valid(u.inputTokens) && valid(u.outputTokens) && valid(u.cachedInputTokens) && u.cachedInputTokens <= u.inputTokens)
+    return u.inputTokens - u.cachedInputTokens + u.outputTokens;
+  if (valid(u.inputTokens) && valid(u.outputTokens) && valid(u.cacheReadInputTokens) && valid(u.cacheCreationInputTokens))
+    return u.inputTokens + u.cacheCreationInputTokens + u.outputTokens;
+  return null; // caller conservatively counts the reported total
+}
+// Terminal records carry provider-normalized totals. Raw inputTokens have different cache semantics between CLIs.
+export function callTotalOf(data) {
+  const valid = x => Number.isFinite(x) && x >= 0;
+  if (valid(data?.totalTokens)) return data.totalTokens;
+  if (!valid(data?.inputTokens) && !valid(data?.outputTokens)) return null;
+  return (valid(data?.inputTokens) ? data.inputTokens : 0) + (valid(data?.outputTokens) ? data.outputTokens : 0);
+}
+export function callFreshOf(data) {
+  const total = callTotalOf(data);
+  if (total === null) return null;
+  return Number.isFinite(data?.freshTokens) && data.freshTokens >= 0 && data.freshTokens <= total ? data.freshTokens : total;
 }
 export const usageKeyOf = out => [out.data?.threadId, out.data?.turnId, out.data?.sessionId].map(x => String(x ?? '')).join('/');
 
@@ -381,11 +397,14 @@ export function analyze(events) {
   for (const a of AGENTS) {
     const snaps = new Map(), fsnaps = new Map();
     for (const e of events.filter(x => x.actor === a)) { const t = usageTotalOf(e); if (t !== null) { const k = usageKeyOf(e); snaps.set(k, Math.max(snaps.get(k) ?? 0, t)); fsnaps.set(k, Math.max(fsnaps.get(k) ?? 0, freshOf(e) ?? t)); } }
-    const fromCalls = events.filter(x => x.actor === a && x.kind === 'call').reduce((n, x) => n + (Number.isFinite(x.data?.inputTokens) ? x.data.inputTokens : 0) + (Number.isFinite(x.data?.outputTokens) ? x.data.outputTokens : 0), 0);
+    const calls = events.filter(x => x.actor === a && x.kind === 'call');
+    const fromCalls = calls.reduce((n, x) => n + (callTotalOf(x.data) ?? 0), 0);
+    const fromFreshCalls = calls.reduce((n, x) => n + (callFreshOf(x.data) ?? 0), 0);
     const fromSnaps = [...snaps.values()].reduce((n, v) => n + v, 0);
-    usage[a] = fromSnaps || fromCalls ? Math.max(fromSnaps, fromCalls) : null;   // null = not reported (unknown), never 0
+    const knownCalls = calls.some(x => x.data?.interval !== 'simulated' && x.data?.model !== 'fake' && callTotalOf(x.data) !== null);
+    usage[a] = snaps.size || knownCalls ? Math.max(fromSnaps, fromCalls) : null; // a reported zero is zero; absent/simulated usage is unknown
     const fromFresh = [...fsnaps.values()].reduce((n, v) => n + v, 0);
-    freshUsage[a] = fromFresh || fromCalls ? Math.max(fromFresh, fromCalls) : null;
+    freshUsage[a] = fsnaps.size || knownCalls ? Math.max(fromFresh, fromFreshCalls) : null;
   }
   const dir = { claudeToCodex: midSession.some(e => e.actor === 'claude'), codexToClaude: midSession.some(e => e.actor === 'codex') };
   const criteria = { overlappingCalls: callOverlapMs > 0, reactionEachDirection: dir.claudeToCodex && dir.codexToClaude, changedByOther: changedBy.length > 0,

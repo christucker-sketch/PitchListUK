@@ -87,11 +87,15 @@ export class CodexSession {
     d.recorded = true;
     const endedAt = cutoff, active = interval === 'active-turn', startedAt = active ? d.activeStartedAt : d.startedAt;
     if (active && !startedAt) throw new Error('active interval requires a confirmed start');
+    const u = this.usage ?? {}, valid = x => Number.isFinite(x) && x >= 0;
+    const totalTokens = !active ? null : valid(u.totalTokens) ? u.totalTokens : valid(u.inputTokens) && valid(u.outputTokens) ? u.inputTokens + u.outputTokens : null;
+    const freshTokens = active && valid(u.inputTokens) && valid(u.outputTokens) && valid(u.cachedInputTokens) && u.cachedInputTokens <= u.inputTokens
+      ? u.inputTokens - u.cachedInputTokens + u.outputTokens : totalTokens;
     await this.publish({ type: 'call', permit: d.permit, method: d.method, interval, outcome,
       threadId: this.threadId, turnId: this.turnId, startedAt, endedAt,
       ms: Date.parse(endedAt) - Date.parse(startedAt), model: null,
       inputTokens: active ? this.usage?.inputTokens ?? null : null,
-      outputTokens: active ? this.usage?.outputTokens ?? null : null, costUsd: null });
+      outputTokens: active ? this.usage?.outputTokens ?? null : null, totalTokens, freshTokens, costUsd: null });
   }
   async start(prompt) {
     this.check();

@@ -1,0 +1,104 @@
+✖ P1: actual Codex adapter completion must not turn 35,481 fresh into 230,937 (3.870856ms)
+✔ provider cache schemas differ: Claude cache creation is fresh, cache reads are excluded (0.147572ms)
+✖ P2: invalid cache split larger than all input is unknown; conservatively count its full reported total (0.237006ms)
+✖ P2: a cache count without a valid input count must not suppress fresh consumption (0.159209ms)
+✔ known cache split matches the independently checked first-run fresh arithmetic (0.096966ms)
+✔ missing cache split is not silently interpreted as all cached (0.090736ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 3
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 10.819573
+
+✖ failing tests:
+
+test at greenfield/mycelium/session/test/codex-fresh-policy-review.test.mjs:8:1
+✖ P1: actual Codex adapter completion must not turn 35,481 fresh into 230,937 (3.870856ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  230937 !== 35481
+  
+      at TestContext.<anonymous> (file:///workspace/myc-p0-policy-review/greenfield/mycelium/session/test/codex-fresh-policy-review.test.mjs:21:68)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 230937,
+    expected: 35481,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at greenfield/mycelium/session/test/codex-fresh-policy-review.test.mjs:26:1
+✖ P2: invalid cache split larger than all input is unknown; conservatively count its full reported total (0.237006ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  10 !== 110
+  
+      at TestContext.<anonymous> (file:///workspace/myc-p0-policy-review/greenfield/mycelium/session/test/codex-fresh-policy-review.test.mjs:28:33)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 10,
+    expected: 110,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at greenfield/mycelium/session/test/codex-fresh-policy-review.test.mjs:30:1
+✖ P2: a cache count without a valid input count must not suppress fresh consumption (0.159209ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  10 !== 110
+  
+      at TestContext.<anonymous> (file:///workspace/myc-p0-policy-review/greenfield/mycelium/session/test/codex-fresh-policy-review.test.mjs:32:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 10,
+    expected: 110,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+(node:21845) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✖ P3: an explicit terminal CLI error must fail the worker, not finish as a normal session (110.832847ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 114.918517
+
+✖ failing tests:
+
+test at greenfield/mycelium/session/proof/review-tests/terminal-error.mjs:5:1
+✖ P3: an explicit terminal CLI error must fail the worker, not finish as a normal session (110.832847ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (file:///workspace/myc-p0-policy-review/greenfield/mycelium/session/proof/review-tests/terminal-error.mjs:9:6)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /error|quota|fail/i,
+    operator: 'rejects',
+    diff: 'simple'
+  }
