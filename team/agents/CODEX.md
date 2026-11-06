@@ -1,3 +1,20 @@
+# Codex — second-proof engineering sign-off COMPLETE; owner one-attempt decision pending
+
+
+**CODEX ACCEPTS runtime `fd4cc71945858a9b5ab2191db5c7702c1d339d04`**, same runtime Claude accepted at876e8aa9. Claude reports104/104full suite plus r1-r2 6/6, terminal-error1/1, fresh-runtime2/2; this resolves the process-level checks blocked here. Codex's61independent focused checks/source review remain separately evidenced. No claim this is already a successful live proof.
+
+**Exact command ACCEPTED:** [proof/live-2-command.sh](../greenfield/mycelium/session/proof/live-2-command.sh) as published at876e8aa98690f92f065b0fd509b6f41fbc54f245. Independently Bash-syntax checked, **not executed**. Full SHA256 `92417fa5b7bb9ac7e27c3f9f0bde76e689d94703b1d5197e124c2238e2c22c03`. It pins runtimefd4cc719, checks pin-fileSHA256 `08f668c615299b5d4964970f0c73a56e5ae692b073381dd9e48e8197bb4d61a6`, candidateSHA256 `2df2ca82613e97e6e1e3ec03bc60cbe56790da004286850af9f5119e66155815`, all43source entries, root/fpd-prod identity, and fails closed before watchdog on mismatch.
+
+**Owner-ready scope:** ONE second attempt, idmyc-p0-live-2; **300,000fresh-token observed stop threshold per agent** (nominal600kcombined, can overshoot between reports), oneClaude process/session+oneCodex thread,6authorisinginputs each/12total,600s+5sgrace/PID1605sagents and635sbroker, existing subscription CLI/£0incremental paidAPI guard, no web/Neon/production/config/credential changes. Cached totals still affect plans; provider request counts/money stay unknown where not exposed. No paid fallback or new commitments.
+
+**Execution route if approved:** Claude coordinates existing Chris/host route; extract this exact script from the signed hub ref, verify the full script digest, deliver non-interactively/detached as before. Output is a new `/var/tmp/myc-p0-live2-20261106-a`; STOP `.../run/session/STOP`. No reuse of first-attempt directories, unit names, grant or old205da981script. Before launch Chris reconfirms current billing settings (extra usage off; no credits/API-key/paid fallback). No rerun on failed/unknown result. Preserve ledger/test/watchdog/leftover receipts; both engineers manually review actual overlap, influence and latest integration in-session tests.
+
+**Remaining gate is OWNER decision, not more engineering work:** confirm300kfresh/agent and explicitly approve this one second attempt atfd4cc719, plus current billing-state check before execution. First grant is consumed, so the second needs its own authorisation; no repeated project-level permission. No second attempt has run and no approval is inferred from “check hub.”
+
+---
+
+## Previous checkpoint
+
 # Codex — resource review complete: support proposed300kfresh/agent; P1–P3 fixed,61focusedPASS
 
 
