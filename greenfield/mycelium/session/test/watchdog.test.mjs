@@ -47,24 +47,24 @@ function rig() {
   return { d, cg, calls, broker, opts: { manifestPath: join(d, 'm.json'), out: join(d, 'out'), bin: { systemdRun: join(bin, 'systemd-run'), systemctl: join(bin, 'systemctl'), sh: '/bin/sh' }, cgroupRoot: cg, settleMs: 300, log: () => {}, signals: false } };
 }
 
-test('plan: the candidate gets an absolute 605 s PID1 deadline on its own slice, broker limit 635 s, slice passed to run.mjs', () => {
+test('plan: the candidate gets an absolute 305 s PID1 deadline on its own slice, broker limit 335 s, slice passed to run.mjs', () => {
   const m = candidate(), p = plan({ manifest: m, manifestPath: '/x/m.json', out: '/x/out' });
-  assert.equal(p.deadlineS, 605); assert.equal(p.brokerMaxS, 635); assert.equal(p.slice, 'mycp_myc_p0_live_4.slice');
+  assert.equal(p.deadlineS, 305); assert.equal(p.brokerMaxS, 335); assert.equal(p.slice, 'mycp_myc_p0_live_5.slice');
   assert.equal(p.slice, sessionSlice(m.id));
-  assert.ok(p.arm.includes('--on-active=605s') && p.arm.includes('--unit=myc-watchdog-myc-p0-live-4'));
+  assert.ok(p.arm.includes('--on-active=305s') && p.arm.includes('--unit=myc-watchdog-myc-p0-live-5'));
   assert.match(p.arm.at(-1), /^date -u \S+ >> \/x\/out\/deadline-fired; /); assert.ok(!p.killCmd.includes('deadline-fired'), 'cleanup kill does not fake a firing');
   assert.throws(() => plan({ manifest: m, manifestPath: 'm', out: '/x/o ut;rm' }), /plain absolute/);
-  assert.match(p.killCmd, /cgroup\/mycp_myc_p0_live_4\.slice\/cgroup\.kill/); assert.match(p.killCmd, /systemctl kill --signal=SIGKILL mycp_myc_p0_live_4\.slice/);
-  assert.ok(p.start.includes('RuntimeMaxSec=635') && p.start.includes('--setenv=MYC_SESSION_SLICE=mycp_myc_p0_live_4.slice') && p.start.includes('--unit=myc-session-myc-p0-live-4-broker'));
+  assert.match(p.killCmd, /cgroup\/mycp_myc_p0_live_5\.slice\/cgroup\.kill/); assert.match(p.killCmd, /systemctl kill --signal=SIGKILL mycp_myc_p0_live_5\.slice/);
+  assert.ok(p.start.includes('RuntimeMaxSec=335') && p.start.includes('--setenv=MYC_SESSION_SLICE=mycp_myc_p0_live_5.slice') && p.start.includes('--unit=myc-session-myc-p0-live-5-broker'));
   assert.equal(p.start.at(-1), '/x/out/run'); assert.equal(p.start.at(-2), '/x/m.json'); assert.match(p.start.at(-3), /run\.mjs$/);
 });
 
 test('plan: overrides may only shorten; bad ids and missing limits are refused', () => {
   const m = candidate();
-  assert.throws(() => plan({ manifest: m, manifestPath: 'm', out: '/o', deadlineS: 606 }), /only shorten/);
+  assert.throws(() => plan({ manifest: m, manifestPath: 'm', out: '/o', deadlineS: 306 }), /only shorten/);
   assert.equal(plan({ manifest: m, manifestPath: 'm', out: '/o', deadlineS: 5 }).brokerMaxS, 35);
   assert.throws(() => plan({ manifest: m, manifestPath: 'm', out: '/o', deadlineS: 10, brokerMaxS: 9 }), /broker limit/);
-  assert.throws(() => plan({ manifest: m, manifestPath: 'm', out: '/o', brokerMaxS: 636 }), /broker limit/);
+  assert.throws(() => plan({ manifest: m, manifestPath: 'm', out: '/o', brokerMaxS: 336 }), /broker limit/);
   assert.throws(() => plan({ manifest: { ...m, id: 'Bad id' }, manifestPath: 'm', out: '/o' }), /slug/);
   assert.throws(() => plan({ manifest: { id: 'x', limits: {} }, manifestPath: 'm', out: '/o' }), /required/);
 });

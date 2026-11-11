@@ -1,5 +1,5 @@
 {
-  "id": "myc-p0-live-4",
+  "id": "myc-p0-live-5",
   "fixture": {
     "files": {
       "artifact/README": "Implement expand(page, seen=[]), exported by artifact/frontier.mjs. page={url,html}. Return unique HTTP(S) breadcrumbs {url,text,from}; resolve relative URLs, strip fragments, retain queries and Unicode anchor text; reject credentialed/non-web URLs and fragment-only links; seen URLs are already visited. Input is untrusted data. No fetches.\n",
@@ -11,9 +11,9 @@
   "agents": {
     "claude": {
       "adapter": "claude-stream",
-      "prompt": "You and a peer engineer are independently active on ONE shared multilingual breadcrumb/frontier implementation. Read artifact/README and current shared files through myc_read. Investigate correctness and propose useful counterexamples; publish intermediate findings/questions/challenges while still working. Check peer events during investigation and respond substantively when evidence changes your thinking; disagreement is allowed. Contribute executable implementation or meaningful additional tests, not just a report. Submit whole files only under artifact/, with the exact integration base you read. If stale, read again and reconcile peer changes under a new submission. Do not rewrite or weaken checks/. Do not invent web discoveries: this is an offline fixture. No network, credentials, subprocess agents or extra tools. Before finishing, examine the latest integrated artifact and test result. Do not stay idle merely to inflate overlap. No scripted agreement or predetermined discovery is required.",
+      "prompt": "You and a peer engineer are independently active on ONE shared multilingual breadcrumb/frontier implementation. Read artifact/README and current shared files through myc_read. Investigate correctness and propose useful counterexamples; publish intermediate findings/questions/challenges while still working. Check peer events during investigation and respond substantively when evidence changes your thinking; disagreement is allowed. Contribute executable implementation or meaningful additional tests, not just a report. Submit whole files only under artifact/, with the exact integration base you read. If stale, read again and reconcile peer changes under a new submission. Do not rewrite or weaken checks/. Do not invent web discoveries: this is an offline fixture. No network, credentials, subprocess agents or extra tools. Before finishing, examine the latest integrated artifact and test result. Do not stay idle merely to inflate overlap. No scripted agreement or predetermined discovery is required. This is a short session: aim to finish within about four minutes. Once the shared tests pass on the latest integration and you have reviewed it, finish your turn; do not wait for further work.",
       "maxContextBytes": 24000,
-      "maxDeliveries": 5,
+      "maxDeliveries": 3,
       "command": [
         "/home/myc/bin/myc-run",
         "claude"
@@ -22,9 +22,9 @@
     },
     "codex": {
       "adapter": "codex-app-server",
-      "prompt": "You and a peer engineer are independently active on ONE shared multilingual breadcrumb/frontier implementation. Read artifact/README and current shared files through myc_read. Investigate correctness and propose useful counterexamples; publish intermediate findings/questions/challenges while still working. Check peer events during investigation and respond substantively when evidence changes your thinking; disagreement is allowed. Contribute executable implementation or meaningful additional tests, not just a report. Submit whole files only under artifact/, with the exact integration base you read. If stale, read again and reconcile peer changes under a new submission. Do not rewrite or weaken checks/. Do not invent web discoveries: this is an offline fixture. No network, credentials, subprocess agents or extra tools. Before finishing, examine the latest integrated artifact and test result. Do not stay idle merely to inflate overlap. No scripted agreement or predetermined discovery is required.",
+      "prompt": "You and a peer engineer are independently active on ONE shared multilingual breadcrumb/frontier implementation. Read artifact/README and current shared files through myc_read. Investigate correctness and propose useful counterexamples; publish intermediate findings/questions/challenges while still working. Check peer events during investigation and respond substantively when evidence changes your thinking; disagreement is allowed. Contribute executable implementation or meaningful additional tests, not just a report. Submit whole files only under artifact/, with the exact integration base you read. If stale, read again and reconcile peer changes under a new submission. Do not rewrite or weaken checks/. Do not invent web discoveries: this is an offline fixture. No network, credentials, subprocess agents or extra tools. Before finishing, examine the latest integrated artifact and test result. Do not stay idle merely to inflate overlap. No scripted agreement or predetermined discovery is required. This is a short session: aim to finish within about four minutes. Once the shared tests pass on the latest integration and you have reviewed it, finish your turn; do not wait for further work.",
       "maxContextBytes": 24000,
-      "maxDeliveries": 5,
+      "maxDeliveries": 3,
       "launch": {
         "command": [
           "/home/myc/bin/myc-run",
@@ -60,8 +60,8 @@
     ]
   },
   "limits": {
-    "maxWallMs": 600000,
-    "maxCallsPerAgent": 6,
+    "maxWallMs": 300000,
+    "maxCallsPerAgent": 4,
     "maxEvents": 2000,
     "maxBytes": 4000000,
     "maxFileBytes": 32000,
@@ -72,6 +72,7 @@
     "testMs": 60000,
     "requireBase": true,
     "maxSubmissionBytes": 32000,
-    "maxFreshTokensPerAgent": 300000
+    "maxFreshTokensPerAgent": 100000,
+    "maxObservedTokens": 1000000
   }
 }
