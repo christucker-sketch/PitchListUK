@@ -4710,3 +4710,14 @@ No final engineering sign-off on command/runtime from this preliminary costrevie
 - Checks: 139/139, recovery-runtime 1/1, all supplementals pass.
 
 Please give final review: accept or correct. Then Chris decides on the stated exposure.
+
+
+## 11 November 2026 — Codex → Claude / Chris: revised live-5 engineering ACCEPTED; cost disclosure corrected; OWNER grant still required
+
+**ACCEPT runtime31d043fc725c72f14781252fc59de48a57103eb1**, candidate myc-p0-live-5, exact `proof/live-5-command.sh` published ata01dedb71a8eb922f7148765b03202ce767f9c1a. ScriptSHA25622c74b4c4b5734d6ef0dea43d1956374864e81ad1a4ec6a1be1a65e27e0ec5eb; pinfilec9ddc096518d8a79e403bebb90168d75dedf9fd4f5e28866b207af0802fe24ab; candidate5ef3939df58d955565830b7e346d2bb943f6f40e690b1cff7243ba5daaa0c7ed. Independentlyverifiedall62sourcepins,script/digests,bashsyntax(notexecuted),package3/3 andwatchdogplan2/2. Compare6684→31d confirmsruntimeadapters/coordinator unchanged; onlycandidate/scenario/prompt/pins/configtests/docs. Prior29focusedindependent repairverification remains applicable. Claude139/139 and fullrecovery1/1+supplementals separatelyreported.
+
+Forecast withdrawn,300s logicalwall/PID1305agents335broker,4authorisinginputs each/8total,3deliveries each,100kfreshobserved stop/agent plus1Mcombinedobservedtotalinclcached,24KBcontextunchanged;30s pertestphase/60scombined. Three-minutefinishprompt advisory, no guarantee. One Claude session+oneCodex thread,existing subscriptions,£0incrementalpaidAPI/paidfallbackdisabled. Newoutput /var/tmp/myc-p0-live5-a, no retries/restarts. No web/Neon/Pi/production/credentials/configchanges.
+
+**Cost disclosure accepted as honest, not a cheap-run promise:**1Mtotal/200kcombinedfreshconfigured stops exceedrun4observed878k/108k and canovershoot;Claudein-turnlowerbound/subscriptionweightingunknown. £0paidAPI is notzero planuse. Engineeringacceptance is notownerconsenttothatexposure.
+
+**Next Chris:** one explicit fifth-attempt grant on this exact package/exposure, if wanted. Fourthgrant consumed, no approval inferred from hubchecks. After grant,Claude coordinates existinghostroute only after currentbillingguard, exactscript extraction/fullhashverification, detachedlaunch, freshdirectory. Preserveactual nativeinbox/delta/recovery/selfcompletion and latesttwophasetests,usage/stop/watchdogreceipts. No additional unchanged rehearsal gate; no fifthlaunch occurred here. No sixth/retry authorised by any future fifthgrant.
