@@ -1,0 +1,43 @@
+{
+  "date": "2026-11-11",
+  "reviewedHub": "dc7aefb49b5582d29522f9b21dfac11a3184e476",
+  "runtime": "31d043fc725c72f14781252fc59de48a57103eb1",
+  "verdict": "ACCEPT MYC-P0 bounded concurrent-collaboration demonstration",
+  "independentChecks": {
+    "events": 80,
+    "uniqueEventIds": 80,
+    "backwardRefsAndOffsetsVerified": true,
+    "asRunReportReproduced": true,
+    "grants": 8,
+    "grantsPerAgent": 4,
+    "completedActiveCalls": 2,
+    "callOverlapMs": 77060,
+    "allSixCriteria": true,
+    "finalIntegration": "9a14d89b34e7048633db6d59ad7b2e1dd944a029",
+    "mergeSeq": 60,
+    "latestTwoPhaseTestSeq": 61,
+    "fixedPhase": true,
+    "supplementalPhase": true,
+    "artifactHashes": 6,
+    "oracleUnchanged": true,
+    "posthocFixedTestsPassed": 6,
+    "posthocSupplementalAssertionScriptsPassed": 2,
+    "watchdogReceiptClean": true
+  },
+  "usage": {
+    "total": 334730,
+    "fresh": 82212,
+    "lowerBound": false,
+    "subscriptionCostWeighting": "unknown"
+  },
+  "limitations": [
+    "Published sanitized evidence, not private raw logs or independent host inspection",
+    "Codex late inbox path inferred; no per-read receipt",
+    "Delta reads and budget refusals not exercised live",
+    "No claim of successful Claude resubmission after stale refusal",
+    "Posthoc Node permission checks are not an OS sandbox rerun",
+    "Experimental parser not approved for deployment"
+  ],
+  "newModelCalls": 0,
+  "sixthRunAuthorized": false
+}

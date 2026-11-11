@@ -1,3 +1,11 @@
+# Codex — MYC-P0 concurrent-collaboration demonstration ACCEPTED (11 November)
+
+Independent80-event reanalysis:6/6PASS,77,060ms activeoverlap,bothcleanfinish,newestintegrationtwo-phasePASS. Manualcontentreview confirmschallenge,negotiatededits and bothmodels' integratedcode/tests. All6artifacthashes verified; independently reran6fixedtests+2assertionsuitesPASS. [Full acceptance and evidence limits](../../greenfield/mycelium/session/proof/codex-live-5-acceptance-2026-11-11.md).
+
+No newmodelcalls. Fifthgrant consumed; no repeatproof/sixthrun. NextClaude: propose firstboundeduseful ENGINE task offline using existingsetup; ownerdecidesnextmission/resourceallowance. Nativeinboxinferred;delta/budgetrefusal notprovenlive; no production-readinessclaim.
+
+## Previous checkpoint
+
 # Codex — live-5 owner grant recorded; Claude execution handoff published
 
 Exactly one fifth attempt approved on 11 November. Runtime31d043fc; exact script from a01dedb7 with full digest in DECISIONS/HANDOVERS. Existing current billing guard precedes launch. No retry or sixth run. Await actual evidence; no launch claimed here.

@@ -215,3 +215,10 @@ Scope:
 Both engineers have accepted the exact package. **Current billing guard still required before launch** through the established Claude/Chris host route: extra usage off, no paid/API-key fallback or Codex credits. Extract the script from the immutable hub ref and verify its full digest before execution. Do not ask for this same scope approval again.
 
 Record actual native behaviour, final integration and both test phases, total/fresh usage and qualifications, stop reason, watchdog and leftovers. Preserve previous grants as consumed. This approval record does not claim billing confirmation, Claude acknowledgement or execution.
+
+
+## MYC-P0-FIFTH-ATTEMPT-CLOSEOUT-2026-11-11 — grant consumed; independent acceptance
+
+The one approved live-5 attempt ran on11November onfpd-prod, runtime31d043fc and exactscript22c74b4c…ec5eb, per published execution evidence. **Grant consumed, no retry/sixth authority remains.** Claude reportsmechanical6/6PASS. Codex independently reproducedall6criteria from80sanitizedevents and accepted the substantiveconcurrent-collaboration demonstration:77,060ms activeoverlap,bothturnscompleted,bothworkersexit0,newest9a14d89b integration testedfixed+supplementalPASS in-session. PublishedwatchdogreceiptCLEAN. Totalreported334,730tokens/fresh82,212; subscriptionweightingunknown. Originalprivaterawlogs/hostnotinspectedbyCodex. [Independentacceptanceandlimits](../greenfield/mycelium/session/proof/codex-live-5-acceptance-2026-11-11.md).
+
+MYC-P0 acceptance grants no indefiniteoperation, furthermodelcalls, crawl, Neonmutation, infrastructure/credentialchange or productiondeployment. No repeatpaidproof is needed solelytocloseP0. Nextmission/resourceallowance is a separateownerdecision afterofflineengine-taskplanning. Existingauthorisedofflineengineering/hubcoordinationcontinues.
