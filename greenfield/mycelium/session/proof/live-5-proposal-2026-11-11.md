@@ -19,23 +19,36 @@
 | Observed **total** stop (incl. cached re-reads) | none | **1,000,000 combined** |
 | Context per agent | 24 KB | 24 KB (unchanged) |
 
-- **Prompt:** unchanged, plus "This is a short session: aim to finish within about four minutes. Once the shared tests pass on the latest integration and you have reviewed it, finish your turn."
-- **Unchanged:** fixture, fixed oracle, two-phase tests (60 s per phase), the billing guard (`myc-run`), the Codex named-permission boundary, the watchdog, the sandbox, and "no web, Neon, Pi, production or credentials".
-- Live-4 for comparison: 433 s, about 878k total and about 108k fresh combined. Live-5 should cost roughly half or less.
-- **Limits stated plainly:**
-  - Token stops are observational and can overshoot between reports.
-  - Claude's in-turn usage is a lower bound until its turn result.
-  - How the subscriptions weight cached tokens is unknown.
-  - A wall-clock stop at 300 s counts as `noStop: false`. Finishing in time is part of the test.
+- **Prompt:** unchanged, plus "This is a short session: aim to finish within about three minutes, so the final shared tests can run before the hard limit. Once the shared tests pass on the latest integration and you have reviewed it, finish your turn." The instruction is **advisory, not a completion guarantee**.
+- **Test time:** `testMs` is **30 s per phase** (was 60 s), so a final two-phase test takes at most 60 s. Observed phases in runs 3 and 4 took under 1 s. A finish at about 3 minutes leaves about 2 minutes for the final tests and wrap-up inside 300 s.
+- **Unchanged:** fixture, fixed oracle, the billing guard (`myc-run`), the Codex named-permission boundary, the watchdog, the sandbox, and "no web, Neon, Pi, production or credentials".
 
-## Pins
+## Exposure (configured worst case, not a forecast; revised after Codex review e1de86d)
 
-- **Runtime:** `232e22dd220d3fd1fede28f556a9044ff72d4a20` (Codex's 384770f plus the candidate change only).
-- Pin file sha256 `5fe63f3c989d9c36648150f98c2534e333fa6cb310b104672ef9b02124133e0a`.
-- Candidate sha256 `c2f47d5b42e50e91c610b0cf8ce2f6dfd67ade9c1ea369c8e5ec5ce470caa076`.
-- **Command:** `proof/live-5-command.sh`, sha256 `96599ca9e965562518f32e203df49ad7cf0a1dfc4ef61391b479f64555ea6b06`. It is the same fail-fast form as live-4, with only C, the two digests and the new output path `/var/tmp/myc-p0-live5-a` changed.
-- **Checks at 232e22dd:**
-  - full suite 139/139 (proof-package and watchdog tests updated to the new limits and id);
+**No expected saving is claimed.** The earlier "roughly half or less" was unsupported and is withdrawn.
+
+| | Live-4 actual | Live-5 configured ceiling |
+|---|---|---|
+| Wall time | 438 s | **305 s** hard (PID1); broker 335 s |
+| Model-authorising inputs | 12 | **8** |
+| Observed **total** tokens incl. cached | 877,991 | stop at **1,000,000** combined. This is *higher* than live-4's actual total, and it can overshoot between reports. |
+| **Fresh** tokens | 108,300 | stop at **100,000 per agent (200,000 combined)**. This is *higher* than live-4's actual fresh, and it can overshoot. |
+
+- In practice the 305 s wall time is the binding limit. Token use depends on how hard the agents work in that time, which can't be predicted.
+- Claude's in-turn usage is a lower bound until its turn result.
+- How the subscriptions weight cached against fresh tokens is unknown.
+- Money is £0 incremental through the existing subscription logins; plan allowance is still consumed.
+- The delta-read replay measured serialised read bytes, not provider or subscription tokens.
+- A wall-clock stop at 300 s counts as `noStop: false`.
+
+## Pins (revised)
+
+- **Runtime:** `31d043fc725c72f14781252fc59de48a57103eb1`.
+- Pin file sha256 `c9ddc096518d8a79e403bebb90168d75dedf9fd4f5e28866b207af0802fe24ab`.
+- Candidate sha256 `5ef3939df58d955565830b7e346d2bb943f6f40e690b1cff7243ba5daaa0c7ed`.
+- **Command:** `proof/live-5-command.sh`, sha256 `22c74b4c4b5734d6ef0dea43d1956374864e81ad1a4ec6a1be1a65e27e0ec5eb`. It is the same fail-fast form, with output `/var/tmp/myc-p0-live5-a`.
+- **Checks at 31d043fc:**
+  - full suite 139/139;
   - recovery-runtime 1/1;
   - r1-r2 6/6, terminal-error 1/1, claude-read-budget 1/1, claude-budget-recovery 6/6, claude-inbox-envelope 1/1, fresh-runtime 2/2, lowerbound-coverage 1/1.
 
