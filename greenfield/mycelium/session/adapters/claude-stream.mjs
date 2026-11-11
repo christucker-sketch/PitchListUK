@@ -62,31 +62,49 @@ export async function* agentRun({ agent, config, worktree, inbox, runtime }) {
     c.on('error', () => {});   // D2 (live 4 Nov): a bridge that went away before our reply (EPIPE/ECONNRESET) must not crash the worker
     let buf = '';
     c.on('data', d => { buf += d; if (buf.length > 256 * 1024) c.destroy(); });
+    // Every reply the model receives is charged in full, as serialized (Codex review 97572ab): read/inbox payloads, receipts
+    // and refusal texts alike. The final envelope is built first and fitted to the remaining budget; only then is it charged
+    // and only then do state changes happen (inbox dequeue, read-guard promotion). Nothing unseen is charged; nothing pending
+    // is dropped; no larger cap.
     c.on('end', async () => {
-      let reply;
+      let ok = true, value, op, args, after = null;
       try {
-        const { op, args } = JSON.parse(buf);
-        if (op === 'publish') reply = await runtime.publish({ type: 'event', kind: args.kind, body: args.body, refIds: args.refIds ?? [] });
-        else if (op === 'submit') reply = await runtime.publish({ type: 'files', files: args.files, message: args.message, refIds: args.refIds ?? [], base: args.base });
+        ({ op, args } = JSON.parse(buf));
+        if (op === 'publish') value = await runtime.publish({ type: 'event', kind: args.kind, body: args.body, refIds: args.refIds ?? [] });
+        else if (op === 'submit') value = await runtime.publish({ type: 'files', files: args.files, message: args.message, refIds: args.refIds ?? [], base: args.base });
         else if (op === 'read') {
-          const local = readGuard.check(args);
-          if (local) { reply = local; charge(JSON.stringify(reply)); }
-          else { reply = await runtime.read({ paths: args.paths, headOnly: args.headOnly, sinceIntegration: args.sinceIntegration }); charge(JSON.stringify(reply)); readGuard.delivered(args, reply); }
-        }
-        else if (op === 'inbox') {
-          // Deliver, in order, the events that fit the remaining budget (256 B headroom); an event too large to fit is
-          // WITHHELD (named, kept pending), not dropped and not blocking the smaller ones behind it. Events leave the
-          // unread queue only once charged, so a budget refusal loses nothing.
+          value = readGuard.check(args) ?? await runtime.read({ paths: args.paths, headOnly: args.headOnly, sinceIntegration: args.sinceIntegration });
+          if (!fits(JSON.stringify(value))) throw new Error(`context byte budget exhausted (${maxContextBytes - contextBytes} bytes left): read refused, nothing delivered; use headOnly, fewer paths or sinceIntegration`);
+          const reply = value; after = () => readGuard.delivered(args, reply);
+        } else if (op === 'inbox') {
+          // In order, as many pending events as fit together with a BOUNDED withheld summary (at most 3 IDs, then a count).
+          // An event too large to fit is withheld (still pending) and does not block smaller ones behind it.
           const shape = e => ({ id: e.id, actor: e.actor, kind: e.kind, body: e.body, refs: e.refs, data: e.kind === 'tested' ? { ok: e.data?.ok, tail: e.data?.tail } : undefined });
-          const events = [], withheld = [];
-          for (const e of unread) { const next = [...events, shape(e)]; if (fits(JSON.stringify({ source: 'untrusted-shared-events', events: next, withheld: [...withheld, e.id] })) && contextBytes + Buffer.byteLength(JSON.stringify(next)) + 256 <= maxContextBytes) events.push(shape(e)); else withheld.push(e.id); }
-          const text = JSON.stringify(events); charge(text);
-          for (const e of events) unread.splice(unread.findIndex(u => u.id === e.id), 1);
-          if (events.length) await runtime.publish({ type: 'event', kind: 'note', body: `Claude read ${events.length} peer event(s) via myc_inbox during its turn`, data: { ids: events.map(e => e.id), via: 'tool', at: new Date().toISOString() } });
-          reply = { source: 'untrusted-shared-events', events, ...(withheld.length ? { withheld, note: 'withheld events are too large for the remaining context budget; they stay pending' } : {}) };
+          const envelope = (evs, wh) => ({ source: 'untrusted-shared-events', events: evs.map(shape),
+            ...(wh.length ? { withheldCount: wh.length, withheld: wh.slice(0, 3).map(e => e.id), note: 'too large for the remaining context budget; still pending' } : {}) });
+          const picked = [], withheld = [];
+          for (const e of unread) (fits(JSON.stringify(envelope([...picked, e], withheld))) ? picked : withheld).push(e);
+          while (picked.length && !fits(JSON.stringify(envelope(picked, withheld)))) withheld.unshift(picked.pop());   // exact final fit
+          value = envelope(picked, withheld);
+          if (!fits(JSON.stringify(value))) throw new Error('context byte budget exhausted: inbox refused, events stay pending');
+          after = async () => {
+            for (const e of picked) unread.splice(unread.indexOf(e), 1);
+            if (picked.length) await runtime.publish({ type: 'event', kind: 'note', body: `Claude read ${picked.length} peer event(s) via myc_inbox during its turn`, data: { ids: picked.map(e => e.id), via: 'tool', at: new Date().toISOString() } });
+          };
         } else throw new Error('unknown op');
-        c.end(JSON.stringify({ ok: true, value: reply }));
-      } catch (e) { c.end(JSON.stringify({ ok: false, error: String(e.message).slice(0, 300) })); }
+      } catch (e) { ok = false; value = String(e.message).slice(0, 300); }
+      // fit the final text: a receipt that cannot fit becomes {} (the side effect already happened, so it stays ok);
+      // a refusal that cannot fit is shortened, then emptied. The 2-byte minimum is the only uncharged text.
+      let text = JSON.stringify(value);
+      if (!fits(text)) {
+        if (ok && op !== 'read' && op !== 'inbox') value = {};
+        else if (!ok) value = 'context budget exhausted';
+        text = JSON.stringify(value);
+        if (!fits(text)) { value = ok ? {} : ''; text = JSON.stringify(value); }
+      }
+      if (fits(text)) charge(text);
+      if (ok && after) { try { await after(); } catch {} }
+      c.end(JSON.stringify(ok ? { ok, value } : { ok, error: value }));
     });
   });
   await new Promise((res, rej) => { server.once('error', rej); server.listen(sock, res); });
