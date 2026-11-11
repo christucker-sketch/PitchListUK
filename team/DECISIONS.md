@@ -194,3 +194,24 @@ Before launch, establish the existing current billing guard (Claude extra usage 
 ## MYC-P0-FOURTH-ATTEMPT-GRANT-2026-11-06 — owner approved, final engineering gates retained
 
 Chris said **“ok fix it and approved 4th run”** in the Codex session on6November. Approves ONE fourth bounded proof after C1/source fixes and independent engineering sign-off on the final pinned runtime/command. Same scope: one Claude session+oneCodex thread;6authorisinginputs each/12total;300kfreshobserved threshold/agent with truthful lower-bound/overshoot limitations;600s+5s/PID1605/635s;£0paidAPI/no paidfallback/no web/Neon/Pi/production/config/credential changes. Two test phases up to60seach within overalldeadline. Distinct live-4 id/output required; final immutable pins/command recorded before execution. Current billing guard required through existing Claude/Chris host route. No repeated approval for same scope; no fifth attempt/retry/restart after failure or unknown. Third grant consumed. This record does not claim a fourth launch or pre-run billing confirmation.
+
+
+## MYC-P0-FIFTH-ATTEMPT-GRANT-2026-11-11 — owner approved
+
+Chris replied **“approved”** in the Codex session on 11 November 2026, directly to the reviewed live-5 package and explicit cost disclosure at a51219151d87aca5be819d88c3ff42ac8f103e95.
+
+Authorises **ONE fifth attempt**, candidate `myc-p0-live-5`, runtime `31d043fc725c72f14781252fc59de48a57103eb1`. Exact launch script `greenfield/mycelium/session/proof/live-5-command.sh` from hub ref `a01dedb71a8eb922f7148765b03202ce767f9c1a`; full SHA256 `22c74b4c4b5734d6ef0dea43d1956374864e81ad1a4ec6a1be1a65e27e0ec5eb`. Pin-file SHA256 `c9ddc096518d8a79e403bebb90168d75dedf9fd4f5e28866b207af0802fe24ab`; candidate SHA256 `5ef3939df58d955565830b7e346d2bb943f6f40e690b1cff7243ba5daaa0c7ed`.
+
+Scope:
+- One Claude session plus one Codex thread using existing subscription authentication.
+- Four authorising inputs per agent / eight total; three peer deliveries per agent.
+- 300-second session deadline; PID1 agent deadline305s, broker335s.
+- Observed stop100,000 fresh tokens per agent and1,000,000 combined total tokens including cached input. These are observational and can overshoot; Claude in-turn usage can be a lower bound. No guaranteed token saving or subscription charge weighting is claimed.
+- 24KB supplied context per agent; test phases30s each within the overall deadline.
+- £0 incremental paid API; no paid fallback, credits purchase or new commitment.
+- Fresh output `/var/tmp/myc-p0-live5-a`; no retry/restart, no sixth attempt on failed or unknown result.
+- No web, Neon, Pi, production, credential expansion or unrelated host/configuration changes.
+
+Both engineers have accepted the exact package. **Current billing guard still required before launch** through the established Claude/Chris host route: extra usage off, no paid/API-key fallback or Codex credits. Extract the script from the immutable hub ref and verify its full digest before execution. Do not ask for this same scope approval again.
+
+Record actual native behaviour, final integration and both test phases, total/fresh usage and qualifications, stop reason, watchdog and leftovers. Preserve previous grants as consumed. This approval record does not claim billing confirmation, Claude acknowledgement or execution.

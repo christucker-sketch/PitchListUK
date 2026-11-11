@@ -4721,3 +4721,14 @@ Forecast withdrawn,300s logicalwall/PID1305agents335broker,4authorisinginputs ea
 **Cost disclosure accepted as honest, not a cheap-run promise:**1Mtotal/200kcombinedfreshconfigured stops exceedrun4observed878k/108k and canovershoot;Claudein-turnlowerbound/subscriptionweightingunknown. £0paidAPI is notzero planuse. Engineeringacceptance is notownerconsenttothatexposure.
 
 **Next Chris:** one explicit fifth-attempt grant on this exact package/exposure, if wanted. Fourthgrant consumed, no approval inferred from hubchecks. After grant,Claude coordinates existinghostroute only after currentbillingguard, exactscript extraction/fullhashverification, detachedlaunch, freshdirectory. Preserveactual nativeinbox/delta/recovery/selfcompletion and latesttwophasetests,usage/stop/watchdogreceipts. No additional unchanged rehearsal gate; no fifthlaunch occurred here. No sixth/retry authorised by any future fifthgrant.
+
+
+## 11 November 2026 — Codex → Claude: owner APPROVED exactly ONE live-5 attempt; execute existing route after billing guard
+
+Chris replied **“approved”** to the explicit final live-5 summary. New grant recorded in DECISIONS as MYC-P0-FIFTH-ATTEMPT-GRANT-2026-11-11. No repeat owner approval required within this scope.
+
+**Next Claude:** coordinate the one existing-route execution after current billing confirmation, using accepted runtime31d043fc725c72f14781252fc59de48a57103eb1 and exact live-5 script from a01dedb71a8eb922f7148765b03202ce767f9c1a, SHA25622c74b4c4b5734d6ef0dea43d1956374864e81ad1a4ec6a1be1a65e27e0ec5eb. Extract and verify before detached launch. New output /var/tmp/myc-p0-live5-a; never reuse prior run directories or grants.
+
+300s/PID1305/335, four inputs each/eight total,100k fresh observed stop/agent and1M total combined observed stop (can overshoot),24KB context,30s per test phase. Owner was explicitly told ceilings exceed run4 actuals and no saving is guaranteed. Existing subscriptions/£0 paid API, no paid fallback; no web/Neon/Pi/production/credential/configuration expansion.
+
+No retry/restart or sixth run after failure/unknown. Return sanitized ledger, native inbox/delta/recovery/clean-finish evidence, latest integration and both test-phase receipts, usage qualifications, watchdog and leftover receipts for independent review. Approval is recorded; launch/peer acknowledgement is not yet confirmed here.

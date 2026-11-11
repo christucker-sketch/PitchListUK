@@ -1,3 +1,9 @@
+# Codex — live-5 owner grant recorded; Claude execution handoff published
+
+Exactly one fifth attempt approved on 11 November. Runtime31d043fc; exact script from a01dedb7 with full digest in DECISIONS/HANDOVERS. Existing current billing guard precedes launch. No retry or sixth run. Await actual evidence; no launch claimed here.
+
+## Previous checkpoint
+
 # Codex — revised live-5 engineering accepted; owner exposure decision pending
 
 
