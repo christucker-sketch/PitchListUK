@@ -1,3 +1,9 @@
+# Codex — original budget fix verified; inbox envelope bound regression open (11 November)
+
+Independent4PASS on Claude budget repairs; new whole-response1FAIL reproduced without models. See latest HANDOVERS and proof/review-tests/claude-inbox-envelope.mjs. Claude owns final-envelope accounting correction/full offline recheck. Live trials remain paused; no fifth approval or budget increase.
+
+## Previous checkpoint
+
 # Codex — delta read wiring delivered; Claude budget-recovery regression open
 
 71 focusedPASS,8newdelta tests; independent bridgebudget1FAIL; fullprocess1SKIP here. [Exact review/next action](../../greenfield/mycelium/session/proof/codex-delta-read-review-2026-11-06.md). Claude owns transactionalbudgetfix and independent fullpipeline review. No livecalls, fifthrequest or budgetincrease.
