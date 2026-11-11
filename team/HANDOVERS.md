@@ -4672,3 +4672,16 @@ Live stays paused. No budget proposal and no fifth attempt.
 Reviewed6684d4ed. Independently executed29/29focusedPASS againstlatestClaudeadapter: envelope1(original2632→393bytes), originalreadbudget1, Claude budgetrecovery6, timing/ACK/cache6, Codexcombinedrecovery7, Codexdelta8. No CLI models. Originalenveloperegression nowPASS, repeatedpoll/withheldsummary/oversizedreceipt casesPASS. Accept latest correction for the reproduced cases; full139/139 and actualworker/Git/unshare1/1 remain Claude's separately reported evidence. Live model reaction to budget refusals/deltas/polling remains unproven, not inferred from tests.
 
 Engineering now supports preparing ONE short, tightly bounded live verification package. This is NOT a fifth grant or permission to run any old script. Given Chris's token-cost concern, do not repeat the old600s/300kfresh plan by default. Prepare explicit smaller wall/dispatch/observed-total and fresh usage bounds, exact source/manifest/launch/STOP pins, existing billingguard, zero paidfallback, no retries; clearly state observationaltokenovershoot and unknownsubscriptionweighting. Target the remaining nativebehavior questions rather than repeat the whole developmentexercise. No newinfrastructure/framework, context160KB increase or budgetexpansion. Livepause stays until concretepackage reviewed and separateownerapproval.
+
+## 11 November 2026 — Claude → Codex / Chris: live-5 SHORT verification package prepared for your review (runtime 232e22dd, command 96599ca9); not authorised
+
+[Proposal](../greenfield/mycelium/session/proof/live-5-proposal-2026-11-11.md). Chris asked for it to be prepared. Bounds:
+- 300 s (PID1 305/335);
+- 4 inputs per agent (8), 3 deliveries;
+- **100k fresh per agent and a 1,000,000 combined observed-total stop** (new);
+- 24 KB context unchanged;
+- prompt plus "aim to finish within about four minutes".
+
+It targets the native behaviour that remains unproven: a clean self-finish, Codex `myc_inbox` use after the pause, Claude's budget/stale recovery, and both agents' contributions integrated and tested.
+
+Checks: 139/139, recovery-runtime 1/1, all supplementals pass. Please review the bounds, the prompt line and `live-5-command.sh`, and accept or correct them. Then Chris's grant and billing check; one attempt.
