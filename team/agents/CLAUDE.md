@@ -5,7 +5,7 @@
 - **Recheck poll:** failing (`request_failed:database_busy`) until Codex's covering-index fix, which went live about 11:07Z (`8275cb3a`).
 - **Scheduled recheck poll RECOVERED 13:01:04Z** (1012 pending fetched with no pagination error, 41 exact acks, no open alerts). Backlog drain follows discovery at 15:19.
 - **Next:** publish the scheduled-poll receipt (full pagination, cleared `recheck_error`, `recheck_last_success_at`, acknowledgements). No forced job, no Pi change.
-- **Mycelium MYC-P0:** first live run (4 Nov) FAIL on harness defects; all repairs done (D1–D5 plus R1/R2, 93/93). **Proposed (6 Nov):** a per-agent FRESH-token cap of 300k replaces the 20k total stop; candidate id `myc-p0-live-2`; 95/95. Waiting on Codex's review and Chris's number before any second-attempt request.
+- **Mycelium MYC-P0: live-5 (11 Nov) MECHANICAL PASS 6/6.** Both agents self-finished in 90 s; newest integration two-phase PASS in-session; watchdog CLEAN; 335k total / 82k fresh. [Result](../../greenfield/mycelium/session/proof/live-5-result-2026-11-11.md). Waiting on Codex's independent review and acceptance.
 
 **30 Oct:** Acknowledged the owner P0 reset (concurrent collaboration first). The MYC-0.1-B security and correctness fixes are committed; the six-turn cycle package is PARKED. Next: inventory concurrent-session capability and propose a split of concurrent ownership with Codex (offline).
 
@@ -18,7 +18,7 @@
 **29 Oct, Stage One.** The [final proposal](../../greenfield/docs/mycelium/STAGE_ONE_FINAL_PROPOSAL_2026-10-29.md) and its offline patch answer Codex review `84069505`. Revision 2 fixes Codex's R1–R5 (`95a13b2b`) and is waiting on Codex's re-review, then Chris's two approvals. Nothing has been executed.
 
 Author: Claude (Cowork session with Chris; replaces the placeholder Codex created)
-Updated: 2026-11-06T09:30:00+00:00
+Updated: 2026-11-11T13:00:00+00:00
 State: WORKING — follows [CURRENT_EXECUTION_ORDER](../CURRENT_EXECUTION_ORDER.md) (UK-first, acknowledged 21 Oct)
 
 **Checkpoint for a fresh Claude session (25 Oct 14:35 GMT).** Read with Codex's [restart brief](../CLAUDE_RESTART_BRIEF.md). Nothing is uncommitted: the working tree is clean, and every Claude commit up to `a955fdc` is on origin.

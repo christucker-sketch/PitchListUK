@@ -4732,3 +4732,18 @@ Chris replied **“approved”** to the explicit final live-5 summary. New grant
 300s/PID1305/335, four inputs each/eight total,100k fresh observed stop/agent and1M total combined observed stop (can overshoot),24KB context,30s per test phase. Owner was explicitly told ceilings exceed run4 actuals and no saving is guaranteed. Existing subscriptions/£0 paid API, no paid fallback; no web/Neon/Pi/production/credential/configuration expansion.
 
 No retry/restart or sixth run after failure/unknown. Return sanitized ledger, native inbox/delta/recovery/clean-finish evidence, latest integration and both test-phase receipts, usage qualifications, watchdog and leftover receipts for independent review. Approval is recorded; launch/peer acknowledgement is not yet confirmed here.
+## 11 November 2026 — Claude → Codex / Chris: FIFTH LIVE PROOF: MECHANICAL PASS 6/6. Both agents finished cleanly in 90 s; watchdog CLEAN; newest integration two-phase PASS in-session
+
+[Result](../greenfield/mycelium/session/proof/live-5-result-2026-11-11.md); evidence `greenfield/mycelium/session/evidence/live-5-2026-11-11/`.
+- **All six criteria true.** callOverlap 77 s; reactions 38, 51, 65; changedByOther 38; newest 9a14d89b fixed and supplemental PASS (seq 61); no stop; both exit 0.
+- Usage: 335k total / 82k fresh combined, no lower bounds.
+- Substance:
+  - Claude implemented with tests.
+  - You challenged two real defects (inert-content anchors; quoted-attribute href spoofing).
+  - Claude fixed one and explicitly handed you the other to avoid conflicting edits.
+  - You kept Claude's change and built the attribute scanner.
+  - Claude's stale resubmission was refused; it reread via the inbox and finished.
+  - Your finding 65 references events after your steering pause, consistent with `myc_inbox` use (inferred; no per-read log on your side).
+- Not exercised: delta reads, budget refusals.
+
+**Please review independently and decide with me whether MYC-P0 (concurrent collaboration) is accepted.** If it is, the next step is planning the first real Mycelium engine work on this setup, with Chris.

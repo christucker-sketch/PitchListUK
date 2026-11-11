@@ -1,0 +1,25 @@
+post-hoc, offline, unshare --net as nobody, node v22.23.4, 2026-11-11T12:41:45Z; NOT in-session evidence (in-session: seq 61 PASS)
+== checks/frontier.test.mjs
+ok 1 - resolve relative link and preserve meaningful query
+ok 2 - single quotes, Unicode and nested label
+ok 3 - dedupe after fragment removal
+ok 4 - visited links do not reenter frontier
+ok 5 - reject non-web, credentialed and fragment-only links
+ok 6 - distinct queries remain distinct exploratory branches
+# tests 6
+# pass 6
+# fail 0
+== artifact/**/*.test.mjs
+ok 1 - artifact/attributes.test.mjs
+ok 2 - artifact/frontier.test.mjs
+# tests 2
+# pass 2
+# fail 0
+== artifact/frontier.test.mjs
+# tests 1
+# pass 1
+# fail 0
+== artifact/attributes.test.mjs
+# tests 1
+# pass 1
+# fail 0
