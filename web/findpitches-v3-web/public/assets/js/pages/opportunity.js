@@ -22,7 +22,7 @@
   const canon=document.createElement('link'); canon.rel='canonical'; canon.href=R.abs(o.canonical_path); document.head.appendChild(canon);
   FP.track('opportunity_opened',{id:o.id,market:cc,from:'page',locked:o.access.locked});
   const region=o.location.region_name || '';
-  const crumbs=[['Home','index.html',R.SITE+'/'],[C.name,R.draft.seo(R.marketPath(cc)),R.abs(R.marketPath(cc))]].concat((o.region_path||[]).map(rg=>[rg.name,R.draft.seo(R.marketPath(cc)+rg.slug+'/'),R.abs(R.marketPath(cc)+rg.slug+'/')]));
+  const crumbs=[['Home','index.html',R.SITE+'/'],[C.name,R.href.seo(R.marketPath(cc)),R.abs(R.marketPath(cc))]].concat((o.region_path||[]).map(rg=>[rg.name,R.href.seo(R.marketPath(cc)+rg.slug+'/'),R.abs(R.marketPath(cc)+rg.slug+'/')]));
 
     // Phones: put the apply action next to the title so it isn't below the fold. Same handlers as the main panel.
   const mcta = as.cls==='ended' ? '' : !o.access.locked ? (o.access.application_url?uiHTML`<a class="btn btn-turf" href="${esc(o.access.application_action_url||o.access.application_url)}" ${o.application?.route_type==='trader_phone'?'':'target="_blank" rel="noopener"'} data-apply="${esc(o.id)}">${FP.i18n.applicationLabel(o.application?.route_type)}${o.application?.route_type==='trader_phone'?'':uiHTML`<span class="sr"> (opens in a new tab)</span> ↗`}</a>`:'')
@@ -55,7 +55,7 @@
       </ul></div>
       <div class="block"><h2>Something wrong?</h2><p class="muted" style="margin:0 0 10px">If the dates, place or application details have changed, tell us and we’ll recheck the listing.</p><button class="btn btn-line btn-sm" type="button" id="report">Report a problem</button></div>
       <div class="block">${o.similar.length?uiHTML`<h2>${o.location.precision==='place'?translateUI('Similar listings nearby'):translateUI('Similar listings in ')+esc(region||C.name)}</h2><div class="sim" id="sim">${o.similar.map(x=>card(x)).join('')}</div>`:''}
-        <p style="margin:14px 0 0"><a href="${R.draft.finder(cc,{type:o.type})}">See all ${esc(U.typePluralLc(o.type))} in ${esc(C.the)} →</a></p></div>
+        <p style="margin:14px 0 0"><a href="${R.draft.finder(cc,o.type?{type:o.type}:{})}">See all ${esc(U.typePluralLc(o.type))} in ${esc(C.the)} →</a></p></div>
       ${o.source_title&&o.source_title!==o.title?uiHTML`<p class="meta" style="margin-top:28px">Organiser’s title: “${esc(o.source_title)}”</p>`:''}
     </div>
   </div></div>`;

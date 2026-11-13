@@ -58,12 +58,48 @@ export function mapProof(item,now) {
   row.organiser.verified=true;row.organiser.type_label=null;row.type_label=types[row.type]??'Event';row.canonical_path=routes.opportunityPath(row.market,row.id);row.distance_km=null;
   row._proof={expires_at:item.proof_expires_at,revision:item.entity_revision,verification_id:item.verification_id};return row;
 }
+// Concurrent page views in one isolate share a single in-flight proof read per
+// scope (identical freshness: every caller gets the same just-read snapshot).
+// Optionally (V3_CATALOGUE_CACHE_SECONDS, 0/unset = off, max 60) a validated
+// full snapshot is reused for a few seconds and scoped reads are derived from
+// it. Items are still mapped with mapProof(item, now) on every read, so proof
+// expiry and application close instants are enforced at request time, and the
+// snapshot age plus the existing 120 s as_of tolerance stays bounded.
+const inflight=new WeakMap(),fullCache=new WeakMap();
+const CATALOGUE_CACHE_MAX_SECONDS=60;
+export function catalogueCacheSeconds(env){const n=Number(env.V3_CATALOGUE_CACHE_SECONDS??0);return Number.isInteger(n)&&n>0?Math.min(n,CATALOGUE_CACHE_MAX_SECONDS):0;}
+function validSnapshot(snapshot,scope,now){
+  return scopeMatches(snapshot.scope,scope)&&snapshot.schema==='findpitches-v3-customer-proof-snapshot-v1'&&snapshot.publication_enabled===false&&snapshot.production_cutover_enabled===false&&Array.isArray(snapshot.items)&&scopedItemsMatch(snapshot.scope,snapshot.items)&&snapshot.items.length<=20000&&new Set(snapshot.items.map(i=>i.id)).size===snapshot.items.length&&Number.isFinite(Date.parse(snapshot.as_of))&&Math.abs(Date.parse(snapshot.as_of)-Date.parse(now))<=120000;
+}
+async function fetchSnapshot(env,scope,now){
+  const params=scopeParams(scope),key=params.toString(),api=env.V3_READY_API;
+  let pending=inflight.get(api);if(!pending){pending=new Map();inflight.set(api,pending);}
+  if(!pending.has(key))pending.set(key,(async()=>{
+    const path='https://v3-internal.invalid/staging/catalogue'+(params.size?'?'+params:'');
+    const response=await api.fetch(path,{headers:{Authorization:'Bearer '+env.V3_STAGING_TOKEN}});
+    if(!response.ok)throw customerError('service_unavailable',503);return response.json();
+  })().finally(()=>pending.delete(key)));
+  const snapshot=await pending.get(key);
+  if(!validSnapshot(snapshot,scope,now))throw customerError('service_unavailable',503);
+  return snapshot;
+}
+function scopedItems(items,scope){
+  if(scope.kind==='market')return items.filter(i=>i.country===scope.market);
+  if(scope.kind==='ids')return items.filter(i=>scope.ids.includes(i.id));
+  if(scope.kind==='detail'){const target=items.find(i=>i.id===scope.id);return target?items.filter(i=>i.country===target.country):null;}
+  return items;
+}
+async function cachedFull(env,now,seconds){
+  const hit=fullCache.get(env.V3_READY_API),age=hit?Date.parse(now)-Date.parse(hit.as_of):Infinity;
+  if(hit&&age>=0&&age<=seconds*1000)return hit;
+  const snapshot=await fetchSnapshot(env,{kind:'full'},now);fullCache.set(env.V3_READY_API,snapshot);return snapshot;
+}
 export async function readCatalogue(env,now,options={}) {
   if(!env.V3_READY_API||!env.V3_STAGING_TOKEN)throw customerError('service_unavailable',503);
-  const scope=catalogueScope(options),params=scopeParams(scope),path='https://v3-internal.invalid/staging/catalogue'+(params.size?'?'+params:'');
-  const response=await env.V3_READY_API.fetch(path,{headers:{Authorization:'Bearer '+env.V3_STAGING_TOKEN}});
-  if(!response.ok)throw customerError('service_unavailable',503);const snapshot=await response.json();
-  if(!scopeMatches(snapshot.scope,scope)||snapshot.schema!=='findpitches-v3-customer-proof-snapshot-v1'||snapshot.publication_enabled!==false||snapshot.production_cutover_enabled!==false||!Array.isArray(snapshot.items)||!scopedItemsMatch(snapshot.scope,snapshot.items)||snapshot.items.length>20000||new Set(snapshot.items.map(i=>i.id)).size!==snapshot.items.length||!Number.isFinite(Date.parse(snapshot.as_of))||Math.abs(Date.parse(snapshot.as_of)-Date.parse(now))>120000)throw customerError('service_unavailable',503);
+  const scope=catalogueScope(options),seconds=catalogueCacheSeconds(env);
+  let snapshot=null;
+  if(seconds){const full=await cachedFull(env,now,seconds),items=scopedItems(full.items,scope);if(items)snapshot={...full,scope:scope.kind==='full'?full.scope:scope,items};}
+  snapshot??=await fetchSnapshot(env,scope,now);
   return {...snapshot,rows:snapshot.items.map(i=>mapProof(i,now)).filter(Boolean)};
 }
 export function present(row,access={tier:'free'}) {

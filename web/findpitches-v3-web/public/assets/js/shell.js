@@ -154,7 +154,7 @@
     const past = st.cls === 'ended';
     return uiHTML`<article class="ocard${past ? ' past' : ''}" data-id="${esc(o.id)}">${dt}
       <div class="oc-main">
-        <h3><a href="${R.draft.opportunity(o.id)}" data-open="${esc(o.id)}">${esc(o.title)}</a></h3>
+        <h3><a href="${R.href.opportunity(o.id, o.market)}" data-open="${esc(o.id)}">${esc(o.title)}</a></h3>
         <p class="oc-where">${esc(o.location.label)}${dist}<span class="oc-when${o.dates && o.dates.start ? '' : ' muted'}"><span aria-hidden="true"> · </span>${esc(o.dates && o.dates.start ? when(o, cc) : o.dates && o.dates.recurring ? translateUI('Regular, no fixed dates listed') : translateUI('No dates listed yet'))}</span></p>
         <p class="oc-meta">${o.type_label ? uiHTML`<span class="ty ${sp ? 'sport' : ''}">${esc(translateUI(o.type_label))}</span>` : ''}${wantsTxt ? uiHTML`<span>${esc(wantsTxt)}</span>` : ''}<span class="fresh ${f.cls}" title="${esc(f.long)}"><i aria-hidden="true"></i>${esc(f.text)}</span></p>
       </div>
@@ -406,7 +406,7 @@
     pop('#ccBtn', '#ccPop'); pop('#acBtn', '#acPop');
     top.querySelectorAll('[data-market]').forEach(b => b.onclick = () => {
       const to = b.dataset.market; track('market_changed', { from: state.market, to }); state.market = to;
-      if (document.body.dataset.page === 'seo') { location.href = R.draft.seo(R.marketPath(to)); return; }
+      if (document.body.dataset.page === 'seo') { location.href = R.href.seo(R.marketPath(to)); return; }
       const u = new URL(location.href); u.searchParams.delete('market');
       if (document.body.dataset.page === 'finder') { ['q', 'radius', 'month'].forEach(k => u.searchParams.delete(k)); }
       if (u.searchParams.has('cc') || document.body.dataset.page === 'finder') u.searchParams.set('cc', R.slugOf(to));
@@ -423,8 +423,8 @@
     const f = $('#fp-foot'); if (!f) return;
     f.innerHTML = uiHTML`<footer class="foot"><div class="wrap top">
       <div><a class="logo" href="index.html">${LOGO('#145E39')}FindPitches</a><p style="margin:14px 0 0;max-width:24em">Checked places to trade at markets, festivals, shows and sporting events, straight from the organiser.</p></div>
-      <div><h2 class="fh">Markets</h2><ul>${state.markets.map(c => uiHTML`<li><a href="${LIVE ? R.draft.finder(c.code) : R.draft.seo(R.marketPath(c.code))}">${esc(c.name)}</a>${c.launch_status === 'live' ? '' : uiHTML(' <span class="soon">· coming soon</span>')}</li>`).join('')}</ul></div>
-      <div><h2 class="fh">For traders</h2><ul><li><a href="finder.html">Find pitches</a></li>${LIVE ? '' : uiHTML`<li><a href="${R.draft.seo(R.marketPath(state.m().launch_status === 'live' ? state.market : (state.live[0] || {}).code || 'GB'))}">Browse by place &amp; type</a></li><li><a href="finder.html?type=sport">Sports event pitches</a></li>`}<li><a href="saved.html">Saved pitches</a></li>${LIVE ? '' : uiHTML('<li><a href="alerts.html">Alerts</a></li>')}<li><a href="pricing.html">Pricing</a></li></ul></div>
+      <div><h2 class="fh">Markets</h2><ul>${state.markets.map(c => uiHTML`<li><a href="${LIVE ? R.draft.finder(c.code) : R.href.seo(R.marketPath(c.code))}">${esc(c.name)}</a>${c.launch_status === 'live' ? '' : uiHTML(' <span class="soon">· coming soon</span>')}</li>`).join('')}</ul></div>
+      <div><h2 class="fh">For traders</h2><ul><li><a href="finder.html">Find pitches</a></li>${LIVE ? '' : uiHTML`<li><a href="${R.href.seo(R.marketPath(state.m().launch_status === 'live' ? state.market : (state.live[0] || {}).code || 'GB'))}">Browse by place &amp; type</a></li><li><a href="finder.html?type=sport">Sports event pitches</a></li>`}<li><a href="saved.html">Saved pitches</a></li>${LIVE ? '' : uiHTML('<li><a href="alerts.html">Alerts</a></li>')}<li><a href="pricing.html">Pricing</a></li></ul></div>
       <div><h2 class="fh">FindPitches</h2><ul><li><a href="organisers.html">For organisers</a></li><li><a href="index.html#checked">How we check listings</a></li><li><a href="account.html">Your account</a></li></ul></div>
       </div><div class="wrap bottom"><span>© 2026 FindPitches</span><span>We list opportunities and link to organisers. Organisers choose their traders.</span></div></footer>`;
   }
@@ -454,7 +454,10 @@
         // stop here, rather than rendering pages with missing data.
         console.warn('FindPitches unavailable:', e && e.code);
         const main = document.getElementById('main');
-        if (main) main.innerHTML = uiHTML`<section class="phead"><div class="wrap"><h1>FindPitches is temporarily unavailable</h1><p>We couldn’t load the site just now. Please try again in a few minutes.</p><p><button class="btn btn-turf" type="button" data-reload>Try again</button></p></div></section>`;
+        // Keep any server-rendered content (it is complete, public and redacted);
+        // only an empty shell is replaced. Otherwise the notice sits above it.
+        const notice = uiHTML`<section class="phead" data-unavailable><div class="wrap"><h2>FindPitches is temporarily unavailable</h2><p>We couldn’t load the site just now. Please try again in a few minutes.</p><p><button class="btn btn-turf" type="button" data-reload>Try again</button></p></div></section>`;
+        if (main) { if (main.textContent.trim()) main.insertAdjacentHTML('afterbegin', notice); else main.innerHTML = notice.replace('<h2>', '<h1>').replace('</h2>', '</h1>'); }
         return new Promise(() => {});
       }
       console.error(e);

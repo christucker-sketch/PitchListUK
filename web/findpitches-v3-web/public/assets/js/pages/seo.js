@@ -50,7 +50,7 @@
 
   P.innerHTML = uiHTML`
   <section class="lhero"><div class="wrap">
-    <nav class="crumbs" aria-label="Breadcrumb">${M.breadcrumbs.map((b,i)=> i===M.breadcrumbs.length-1 ? uiHTML`<span>${esc(b.name)}</span>` : (i===0?uiHTML`<a href="index.html">${esc(b.name)}</a>`:uiHTML`<span><a href="${R.draft.seo(b.path)}">${esc(b.name)}</a></span>`)).join('')}</nav>
+    <nav class="crumbs" aria-label="Breadcrumb">${M.breadcrumbs.map((b,i)=> i===M.breadcrumbs.length-1 ? uiHTML`<span>${esc(b.name)}</span>` : (i===0?uiHTML`<a href="index.html">${esc(b.name)}</a>`:uiHTML`<span><a href="${R.href.seo(b.path)}">${esc(b.name)}</a></span>`)).join('')}</nav>
     <p class="kick">${esc(market.name)}</p>
     <h1>${esc(M.h1)}</h1>
     <p class="intro">${esc(M.intro[0])}</p>
@@ -63,7 +63,7 @@
       ${noData ? FP.ui.coverageBuilding(d.market)
         : M.count ? uiHTML`<div class="results"><h2>${d.intent?translateUI('Latest listings'):translateUI('Coming up')}${d.region?' '+translateUI('in')+' '+esc(M.place):''}</h2>${visible.map(o=>card(o)).join('')}${M.count>search.results.length?uiHTML`<a class="btn btn-line" href="${finderHref}">See all ${M.count} in the Finder →</a>`:''}</div>`
         : uiHTML`<div class="zero"><h2>Nothing live for this search right now</h2><p class="muted" style="margin:0">Organisers open applications all year. Try a wider area below. Email alerts are coming later.</p></div>`}
-      ${L.map(g=>uiHTML`<section class="lblock"><h2>${esc(g.title)}</h2><div class="linkgrid">${g.links.map(l=>uiHTML`<a href="${R.draft.seo(l.path)}">${esc(l.label)}<small>${l.count}</small></a>`).join('')}</div></section>`).join('')}
+      ${L.map(g=>uiHTML`<section class="lblock"><h2>${esc(g.title)}</h2><div class="linkgrid">${g.links.map(l=>uiHTML`<a href="${R.href.seo(l.path)}">${esc(l.label)}<small>${l.count}</small></a>`).join('')}</div></section>`).join('')}
       <section class="lblock faq"><h2>Questions</h2>${M.faq.map((f,i)=>uiHTML`<details ${i===0?'open':''}><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p></details>`).join('')}</section>
     </div>
     <aside class="side">
@@ -86,14 +86,14 @@
   function renderRedirect(x){
     document.title=translateUI('Redirecting… | FindPitches');
     P.innerHTML=uiHTML`<div class="wrap section sys"><div class="card"><h1 class="display" style="font-size:1.4rem;margin:0 0 10px">This page has moved</h1>
-      <p class="muted">Taking you to the new page…</p><a class="btn btn-turf" href="${R.draft.seo(x.to)}" id="go">Go to the new page</a>
+      <p class="muted">Taking you to the new page…</p><a class="btn btn-turf" href="${R.href.seo(x.to)}" id="go">Go to the new page</a>
       ${FP.ui.draftNote(`${x.status} redirect ${path} → ${x.to}. ${x.reason}. Production does this on the server with no page shown.`)}</div></div>`;
-    if (!qs.get('stay')) setTimeout(()=>location.replace(R.draft.seo(x.to)),1600);
+    if (!qs.get('stay')) setTimeout(()=>location.replace(R.href.seo(x.to)),1600);
   }
   function render404(x){
     document.title=translateUI('Page not found | FindPitches'); setMeta('robots','noindex');
     P.innerHTML=uiHTML`<div class="wrap section sys"><div class="card"><h1 class="display" style="font-size:1.4rem;margin:0 0 10px">We can’t find that page</h1>
-      <p class="muted">It may have moved, or the link may be incomplete.</p><div style="display:flex;flex-wrap:wrap;gap:8px"><a class="btn btn-turf" href="finder.html">Find pitches</a><a class="btn btn-line" href="${R.draft.seo(R.marketPath(st.market))}">Browse ${esc(st.m().name)}</a></div>
+      <p class="muted">It may have moved, or the link may be incomplete.</p><div style="display:flex;flex-wrap:wrap;gap:8px"><a class="btn btn-turf" href="finder.html">Find pitches</a><a class="btn btn-line" href="${R.href.seo(R.marketPath(st.market))}">Browse ${esc(st.m().name)}</a></div>
       ${FP.ui.draftNote(`404. ${x.reason}. Production returns a real 404 status.`)}</div></div>`;
   }
 })();

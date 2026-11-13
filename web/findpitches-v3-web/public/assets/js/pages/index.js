@@ -27,7 +27,7 @@ if (LIVE) {
   for (const m of dataMarkets) BOARD[m.code] = (home.upcoming[m.code]||[]).slice(0,11).map(o=>[o.dates.start,o.title,o.location.label,KEY[o.type]||'event',o.id]);
   fillLiveExamples(home);
   const areas=(home.regions.GB||[]).filter(r=>!r.parent_id&&r.opportunity_count>0);
-  $('#coverageAreas').innerHTML=areas.length?areas.map(r=>uiHTML`<a href="${R.draft.seo(SEO.pathOf('GB',null,r))}">${esc(r.name)} <span>${r.opportunity_count} checked ${r.opportunity_count===1?'listing':'listings'}</span></a>`).join(''):uiHTML('<p>Regional coverage is still being checked. <a href="')+R.draft.finder('GB')+'">Browse every UK listing</a>.</p>';
+  $('#coverageAreas').innerHTML=areas.length?areas.map(r=>uiHTML`<a href="${R.href.seo(SEO.pathOf('GB',null,r))}">${esc(r.name)} <span>${r.opportunity_count} checked ${r.opportunity_count===1?'listing':'listings'}</span></a>`).join(''):uiHTML('<p>Regional coverage is still being checked. <a href="')+R.draft.finder('GB')+'">Browse every UK listing</a>.</p>';
   $('#stTotal').textContent=stats.total; document.querySelectorAll('#reelTotal').forEach(e=>e.textContent=stats.total); $('#stUS').textContent=(stats.markets.US||{}).regions||0; $('#stUK').textContent=(stats.markets.GB||{}).regions||0;
 }
 
@@ -42,9 +42,9 @@ function fillLiveExamples(home){
     if (ex && L) { const f=k=>L.querySelector(`[data-f="${k}"]`); const st=U.appStatus(ex,ex.market);
       f('checked').textContent=ex.checked&&ex.checked.last_checked?fmtDate(ex.checked.last_checked,ex.market):''; f('type').textContent=ex.type_label||translateUI('Listing');
       f('title').textContent=ex.title; f('where').textContent=ex.location.label; f('when').textContent=U.when(ex,ex.market); f('apply').textContent=st.short||translateUI('Direct, via the organiser');
-      f('link').href=R.draft.opportunity(ex.id); L.hidden=false; }
+      f('link').href=R.href.opportunity(ex.id, ex.market); L.hidden=false; }
     const S=document.querySelector('[data-live-sport]'); const sport=home.sports;
-    if (S && sport.length) { S.innerHTML=sport.slice(0,4).map(o=>uiHTML`<a class="scard" href="${R.draft.opportunity(o.id)}"><span class="t">${U.esc(o.type_label||translateUI('Sports'))}</span><b>${U.esc(o.title)}</b><span>${U.esc(o.location.label)}${o.dates.start?' · '+U.esc(fmtDate(o.dates.start,o.market)):''}</span><span class="cc2">${U.esc(o.market==='GB'?'UK':o.market)}</span></a>`).join(''); S.hidden=false; }
+    if (S && sport.length) { S.innerHTML=sport.slice(0,4).map(o=>uiHTML`<a class="scard" href="${R.href.opportunity(o.id, o.market)}"><span class="t">${U.esc(o.type_label||translateUI('Sports'))}</span><b>${U.esc(o.title)}</b><span>${U.esc(o.location.label)}${o.dates.start?' · '+U.esc(fmtDate(o.dates.start,o.market)):''}</span><span class="cc2">${U.esc(o.market==='GB'?'UK':o.market)}</span></a>`).join(''); S.hidden=false; }
   } catch (e) { console.warn('homepage examples unavailable', e && e.code); }
 }
 
@@ -62,8 +62,8 @@ function renderBoard(code){
   const body=$('#boardBody'); body.innerHTML='';
   if(!(BOARD[code]||[]).length){body.innerHTML=uiHTML('<tr><td colspan="4">No verified upcoming dates for this country yet. <a href="')+R.draft.finder(code||cur)+'">Browse all its current opportunities</a>.</td></tr>';return;}
   BOARD[code].forEach((r,i)=>{ const tr=document.createElement('tr'); tr.style.animationDelay=(i*0.06)+'s'; tr.style.cursor='pointer';
-    tr.onclick=e=>{ if(!e.target.closest('a')) location.href=R.draft.opportunity(r[4]); };
-    tr.innerHTML=uiHTML`<td>${fmtDate(r[0],code)}</td><td class="ev"><a href="${R.draft.opportunity(r[4])}" aria-label="${esc(r[1])}"></a></td><td class="wh">${esc(r[2])}</td><td><span class="ty ${r[3]==='sport'?'sport':''}">${TYPE[r[3]]}</span></td>`;
+    tr.onclick=e=>{ if(!e.target.closest('a')) location.href=R.href.opportunity(r[4], code); };
+    tr.innerHTML=uiHTML`<td>${fmtDate(r[0],code)}</td><td class="ev"><a href="${R.href.opportunity(r[4], code)}" aria-label="${esc(r[1])}"></a></td><td class="wh">${esc(r[2])}</td><td><span class="ty ${r[3]==='sport'?'sport':''}">${TYPE[r[3]]}</span></td>`;
     body.appendChild(tr); setTimeout(()=>scramble(tr.querySelector('.ev a'),r[1]),i*60); });
 }
 btabs.addEventListener('click',e=>{const b=e.target.closest('[data-b]'); if(b) renderBoard(b.dataset.b);});
@@ -85,7 +85,7 @@ async function applyLocale(code,opts={}){
   setRadius(m);
   setFaq(m);
   const intents=CFG.intentsFor(code);
-  $('#popular').innerHTML=uiHTML('<span>Popular:</span>')+intents.slice(0,4).map(i=>uiHTML`<a href="${R.draft.seo(SEO.pathOf(code,i))}">${esc(i.labels[code])}</a>`).join('');
+  $('#popular').innerHTML=uiHTML('<span>Popular:</span>')+intents.slice(0,4).map(i=>uiHTML`<a href="${R.href.seo(SEO.pathOf(code,i))}">${esc(i.labels[code])}</a>`).join('');
   if(!opts.keepHint) hintDefault();
   document.querySelectorAll('#clist button').forEach(b=>b.setAttribute('aria-current',String(b.dataset.c===code)));
   $('#pvLabel').textContent=m.postal.kind==='district'?translateUI('District'):m.postal.label; $('#pvPh').textContent='e.g. '+m.postal.example;
@@ -94,8 +94,8 @@ async function applyLocale(code,opts={}){
   $('#pvFeeL').textContent=cap(v.fee); $('#pvFee').textContent=translateUI("from {0} {1}",[money(EXAMPLE_FEE[code][0],code),EXAMPLE_FEE[code][1]]);
   $('#pvVocab').innerHTML=[[translateUI('You are a'),cap(v.trader)],[translateUI('You pay a'),v.fee],[translateUI('Dates'),m.date_format],[translateUI('Currency'),m.currency]].map(([a,b])=>uiHTML`<div><small>${a}</small><b>${esc(b)}</b></div>`).join('');
   $('#pvFoot').textContent = m.launch_status==='live' ? (m.opportunity_count!=null ? translateUI("Live now · {0} checked listings. The listing above is an example.",[m.opportunity_count]) : translateUI("Live now. The listing above is an example.",[])) : translateUI("Coming soon to {0}: search by {1}, distances in {2}, fees in {3}.",[m.name,m.postal.kind==='district'?translateUI('district (Hong Kong doesn’t use postcodes)'):m.postal.label_mid,m.distance_unit==='km'?'kilometres':'miles',m.currency]);
-  $('#seoCols').innerHTML=intents.map(i=>uiHTML`<a href="${R.draft.seo(SEO.pathOf(code,i))}">${esc(i.labels[code])}</a>`).join('');
-  if(!intents.length) $('#seoCols').innerHTML=uiHTML`<a href="${R.draft.seo(R.marketPath(code))}">Browse ${esc(m.name)}</a>`;
+  $('#seoCols').innerHTML=intents.map(i=>uiHTML`<a href="${R.href.seo(SEO.pathOf(code,i))}">${esc(i.labels[code])}</a>`).join('');
+  if(!intents.length) $('#seoCols').innerHTML=uiHTML`<a href="${R.href.seo(R.marketPath(code))}">Browse ${esc(m.name)}</a>`;
   $('#popular').hidden=!intents.length;
   $('#seoFor').textContent = m.launch_status==='live' ? translateUI("Each one is also broken down by {0}, so you can see what’s near you.",[m.region_label.singular]) : translateUI("{0} opens soon. These pages fill up as listings are checked.",[m.name]);
   if(!opts.keepBoard) renderBoard(code);
@@ -136,7 +136,7 @@ $('#search').addEventListener('submit',e=>{
   FP.track('home_search_submitted',{market:cur,has_location:!!v,what:w});
   location.href=R.draft.finder(cur,p);
 });
-if (LIVE) $('#sportGo').href = 'finder.html'; else $('#sportGo').href = R.draft.seo(SEO.pathOf(dataMarkets.find(m=>m.code==='US')?'US':cur, CFG.intentFor('US','sports')));
+if (LIVE) $('#sportGo').href = 'finder.html'; else $('#sportGo').href = R.href.seo(SEO.pathOf(dataMarkets.find(m=>m.code==='US')?'US':cur, CFG.intentFor('US','sports')));
 
 $('#earlyForm').addEventListener('submit',async e=>{
   e.preventDefault(); const em=$('#email'), done=$('#done'), code=$('#ecountry').value;

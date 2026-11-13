@@ -263,7 +263,7 @@
       ${applyPanel(o)}
       ${o.notes?uiHTML`<p class="dnote">${esc(o.notes)}</p>`:''}
       <p class="fresh ${f.cls}"><i aria-hidden="true"></i>${esc(f.long)}</p>
-      <div class="dfoot"><button class="btn btn-line" type="button" data-save="${esc(o.id)}" aria-pressed="${on}">${on?translateUI('★ Saved'):translateUI('☆ Save')}</button><a class="btn btn-line" href="${R.draft.opportunity(o.id)}">Full listing</a></div>`;
+      <div class="dfoot"><button class="btn btn-line" type="button" data-save="${esc(o.id)}" aria-pressed="${on}">${on?translateUI('★ Saved'):translateUI('☆ Save')}</button><a class="btn btn-line" href="${R.href.opportunity(o.id, o.market)}">Full listing</a></div>`;
     $('#dName').focus();
   }
   function closeDrawer(){ if($('#drawer').hidden) return; $('#drawer').hidden=true; $('#scrim').hidden=true; document.body.style.overflow=''; if(opener && document.contains(opener)) opener.focus(); }

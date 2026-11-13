@@ -252,7 +252,7 @@
   function sitemapXml(entries, lastmod) {
     const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
     return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
-      entries.map(e => `  <url><loc>${esc(R.abs(e.path))}</loc><lastmod>${lastmod}</lastmod></url>`).join('\n') + `\n</urlset>\n`;
+      entries.map(e => `  <url><loc>${esc(R.abs(e.path))}</loc><lastmod>${e.lastmod || lastmod}</lastmod></url>`).join('\n') + `\n</urlset>\n`;
   }
 
   FP.seo = { placeOf, resolve, filters, meta, links, pages, sitemapXml, pathOf, countFor, indexability, assess };

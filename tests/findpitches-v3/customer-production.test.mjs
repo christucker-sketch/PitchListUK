@@ -287,11 +287,13 @@ test('listing HTML uses the exact ID scope with identical metadata and expiry gu
   const scope=narrow&&ids?{kind:'ids',ids}:{kind:'full'};
   return Response.json({schema:'findpitches-v3-customer-proof-snapshot-v1',as_of:now(),publication_enabled:false,production_cutover_enabled:false,scope,items:narrow&&ids?items.filter(r=>ids.includes(r.id)):items});};
  const call=p=>worker.fetch(new Request(e.V3_PUBLIC_ORIGIN+p),e);
- for(const [path,id] of [['/uk/opportunity/'+gb.id+'/',gb.id],['/us/opportunity/'+us.id+'/',us.id],['/opportunity.html?id='+gb.id,gb.id],['/lang/fr/uk/opportunity/'+gb.id+'/',gb.id]]){
+ for(const [path,id] of [['/uk/opportunity/'+gb.id+'/',gb.id],['/us/opportunity/'+us.id+'/',us.id],['/lang/fr/uk/opportunity/'+gb.id+'/',gb.id]]){
   narrow=false;const before=await call(path);assert.equal(before.status,200);const markup=await before.text();
   narrow=true;const after=await call(path);assert.equal(after.status,200);assert.equal(await after.text(),markup);
   assert.deepEqual(JSON.parse(new URLSearchParams(requests.at(-1)).get('ids')),[id]);assert.equal(after.headers.get('cache-control'),'private, no-store');
  }
+ // The legacy query-string document now 301s to the canonical listing URL (language kept).
+ for(const [legacy,to] of [['/opportunity.html?id='+gb.id,'/uk/opportunity/'+gb.id+'/'],['/lang/fr/opportunity.html?id='+gb.id,'/lang/fr/uk/opportunity/'+gb.id+'/']]){const r=await call(legacy);assert.equal(r.status,301,legacy);assert.equal(r.headers.get('location'),to);}
  assert.equal((await call('/uk/')).status,200);assert.equal(requests.at(-1),'');
  gb.proof_expires_at='2020-01-01T00:00:00Z';assert.equal((await call('/uk/opportunity/'+gb.id+'/')).status,404);
  assert.equal((await call('/uk/opportunity/ent_'+('f'.repeat(32))+'/')).status,404);

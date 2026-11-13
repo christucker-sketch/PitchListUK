@@ -12,6 +12,7 @@ import {readCatalogue,present,search,countSearch,marketOf,markets,regions,allReg
 import {seo,seoConfig,routes} from '../../web/findpitches-v3-web/server/seo-edge.mjs';
 import {budgetDay} from './serper-usage.mjs';
 import {verifyNativeMailSettings,mailCredentialIsProxyReference} from './customer-mail.mjs';
+import {seoPageBody,opportunityBody,opportunityMeta} from './customer-ssr.mjs';
 
 const CSP="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'";
 const headers={'Content-Security-Policy':CSP,'X-Content-Type-Options':'nosniff','Referrer-Policy':'strict-origin-when-cross-origin','Strict-Transport-Security':'max-age=31536000','X-Robots-Tag':'noindex, nofollow','Cache-Control':'private, no-store'};
@@ -22,6 +23,13 @@ const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;
 const jsonld=value=>JSON.stringify(value).replace(/</g,'\\u003c');
 export const FRONTEND_SOURCE='24ad4b61cfc64b7338d5ab44efa816479ad1a57e7e0740893fb338b39c8b3e05';
 const production=env=>env.V3_CUSTOMER_MODE==='production_public';
+// Anonymous, redacted, read-only endpoints the public pages render from. Search
+// engines must be able to fetch them to render a page; their responses carry
+// X-Robots-Tag noindex. Everything else under /api/ stays disallowed.
+export const PUBLIC_RENDER_API=['/api/v3/session$','/api/v3/markets','/api/v3/regions','/api/v3/home','/api/v3/stats','/api/v3/seo/','/api/v3/opportunities','/api/v3/billing/plans'];
+const ROBOTS_ALLOW='User-agent: *\n'+PUBLIC_RENDER_API.map(p=>'Allow: '+p+'\n').join('');
+const liveMarket=code=>{try{return marketOf(code).launch_status==='live';}catch{return false;}};
+const og=(title,description,url)=>`<meta property="og:type" content="website"><meta property="og:site_name" content="FindPitches"><meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(description)}"><meta property="og:url" content="${esc(url)}">`;
 function seoPage(rows,d,ms,rs,access,now,asOf) {
   const market=ms.find(m=>m.code===d.market),others=(d.type==='market'||d.type==='intent')&&market.launch_status==='live'?ms.filter(m=>m.launch_status==='live'&&m.code!==d.market):[],inventories={};
   for(const code of [d.market,...others.map(m=>m.code)])inventories[code]=inventory(rows,code,seoConfig.intentsFor(code),now);
@@ -153,10 +161,11 @@ async function html(request,env,now) {
   if(lr.explicit&&/^\/(?:api|ops|preview|assets|health|robots\.txt|sitemap)/.test(path))return text('Page not found',404);
   if(lr.explicit&&(url.pathname==='/lang/'+lang||lang==='en'))return text('',301,{Location:i18n.pathFor(path,lang)+url.search});
   if(path==='/favicon.ico')return text(null,204);
-  if(path==='/robots.txt')return text(production(env)&&env.V3_PUBLIC_ENABLED==='true'?'User-agent: *\nDisallow: /api/\nDisallow: /ops/\nDisallow: /preview/\nDisallow: /account.html\nDisallow: /billing.html\nDisallow: /saved.html\nDisallow: /alerts.html\nSitemap: https://findpitches.com/sitemap.xml\n':'User-agent: *\nDisallow: /\n',200,{'Content-Type':'text/plain'});
+  if(path==='/robots.txt')return text(production(env)&&env.V3_PUBLIC_ENABLED==='true'?ROBOTS_ALLOW+'Disallow: /api/\nDisallow: /ops/\nDisallow: /preview/\nDisallow: /account.html\nDisallow: /billing.html\nDisallow: /saved.html\nDisallow: /alerts.html\nSitemap: https://findpitches.com/sitemap.xml\n':'User-agent: *\nDisallow: /\n',200,{'Content-Type':'text/plain'});
   if(path.startsWith('/assets/')){const asset=await env.ASSETS.fetch(request);return new Response(asset.body,{status:asset.status,headers:{...Object.fromEntries(asset.headers),...headers}});}
   const sitemap=path==='/sitemap.xml'||/^\/sitemap-[a-z]+\.xml$/.test(path);
   if(sitemap&&!production(env))return text(path==='/sitemap.xml'?'<?xml version="1.0"?><sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"></sitemapindex>':seo.sitemapXml([],budgetDay(now)),200,{'Content-Type':'application/xml'});
+  if(production(env)&&path==='/seo.html'&&url.searchParams.has('path')){const target=url.searchParams.get('path');if(/^\/[a-z]{2}\/(?:[a-z0-9-]+\/){0,2}$/.test(target))return text('',301,{Location:i18n.pathFor(target,lang)});}
   const recovery=['/account.html','/billing.html','/pricing.html','/pricing/','/saved.html','/alerts.html'].includes(path);
   // These documents contain no inventory facts. Their browser API requests
   // still read fresh proof; SEO/detail pages and sitemaps remain proof-bound.
@@ -166,14 +175,14 @@ async function html(request,env,now) {
   // Country/category SEO and sitemaps still require complete global counts.
   const listingId=path==='/opportunity.html'?url.searchParams.get('id'):path.match(/^\/[^/]+\/opportunity\/(ent_[a-f0-9]{32})\/$/)?.[1];
   const snapshot=recovery||shellDocument?null:await readCatalogue(env,now,entityId(listingId)?{ids:[listingId]}:{}),rows=snapshot?.rows??[],ms=markets(rows),rs=Object.fromEntries(ms.map(m=>[m.code,regions(m.code,rows)]));
-  if(sitemap){const entries=ms.flatMap(m=>seo.pages(m,inventory(rows,m.code,seoConfig.intentsFor(m.code),now),rs[m.code]).filter(p=>p.indexable));entries.push(...rows.map(row=>({path:row.canonical_path})));if(env.V3_LOCALISATION_ENABLED!=='false'&&env.V3_LOCALISATION_INDEXABLE==='true')entries.push(...entries.flatMap(entry=>['de','fr'].map(lang=>({...entry,path:i18n.pathFor(entry.path,lang)}))));return text(seo.sitemapXml(entries,budgetDay(now)),200,{'Content-Type':'application/xml'});}
+  if(sitemap){const live=ms.filter(m=>m.launch_status==='live'),entries=[{path:'/'},{path:'/organisers.html'},...live.flatMap(m=>seo.pages(m,inventory(rows,m.code,seoConfig.intentsFor(m.code),now),rs[m.code]).filter(p=>p.indexable))];entries.push(...rows.filter(row=>live.some(m=>m.code===row.market)).map(row=>({path:row.canonical_path,lastmod:/^\d{4}-\d{2}-\d{2}/.test(row.checked?.last_checked??'')?row.checked.last_checked.slice(0,10):undefined})));if(env.V3_LOCALISATION_ENABLED!=='false'&&env.V3_LOCALISATION_INDEXABLE==='true')entries.push(...entries.flatMap(entry=>['de','fr'].map(lang=>({...entry,path:i18n.pathFor(entry.path,lang)}))));return text(seo.sitemapXml(entries,budgetDay(now)),200,{'Content-Type':'application/xml'});}
   let d,template,routeQuery='';
   const staticPages={'/':'index.html','/index.html':'index.html','/finder.html':'finder.html','/opportunity.html':'opportunity.html','/seo.html':'seo.html','/pricing.html':'pricing.html','/pricing/':'pricing.html','/account.html':'account.html','/billing.html':'billing.html','/saved.html':'saved.html','/alerts.html':'alerts.html','/organisers.html':'organisers.html','/organisers/':'organisers.html'};
   if(staticPages[path])template=staticPages[path];else {d=seo.resolve(path,{markets:ms,regions:rs});if(d.kind==='redirect')return text('',301,{Location:i18n.pathFor(d.to,lang)});if(d.kind==='not_found')return text('Page not found',404);if(d.kind==='app'){const u=new URL(d.to,url);template=u.pathname.split('/').at(-1);routeQuery=u.searchParams.toString();}else{template='seo.html';routeQuery=new URLSearchParams({path:d.path}).toString();}}
-  const asset=await env.ASSETS.fetch(new URL('/'+template,url).href);if(!asset.ok)return text('Page unavailable',503);let markup=localisedDocument(await asset.text(),lang),meta='',title=null,robots=production(env)&&['index.html','organisers.html'].includes(template)?'index,follow':'noindex,follow';
+  const asset=await env.ASSETS.fetch(new URL('/'+template,url).href);if(!asset.ok)return text('Page unavailable',503);let markup=localisedDocument(await asset.text(),lang),meta='',body=null,title=null,robots=production(env)&&['index.html','organisers.html'].includes(template)?'index,follow':'noindex,follow';
   if(d&&d.kind==='page') {
     const inv=inventory(rows,d.market,seoConfig.intentsFor(d.market),now),s=search(rows,{...seo.filters(d),page_size:12},null,now),m=ms.find(m=>m.code===d.market),originalMeta=seo.meta(d,{market:m,markets:ms,regions:rs[d.market],inventory:inv,inventories:{[d.market]:inv},search:s,visible:s.results,regionPath:ancestors(d.market,d.region?.id),today:budgetDay(now)}),M=i18n.meta(originalMeta,d,m,lang,env.V3_LOCALISATION_INDEXABLE==='true');
-    title=M.title;robots=M.robots;meta=`<meta name="description" content="${esc(M.description)}"><link rel="canonical" href="${esc(M.canonical)}">`+M.hreflang.map(h=>`<link rel="alternate" hreflang="${esc(h.lang)}" href="${esc(h.href)}">`).join('')+M.jsonld.map(j=>`<script type="application/ld+json">${jsonld(j)}</script>`).join('');
+    title=M.title;robots=M.robots;meta=`<meta name="description" content="${esc(M.description)}"><link rel="canonical" href="${esc(M.canonical)}">`+(M.indexable?og(M.title,M.description,M.canonical):'')+M.hreflang.map(h=>`<link rel="alternate" hreflang="${esc(h.lang)}" href="${esc(h.href)}">`).join('')+M.jsonld.map(j=>`<script type="application/ld+json">${jsonld(j)}</script>`).join('');
     // The page already consumed one current proof snapshot. Give anonymous
     // browsers its exact Free response once, bounded by every source expiry.
     // Any session cookie (even invalid) excludes this optimisation entirely.
@@ -181,17 +190,24 @@ async function html(request,env,now) {
       const page=seoPage(rows,d,ms,rs,null,now,snapshot.as_of),initial=seoResponseData({path:d.path,page,rows,now});
       if(initial)meta+=`<script id="fp-seo-response" type="application/json">${jsonld(initial)}</script>`;
     }
+    if(lang==='en'){const href=p=>p,links=seo.links(d,{inventory:inv,regions:rs[d.market],market:m});body=seoPageBody({meta:originalMeta,results:s.results,links,finderHref:routes.draft.finder(d.market),href});}
   }
   if(template==='opportunity.html') {
     const query=new URLSearchParams(routeQuery||url.search),id=query.get('id'),row=rows.find(r=>r.id===id);if(!row) return text('Opportunity unavailable',404);
-    title=row.title+' | FindPitches';robots=path===row.canonical_path?'index,follow':'noindex,follow';const ld=[{'@context':'https://schema.org','@type':'BreadcrumbList',itemListElement:[{name:'FindPitches',url:routes.abs('/')},{name:marketOf(row.market).name,url:routes.abs(routes.marketPath(row.market))},{name:row.title,url:routes.abs(row.canonical_path)}].map((r,i)=>({'@type':'ListItem',position:i+1,name:r.name,item:r.url}))}];
-    if(row.dates.start)ld.push({'@context':'https://schema.org','@type':'Event',name:row.title,startDate:row.dates.start,...(row.dates.end?{endDate:row.dates.end}:{}),url:routes.abs(row.canonical_path),location:{'@type':'Place',name:row.location.label,address:row.location.label},organizer:{'@type':'Organization',name:row.organiser.name}});
-    meta=`<link rel="canonical" href="${esc(routes.abs(i18n.pathFor(row.canonical_path,lang)))}">`+ld.map(j=>`<script type="application/ld+json">${jsonld(j)}</script>`).join('');
+    if(production(env)&&path==='/opportunity.html')return text('',301,{Location:i18n.pathFor(row.canonical_path,lang)});
+    const om=opportunityMeta(row);title=om.title+' | FindPitches';robots=path===row.canonical_path&&liveMarket(row.market)?'index,follow':'noindex,follow';const ld=[{'@context':'https://schema.org','@type':'BreadcrumbList',itemListElement:[{name:'FindPitches',url:routes.abs('/')},{name:marketOf(row.market).name,url:routes.abs(routes.marketPath(row.market))},{name:om.title,url:routes.abs(row.canonical_path)}].map((r,i)=>({'@type':'ListItem',position:i+1,name:r.name,item:r.url}))}];
+    if(row.dates.start)ld.push({'@context':'https://schema.org','@type':'Event',name:om.title,startDate:row.dates.start,...(row.dates.end?{endDate:row.dates.end}:{}),url:routes.abs(row.canonical_path),location:{'@type':'Place',name:row.location.label,address:row.location.label},organizer:{'@type':'Organization',name:row.organiser.name}});
+    const canonical=routes.abs(i18n.pathFor(row.canonical_path,lang));meta=`<meta name="description" content="${esc(om.description)}"><link rel="canonical" href="${esc(canonical)}">`+(robots==='index,follow'?og(title,om.description,canonical):'')+ld.map(j=>`<script type="application/ld+json">${jsonld(j)}</script>`).join('');
+    if(lang==='en')body=opportunityBody(row,{href:p=>p,seo,routes});
   }
   const canonicalPath=path==='/index.html'?'/':path;
   if(!meta.includes('rel=\"canonical\"'))meta+=`<link rel="canonical" href="${esc(routes.abs(i18n.pathFor(canonicalPath,lang)))}">`;
   if(lang!=='en'){markup=markup.replace(/<meta\s+name="description"[^>]*>/gi,'');if(!meta.includes('name=\"description\"'))meta+=`<meta name="description" content="${esc(i18n.tr('Browse checked markets, festivals and trader opportunities. Apply directly with the organiser.',[],lang))}">`;}
   if(title)markup=markup.replace(/<title>[^<]*<\/title>/,`<title>${esc(title)}</title>`);
+  // Replace the loading skeleton with server-rendered public content.
+  if(body)markup=markup.replace(/<main id="page">[\s\S]*?<\/main>/,()=>`<main id="page">${body}</main>`);
+  // A template's own empty description would duplicate the rendered one.
+  if(meta.includes('name="description"'))markup=markup.replace(/<meta\s+name="description"\s+content=""\s*\/?>/gi,'');
   // The copied shell reads route defaults from data, without inline executable
   // scripts. Relative Build 4 assets and links resolve from this owned origin.
   if(lang!=='en'&&env.V3_LOCALISATION_INDEXABLE!=='true')robots='noindex,follow';

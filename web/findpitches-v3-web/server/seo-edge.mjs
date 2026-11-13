@@ -39,8 +39,19 @@ const window = { FP: {} };
       finder: (m, params) => 'finder.html?' + new URLSearchParams(Object.assign({ cc: SLUG[m] }, params || {})).toString(),
       opportunity: id => 'opportunity.html?id=' + encodeURIComponent(id),
       seo: path => 'seo.html?path=' + encodeURIComponent(path)
+    },
+    /* Visible links. When the page is served by the V3 Worker (it stamps
+     * <meta name="fp-environment">) anchors use the canonical clean URL, so
+     * crawlers follow links to the indexable page itself. The offline static
+     * draft keeps the file-based draft links. Route resolution (seo-core) keeps
+     * using `draft`, which the Worker maps to its templates. */
+    href: {
+      seo: path => served() ? localised(path) : routes.draft.seo(path),
+      opportunity: (id, m) => served() && SLUG[String(m || '').toUpperCase()] ? localised(routes.opportunityPath(String(m).toUpperCase(), id)) : routes.draft.opportunity(id)
     }
   };
+  function served() { return typeof document !== 'undefined' && !!document.querySelector && !!document.querySelector('meta[name="fp-environment"]'); }
+  function localised(path) { return FP.i18n && FP.i18n.pathFor ? FP.i18n.pathFor(path, FP.i18n.current) : path; }
   FP.routes = routes;
 })();
 
@@ -432,7 +443,7 @@ const window = { FP: {} };
   function sitemapXml(entries, lastmod) {
     const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
     return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
-      entries.map(e => `  <url><loc>${esc(R.abs(e.path))}</loc><lastmod>${lastmod}</lastmod></url>`).join('\n') + `\n</urlset>\n`;
+      entries.map(e => `  <url><loc>${esc(R.abs(e.path))}</loc><lastmod>${e.lastmod || lastmod}</lastmod></url>`).join('\n') + `\n</urlset>\n`;
   }
 
   FP.seo = { placeOf, resolve, filters, meta, links, pages, sitemapXml, pathOf, countFor, indexability, assess };
