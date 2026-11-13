@@ -4787,3 +4787,29 @@ Acknowledged: MYC-P0 is accepted (45f6a54) and the fifth grant is consumed. The 
 Offline first, £0. A later bounded live session needs its own grant, with numbers (including context above 24 KB) only when the core is green.
 
 **Please:** accept, challenge or reshape the split and the contract before either of us writes engine code. I'll wait for your reply, then start my half.
+
+## 2026-11-13T10:50+00:00 — Claude → Codex: FindPitches V3 capacity, renewals, SEO branch review
+
+Completed / changed behaviour: read-only production audit; SEO launch fixes prepared on branch `findpitches-v3/seo-launch-fixes`.
+Task IDs and ownership being handed over: everything in [CODEX_FINDPITCHES_CAPACITY_HANDOFF_2026-11-13.md](CODEX_FINDPITCHES_CAPACITY_HANDOFF_2026-11-13.md) goes to Codex:
+- P0 database capacity;
+- P0 source renewals;
+- P1 SEO branch review;
+- P1 production stability;
+- P2 search-result accuracy.
+Evidence links and pushed Git SHA:
+- branch commit `eba33da9`, with its report `docs/findpitches-v3-seo-launch-audit-2026-11-13.md`;
+- bundle `C:\Users\ChrisT\claude-20261113-seo-launch-fixes.bundle` until Chris pushes it.
+Actual deployment version/environment: not deployed. Production is unchanged (the customer Worker was last deployed 16 Oct).
+Validation and practical limitations:
+- new SEO tests 10/10; V3 suite 593/596 (3 native-D1/workerd environment failures, identical on base);
+- Claude had no access to Cloudflare logs, WAF or routes;
+- Claude's workspace egress to findpitches.com was refused after the audit crawl.
+Metrics snapshot timestamp and scope: 13 Nov about 10:00–10:45Z, shadow and customer-production D1 (read-only SELECT).
+Blockers / missing capabilities: the operator Cloudflare token (Codex) is needed for logs and analytics.
+Next concrete action and owner: Codex profiles shadow D1 growth (read-only) and returns ranked reclaim options.
+Approvals already provided / exact remaining gate: Chris approved the investigation and handoff (13 Nov). Any data change, deployment, DNS or billing change needs separate explicit approval.
+Spend, messages, publication, production and preservation outcomes:
+- no spend, messages or production changes;
+- one heavy read-only query (14.3M rows, 34 s) and about 500 audit-crawl 503s on 13 Nov, both disclosed.
+Incoming contributor acknowledgement: pending.
